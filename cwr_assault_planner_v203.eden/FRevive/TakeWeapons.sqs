@@ -1,0 +1,29 @@
+; FRevive
+; This script will make unit pick up his weapons from the body
+
+_body     = _this select 0
+_new_body = _this select 1
+_weaps    = _this select 2
+_mags     = _this select 3
+
+#Start
+? _new_body == player : player removeWeapon "NVGoggles"
+? isNull _body || typeOf _body=="body" : "_new_body addMagazine _x" forEach (_mags); "_new_body addWeapon _x" forEach _weaps; goto "TakeWeapons_Skip"
+
+{_new_body action ["TAKE MAGAZINE", _body,0,0,_x]} forEach magazines _body
+{_new_body action ["TAKE WEAPON", _body,0,0,_x]} forEach weapons _body
+? _body hasWeapon "Throw" : _new_body removeWeapon "Throw"; _new_body action ["TAKE WEAPON",_body,0,0,"Throw"]
+? _body hasWeapon "Put"   : _new_body removeWeapon "Put"; _new_body action ["TAKE WEAPON",_body,0,0,"Put"]
+
+_waiting_for_ammo_transfer_started = _time
+@(count (magazines _body))+(count (weapons _body))==0 || (_time-_waiting_for_ammo_transfer_started)>10 || isNull _body
+? isNull _body : removeAllWeapons player; goto "Start"
+
+#TakeWeapons_Skip
+if ((primaryWeapon _new_body) != "") then {_new_body selectWeapon (primaryWeapon _new_body)} else {_weapons=(weapons _new_body)-["NVGoggles","Binocular",secondaryWeapon _new_body]; if (count _weapons>0) then {_new_body selectWeapon (_weapons select 0)} else {_new_body selectWeapon "Throw"}}
+
+? FREVIVE_TAKE_GUNS_BEFORE && (getPos _new_body select 2)>7000 : exit
+deleteVehicle _body
+_new_body playMove "Lying"
+_new_body setCaptive false
+? _new_body != player : _new_body stop false; _new_body doFollow leader _new_body

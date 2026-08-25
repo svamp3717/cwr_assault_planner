@@ -1,0 +1,42 @@
+; 
+; Script for the spectating script v1.4 by Kegetys <Kegetys@dnainternet.net> 
+; http://www.ofp.kege.cjb.net
+;
+
+_m = nearestObject[_this select 0,_this select 4]
+_vel = abs(velocity _m select 0) + abs(velocity _m select 1) + abs(velocity _m select 2)
+
+? isNull _m || !DeathCamMissileCamEnabled || _vel > 450 || DeathCamCineViewSpecial == 3 || !dialog : exit
+
+
+_id = random 1000000
+DeathCamCurMissileCamTargetID = _id
+
+_kami = "camera" camCreate [5329.34,6652.10,1.28]
+_kami cameraEffect ["internal","front"]
+_kami camSetTarget _m
+_kami camSetRelPos [2,2,2]
+_kami camSetFOV 0.762
+_kami camCommit 0
+
+
+#luup
+
+? !isNull _m : _kami camSetTarget _m
+? !isNull _m : _kami camSetRelPos [0,-2,0.7]
+? !isNull _m : _kami camCommit 0
+
+_vel = abs(velocity _m select 0) + abs(velocity _m select 1) + abs(velocity _m select 2)
+? !isNull _m && _vel > 1 : goto "luup"
+
+~3.5
+
+? DeathCamCurMissileCamTargetID != _id : exit
+? !dialog : exit
+titleCut ["","BLACK OUT", 0.5]
+~0.5
+titleCut ["","BLACK IN", 0.5]
+? !dialog : exit
+_kami cameraeffect ["terminate", "back"]
+camdestroy _kami
+DeathCam cameraEffect ["internal","front"]
