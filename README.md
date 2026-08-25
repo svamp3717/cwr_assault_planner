@@ -39,7 +39,7 @@ WW4_EXT;WW4_EXT_VEH;WW4EXT_CW
 - **Civilian systems:** ambient civilians, persistent/streamed civilian traffic, parked vehicles, rescue objectives, Follow Me / Stop controls, and vehicle transport for rescued civilians.
 - **Recover Downed Pilot:** locate a wounded WEST pilot, control his movement, transport him if needed, and escort him to a safe settlement.
 - **Steal a Vehicle:** capture a designated enemy vehicle and deliver it to a separate recovery location.
-- **WW4 Arsenal:** optional mission setting with support for the player and squad AI.
+- **WW4 Arsenal:** optional mission setting inspired by Arsenal in arma 3, with support for the player and squad AI.
 - **FRevive:** bundled and toggleable from Mission Settings; when disabled, the mission falls back to its normal instant respawn behavior.
 - **Mission settings:** WW4 Arsenal, FRevive, and mission music can be enabled or disabled before launch.
 - **Environment controls:** selectable start time and weather presets.
