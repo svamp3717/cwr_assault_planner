@@ -1,0 +1,247 @@
+; TEST BUILD: change player model using the backported selectPlayer command.
+; Uses the exact addMagazine pattern from add_five_magazines.sqs:
+; _mag = <classname>
+; player addMagazine _mag
+; Earlier short restore timings are restored.
+; Identity is completed before inventory restoration.
+; The replacement is repeatedly joined to the original group so the original side is retained.
+
+? vehicle player == player : goto "OnFoot"
+hint "Leave the vehicle before changing player model."
+exit
+
+#OnFoot
+_categorySelection = lbCurSel 1510
+_classSelection = lbCurSel 1511
+
+? _categorySelection >= 0 : goto "HaveCategory"
+hint "Select a player-model category first."
+exit
+
+#HaveCategory
+? _categorySelection < count WW4_PlayerModelGroups : goto "ResolveGroup"
+hint "The selected category is no longer available."
+exit
+
+#ResolveGroup
+_groupEntry = WW4_PlayerModelGroups select _categorySelection
+_classes = _groupEntry select 1
+
+? _classSelection >= 0 : goto "HaveClassSelection"
+hint "Select a player model first."
+exit
+
+#HaveClassSelection
+? _classSelection < count _classes : goto "ResolveClass"
+hint "The selected player model is no longer available."
+exit
+
+#ResolveClass
+_newClass = _classes select _classSelection
+? _newClass != "" : goto "SaveState"
+hint "The selected player-model classname is empty."
+exit
+
+#SaveState
+WW4_ModelOldPlayer = player
+_oldPosition = getPos WW4_ModelOldPlayer
+_oldDirection = getDir WW4_ModelOldPlayer
+_oldGroup = group WW4_ModelOldPlayer
+WW4_ModelOriginalGroup = _oldGroup
+_oldDamage = damage WW4_ModelOldPlayer
+_oldSkill = skill WW4_ModelOldPlayer
+
+; Identity contains the original name, face and voice/speaker.
+WW4_ModelIdentitySaved = WW4_ModelOldPlayer saveIdentity "WW4_ModelSwapIdentity"
+
+; Copy weapons into an independent global array.
+WW4_ModelSavedWeapons = []
+_sourceWeapons = weapons WW4_ModelOldPlayer
+_i = 0
+
+#CopyWeapons
+? _i >= count _sourceWeapons : goto "CopyMagazinesStart"
+_weapon = _sourceWeapons select _i
+WW4_ModelSavedWeapons = WW4_ModelSavedWeapons + [_weapon]
+_i = _i + 1
+goto "CopyWeapons"
+
+#CopyMagazinesStart
+; Copy every carried magazine classname before changing the controlled object.
+WW4_ModelSavedMagazines = []
+_sourceMagazines = magazines WW4_ModelOldPlayer
+_i = 0
+
+#CopyMagazines
+? _i >= count _sourceMagazines : goto "CreateReplacement"
+_mag = _sourceMagazines select _i
+WW4_ModelSavedMagazines = WW4_ModelSavedMagazines + [_mag]
+_i = _i + 1
+goto "CopyMagazines"
+
+#CreateReplacement
+WW4_ModelSavedMagazineCount = count WW4_ModelSavedMagazines
+WW4_ModelNewPlayer = objNull
+closeDialog 0
+~0.10
+
+_newClass createUnit [_oldPosition,WW4_ModelOriginalGroup,"WW4_ModelNewPlayer = this",_oldSkill,"SERGEANT"]
+_waitCount = 0
+
+#WaitForNewPlayer
+? !isNull WW4_ModelNewPlayer : goto "NewPlayerReady"
+? _waitCount >= 100 : goto "CreationFailed"
+~0.05
+_waitCount = _waitCount + 1
+goto "WaitForNewPlayer"
+
+#CreationFailed
+hint format ["Could not create player model: %1",_newClass]
+~0.25
+[] exec "ww4_arsenal\open_models.sqs"
+exit
+
+#NewPlayerReady
+WW4_ModelNewPlayer setPos _oldPosition
+WW4_ModelNewPlayer setDir _oldDirection
+WW4_ModelNewPlayer setDammage _oldDamage
+? WW4_ModelIdentitySaved : WW4_ModelNewPlayer loadIdentity "WW4_ModelSwapIdentity"
+
+; Group membership determines the replacement player's operational side.
+; Join the original group before transferring control, even when the selected
+; model class is configured for another faction.
+[WW4_ModelNewPlayer] join WW4_ModelOriginalGroup
+~0.10
+[WW4_ModelNewPlayer] join WW4_ModelOriginalGroup
+
+removeAllWeapons WW4_ModelNewPlayer
+
+#TransferControl
+~0.50
+selectPlayer WW4_ModelNewPlayer
+_controlWait = 0
+
+#WaitForControl
+? player == WW4_ModelNewPlayer : goto "ControlTransferred"
+? _controlWait >= 100 : goto "ControlFailed"
+~0.05
+_controlWait = _controlWait + 1
+goto "WaitForControl"
+
+#ControlFailed
+hint "The replacement unit was created, but selectPlayer did not transfer control. The original player was kept."
+deleteVehicle WW4_ModelNewPlayer
+WW4_ModelNewPlayer = objNull
+~0.25
+[] exec "ww4_arsenal\open_models.sqs"
+exit
+
+#ControlTransferred
+arsenalPlayer = player
+; v102 integration: mission scripts use the dynamic player reference.
+; The editor object name plr is read-only in CWA and must not be assigned.
+grpPlr = group player
+WW4_CurrentPlayerModel = _newClass
+
+; The selected class may belong to West, East or Resistance in its config.
+; Force the controlled replacement back into the original player's group so
+; the original mission side and relationships are retained.
+[player] join WW4_ModelOriginalGroup
+~0.10
+[player] join WW4_ModelOriginalGroup
+
+; Hide the original unit but keep it alive until all state has been restored.
+WW4_ModelOldPlayer setPos [0,0,-1000]
+
+; Finish identity loading before restoring gear.
+~0.35
+? WW4_ModelIdentitySaved : player loadIdentity "WW4_ModelSwapIdentity"
+~0.50
+? WW4_ModelIdentitySaved : player loadIdentity "WW4_ModelSwapIdentity"
+
+; Earlier restore timing from the pre-delay builds.
+~0.75
+removeAllWeapons player
+_i = 0
+
+#RestoreMagazinesFirst
+? _i >= count WW4_ModelSavedMagazines : goto "RestoreWeaponsFirst"
+_mag = WW4_ModelSavedMagazines select _i
+player addMagazine _mag
+~0.03
+_i = _i + 1
+goto "RestoreMagazinesFirst"
+
+#RestoreWeaponsFirst
+_i = 0
+
+#RestoreWeaponsFirstLoop
+? _i >= count WW4_ModelSavedWeapons : goto "VerifyFirstRestore"
+_weapon = WW4_ModelSavedWeapons select _i
+player addWeapon _weapon
+~0.03
+_i = _i + 1
+goto "RestoreWeaponsFirstLoop"
+
+#VerifyFirstRestore
+~1.00
+WW4_ModelRestoredMagazineCount = count magazines player
+? WW4_ModelRestoredMagazineCount >= WW4_ModelSavedMagazineCount : goto "DeleteOldUnit"
+
+; Earlier fallback timing: clear and rebuild once more.
+removeAllWeapons player
+_i = 0
+
+#RestoreMagazinesSecond
+? _i >= count WW4_ModelSavedMagazines : goto "RestoreWeaponsSecond"
+_mag = WW4_ModelSavedMagazines select _i
+player addMagazine _mag
+~0.05
+_i = _i + 1
+goto "RestoreMagazinesSecond"
+
+#RestoreWeaponsSecond
+_i = 0
+
+#RestoreWeaponsSecondLoop
+? _i >= count WW4_ModelSavedWeapons : goto "VerifySecondRestore"
+_weapon = WW4_ModelSavedWeapons select _i
+player addWeapon _weapon
+~0.05
+_i = _i + 1
+goto "RestoreWeaponsSecondLoop"
+
+#VerifySecondRestore
+~1.00
+WW4_ModelRestoredMagazineCount = count magazines player
+
+#DeleteOldUnit
+; Keep the replacement in the original group before removing the editor unit.
+[player] join WW4_ModelOriginalGroup
+~0.10
+deleteVehicle WW4_ModelOldPlayer
+_deleteWait = 0
+
+#WaitForOldDeletion
+? isNull WW4_ModelOldPlayer : goto "Finish"
+? _deleteWait >= 30 : goto "ForceOldUnitAway"
+deleteVehicle WW4_ModelOldPlayer
+~0.10
+_deleteWait = _deleteWait + 1
+goto "WaitForOldDeletion"
+
+#ForceOldUnitAway
+WW4_ModelOldPlayer setPos [0,0,-2000]
+WW4_ModelOldPlayer setDammage 1
+deleteVehicle WW4_ModelOldPlayer
+
+#Finish
+; Rejoin once more after old-unit deletion. This also prevents a solo original
+; group from disappearing when its editor-created unit is removed.
+[player] join WW4_ModelOriginalGroup
+WW4_ModelOldPlayer = objNull
+WW4_ModelNewPlayer = player
+WW4_ModelOriginalGroup = group player
+WW4_ModelRestoredMagazineCount = count magazines player
+hint format ["Model changed: %1   Magazines saved: %2   carried: %3",_newClass,WW4_ModelSavedMagazineCount,WW4_ModelRestoredMagazineCount]
+exit

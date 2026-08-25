@@ -1,0 +1,12 @@
+; Close the player-model dialog and reopen the weapon arsenal.
+
+closeDialog 0
+
+#WaitForClose
+? !dialog : goto "OpenArsenal"
+~0.05
+goto "WaitForClose"
+
+#OpenArsenal
+[] exec "ww4_arsenal\open.sqs"
+exit

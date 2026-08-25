@@ -1,0 +1,29 @@
+; Add one selected compatible item to the active arsenal target.
+
+_target = WW4_ArsenalTarget
+? isNull _target : hint "Arsenal target unavailable."; exit
+? !(alive _target) : hint "Arsenal target is not alive."; exit
+? _target == player : goto "TargetValid"
+? group _target == group player : goto "TargetValid"
+hint "The selected unit is no longer in your squad."
+exit
+
+#TargetValid
+_mi = lbCurSel 1502
+? _mi >= 0 : goto "HaveMagazine"
+hint "Select a compatible magazine or item first."
+exit
+
+#HaveMagazine
+_mag = lbData [1502,_mi]
+? _mag == "HandGrenade" : _target addWeapon "Throw"
+? _mag == "SmokeShell" : _target addWeapon "Throw"
+? _mag == "SmokeShellGreen" : _target addWeapon "Throw"
+? _mag == "SmokeShellRed" : _target addWeapon "Throw"
+? _mag == "PipeBomb" : _target addWeapon "Put"
+? _mag == "TimeBomb" : _target addWeapon "Put"
+? _mag == "Mine" : _target addWeapon "Put"
+? _mag == "MineE" : _target addWeapon "Put"
+_target addMagazine _mag
+hint format ["Added to %1: %2",name _target,_mag]
+exit

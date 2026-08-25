@@ -1,1 +1,18 @@
+; WW4 Arsenal initializer
+; Box-only version: data is loaded here, but no action is attached to the player.
 
+WW4_ArsenalDataReady = false
+WW4_PlayerModelDataReady = false
+WW4_ArsenalDefaultMags = 6
+WW4_ArsenalTarget = player
+WW4_PreviewTarget = player
+WW4_PreviewActive = false
+WW4_PreviewAbort = false
+WW4_ModelPreviewActive = false
+WW4_PreviewSavedWeapons = []
+WW4_PreviewSavedMagazines = []
+[] exec "ww4_arsenal\data.sqs"
+[] exec "ww4_arsenal\model_data.sqs"
+@WW4_ArsenalDataReady
+@WW4_PlayerModelDataReady
+exit

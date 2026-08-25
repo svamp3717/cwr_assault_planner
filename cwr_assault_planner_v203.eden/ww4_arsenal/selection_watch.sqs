@@ -1,0 +1,92 @@
+; Poll selections because old CWA UI events can be unreliable.
+
+#Loop
+? !dialog : exit
+
+_ammoSelection = lbCurSel 1502
+? _ammoSelection != WW4_ArsenalLastAmmo : goto "AmmoSelectionChanged"
+goto "CheckFamily"
+
+#AmmoSelectionChanged
+WW4_ArsenalLastAmmo = _ammoSelection
+? _ammoSelection < 0 : goto "CheckFamily"
+_selectedItem = lbData [1502,_ammoSelection]
+_variantSelectionForStatus = lbCurSel 1501
+_selectedWeapon = ""
+? _variantSelectionForStatus < 0 : goto "SetItemStatus"
+_selectedWeapon = lbData [1501,_variantSelectionForStatus]
+
+#SetItemStatus
+_targetName = name WW4_ArsenalTarget
+ctrlSetText [1002,format ["Target: %1   Selection: %2   Item: %3   Add 1 = 1x   Add 5 = 5x",_targetName,_selectedWeapon,_selectedItem]]
+
+#CheckFamily
+
+_familySelection = lbCurSel 1500
+? _familySelection != WW4_ArsenalLastFamily : goto "FamilyChanged"
+goto "CheckVariant"
+
+#FamilyChanged
+WW4_ArsenalLastFamily = _familySelection
+WW4_ArsenalLastVariant = -1
+WW4_ArsenalLastAmmo = -1
+WW4_ArsenalCurrentEntryIndexes = []
+lbClear 1501
+lbClear 1502
+? _familySelection < 0 : goto "Sleep"
+
+_family = WW4_ArsenalFamilies select _familySelection
+WW4_ArsenalCurrentEntryIndexes = _family select 1
+_i = 0
+
+#VariantLoop
+? _i >= count WW4_ArsenalCurrentEntryIndexes : goto "VariantDone"
+_entryIndex = WW4_ArsenalCurrentEntryIndexes select _i
+_entry = WW4_ArsenalEntries select _entryIndex
+_row = lbAdd [1501,_entry select 1]
+lbSetData [1501,_row,_entry select 0]
+_i = _i + 1
+goto "VariantLoop"
+
+#VariantDone
+? count WW4_ArsenalCurrentEntryIndexes > 0 : lbSetCurSel [1501,0]
+
+#CheckVariant
+_variantSelection = lbCurSel 1501
+? _variantSelection != WW4_ArsenalLastVariant : goto "VariantChanged"
+goto "Sleep"
+
+#VariantChanged
+WW4_ArsenalLastVariant = _variantSelection
+WW4_ArsenalLastAmmo = -1
+lbClear 1502
+? _variantSelection < 0 : goto "Sleep"
+? _variantSelection >= count WW4_ArsenalCurrentEntryIndexes : goto "Sleep"
+
+_entryIndex = WW4_ArsenalCurrentEntryIndexes select _variantSelection
+_entry = WW4_ArsenalEntries select _entryIndex
+_weapon = _entry select 0
+_mags = _entry select 2
+_i = 0
+
+#AmmoLoop
+? _i >= count _mags : goto "AmmoDone"
+_mag = _mags select _i
+_magLabel = _mag
+? _mag == "PipeBomb" : _magLabel = "Satchel Charge (PipeBomb)"
+? _mag == "TimeBomb" : _magLabel = "Timed Charge (TimeBomb)"
+? _mag == "Mine" : _magLabel = "Anti-Tank Mine (Mine)"
+? _mag == "MineE" : _magLabel = "Eastern Anti-Tank Mine (MineE)"
+_row = lbAdd [1502,_magLabel]
+lbSetData [1502,_row,_mag]
+_i = _i + 1
+goto "AmmoLoop"
+
+#AmmoDone
+? count _mags > 0 : lbSetCurSel [1502,0]
+_targetName = name WW4_ArsenalTarget
+ctrlSetText [1002,format ["Target: %1   Selection: %2   Select a compatible item or apply directly.",_targetName,_weapon]]
+
+#Sleep
+~0.10
+goto "Loop"

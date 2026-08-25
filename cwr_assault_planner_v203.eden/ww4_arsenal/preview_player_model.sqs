@@ -1,0 +1,152 @@
+; Rotating visual preview of a selected WW4 player-model class.
+; This runtime does not implement selectPlayer, so the preview unit is never controlled.
+; Click anywhere to end the preview.
+
+? WW4_ModelPreviewActive : exit
+
+_categorySelection = lbCurSel 1510
+_classSelection = lbCurSel 1511
+
+? _categorySelection >= 0 : goto "HaveCategory"
+hint "Select a West category first."
+exit
+
+#HaveCategory
+? _categorySelection < count WW4_PlayerModelGroups : goto "ResolveGroup"
+hint "The selected category is no longer available."
+exit
+
+#ResolveGroup
+_groupEntry = WW4_PlayerModelGroups select _categorySelection
+_classes = _groupEntry select 1
+
+? _classSelection >= 0 : goto "HaveClass"
+hint "Select a player model first."
+exit
+
+#HaveClass
+? _classSelection < count _classes : goto "ResolveClass"
+hint "The selected player model is no longer available."
+exit
+
+#ResolveClass
+_modelClass = _classes select _classSelection
+? _modelClass != "" : goto "BeginPreview"
+hint "The selected player-model classname is empty."
+exit
+
+#BeginPreview
+WW4_ModelPreviewActive = true
+WW4_PreviewAbort = false
+closeDialog 0
+~0.10
+
+_playerPos = getPos player
+_previewPos = [(_playerPos select 0) + 5,(_playerPos select 1),0]
+_previewGroup = group player
+WW4_ModelPreviewUnit = objNull
+
+_modelClass createUnit [_previewPos,_previewGroup,"WW4_ModelPreviewUnit = this",0.6,"PRIVATE"]
+
+_waitCount = 0
+
+#WaitForPreviewUnit
+? !isNull WW4_ModelPreviewUnit : goto "PreviewUnitReady"
+? _waitCount >= 100 : goto "CreationFailed"
+~0.05
+_waitCount = _waitCount + 1
+goto "WaitForPreviewUnit"
+
+#CreationFailed
+WW4_ModelPreviewActive = false
+hint format ["Could not create model preview: %1. Check that this class exists in the loaded WW4 addons.",_modelClass]
+~0.25
+[] exec "ww4_arsenal\open_models.sqs"
+exit
+
+#PreviewUnitReady
+WW4_ModelPreviewUnit setPos _previewPos
+WW4_ModelPreviewUnit setDir 180
+removeAllWeapons WW4_ModelPreviewUnit
+WW4_ModelPreviewUnit setBehaviour "CARELESS"
+WW4_ModelPreviewUnit disableAI "MOVE"
+
+titleText [format ["Previewing model: %1. Click anywhere to exit.",_modelClass],"PLAIN DOWN"]
+
+WW4_ModelPreviewCamera = "camera" camCreate [0,0,0]
+WW4_ModelPreviewCamera camSetTarget WW4_ModelPreviewUnit
+WW4_ModelPreviewCamera camSetRelPos [4,-4,1.7]
+WW4_ModelPreviewCamera cameraEffect ["internal","back"]
+showCinemaBorder false
+WW4_ModelPreviewCamera camCommit 0
+
+_abortDialogCreated = createDialog "WW4_Preview_AbortDialog"
+
+#WaitInitial
+? WW4_PreviewAbort : goto "EndPreview"
+? camCommitted WW4_ModelPreviewCamera : goto "PauseOne"
+~0.05
+goto "WaitInitial"
+
+#PauseOne
+_pauseCount = 0
+
+#PauseLoop
+? WW4_PreviewAbort : goto "EndPreview"
+? _pauseCount >= 10 : goto "MoveTwo"
+~0.10
+_pauseCount = _pauseCount + 1
+goto "PauseLoop"
+
+#MoveTwo
+WW4_ModelPreviewCamera camSetRelPos [4,4,1.7]
+WW4_ModelPreviewCamera camCommit 2.5
+
+#WaitTwo
+? WW4_PreviewAbort : goto "EndPreview"
+? camCommitted WW4_ModelPreviewCamera : goto "MoveThree"
+~0.05
+goto "WaitTwo"
+
+#MoveThree
+WW4_ModelPreviewCamera camSetRelPos [-4,4,1.7]
+WW4_ModelPreviewCamera camCommit 2.5
+
+#WaitThree
+? WW4_PreviewAbort : goto "EndPreview"
+? camCommitted WW4_ModelPreviewCamera : goto "MoveFour"
+~0.05
+goto "WaitThree"
+
+#MoveFour
+WW4_ModelPreviewCamera camSetRelPos [-4,-4,1.7]
+WW4_ModelPreviewCamera camCommit 2.5
+
+#WaitFour
+? WW4_PreviewAbort : goto "EndPreview"
+? camCommitted WW4_ModelPreviewCamera : goto "MoveFive"
+~0.05
+goto "WaitFour"
+
+#MoveFive
+WW4_ModelPreviewCamera camSetRelPos [4,-4,1.7]
+WW4_ModelPreviewCamera camCommit 2.5
+
+#WaitFive
+? WW4_PreviewAbort : goto "EndPreview"
+? camCommitted WW4_ModelPreviewCamera : goto "EndPreview"
+~0.05
+goto "WaitFive"
+
+#EndPreview
+closeDialog 0
+WW4_ModelPreviewCamera cameraEffect ["terminate","back"]
+camDestroy WW4_ModelPreviewCamera
+deleteVehicle WW4_ModelPreviewUnit
+WW4_ModelPreviewUnit = objNull
+WW4_PreviewAbort = false
+WW4_ModelPreviewActive = false
+titleText ["","PLAIN"]
+~0.25
+[] exec "ww4_arsenal\open_models.sqs"
+exit

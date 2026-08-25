@@ -1,0 +1,14 @@
+; Clear weapons and magazines from the active arsenal target.
+
+_target = WW4_ArsenalTarget
+? isNull _target : hint "Arsenal target unavailable."; exit
+? !(alive _target) : hint "Arsenal target is not alive."; exit
+? _target == player : goto "TargetValid"
+? group _target == group player : goto "TargetValid"
+hint "The selected unit is no longer in your squad."
+exit
+
+#TargetValid
+removeAllWeapons _target
+hint format ["Weapons and magazines cleared from %1.",name _target]
+exit
