@@ -1,0 +1,118 @@
+// FDF mod spectator
+// Include from rscSpectate.hpp
+//
+// Spectating script v1.4 for FDF mod by Kegetys
+//
+
+	// **1st person spectating**
+class FREVIVE_RscFDFDlgSpectateDeath1st
+{
+	idd = 821151552;
+	movingEnable = true;
+	controlsBackground[]=
+	{
+		Background1
+	};
+	class Background1 : FREVIVE_RscText		// edited
+	{
+		idc = 1047001;
+		style = 128;
+		x = 0.375;
+		y = __EVAL(0.02 - AR_modifY);
+		w = 0.25;
+		h = 0.04;		
+		
+		text = ;
+		colorBackground[] = {0, 0, 0, 0.8};
+	};
+	
+	controls[]=
+	{
+		TitleS,
+		Title,
+		ButtonNEXT,
+		ButtonPREV,
+		PlrName
+	};
+	
+	class Title : FREVIVE_RscText		// edited
+	{
+		idc = -1;
+		style = 2;
+		x = 0.375;
+		y = __EVAL(0.02 - AR_modifY);
+		w = 0.25;
+		h = 0.04;
+		font = "SteelfishB64";
+		//colorText[] = {1, 0, 0, 1};
+		colorText[] = {0/255, 108/255, 169/255, 1.0};
+		sizeEx = 0.038;
+		text = "SPECTATING";
+	};	
+	
+	class TitleS : FREVIVE_RscText		// edited
+	{
+		idc = -1;
+		style = 2;
+		x = 0.375+0.002;
+		y = __EVAL(0.02+0.002 - AR_modifY);
+		w = 0.25;
+		h = 0.04;
+		font = "SteelfishB64";
+		colorText[] = {0, 0, 0, 0.8};
+		sizeEx = 0.038;
+		text = "SPECTATING";
+	};		
+	
+	class ButtonNEXT : FREVIVE_RscActiveMenu		// edited
+	{
+		idc = -1;
+		style = 2;
+		x = 0.575;
+		y = __EVAL(0.021 - AR_modifY);
+		w = 0.02;
+		h = 0.031;		
+		text = ">";
+		default = 0;
+		soundClick[] = {"ui\ui_ok", 0.2, 1};
+		action = "1 call FREVIVE_SPECTATOR_NEXTCAM";
+	};	
+		
+	class ButtonPREV : FREVIVE_RscActiveMenu		// edited
+	{
+		idc = -1;
+		style = 2;
+		x = 0.4;
+		y = __EVAL(0.021 - AR_modifY);
+		w = 0.02;
+		h = 0.036;		
+		text = "<";
+		default = 0;
+		soundClick[] = {"ui\ui_ok", 0.2, 1};
+		action = "-1 call FREVIVE_SPECTATOR_NEXTCAM";
+	};
+	
+	class PlrName : FREVIVE_RscText		// edited
+	{
+		idc = 116969;
+		style = 2;
+		x = 0.375;
+		y = __EVAL(0.060 - AR_modifY);
+		w = 0.25;
+		h = 0.02;
+		font = "tahomaB36";
+		
+		colorText[] = {0, 0, 0, 0.6};
+		color[] = {0, 0, 0, 0.6};
+		colorActive[] = {0, 0, 0, 0.6};
+		
+			
+/*		colorText[] = {1, 0, 0, 1};
+		color[] = {1, 0, 0, 1};		
+		colorActive[] = {1, 0.2, 0.2, 1};			*/
+		//sizeEx = 0.05;
+		text = "Unknown";
+				
+	};			
+	
+};
