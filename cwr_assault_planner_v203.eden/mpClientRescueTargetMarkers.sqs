@@ -1,0 +1,36 @@
+; v187 start local live markers for every Save Civilians target and Recover Downed Pilot target.
+; Destination markers remain handled by the existing rescue and pilot marker scripts.
+_markerNames = ["rescue_unit_marker_1_1","rescue_unit_marker_1_2","rescue_unit_marker_1_3","rescue_unit_marker_1_4","rescue_unit_marker_2_1","rescue_unit_marker_2_2","rescue_unit_marker_2_3","rescue_unit_marker_2_4","rescue_unit_marker_3_1","rescue_unit_marker_3_2","rescue_unit_marker_3_3","rescue_unit_marker_3_4","rescue_unit_marker_4_1","rescue_unit_marker_4_2","rescue_unit_marker_4_3","rescue_unit_marker_4_4","rescue_unit_marker_5_1","rescue_unit_marker_5_2","rescue_unit_marker_5_3","rescue_unit_marker_5_4","pilot_unit_marker_1","pilot_unit_marker_2","pilot_unit_marker_3","pilot_unit_marker_4","pilot_unit_marker_5"]
+_i = 0
+#hideLoop
+? _i >= count _markerNames : goto "launch"
+(_markerNames select _i) setMarkerType "Empty"
+_i = _i + 1
+goto "hideLoop"
+#launch
+? objectiveType1 == 7 : ["rescue_unit_marker_1_1",1,1,objectiveRescueDestinationX1,objectiveRescueDestinationY1] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType1 == 7 : ["rescue_unit_marker_1_2",1,2,objectiveRescueDestinationX1,objectiveRescueDestinationY1] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType1 == 7 : ["rescue_unit_marker_1_3",1,3,objectiveRescueDestinationX1,objectiveRescueDestinationY1] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType1 == 7 : ["rescue_unit_marker_1_4",1,4,objectiveRescueDestinationX1,objectiveRescueDestinationY1] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType2 == 7 : ["rescue_unit_marker_2_1",2,1,objectiveRescueDestinationX2,objectiveRescueDestinationY2] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType2 == 7 : ["rescue_unit_marker_2_2",2,2,objectiveRescueDestinationX2,objectiveRescueDestinationY2] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType2 == 7 : ["rescue_unit_marker_2_3",2,3,objectiveRescueDestinationX2,objectiveRescueDestinationY2] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType2 == 7 : ["rescue_unit_marker_2_4",2,4,objectiveRescueDestinationX2,objectiveRescueDestinationY2] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType3 == 7 : ["rescue_unit_marker_3_1",3,1,objectiveRescueDestinationX3,objectiveRescueDestinationY3] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType3 == 7 : ["rescue_unit_marker_3_2",3,2,objectiveRescueDestinationX3,objectiveRescueDestinationY3] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType3 == 7 : ["rescue_unit_marker_3_3",3,3,objectiveRescueDestinationX3,objectiveRescueDestinationY3] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType3 == 7 : ["rescue_unit_marker_3_4",3,4,objectiveRescueDestinationX3,objectiveRescueDestinationY3] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType4 == 7 : ["rescue_unit_marker_4_1",4,1,objectiveRescueDestinationX4,objectiveRescueDestinationY4] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType4 == 7 : ["rescue_unit_marker_4_2",4,2,objectiveRescueDestinationX4,objectiveRescueDestinationY4] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType4 == 7 : ["rescue_unit_marker_4_3",4,3,objectiveRescueDestinationX4,objectiveRescueDestinationY4] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType4 == 7 : ["rescue_unit_marker_4_4",4,4,objectiveRescueDestinationX4,objectiveRescueDestinationY4] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType5 == 7 : ["rescue_unit_marker_5_1",5,1,objectiveRescueDestinationX5,objectiveRescueDestinationY5] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType5 == 7 : ["rescue_unit_marker_5_2",5,2,objectiveRescueDestinationX5,objectiveRescueDestinationY5] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType5 == 7 : ["rescue_unit_marker_5_3",5,3,objectiveRescueDestinationX5,objectiveRescueDestinationY5] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType5 == 7 : ["rescue_unit_marker_5_4",5,4,objectiveRescueDestinationX5,objectiveRescueDestinationY5] exec "mpClientTrackRescueCivilian.sqs"
+? objectiveType1 == 9 : ["pilot_unit_marker_1",1,objectivePilotDestinationX1,objectivePilotDestinationY1] exec "mpClientTrackDownedPilot.sqs"
+? objectiveType2 == 9 : ["pilot_unit_marker_2",2,objectivePilotDestinationX2,objectivePilotDestinationY2] exec "mpClientTrackDownedPilot.sqs"
+? objectiveType3 == 9 : ["pilot_unit_marker_3",3,objectivePilotDestinationX3,objectivePilotDestinationY3] exec "mpClientTrackDownedPilot.sqs"
+? objectiveType4 == 9 : ["pilot_unit_marker_4",4,objectivePilotDestinationX4,objectivePilotDestinationY4] exec "mpClientTrackDownedPilot.sqs"
+? objectiveType5 == 9 : ["pilot_unit_marker_5",5,objectivePilotDestinationX5,objectivePilotDestinationY5] exec "mpClientTrackDownedPilot.sqs"
+exit

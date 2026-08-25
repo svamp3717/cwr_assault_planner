@@ -1,0 +1,45 @@
+; Local task, radio and HQ-message monitor.
+#loop
+~0.25
+? mpHQMessageId > mpLastHQMessageId : goto "newMessage"
+#afterMessage
+? mpReinforcementMessageId > mpLastReinforcementMessageId : goto "newReinforcementMessage"
+#afterReinforcementMessage
+? objective1Done && !(mpObjective1Announced) : "1" objStatus "DONE"
+? objective1Done && !(mpObjective1Announced) : mpObjective1Announced = true
+? objective2Done && !(mpObjective2Announced) : "2" objStatus "DONE"
+? objective2Done && !(mpObjective2Announced) : mpObjective2Announced = true
+? objective3Done && !(mpObjective3Announced) : "3" objStatus "DONE"
+? objective3Done && !(mpObjective3Announced) : mpObjective3Announced = true
+? objective4Done && !(mpObjective4Announced) : "4" objStatus "DONE"
+? objective4Done && !(mpObjective4Announced) : mpObjective4Announced = true
+? objective5Done && !(mpObjective5Announced) : "5" objStatus "DONE"
+? objective5Done && !(mpObjective5Announced) : mpObjective5Announced = true
+_radioLeader = leader (group player)
+? player == _radioLeader && !(airSupportUsed) && !(airSupportUnavailableReported) : 1 setRadioMsg "Request Air Support"
+? airSupportUsed || airSupportUnavailableReported || player != _radioLeader : 1 setRadioMsg "NULL"
+? player == _radioLeader && extractionCallAvailable && !(extractionActive) : 2 setRadioMsg "Call Final Extraction"
+? !(extractionCallAvailable) || extractionActive || player != _radioLeader : 2 setRadioMsg "NULL"
+? logisticsDropsRemaining < 1 || logisticsDropInProgress : logisticsDropLocalPending = false
+? logisticsDropAvailable && logisticsDropsRemaining > 0 && !(logisticsDropInProgress) && !(mpLogisticsDropRequest) : logisticsDropLocalPending = false
+? player == _radioLeader && logisticsDropAvailable && logisticsDropsRemaining > 0 && !(logisticsDropInProgress) && !(logisticsDropLocalPending) : 3 setRadioMsg "Request Logistics Drop"
+? !(logisticsDropAvailable) || logisticsDropsRemaining < 1 || logisticsDropInProgress || logisticsDropLocalPending || player != _radioLeader : 3 setRadioMsg "NULL"
+? missionEnded : goto "missionEnd"
+goto "loop"
+#newMessage
+mpLastHQMessageId = mpHQMessageId
+player sideChat mpHQMessage
+goto "afterMessage"
+#newReinforcementMessage
+mpLastReinforcementMessageId = mpReinforcementMessageId
+player sideChat mpReinforcementMessage
+goto "afterReinforcementMessage"
+#missionEnd
+? mpMissionEndAnnounced : exit
+mpMissionEndAnnounced = true
+? missionLose && townCount >= 1 && !(objective1Done) : "1" objStatus "FAILED"
+? missionLose && townCount >= 2 && !(objective2Done) : "2" objStatus "FAILED"
+? missionLose && townCount >= 3 && !(objective3Done) : "3" objStatus "FAILED"
+? missionLose && townCount >= 4 && !(objective4Done) : "4" objStatus "FAILED"
+? missionLose && townCount >= 5 && !(objective5Done) : "5" objStatus "FAILED"
+exit

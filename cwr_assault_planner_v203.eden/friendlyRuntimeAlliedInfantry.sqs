@@ -1,0 +1,156 @@
+; v128: create only the selected allied infantry squads on the server.
+friendlyRuntimeAlliedInfantryReady = false
+? alliedCount < 1 : goto "alliedAfter1"
+_grp = createGroup west
+_p = [10750, 11280, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a1ldr=this"]
+a1ldr setSkill 0.62
+a1ldr setDir 90
+_p = [10757, 11280, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a1r2=this"]
+a1r2 setSkill 0.52
+a1r2 setDir 90
+_p = [10764, 11280, 0]
+"WW4_WARGrenadier" createUnit [_p, _grp, "a1gren=this"]
+a1gren setSkill 0.52
+a1gren setDir 90
+_p = [10771, 11280, 0]
+"WW4_WARMedic" createUnit [_p, _grp, "a1med=this"]
+a1med setSkill 0.52
+a1med setDir 90
+_p = [10750, 11288, 0]
+"WW4_WARMachinegun" createUnit [_p, _grp, "a1mg=this"]
+a1mg setSkill 0.55
+a1mg setDir 90
+_p = [10757, 11288, 0]
+"WW4_WARAT" createUnit [_p, _grp, "a1at=this"]
+a1at setSkill 0.55
+a1at setDir 90
+_p = [10764, 11288, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a1r7=this"]
+a1r7 setSkill 0.52
+a1r7 setDir 90
+_p = [10771, 11288, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a1r8=this"]
+a1r8 setSkill 0.52
+a1r8 setDir 90
+_grp setBehaviour "AWARE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "NORMAL"
+#alliedAfter1
+? alliedCount < 2 : goto "alliedAfter2"
+_grp = createGroup west
+_p = [10750, 11315, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a2ldr=this"]
+a2ldr setSkill 0.62
+a2ldr setDir 90
+_p = [10757, 11315, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a2r2=this"]
+a2r2 setSkill 0.52
+a2r2 setDir 90
+_p = [10764, 11315, 0]
+"WW4_WARGrenadier" createUnit [_p, _grp, "a2gren=this"]
+a2gren setSkill 0.52
+a2gren setDir 90
+_p = [10771, 11315, 0]
+"WW4_WARMedic" createUnit [_p, _grp, "a2med=this"]
+a2med setSkill 0.52
+a2med setDir 90
+_p = [10750, 11323, 0]
+"WW4_WARMachinegun" createUnit [_p, _grp, "a2mg=this"]
+a2mg setSkill 0.55
+a2mg setDir 90
+_p = [10757, 11323, 0]
+"WW4_WARAT" createUnit [_p, _grp, "a2at=this"]
+a2at setSkill 0.55
+a2at setDir 90
+_p = [10764, 11323, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a2r7=this"]
+a2r7 setSkill 0.52
+a2r7 setDir 90
+_p = [10771, 11323, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a2r8=this"]
+a2r8 setSkill 0.52
+a2r8 setDir 90
+_grp setBehaviour "AWARE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "NORMAL"
+#alliedAfter2
+? alliedCount < 3 : goto "alliedAfter3"
+_grp = createGroup west
+_p = [10750, 11350, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a3ldr=this"]
+a3ldr setSkill 0.62
+a3ldr setDir 90
+_p = [10757, 11350, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a3r2=this"]
+a3r2 setSkill 0.52
+a3r2 setDir 90
+_p = [10764, 11350, 0]
+"WW4_WARGrenadier" createUnit [_p, _grp, "a3gren=this"]
+a3gren setSkill 0.52
+a3gren setDir 90
+_p = [10771, 11350, 0]
+"WW4_WARMedic" createUnit [_p, _grp, "a3med=this"]
+a3med setSkill 0.52
+a3med setDir 90
+_p = [10750, 11358, 0]
+"WW4_WARMachinegun" createUnit [_p, _grp, "a3mg=this"]
+a3mg setSkill 0.55
+a3mg setDir 90
+_p = [10757, 11358, 0]
+"WW4_WARAT" createUnit [_p, _grp, "a3at=this"]
+a3at setSkill 0.55
+a3at setDir 90
+_p = [10764, 11358, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a3r7=this"]
+a3r7 setSkill 0.52
+a3r7 setDir 90
+_p = [10771, 11358, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a3r8=this"]
+a3r8 setSkill 0.52
+a3r8 setDir 90
+_grp setBehaviour "AWARE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "NORMAL"
+#alliedAfter3
+? alliedCount < 4 : goto "alliedAfter4"
+_grp = createGroup west
+_p = [10750, 11385, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a4ldr=this"]
+a4ldr setSkill 0.62
+a4ldr setDir 90
+_p = [10757, 11385, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a4r2=this"]
+a4r2 setSkill 0.52
+a4r2 setDir 90
+_p = [10764, 11385, 0]
+"WW4_WARGrenadier" createUnit [_p, _grp, "a4gren=this"]
+a4gren setSkill 0.52
+a4gren setDir 90
+_p = [10771, 11385, 0]
+"WW4_WARMedic" createUnit [_p, _grp, "a4med=this"]
+a4med setSkill 0.52
+a4med setDir 90
+_p = [10750, 11393, 0]
+"WW4_WARMachinegun" createUnit [_p, _grp, "a4mg=this"]
+a4mg setSkill 0.55
+a4mg setDir 90
+_p = [10757, 11393, 0]
+"WW4_WARAT" createUnit [_p, _grp, "a4at=this"]
+a4at setSkill 0.55
+a4at setDir 90
+_p = [10764, 11393, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a4r7=this"]
+a4r7 setSkill 0.52
+a4r7 setDir 90
+_p = [10771, 11393, 0]
+"WW4_WARRifleman" createUnit [_p, _grp, "a4r8=this"]
+a4r8 setSkill 0.52
+a4r8 setDir 90
+_grp setBehaviour "AWARE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "NORMAL"
+#alliedAfter4
+friendlyRuntimeAlliedInfantryReady = true
+exit

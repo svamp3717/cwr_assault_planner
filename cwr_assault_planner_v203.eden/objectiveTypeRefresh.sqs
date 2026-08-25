@@ -1,0 +1,36 @@
+; v164 refresh objective-type submenu labels.
+? !(dialog) : exit
+ctrlSetText [4100, "[ ] Clear Area"]
+? guiObjectiveType0 : ctrlSetText [4100, "[X] Clear Area"]
+ctrlSetText [4101, "[ ] Destroy Strategic Target"]
+? guiObjectiveType1 : ctrlSetText [4101, "[X] Destroy Strategic Target"]
+ctrlSetText [4102, "[ ] Collect Intel"]
+? guiObjectiveType2 : ctrlSetText [4102, "[X] Collect Intel"]
+ctrlSetText [4103, "[ ] Destroy Ammo Box"]
+? guiObjectiveType3 : ctrlSetText [4103, "[X] Destroy Ammo Box"]
+ctrlSetText [4104, "[ ] Destroy Communications"]
+? guiObjectiveType4 : ctrlSetText [4104, "[X] Destroy Communications"]
+ctrlSetText [4105, "[ ] Neutralize Artillery"]
+? guiObjectiveType5 : ctrlSetText [4105, "[X] Neutralize Artillery"]
+ctrlSetText [4106, "[ ] Destroy Fuel Depot"]
+? guiObjectiveType6 : ctrlSetText [4106, "[X] Destroy Fuel Depot"]
+ctrlSetText [4107, "[ ] Save Civilians"]
+? guiObjectiveType7 : ctrlSetText [4107, "[X] Save Civilians"]
+ctrlSetText [4108, "[ ] Steal a Vehicle"]
+? guiObjectiveType8 : ctrlSetText [4108, "[X] Steal a Vehicle"]
+ctrlSetText [4109, "[ ] Recover Downed Pilot"]
+? guiObjectiveType9 : ctrlSetText [4109, "[X] Recover Downed Pilot"]
+_count = 0
+? guiObjectiveType0 : _count = _count + 1
+? guiObjectiveType1 : _count = _count + 1
+? guiObjectiveType2 : _count = _count + 1
+? guiObjectiveType3 : _count = _count + 1
+? guiObjectiveType4 : _count = _count + 1
+? guiObjectiveType5 : _count = _count + 1
+? guiObjectiveType6 : _count = _count + 1
+? guiObjectiveType7 : _count = _count + 1
+? guiObjectiveType8 : _count = _count + 1
+? guiObjectiveType9 : _count = _count + 1
+ctrlSetText [4110, format ["Mode: Custom / %1 enabled", _count]]
+? guiObjectiveTypesRandom : ctrlSetText [4110, "Mode: Random / all 10 types"]
+exit

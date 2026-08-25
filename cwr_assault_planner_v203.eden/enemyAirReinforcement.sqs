@@ -1,0 +1,239 @@
+; Enemy air reinforcement wave. v69 uses a runtime-created vanilla Mi-17 and a forced drop pass.
+; This avoids the old pre-placed transport silently failing before players ever see it. Old SQS only.
+; v133: reinfTargetX/Y/Label are locked by enemyReinforcementDispatch.sqs at the 75 percent casualty threshold.
+; v172: Mi-17 carries up to twelve reinforcement infantry.
+_delay = 45 + random 75
+~_delay
+? missionEnded : exit
+? debugMode : debugLog "ERA DEBUG ENEMY AIR: transport reinforcement helicopter inbound"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: transport reinforcement helicopter inbound"
+reinfAirX = reinfTargetX + 340
+reinfAirY = reinfTargetY + 260
+reinfDropX = reinfTargetX + 220
+reinfDropY = reinfTargetY + 180
+reinfSpawnX = reinfTargetX + 1350
+reinfSpawnY = reinfTargetY + 1050
+? alive enemyTransportHeli : deleteVehicle enemyTransportHeli
+~0.1
+enemyTransportHeli = "Mi17" createVehicle [reinfSpawnX, reinfSpawnY, 0]
+enemyAirReinfMarkerActive = true
+? debugMode : [] exec "debugAirReinforcementMarker.sqs"
+enemyTransportHeli setDir 225
+enemyTransportHeli setDammage 0
+enemyTransportHeli setFuel 1
+enemyTransportHeli setVelocity [0,0,0]
+? enemyEast : goto "loadEast"
+; Resistance reinforcement loading.
+w4rAirTransPilot moveInDriver enemyTransportHeli
+w4rAirTransGunner moveInGunner enemyTransportHeli
+? alive w4rAirR1 : w4rAirR1 moveInCargo enemyTransportHeli
+? alive w4rAirR2 : w4rAirR2 moveInCargo enemyTransportHeli
+? alive w4rAirR3 : w4rAirR3 moveInCargo enemyTransportHeli
+? alive w4rAirR4 : w4rAirR4 moveInCargo enemyTransportHeli
+? alive w4rAirR5 : w4rAirR5 moveInCargo enemyTransportHeli
+? alive w4rAirR6 : w4rAirR6 moveInCargo enemyTransportHeli
+? alive w4rAirR7 : w4rAirR7 moveInCargo enemyTransportHeli
+? alive w4rAirR8 : w4rAirR8 moveInCargo enemyTransportHeli
+? alive w4rAirR9 : w4rAirR9 moveInCargo enemyTransportHeli
+? alive w4rAirR10 : w4rAirR10 moveInCargo enemyTransportHeli
+? alive w4rAirR11 : w4rAirR11 moveInCargo enemyTransportHeli
+? alive w4rAirR12 : w4rAirR12 moveInCargo enemyTransportHeli
+goto "afterLoad"
+#loadEast
+w4eAirTransPilot moveInDriver enemyTransportHeli
+w4eAirTransGunner moveInGunner enemyTransportHeli
+? alive w4eAirR1 : w4eAirR1 moveInCargo enemyTransportHeli
+? alive w4eAirR2 : w4eAirR2 moveInCargo enemyTransportHeli
+? alive w4eAirR3 : w4eAirR3 moveInCargo enemyTransportHeli
+? alive w4eAirR4 : w4eAirR4 moveInCargo enemyTransportHeli
+? alive w4eAirR5 : w4eAirR5 moveInCargo enemyTransportHeli
+? alive w4eAirR6 : w4eAirR6 moveInCargo enemyTransportHeli
+? alive w4eAirR7 : w4eAirR7 moveInCargo enemyTransportHeli
+? alive w4eAirR8 : w4eAirR8 moveInCargo enemyTransportHeli
+? alive w4eAirR9 : w4eAirR9 moveInCargo enemyTransportHeli
+? alive w4eAirR10 : w4eAirR10 moveInCargo enemyTransportHeli
+? alive w4eAirR11 : w4eAirR11 moveInCargo enemyTransportHeli
+? alive w4eAirR12 : w4eAirR12 moveInCargo enemyTransportHeli
+#afterLoad
+? alive (driver enemyTransportHeli) : (group (driver enemyTransportHeli)) setBehaviour "AWARE"
+? alive (driver enemyTransportHeli) : (group (driver enemyTransportHeli)) setCombatMode "RED"
+? alive (driver enemyTransportHeli) : (group (driver enemyTransportHeli)) setSpeedMode "FULL"
+~1
+? !(alive (driver enemyTransportHeli)) : goto "fallbackGround"
+; Spin up after the final cargo mass is aboard, then reproduce an editor airborne start.
+enemyTransportHeli action ["ENGINEON", enemyTransportHeli]
+driver enemyTransportHeli action ["ENGINE ON", enemyTransportHeli]
+~8
+enemyTransportHeli flyInHeight 150
+enemyTransportHeli setPos [reinfSpawnX, reinfSpawnY, 170]
+enemyTransportHeli setVelocity [-35,-28,6]
+driver enemyTransportHeli doMove [reinfAirX, reinfAirY, 0]
+(group (driver enemyTransportHeli)) move [reinfAirX, reinfAirY, 0]
+~22
+? missionEnded : exit
+; Force the drop pass near the objective if OFP pathfinding has decided to become modern art.
+? alive enemyTransportHeli : enemyTransportHeli setPos [reinfDropX, reinfDropY, 145]
+? alive enemyTransportHeli : enemyTransportHeli flyInHeight 135
+? alive enemyTransportHeli : enemyTransportHeli setFuel 1
+? alive enemyTransportHeli : enemyTransportHeli setVelocity [-35,-28,0]
+? debugMode : debugLog "ERA DEBUG ENEMY AIR: reinforcement helicopter at drop point"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: reinforcement helicopter at drop point"
+~3
+? enemyEast : goto "dropEast"
+#dropRes
+? alive w4rAirR1 : w4rAirR1 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR2 : w4rAirR2 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR3 : w4rAirR3 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR4 : w4rAirR4 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR5 : w4rAirR5 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR6 : w4rAirR6 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR7 : w4rAirR7 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR8 : w4rAirR8 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR9 : w4rAirR9 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR10 : w4rAirR10 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR11 : w4rAirR11 action ["EJECT", enemyTransportHeli]
+? alive w4rAirR12 : w4rAirR12 action ["EJECT", enemyTransportHeli]
+enemyAirReinforcementActive = true
+enemyReinforcementPending = false
+publicVariable "enemyReinforcementPending"
+? debugMode : debugLog "ERA DEBUG ENEMY AIR: paradrop reinforcements jumped"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: paradrop reinforcements jumped"
+[enemyTransportHeli, reinfDropX, reinfDropY, reinfTargetX + 2200, reinfTargetY + 2200] exec "enemyAirReinforcementExit.sqs"
+~35
+? alive w4rAirR1 : unassignVehicle w4rAirR1
+? alive w4rAirR2 : unassignVehicle w4rAirR2
+? alive w4rAirR3 : unassignVehicle w4rAirR3
+? alive w4rAirR4 : unassignVehicle w4rAirR4
+? alive w4rAirR5 : unassignVehicle w4rAirR5
+? alive w4rAirR6 : unassignVehicle w4rAirR6
+? alive w4rAirR7 : unassignVehicle w4rAirR7
+? alive w4rAirR8 : unassignVehicle w4rAirR8
+? alive w4rAirR9 : unassignVehicle w4rAirR9
+? alive w4rAirR10 : unassignVehicle w4rAirR10
+? alive w4rAirR11 : unassignVehicle w4rAirR11
+? alive w4rAirR12 : unassignVehicle w4rAirR12
+? alive w4rAirR1 : w4rAirR1 doMove [reinfTargetX + 55, reinfTargetY + 35, 0]
+? alive w4rAirR2 : w4rAirR2 doMove [reinfTargetX + 25, reinfTargetY + 55, 0]
+? alive w4rAirR3 : w4rAirR3 doMove [reinfTargetX - 25, reinfTargetY + 50, 0]
+? alive w4rAirR4 : w4rAirR4 doMove [reinfTargetX - 55, reinfTargetY + 15, 0]
+? alive w4rAirR5 : w4rAirR5 doMove [reinfTargetX + 60, reinfTargetY - 25, 0]
+? alive w4rAirR6 : w4rAirR6 doMove [reinfTargetX + 15, reinfTargetY - 55, 0]
+? alive w4rAirR7 : w4rAirR7 doMove [reinfTargetX - 40, reinfTargetY - 45, 0]
+? alive w4rAirR8 : w4rAirR8 doMove [reinfTargetX - 70, reinfTargetY - 10, 0]
+? alive w4rAirR9 : w4rAirR9 doMove [reinfTargetX + 80, reinfTargetY + 5, 0]
+? alive w4rAirR10 : w4rAirR10 doMove [reinfTargetX + 45, reinfTargetY + 75, 0]
+? alive w4rAirR11 : w4rAirR11 doMove [reinfTargetX - 15, reinfTargetY + 80, 0]
+? alive w4rAirR12 : w4rAirR12 doMove [reinfTargetX - 80, reinfTargetY + 45, 0]
+goto "exitHeli"
+#dropEast
+? alive w4eAirR1 : w4eAirR1 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR2 : w4eAirR2 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR3 : w4eAirR3 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR4 : w4eAirR4 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR5 : w4eAirR5 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR6 : w4eAirR6 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR7 : w4eAirR7 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR8 : w4eAirR8 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR9 : w4eAirR9 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR10 : w4eAirR10 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR11 : w4eAirR11 action ["EJECT", enemyTransportHeli]
+? alive w4eAirR12 : w4eAirR12 action ["EJECT", enemyTransportHeli]
+enemyAirReinforcementActive = true
+enemyReinforcementPending = false
+publicVariable "enemyReinforcementPending"
+? debugMode : debugLog "ERA DEBUG ENEMY AIR: paradrop reinforcements jumped"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: paradrop reinforcements jumped"
+[enemyTransportHeli, reinfDropX, reinfDropY, reinfTargetX + 2200, reinfTargetY + 2200] exec "enemyAirReinforcementExit.sqs"
+~35
+? alive w4eAirR1 : unassignVehicle w4eAirR1
+? alive w4eAirR2 : unassignVehicle w4eAirR2
+? alive w4eAirR3 : unassignVehicle w4eAirR3
+? alive w4eAirR4 : unassignVehicle w4eAirR4
+? alive w4eAirR5 : unassignVehicle w4eAirR5
+? alive w4eAirR6 : unassignVehicle w4eAirR6
+? alive w4eAirR7 : unassignVehicle w4eAirR7
+? alive w4eAirR8 : unassignVehicle w4eAirR8
+? alive w4eAirR9 : unassignVehicle w4eAirR9
+? alive w4eAirR10 : unassignVehicle w4eAirR10
+? alive w4eAirR11 : unassignVehicle w4eAirR11
+? alive w4eAirR12 : unassignVehicle w4eAirR12
+? alive w4eAirR1 : w4eAirR1 doMove [reinfTargetX + 55, reinfTargetY + 35, 0]
+? alive w4eAirR2 : w4eAirR2 doMove [reinfTargetX + 25, reinfTargetY + 55, 0]
+? alive w4eAirR3 : w4eAirR3 doMove [reinfTargetX - 25, reinfTargetY + 50, 0]
+? alive w4eAirR4 : w4eAirR4 doMove [reinfTargetX - 55, reinfTargetY + 15, 0]
+? alive w4eAirR5 : w4eAirR5 doMove [reinfTargetX + 60, reinfTargetY - 25, 0]
+? alive w4eAirR6 : w4eAirR6 doMove [reinfTargetX + 15, reinfTargetY - 55, 0]
+? alive w4eAirR7 : w4eAirR7 doMove [reinfTargetX - 40, reinfTargetY - 45, 0]
+? alive w4eAirR8 : w4eAirR8 doMove [reinfTargetX - 70, reinfTargetY - 10, 0]
+? alive w4eAirR9 : w4eAirR9 doMove [reinfTargetX + 80, reinfTargetY + 5, 0]
+? alive w4eAirR10 : w4eAirR10 doMove [reinfTargetX + 45, reinfTargetY + 75, 0]
+? alive w4eAirR11 : w4eAirR11 doMove [reinfTargetX - 15, reinfTargetY + 80, 0]
+? alive w4eAirR12 : w4eAirR12 doMove [reinfTargetX - 80, reinfTargetY + 45, 0]
+goto "exitHeli"
+#fallbackGround
+enemyAirReinfMarkerActive = false
+? debugMode : debugLog "ERA DEBUG ENEMY AIR: helicopter had no driver, falling back to direct reinforcement placement"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: helicopter had no driver, fallback placement used"
+? enemyEast : goto "fallbackEast"
+? alive w4rAirR1 : w4rAirR1 setPos [reinfAirX - 14, reinfAirY - 10, 0]
+? alive w4rAirR2 : w4rAirR2 setPos [reinfAirX - 8, reinfAirY - 8, 0]
+? alive w4rAirR3 : w4rAirR3 setPos [reinfAirX - 2, reinfAirY - 6, 0]
+? alive w4rAirR4 : w4rAirR4 setPos [reinfAirX + 4, reinfAirY - 4, 0]
+? alive w4rAirR5 : w4rAirR5 setPos [reinfAirX + 10, reinfAirY - 2, 0]
+? alive w4rAirR6 : w4rAirR6 setPos [reinfAirX - 10, reinfAirY + 4, 0]
+? alive w4rAirR7 : w4rAirR7 setPos [reinfAirX - 4, reinfAirY + 6, 0]
+? alive w4rAirR8 : w4rAirR8 setPos [reinfAirX + 2, reinfAirY + 8, 0]
+? alive w4rAirR9 : w4rAirR9 setPos [reinfAirX + 8, reinfAirY + 10, 0]
+? alive w4rAirR10 : w4rAirR10 setPos [reinfAirX + 14, reinfAirY + 12, 0]
+? alive w4rAirR11 : w4rAirR11 setPos [reinfAirX - 14, reinfAirY + 14, 0]
+? alive w4rAirR12 : w4rAirR12 setPos [reinfAirX - 8, reinfAirY + 16, 0]
+enemyAirReinforcementActive = true
+enemyReinforcementPending = false
+publicVariable "enemyReinforcementPending"
+goto "moveResFallback"
+#fallbackEast
+? alive w4eAirR1 : w4eAirR1 setPos [reinfAirX - 14, reinfAirY - 10, 0]
+? alive w4eAirR2 : w4eAirR2 setPos [reinfAirX - 8, reinfAirY - 8, 0]
+? alive w4eAirR3 : w4eAirR3 setPos [reinfAirX - 2, reinfAirY - 6, 0]
+? alive w4eAirR4 : w4eAirR4 setPos [reinfAirX + 4, reinfAirY - 4, 0]
+? alive w4eAirR5 : w4eAirR5 setPos [reinfAirX + 10, reinfAirY - 2, 0]
+? alive w4eAirR6 : w4eAirR6 setPos [reinfAirX - 10, reinfAirY + 4, 0]
+? alive w4eAirR7 : w4eAirR7 setPos [reinfAirX - 4, reinfAirY + 6, 0]
+? alive w4eAirR8 : w4eAirR8 setPos [reinfAirX + 2, reinfAirY + 8, 0]
+? alive w4eAirR9 : w4eAirR9 setPos [reinfAirX + 8, reinfAirY + 10, 0]
+? alive w4eAirR10 : w4eAirR10 setPos [reinfAirX + 14, reinfAirY + 12, 0]
+? alive w4eAirR11 : w4eAirR11 setPos [reinfAirX - 14, reinfAirY + 14, 0]
+? alive w4eAirR12 : w4eAirR12 setPos [reinfAirX - 8, reinfAirY + 16, 0]
+enemyAirReinforcementActive = true
+enemyReinforcementPending = false
+publicVariable "enemyReinforcementPending"
+goto "moveEastFallback"
+#moveResFallback
+? alive w4rAirR1 : w4rAirR1 doMove [reinfTargetX + 55, reinfTargetY + 35, 0]
+? alive w4rAirR2 : w4rAirR2 doMove [reinfTargetX + 25, reinfTargetY + 55, 0]
+? alive w4rAirR3 : w4rAirR3 doMove [reinfTargetX - 25, reinfTargetY + 50, 0]
+? alive w4rAirR4 : w4rAirR4 doMove [reinfTargetX - 55, reinfTargetY + 15, 0]
+? alive w4rAirR5 : w4rAirR5 doMove [reinfTargetX + 60, reinfTargetY - 25, 0]
+? alive w4rAirR6 : w4rAirR6 doMove [reinfTargetX + 15, reinfTargetY - 55, 0]
+? alive w4rAirR7 : w4rAirR7 doMove [reinfTargetX - 40, reinfTargetY - 45, 0]
+? alive w4rAirR8 : w4rAirR8 doMove [reinfTargetX - 70, reinfTargetY - 10, 0]
+? alive w4rAirR9 : w4rAirR9 doMove [reinfTargetX + 80, reinfTargetY + 5, 0]
+? alive w4rAirR10 : w4rAirR10 doMove [reinfTargetX + 45, reinfTargetY + 75, 0]
+? alive w4rAirR11 : w4rAirR11 doMove [reinfTargetX - 15, reinfTargetY + 80, 0]
+? alive w4rAirR12 : w4rAirR12 doMove [reinfTargetX - 80, reinfTargetY + 45, 0]
+goto "exitHeli"
+#moveEastFallback
+? alive w4eAirR1 : w4eAirR1 doMove [reinfTargetX + 55, reinfTargetY + 35, 0]
+? alive w4eAirR2 : w4eAirR2 doMove [reinfTargetX + 25, reinfTargetY + 55, 0]
+? alive w4eAirR3 : w4eAirR3 doMove [reinfTargetX - 25, reinfTargetY + 50, 0]
+? alive w4eAirR4 : w4eAirR4 doMove [reinfTargetX - 55, reinfTargetY + 15, 0]
+? alive w4eAirR5 : w4eAirR5 doMove [reinfTargetX + 60, reinfTargetY - 25, 0]
+? alive w4eAirR6 : w4eAirR6 doMove [reinfTargetX + 15, reinfTargetY - 55, 0]
+? alive w4eAirR7 : w4eAirR7 doMove [reinfTargetX - 40, reinfTargetY - 45, 0]
+? alive w4eAirR8 : w4eAirR8 doMove [reinfTargetX - 70, reinfTargetY - 10, 0]
+? alive w4eAirR9 : w4eAirR9 doMove [reinfTargetX + 80, reinfTargetY + 5, 0]
+? alive w4eAirR10 : w4eAirR10 doMove [reinfTargetX + 45, reinfTargetY + 75, 0]
+? alive w4eAirR11 : w4eAirR11 doMove [reinfTargetX - 15, reinfTargetY + 80, 0]
+? alive w4eAirR12 : w4eAirR12 doMove [reinfTargetX - 80, reinfTargetY + 45, 0]
+#exitHeli
+exit

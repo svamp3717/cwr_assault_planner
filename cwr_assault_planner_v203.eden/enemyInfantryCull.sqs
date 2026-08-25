@@ -1,0 +1,31 @@
+; v173: objective defenders remain exact 8/16/24 strength.
+; Airborne and ground reinforcement infantry both scale to 6/9/12.
+? enemyInfantryLevel == 3 : goto "infantryCullDone"
+? enemyInfantryLevel == 2 : goto "reinforcementMedium"
+; Small reinforcement wave: keep units 1-6.
+deleteVehicle w4eAirR7
+deleteVehicle w4eAirR8
+deleteVehicle w4eAirR9
+deleteVehicle w4eAirR10
+deleteVehicle w4eAirR11
+deleteVehicle w4eAirR12
+deleteVehicle w4rAirR7
+deleteVehicle w4rAirR8
+deleteVehicle w4rAirR9
+deleteVehicle w4rAirR10
+deleteVehicle w4rAirR11
+deleteVehicle w4rAirR12
+goto "infantryCullDone"
+#reinforcementMedium
+; Medium reinforcement wave: keep units 1-9.
+deleteVehicle w4eAirR10
+deleteVehicle w4eAirR11
+deleteVehicle w4eAirR12
+deleteVehicle w4rAirR10
+deleteVehicle w4rAirR11
+deleteVehicle w4rAirR12
+
+#infantryCullDone
+? debugMode : debugLog format ["ERA DEBUG ENEMY INFANTRY: %1", enemyInfantryLabel]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG ENEMY INFANTRY: %1", enemyInfantryLabel]
+exit

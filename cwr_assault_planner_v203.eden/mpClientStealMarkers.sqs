@@ -1,0 +1,52 @@
+; v156 apply recovery markers locally; destination labels identify the source objective town.
+? objectiveType1 != 8 : goto "hide1"
+"primary_marker" setMarkerText format ["1 - Steal %1 at %2",objectiveStealVehicleLabel1,townLabel]
+"steal_marker_1" setMarkerPos [objectiveStealDestinationX1,objectiveStealDestinationY1]
+"steal_marker_1" setMarkerType "Flag"
+"steal_marker_1" setMarkerColor "ColorGreen"
+"steal_marker_1" setMarkerText format ["RECOVER VEHICLE FROM %1",townLabel]
+goto "after1"
+#hide1
+"steal_marker_1" setMarkerType "Empty"
+#after1
+? objectiveType2 != 8 : goto "hide2"
+"secondary_marker" setMarkerText format ["2 - Steal %1 at %2",objectiveStealVehicleLabel2,secondaryLabel]
+"steal_marker_2" setMarkerPos [objectiveStealDestinationX2,objectiveStealDestinationY2]
+"steal_marker_2" setMarkerType "Flag"
+"steal_marker_2" setMarkerColor "ColorGreen"
+"steal_marker_2" setMarkerText format ["RECOVER VEHICLE FROM %1",secondaryLabel]
+goto "after2"
+#hide2
+"steal_marker_2" setMarkerType "Empty"
+#after2
+? objectiveType3 != 8 : goto "hide3"
+"third_marker" setMarkerText format ["3 - Steal %1 at %2",objectiveStealVehicleLabel3,thirdLabel]
+"steal_marker_3" setMarkerPos [objectiveStealDestinationX3,objectiveStealDestinationY3]
+"steal_marker_3" setMarkerType "Flag"
+"steal_marker_3" setMarkerColor "ColorGreen"
+"steal_marker_3" setMarkerText format ["RECOVER VEHICLE FROM %1",thirdLabel]
+goto "after3"
+#hide3
+"steal_marker_3" setMarkerType "Empty"
+#after3
+? objectiveType4 != 8 : goto "hide4"
+"fourth_marker" setMarkerText format ["4 - Steal %1 at %2",objectiveStealVehicleLabel4,fourthLabel]
+"steal_marker_4" setMarkerPos [objectiveStealDestinationX4,objectiveStealDestinationY4]
+"steal_marker_4" setMarkerType "Flag"
+"steal_marker_4" setMarkerColor "ColorGreen"
+"steal_marker_4" setMarkerText format ["RECOVER VEHICLE FROM %1",fourthLabel]
+goto "after4"
+#hide4
+"steal_marker_4" setMarkerType "Empty"
+#after4
+? objectiveType5 != 8 : goto "hide5"
+"fifth_marker" setMarkerText format ["5 - Steal %1 at %2",objectiveStealVehicleLabel5,fifthLabel]
+"steal_marker_5" setMarkerPos [objectiveStealDestinationX5,objectiveStealDestinationY5]
+"steal_marker_5" setMarkerType "Flag"
+"steal_marker_5" setMarkerColor "ColorGreen"
+"steal_marker_5" setMarkerText format ["RECOVER VEHICLE FROM %1",fifthLabel]
+goto "after5"
+#hide5
+"steal_marker_5" setMarkerType "Empty"
+#after5
+exit

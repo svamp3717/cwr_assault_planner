@@ -1,0 +1,26 @@
+; v144: accept one Radio Bravo extraction request at any time after operation generation.
+? !(isServer) : exit
+#waitRequest
+~0.25
+? missionEnded : exit
+? extractionActive : exit
+? !(mpExtractionRequest) : goto "waitRequest"
+_coordWaitTicks = 0
+#waitRequestPosition
+? mpExtractionRequestX != 0 || mpExtractionRequestY != 0 : goto "requestPositionReady"
+~0.1
+_coordWaitTicks = _coordWaitTicks + 1
+? _coordWaitTicks < 20 : goto "waitRequestPosition"
+#requestPositionReady
+mpExtractionRequest = false
+extractionCallAvailable = false
+extractionActive = true
+mpHQMessage = "HQ: Extraction request confirmed. Final LZ marked; Chinook inbound."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "mpExtractionRequest"
+publicVariable "extractionCallAvailable"
+publicVariable "extractionActive"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+[] exec "mpServerExtraction.sqs"
+exit

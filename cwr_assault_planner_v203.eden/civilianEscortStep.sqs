@@ -1,0 +1,42 @@
+; v156 server-local civilian escort update. Uses doMove because doFollow only works inside one group.
+_civ = _this select 0
+_leader = _this select 1
+? isNull _civ : exit
+? !(alive _civ) : exit
+? isNull _leader : exit
+? !(alive _leader) : exit
+_leaderVehicle = vehicle _leader
+_civVehicle = vehicle _civ
+? _leaderVehicle == _leader : goto "leaderOnFoot"
+? _civVehicle == _leaderVehicle : exit
+? _civVehicle != _civ : exit
+_cp = getPos _civ
+_vp = getPos _leaderVehicle
+_dx = (_cp select 0) - (_vp select 0)
+_dy = (_cp select 1) - (_vp select 1)
+? ((_dx * _dx) + (_dy * _dy)) <= 1600 : _civ moveInCargo _leaderVehicle
+? vehicle _civ == _leaderVehicle : exit
+_civ stop false
+_civ doMove _vp
+exit
+#leaderOnFoot
+? _civVehicle == _civ : goto "followFoot"
+_civ action ["EJECT", _civVehicle]
+exit
+#followFoot
+_sideOffset = 0
+? _civ == s1Civ1 || _civ == s2Civ1 || _civ == s3Civ1 || _civ == s4Civ1 || _civ == s5Civ1 : _sideOffset = -3
+? _civ == s1Civ2 || _civ == s2Civ2 || _civ == s3Civ2 || _civ == s4Civ2 || _civ == s5Civ2 : _sideOffset = -1
+? _civ == s1Civ3 || _civ == s2Civ3 || _civ == s3Civ3 || _civ == s4Civ3 || _civ == s5Civ3 : _sideOffset = 1
+? _civ == s1Civ4 || _civ == s2Civ4 || _civ == s3Civ4 || _civ == s4Civ4 || _civ == s5Civ4 : _sideOffset = 3
+_lp = getPos _leader
+_dir = getDir _leader
+_targetX = (_lp select 0) - ((sin _dir) * 5) + ((cos _dir) * _sideOffset)
+_targetY = (_lp select 1) - ((cos _dir) * 5) - ((sin _dir) * _sideOffset)
+_cp = getPos _civ
+_dx = (_cp select 0) - _targetX
+_dy = (_cp select 1) - _targetY
+? ((_dx * _dx) + (_dy * _dy)) <= 9 : exit
+_civ stop false
+_civ doMove [_targetX,_targetY,0]
+exit

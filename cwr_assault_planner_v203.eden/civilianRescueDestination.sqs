@@ -1,0 +1,75 @@
+; v156 choose the nearest suitable non-objective town for one Save Civilians objective.
+; Args: [objectiveSlot, sourceX, sourceY, sourceLabel]
+civilianRescueDestinationReady = false
+_slot = _this select 0
+_sourceX = _this select 1
+_sourceY = _this select 2
+_sourceLabel = _this select 3
+_markers = missionTownMarkers
+_labels = missionTownLabels
+_count = count _markers
+_index = 0
+_requireDistance = true
+_bestDistance = 999999999
+_bestMarker = ""
+_bestLabel = ""
+_bestPos = [_sourceX,_sourceY,0]
+#scan
+? _index >= _count : goto "scanDone"
+_marker = _markers select _index
+_label = _labels select _index
+_blocked = false
+? _label == townLabel : _blocked = true
+? townCount >= 2 && _label == secondaryLabel : _blocked = true
+? townCount >= 3 && _label == thirdLabel : _blocked = true
+? townCount >= 4 && _label == fourthLabel : _blocked = true
+? townCount >= 5 && _label == fifthLabel : _blocked = true
+_pos = getMarkerPos _marker
+_dx = (_pos select 0) - _sourceX
+_dy = (_pos select 1) - _sourceY
+_distance = (_dx * _dx) + (_dy * _dy)
+_farEnough = _distance >= 250000
+? _blocked : goto "nextTown"
+? _requireDistance && !(_farEnough) : goto "nextTown"
+? _distance >= _bestDistance : goto "nextTown"
+_bestDistance = _distance
+_bestMarker = _marker
+_bestLabel = _label
+_bestPos = _pos
+#nextTown
+_index = _index + 1
+goto "scan"
+#scanDone
+? _bestMarker != "" : goto "found"
+? !(_requireDistance) : goto "fallback"
+_requireDistance = false
+_index = 0
+_bestDistance = 999999999
+goto "scan"
+#fallback
+_bestMarker = missionTownMarkers select 0
+_bestLabel = missionTownLabels select 0
+_bestPos = getMarkerPos _bestMarker
+#found
+_marker = _bestMarker
+_label = _bestLabel
+_pos = _bestPos
+_x = _pos select 0
+_y = _pos select 1
+? _slot == 1 : objectiveRescueDestinationX1 = _x; objectiveRescueDestinationY1 = _y; objectiveRescueDestinationLabel1 = _label
+? _slot == 2 : objectiveRescueDestinationX2 = _x; objectiveRescueDestinationY2 = _y; objectiveRescueDestinationLabel2 = _label
+? _slot == 3 : objectiveRescueDestinationX3 = _x; objectiveRescueDestinationY3 = _y; objectiveRescueDestinationLabel3 = _label
+? _slot == 4 : objectiveRescueDestinationX4 = _x; objectiveRescueDestinationY4 = _y; objectiveRescueDestinationLabel4 = _label
+? _slot == 5 : objectiveRescueDestinationX5 = _x; objectiveRescueDestinationY5 = _y; objectiveRescueDestinationLabel5 = _label
+_markerName = "rescue_marker_1"
+? _slot == 2 : _markerName = "rescue_marker_2"
+? _slot == 3 : _markerName = "rescue_marker_3"
+? _slot == 4 : _markerName = "rescue_marker_4"
+? _slot == 5 : _markerName = "rescue_marker_5"
+_markerName setMarkerPos [_x,_y]
+_markerName setMarkerType "Flag"
+_markerName setMarkerColor "ColorGreen"
+_markerName setMarkerText format ["CIVILIAN SAFE TOWN: %1", _label]
+? debugMode : debugLog format ["ERA DEBUG RESCUE: objective=%1 source=%2 destination=%3", _slot, _sourceLabel, _label]
+civilianRescueDestinationReady = true
+exit

@@ -1,0 +1,125 @@
+; Air support marker / movement monitor. Old SQS only.
+; v45: Marker follows a numeric proxy route while actual Air support is repeatedly commanded.
+; This avoids marker staying frozen when AH-1 object refuses to report/move properly.
+? cobraMarkerRunning : exit
+cobraMarkerRunning = true
+? !(supportAir) : goto "hide"
+
+#loop
+? missionEnded : goto "hide"
+? !(supportAir) : goto "hide"
+
+; Keep marker visible and use numeric proxy coordinates, not raw getPos marker movement.
+"cobra_marker" setMarkerType "Flag"
+"cobra_marker" setMarkerColor "ColorGreen"
+? airSupportUsed : "cobra_marker" setMarkerText format ["AIR SUPPORT: %1", airTargetLabel]
+? !(airSupportUsed) : "cobra_marker" setMarkerText "AIR SUPPORT STANDBY"
+? !(airSupportUsed) : goto "standby"
+
+; Advance marker proxy toward the town every update so command map shows intended support movement.
+? cobraProxyX < airTargetX - 140 : cobraProxyX = cobraProxyX + 300
+? cobraProxyX > airTargetX + 140 : cobraProxyX = cobraProxyX - 300
+? cobraProxyY < airTargetY - 140 : cobraProxyY = cobraProxyY + 300
+? cobraProxyY > airTargetY + 140 : cobraProxyY = cobraProxyY - 300
+"cobra_marker" setMarkerPos [cobraProxyX, cobraProxyY, 0]
+
+; Now command the real Air support, if it exists.
+? !(alive supportAirVehicle) : goto "crashed"
+supportAirVehicle setFuel 1
+supportAirVehicle setDammage 0
+supportAirVehicle flyInHeight 170
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+supportAirVehicle doMove [airTargetX, airTargetY, 0]
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airTargetX, airTargetY, 0]
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airTargetX, airTargetY, 0]
+? !(alive (driver supportAirVehicle)) && !(cobraNoDriverReported) : goto "nodriver"
+
+goto "actualDebug"
+
+#standby
+cobraProxyX = airStageX
+cobraProxyY = airStageY
+"cobra_marker" setMarkerPos [cobraProxyX, cobraProxyY, 0]
+? alive supportAirVehicle : supportAirVehicle setFuel 1
+? alive supportAirVehicle : supportAirVehicle flyInHeight 210
+? alive supportAirVehicle : supportAirVehicle action ["ENGINEON", supportAirVehicle]
+? alive supportAirVehicle : supportAirVehicle doMove [airStageX + 450, airStageY + 450, 0]
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airStageX + 450, airStageY + 450, 0]
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airStageX + 450, airStageY + 450, 0]
+? debugMode : debugLog format ["ERA DEBUG AIR: Air support standby marker proxy X=%1 Y=%2", cobraProxyX, cobraProxyY]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG AIR: Air support standby marker %1/%2", cobraProxyX, cobraProxyY]
+~30
+goto "loop"
+
+#nodriver
+cobraNoDriverReported = true
+? debugMode : debugLog "ERA DEBUG AIR WARNING: Air support has no alive driver; support may not move"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG AIR WARNING: Air support has no alive driver"
+goto "actualDebug"
+
+#actualDebug
+_cpos = getPos supportAirVehicle
+_cx = _cpos select 0
+_cy = _cpos select 1
+_cz = _cpos select 2
+? _cz < 8 && airSupportUsed : goto "lowCrash"
+? debugMode : debugLog format ["ERA DEBUG AIR: Air support marker proxy X=%1 Y=%2; actual X=%3 Y=%4 Z=%5 target X=%6 Y=%7", cobraProxyX, cobraProxyY, _cx, _cy, _cz, airTargetX, airTargetY]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG AIR: marker %1/%2 actual %3/%4/%5", cobraProxyX, cobraProxyY, _cx, _cy, _cz]
+
+; If actual Air support barely moves, report and force-reposition it closer to the marker proxy.
+? !(cobraMonitorReady) : goto "storeActual"
+? _cx > cobraActualLastX - 25 && _cx < cobraActualLastX + 25 && _cy > cobraActualLastY - 25 && _cy < cobraActualLastY + 25 : goto "stuck"
+
+#storeActual
+cobraActualLastX = _cx
+cobraActualLastY = _cy
+cobraMonitorReady = true
+~30
+goto "loop"
+
+#stuck
+cobraStuckCount = cobraStuckCount + 1
+? debugMode : debugLog format ["ERA DEBUG AIR WARNING: Air support actual object appears stuck at X=%1 Y=%2 Z=%3; count=%4", _cx, _cy, _cz, cobraStuckCount]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG AIR WARNING: Air support actual stuck count %1", cobraStuckCount]
+? cobraStuckCount < 2 : goto "afterNudge"
+; Put the real Air support above the moving support marker proxy to force it into the attack area.
+supportAirVehicle setPos [cobraProxyX, cobraProxyY, 240]
+supportAirVehicle setFuel 1
+supportAirVehicle setDammage 0
+supportAirVehicle flyInHeight 170
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+supportAirVehicle doMove [airTargetX, airTargetY, 0]
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airTargetX, airTargetY, 0]
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airTargetX, airTargetY, 0]
+? debugMode : debugLog format ["ERA DEBUG AIR WARNING: Air support actual object force-moved to proxy X=%1 Y=%2 Z=240", cobraProxyX, cobraProxyY]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG AIR WARNING: Air support force-moved to marker %1/%2", cobraProxyX, cobraProxyY]
+
+#afterNudge
+cobraActualLastX = cobraProxyX
+cobraActualLastY = cobraProxyY
+~30
+goto "loop"
+
+#lowCrash
+? cobraCrashReported : goto "hide"
+cobraCrashReported = true
+? debugMode : debugLog "ERA DEBUG AIR WARNING: Air support is very low or crashed"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG AIR WARNING: Air support is very low or crashed"
+goto "hide"
+
+#crashed
+? cobraCrashReported : goto "hide"
+cobraCrashReported = true
+? debugMode : debugLog "ERA DEBUG AIR WARNING: Air support destroyed or missing"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG AIR WARNING: Air support destroyed or missing"
+goto "hide"
+
+#hide
+cobraProxyX = 10875.000000
+cobraProxyY = 11700.000000
+"cobra_marker" setMarkerPos [10875.000000, 11700.000000, 0]
+"cobra_marker" setMarkerType "Flag"
+"cobra_marker" setMarkerColor "ColorGreen"
+"cobra_marker" setMarkerText ""
+cobraMarkerRunning = false
+exit

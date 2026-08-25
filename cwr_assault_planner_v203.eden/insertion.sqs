@@ -1,0 +1,1333 @@
+; Random insertion script. Uses hard placement at LZ to avoid player-in-vehicle trap.
+heliDepartureStarted = false
+player addWeapon "Binocular"
+player addWeapon "NVGoggles"
+~1
+; Move all possible transports near the selected primary objective.
+; Trucks and other non-floating vehicles use dry land staging coordinates chosen per town.
+; Only true water vehicles should ever be staged in water, and this mission no longer uses boats.
+_startX = landStageX
+_startY = landStageY
+_airX = airStageX
+_airY = airStageY
+; Helicopter insertions use the dry staging coordinate as the landing clearing.
+; The generic distant LZ may be safe for trucks/APCs but can be trees for helicopters.
+; Unused ground transports are pushed away so they do not sit on the heli pads.
+? insertionPara : goto "heliOpenLZ"
+? insertionHeli : goto "heliOpenLZ"
+goto "afterHeliOpenLZ"
+#heliOpenLZ
+; Pick one of three curated open helicopter LZs for the selected objective town.
+_r = random 3
+? _r < 1 : goto "heliLzOne"
+? _r < 2 : goto "heliLzTwo"
+goto "heliLzThree"
+#heliLzOne
+lzX = heliLz1X
+lzY = heliLz1Y
+goto "heliLzChosen"
+#heliLzTwo
+lzX = heliLz2X
+lzY = heliLz2Y
+goto "heliLzChosen"
+#heliLzThree
+lzX = heliLz3X
+lzY = heliLz3Y
+#heliLzChosen
+_startX = landStageX + 350
+_startY = landStageY + 220
+; v126: lengthen the helicopter approach so transports begin farther from the objective area.
+_airX = lzX - 1250
+_airY = lzY - 950
+"lz_marker" setMarkerPos [lzX, lzY, 0]
+"lz_marker" setMarkerText format ["LZ: helicopter open field / %1", supportAirLabel]
+#afterHeliOpenLZ
+? debugMode : debugLog format ["ERA DEBUG INSERTION: %1 via %2 to LZ %3,%4", insertionLabel, approachLabel, lzX, lzY]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG INSERTION: %1 via %2 to LZ %3,%4", insertionLabel, approachLabel, lzX, lzY]
+? insertionFoot : goto "footInsertion"
+; v127: stage trucks as one deterministic road-aligned column. APC staging remains unchanged.
+? !(insertionTruck) : goto "truckRoadStageFullDone"
+friendlyTruckRoadStageComplete = false
+[truckP1, truckStageX, truckStageY, truckStageDir, 0] exec "friendlyTruckRoadStage.sqs"
+@ friendlyTruckRoadStageComplete
+friendlyTruckRoadStageComplete = false
+[truckP2, truckStageX, truckStageY, truckStageDir, 1] exec "friendlyTruckRoadStage.sqs"
+@ friendlyTruckRoadStageComplete
+? alliedCount < 1 : goto "truckRoadStageFullDone"
+friendlyTruckRoadStageComplete = false
+[a1truck, truckStageX, truckStageY, truckStageDir, 2] exec "friendlyTruckRoadStage.sqs"
+@ friendlyTruckRoadStageComplete
+? alliedCount < 2 : goto "truckRoadStageFullDone"
+friendlyTruckRoadStageComplete = false
+[a2truck, truckStageX, truckStageY, truckStageDir, 3] exec "friendlyTruckRoadStage.sqs"
+@ friendlyTruckRoadStageComplete
+? alliedCount < 3 : goto "truckRoadStageFullDone"
+friendlyTruckRoadStageComplete = false
+[a3truck, truckStageX, truckStageY, truckStageDir, 4] exec "friendlyTruckRoadStage.sqs"
+@ friendlyTruckRoadStageComplete
+? alliedCount < 4 : goto "truckRoadStageFullDone"
+friendlyTruckRoadStageComplete = false
+[a4truck, truckStageX, truckStageY, truckStageDir, 5] exec "friendlyTruckRoadStage.sqs"
+@ friendlyTruckRoadStageComplete
+#truckRoadStageFullDone
+? !(insertionMixed) : goto "truckRoadStageMixedDone"
+? alliedCount < 2 : goto "truckRoadStageMixedDone"
+friendlyTruckRoadStageComplete = false
+[a2truck, truckStageX, truckStageY, truckStageDir, 0] exec "friendlyTruckRoadStage.sqs"
+@ friendlyTruckRoadStageComplete
+? alliedCount < 4 : goto "truckRoadStageMixedDone"
+friendlyTruckRoadStageComplete = false
+[a4truck, truckStageX, truckStageY, truckStageDir, 1] exec "friendlyTruckRoadStage.sqs"
+@ friendlyTruckRoadStageComplete
+#truckRoadStageMixedDone
+apcP1 setPos [_startX, _startY + 35, 0]
+apcP2 setPos [_startX + 30, _startY + 40, 0]
+? insertionAPC : supportM113 setPos [_startX + 65, _startY + 45, 0]
+? insertionMixed : supportM113 setPos [_startX + 65, _startY + 45, 0]
+; v125: helicopters remain at their safe runtime spawn points while all cargo boards.
+; They are moved to the airborne start point only after rotor spin-up and loading are complete.
+a1apc setPos [_startX - 50, _startY + 55, 0]
+a2apc setPos [_startX - 80, _startY + 70, 0]
+a3apc setPos [_startX - 110, _startY + 85, 0]
+a4apc setPos [_startX - 140, _startY + 100, 0]
+; v125: no airborne launch occurs before boarding.
+~1
+? insertionTruck : goto "loadTruck"
+? insertionAPC : goto "loadAPC"
+? insertionPara : goto "loadHeli"
+goto "loadHeli"
+#footInsertion
+; v81: Delegate to the synchronized dedicated foot insertion script.
+[] exec "footInsertion.sqs"
+exit
+
+#loadTruck
+player assignAsCargo truckP1
+player moveInCargo truckP1
+? playerAICount >= 1 : red2 assignAsCargo truckP1
+? playerAICount >= 1 : red2 moveInCargo truckP1
+? playerAICount >= 2 : red3 assignAsCargo truckP1
+? playerAICount >= 2 : red3 moveInCargo truckP1
+? playerAICount >= 3 : medic1 assignAsCargo truckP1
+? playerAICount >= 3 : medic1 moveInCargo truckP1
+? playerAICount >= 4 : medic2 assignAsCargo truckP1
+? playerAICount >= 4 : medic2 moveInCargo truckP1
+? playerAICount >= 5 : red6 assignAsCargo truckP1
+? playerAICount >= 5 : red6 moveInCargo truckP1
+? playerAICount >= 6 : red7 assignAsCargo truckP2
+? playerAICount >= 6 : red7 moveInCargo truckP2
+? playerAICount >= 7 : red8 assignAsCargo truckP2
+? playerAICount >= 7 : red8 moveInCargo truckP2
+? playerAICount >= 8 : red9 assignAsCargo truckP2
+? playerAICount >= 8 : red9 moveInCargo truckP2
+? playerAICount >= 9 : red10 assignAsCargo truckP2
+? playerAICount >= 9 : red10 moveInCargo truckP2
+? playerAICount >= 10 : red11 assignAsCargo truckP2
+? playerAICount >= 10 : red11 moveInCargo truckP2
+? playerAICount >= 11 : red12 assignAsCargo truckP2
+? playerAICount >= 11 : red12 moveInCargo truckP2
+? alliedCount < 1 : goto "truckAfterA1"
+a1ldr assignAsCargo a1truck
+a1ldr moveInCargo a1truck
+a1r2 assignAsCargo a1truck
+a1r2 moveInCargo a1truck
+a1gren assignAsCargo a1truck
+a1gren moveInCargo a1truck
+a1med assignAsCargo a1truck
+a1med moveInCargo a1truck
+a1mg assignAsCargo a1truck
+a1mg moveInCargo a1truck
+a1at assignAsCargo a1truck
+a1at moveInCargo a1truck
+a1r7 assignAsCargo a1truck
+a1r7 moveInCargo a1truck
+a1r8 assignAsCargo a1truck
+a1r8 moveInCargo a1truck
+#truckAfterA1
+? alliedCount < 2 : goto "truckAfterA2"
+a2ldr assignAsCargo a2truck
+a2ldr moveInCargo a2truck
+a2r2 assignAsCargo a2truck
+a2r2 moveInCargo a2truck
+a2gren assignAsCargo a2truck
+a2gren moveInCargo a2truck
+a2med assignAsCargo a2truck
+a2med moveInCargo a2truck
+a2mg assignAsCargo a2truck
+a2mg moveInCargo a2truck
+a2at assignAsCargo a2truck
+a2at moveInCargo a2truck
+a2r7 assignAsCargo a2truck
+a2r7 moveInCargo a2truck
+a2r8 assignAsCargo a2truck
+a2r8 moveInCargo a2truck
+#truckAfterA2
+? alliedCount < 3 : goto "truckAfterA3"
+a3ldr assignAsCargo a3truck
+a3ldr moveInCargo a3truck
+a3r2 assignAsCargo a3truck
+a3r2 moveInCargo a3truck
+a3gren assignAsCargo a3truck
+a3gren moveInCargo a3truck
+a3med assignAsCargo a3truck
+a3med moveInCargo a3truck
+a3mg assignAsCargo a3truck
+a3mg moveInCargo a3truck
+a3at assignAsCargo a3truck
+a3at moveInCargo a3truck
+a3r7 assignAsCargo a3truck
+a3r7 moveInCargo a3truck
+a3r8 assignAsCargo a3truck
+a3r8 moveInCargo a3truck
+#truckAfterA3
+? alliedCount < 4 : goto "truckAfterA4"
+a4ldr assignAsCargo a4truck
+a4ldr moveInCargo a4truck
+a4r2 assignAsCargo a4truck
+a4r2 moveInCargo a4truck
+a4gren assignAsCargo a4truck
+a4gren moveInCargo a4truck
+a4med assignAsCargo a4truck
+a4med moveInCargo a4truck
+a4mg assignAsCargo a4truck
+a4mg moveInCargo a4truck
+a4at assignAsCargo a4truck
+a4at moveInCargo a4truck
+a4r7 assignAsCargo a4truck
+a4r7 moveInCargo a4truck
+a4r8 assignAsCargo a4truck
+a4r8 moveInCargo a4truck
+#truckAfterA4
+truckP1 setFuel 1
+truckP2 setFuel 1
+[truckP1, truckStageDir, lzX, lzY] exec "friendlyTruckRoadMove.sqs"
+[truckP2, truckStageDir, lzX + 20, lzY + 5] exec "friendlyTruckRoadMove.sqs"
+? alliedCount < 1 : goto "truckMoveDone"
+[a1truck, truckStageDir, lzX - 35, lzY + 20] exec "friendlyTruckRoadMove.sqs"
+? alliedCount < 2 : goto "truckMoveDone"
+[a2truck, truckStageDir, lzX - 55, lzY + 35] exec "friendlyTruckRoadMove.sqs"
+? alliedCount < 3 : goto "truckMoveDone"
+[a3truck, truckStageDir, lzX - 75, lzY + 50] exec "friendlyTruckRoadMove.sqs"
+? alliedCount < 4 : goto "truckMoveDone"
+[a4truck, truckStageDir, lzX - 95, lzY + 65] exec "friendlyTruckRoadMove.sqs"
+#truckMoveDone
+leadTransport = truckP1
+goto "waitArrival"
+#loadAPC
+player assignAsCargo apcP1
+player moveInCargo apcP1
+? playerAICount >= 1 : red2 assignAsCargo apcP1
+? playerAICount >= 1 : red2 moveInCargo apcP1
+? playerAICount >= 2 : red3 assignAsCargo apcP1
+? playerAICount >= 2 : red3 moveInCargo apcP1
+? playerAICount >= 3 : medic1 assignAsCargo apcP1
+? playerAICount >= 3 : medic1 moveInCargo apcP1
+? playerAICount >= 4 : medic2 assignAsCargo apcP1
+? playerAICount >= 4 : medic2 moveInCargo apcP1
+? playerAICount >= 5 : red6 assignAsCargo apcP1
+? playerAICount >= 5 : red6 moveInCargo apcP1
+? playerAICount >= 6 : red7 assignAsCargo apcP2
+? playerAICount >= 6 : red7 moveInCargo apcP2
+? playerAICount >= 7 : red8 assignAsCargo apcP2
+? playerAICount >= 7 : red8 moveInCargo apcP2
+? playerAICount >= 8 : red9 assignAsCargo apcP2
+? playerAICount >= 8 : red9 moveInCargo apcP2
+? playerAICount >= 9 : red10 assignAsCargo apcP2
+? playerAICount >= 9 : red10 moveInCargo apcP2
+? playerAICount >= 10 : red11 assignAsCargo apcP2
+? playerAICount >= 10 : red11 moveInCargo apcP2
+? playerAICount >= 11 : red12 assignAsCargo apcP2
+? playerAICount >= 11 : red12 moveInCargo apcP2
+? alliedCount < 1 : goto "apcAfterA1"
+a1ldr assignAsCargo a1apc
+a1ldr moveInCargo a1apc
+a1r2 assignAsCargo a1apc
+a1r2 moveInCargo a1apc
+a1gren assignAsCargo a1apc
+a1gren moveInCargo a1apc
+a1med assignAsCargo a1apc
+a1med moveInCargo a1apc
+a1mg assignAsCargo a1apc
+a1mg moveInCargo a1apc
+a1at assignAsCargo a1apc
+a1at moveInCargo a1apc
+a1r7 assignAsCargo a1apc
+a1r7 moveInCargo a1apc
+a1r8 assignAsCargo a1apc
+a1r8 moveInCargo a1apc
+#apcAfterA1
+? alliedCount < 2 : goto "apcAfterA2"
+a2ldr assignAsCargo a2apc
+a2ldr moveInCargo a2apc
+a2r2 assignAsCargo a2apc
+a2r2 moveInCargo a2apc
+a2gren assignAsCargo a2apc
+a2gren moveInCargo a2apc
+a2med assignAsCargo a2apc
+a2med moveInCargo a2apc
+a2mg assignAsCargo a2apc
+a2mg moveInCargo a2apc
+a2at assignAsCargo a2apc
+a2at moveInCargo a2apc
+a2r7 assignAsCargo a2apc
+a2r7 moveInCargo a2apc
+a2r8 assignAsCargo a2apc
+a2r8 moveInCargo a2apc
+#apcAfterA2
+? alliedCount < 3 : goto "apcAfterA3"
+a3ldr assignAsCargo a3apc
+a3ldr moveInCargo a3apc
+a3r2 assignAsCargo a3apc
+a3r2 moveInCargo a3apc
+a3gren assignAsCargo a3apc
+a3gren moveInCargo a3apc
+a3med assignAsCargo a3apc
+a3med moveInCargo a3apc
+a3mg assignAsCargo a3apc
+a3mg moveInCargo a3apc
+a3at assignAsCargo a3apc
+a3at moveInCargo a3apc
+a3r7 assignAsCargo a3apc
+a3r7 moveInCargo a3apc
+a3r8 assignAsCargo a3apc
+a3r8 moveInCargo a3apc
+#apcAfterA3
+? alliedCount < 4 : goto "apcAfterA4"
+a4ldr assignAsCargo a4apc
+a4ldr moveInCargo a4apc
+a4r2 assignAsCargo a4apc
+a4r2 moveInCargo a4apc
+a4gren assignAsCargo a4apc
+a4gren moveInCargo a4apc
+a4med assignAsCargo a4apc
+a4med moveInCargo a4apc
+a4mg assignAsCargo a4apc
+a4mg moveInCargo a4apc
+a4at assignAsCargo a4apc
+a4at moveInCargo a4apc
+a4r7 assignAsCargo a4apc
+a4r7 moveInCargo a4apc
+a4r8 assignAsCargo a4apc
+a4r8 moveInCargo a4apc
+#apcAfterA4
+apcP1 setFuel 1
+apcP2 setFuel 1
+supportM113 setFuel 1
+driver apcP1 doMove [lzX, lzY, 0]
+driver apcP2 doMove [lzX + 20, lzY + 5, 0]
+driver supportM113 doMove [lzX + 45, lzY + 12, 0]
+? alliedCount < 1 : goto "apcMoveDone"
+driver a1apc doMove [lzX - 35, lzY + 20, 0]
+? alliedCount < 2 : goto "apcMoveDone"
+driver a2apc doMove [lzX - 55, lzY + 35, 0]
+? alliedCount < 3 : goto "apcMoveDone"
+driver a3apc doMove [lzX - 75, lzY + 50, 0]
+? alliedCount < 4 : goto "apcMoveDone"
+driver a4apc doMove [lzX - 95, lzY + 65, 0]
+#apcMoveDone
+leadTransport = apcP1
+goto "waitArrival"
+#loadMixed
+; v50 mixed option: player squad rides in two M113 cargo carriers. The M2A2 is kept as an escort, not cargo.
+apcP1 setFuel 1
+apcP2 setFuel 1
+supportM113 setFuel 1
+player assignAsCargo apcP1
+player moveInCargo apcP1
+? playerAICount >= 1 : red2 assignAsCargo apcP1
+? playerAICount >= 1 : red2 moveInCargo apcP1
+? playerAICount >= 2 : red3 assignAsCargo apcP1
+? playerAICount >= 2 : red3 moveInCargo apcP1
+? playerAICount >= 3 : medic1 assignAsCargo apcP1
+? playerAICount >= 3 : medic1 moveInCargo apcP1
+? playerAICount >= 4 : medic2 assignAsCargo apcP1
+? playerAICount >= 4 : medic2 moveInCargo apcP1
+? playerAICount >= 5 : red6 assignAsCargo apcP1
+? playerAICount >= 5 : red6 moveInCargo apcP1
+? playerAICount >= 6 : red7 assignAsCargo apcP2
+? playerAICount >= 6 : red7 moveInCargo apcP2
+? playerAICount >= 7 : red8 assignAsCargo apcP2
+? playerAICount >= 7 : red8 moveInCargo apcP2
+? playerAICount >= 8 : red9 assignAsCargo apcP2
+? playerAICount >= 8 : red9 moveInCargo apcP2
+? playerAICount >= 9 : red10 assignAsCargo apcP2
+? playerAICount >= 9 : red10 moveInCargo apcP2
+? playerAICount >= 10 : red11 assignAsCargo apcP2
+? playerAICount >= 10 : red11 moveInCargo apcP2
+? playerAICount >= 11 : red12 assignAsCargo apcP2
+? playerAICount >= 11 : red12 moveInCargo apcP2
+? alliedCount < 1 : goto "mixedAfterA1"
+a1apc setFuel 1
+a1ldr assignAsCargo a1apc
+a1ldr moveInCargo a1apc
+a1r2 assignAsCargo a1apc
+a1r2 moveInCargo a1apc
+a1gren assignAsCargo a1apc
+a1gren moveInCargo a1apc
+a1med assignAsCargo a1apc
+a1med moveInCargo a1apc
+a1mg assignAsCargo a1apc
+a1mg moveInCargo a1apc
+a1at assignAsCargo a1apc
+a1at moveInCargo a1apc
+a1r7 assignAsCargo a1apc
+a1r7 moveInCargo a1apc
+a1r8 assignAsCargo a1apc
+a1r8 moveInCargo a1apc
+#mixedAfterA1
+? alliedCount < 2 : goto "mixedAfterA2"
+a2truck setFuel 1
+a2ldr assignAsCargo a2truck
+a2ldr moveInCargo a2truck
+a2r2 assignAsCargo a2truck
+a2r2 moveInCargo a2truck
+a2gren assignAsCargo a2truck
+a2gren moveInCargo a2truck
+a2med assignAsCargo a2truck
+a2med moveInCargo a2truck
+a2mg assignAsCargo a2truck
+a2mg moveInCargo a2truck
+a2at assignAsCargo a2truck
+a2at moveInCargo a2truck
+a2r7 assignAsCargo a2truck
+a2r7 moveInCargo a2truck
+a2r8 assignAsCargo a2truck
+a2r8 moveInCargo a2truck
+#mixedAfterA2
+? alliedCount < 3 : goto "mixedAfterA3"
+a3apc setFuel 1
+a3ldr assignAsCargo a3apc
+a3ldr moveInCargo a3apc
+a3r2 assignAsCargo a3apc
+a3r2 moveInCargo a3apc
+a3gren assignAsCargo a3apc
+a3gren moveInCargo a3apc
+a3med assignAsCargo a3apc
+a3med moveInCargo a3apc
+a3mg assignAsCargo a3apc
+a3mg moveInCargo a3apc
+a3at assignAsCargo a3apc
+a3at moveInCargo a3apc
+a3r7 assignAsCargo a3apc
+a3r7 moveInCargo a3apc
+a3r8 assignAsCargo a3apc
+a3r8 moveInCargo a3apc
+#mixedAfterA3
+? alliedCount < 4 : goto "mixedAfterA4"
+a4truck setFuel 1
+a4ldr assignAsCargo a4truck
+a4ldr moveInCargo a4truck
+a4r2 assignAsCargo a4truck
+a4r2 moveInCargo a4truck
+a4gren assignAsCargo a4truck
+a4gren moveInCargo a4truck
+a4med assignAsCargo a4truck
+a4med moveInCargo a4truck
+a4mg assignAsCargo a4truck
+a4mg moveInCargo a4truck
+a4at assignAsCargo a4truck
+a4at moveInCargo a4truck
+a4r7 assignAsCargo a4truck
+a4r7 moveInCargo a4truck
+a4r8 assignAsCargo a4truck
+a4r8 moveInCargo a4truck
+#mixedAfterA4
+driver apcP1 doMove [lzX, lzY, 0]
+driver apcP2 doMove [lzX + 28, lzY + 8, 0]
+driver supportM113 doMove [lzX + 55, lzY + 16, 0]
+? alliedCount < 1 : goto "mixedMoveDone"
+driver a1apc doMove [lzX - 35, lzY + 20, 0]
+? alliedCount < 2 : goto "mixedMoveDone"
+[a2truck, truckStageDir, lzX - 55, lzY + 35] exec "friendlyTruckRoadMove.sqs"
+? alliedCount < 3 : goto "mixedMoveDone"
+driver a3apc doMove [lzX - 75, lzY + 50, 0]
+? alliedCount < 4 : goto "mixedMoveDone"
+[a4truck, truckStageDir, lzX - 95, lzY + 65] exec "friendlyTruckRoadMove.sqs"
+#mixedMoveDone
+leadTransport = apcP1
+goto "waitArrival"
+#loadHeli
+? heliSplit : goto "loadHeliSplit"
+; v51 CH-47 mode: full player squad rides in the CH-47. UH-60 remains empty escort.
+heliTransportTwoActive = false
+playerHeli1 = heliP1
+playerHeli2 = heliP1
+heliP1 flyInHeight 130
+heliP2 flyInHeight 130
+player assignAsCargo playerHeli1
+player moveInCargo playerHeli1
+? playerAICount >= 1 : red2 assignAsCargo playerHeli1
+? playerAICount >= 1 : red2 moveInCargo playerHeli1
+? playerAICount >= 2 : red3 assignAsCargo playerHeli1
+? playerAICount >= 2 : red3 moveInCargo playerHeli1
+? playerAICount >= 3 : medic1 assignAsCargo playerHeli1
+? playerAICount >= 3 : medic1 moveInCargo playerHeli1
+? playerAICount >= 4 : medic2 assignAsCargo playerHeli1
+? playerAICount >= 4 : medic2 moveInCargo playerHeli1
+? playerAICount >= 5 : red6 assignAsCargo playerHeli1
+? playerAICount >= 5 : red6 moveInCargo playerHeli1
+? playerAICount >= 6 : red7 assignAsCargo playerHeli1
+? playerAICount >= 6 : red7 moveInCargo playerHeli1
+? playerAICount >= 7 : red8 assignAsCargo playerHeli1
+? playerAICount >= 7 : red8 moveInCargo playerHeli1
+? playerAICount >= 8 : red9 assignAsCargo playerHeli1
+? playerAICount >= 8 : red9 moveInCargo playerHeli1
+? playerAICount >= 9 : red10 assignAsCargo playerHeli1
+? playerAICount >= 9 : red10 moveInCargo playerHeli1
+? playerAICount >= 10 : red11 assignAsCargo playerHeli1
+? playerAICount >= 10 : red11 moveInCargo playerHeli1
+? playerAICount >= 11 : red12 assignAsCargo playerHeli1
+? playerAICount >= 11 : red12 moveInCargo playerHeli1
+goto "heliPlayerLoaded"
+#loadHeliSplit
+; v51 UH-60 mode: player squad is split across two dedicated UH-60 transports.
+heliTransportTwoActive = true
+playerHeli1 = heliU1
+playerHeli2 = heliU2
+heliU1 flyInHeight 130
+heliU2 flyInHeight 130
+player assignAsCargo playerHeli1
+player moveInCargo playerHeli1
+? playerAICount >= 1 : red2 assignAsCargo playerHeli1
+? playerAICount >= 1 : red2 moveInCargo playerHeli1
+? playerAICount >= 2 : red3 assignAsCargo playerHeli1
+? playerAICount >= 2 : red3 moveInCargo playerHeli1
+? playerAICount >= 3 : medic1 assignAsCargo playerHeli1
+? playerAICount >= 3 : medic1 moveInCargo playerHeli1
+? playerAICount >= 4 : medic2 assignAsCargo playerHeli1
+? playerAICount >= 4 : medic2 moveInCargo playerHeli1
+? playerAICount >= 5 : red6 assignAsCargo playerHeli1
+? playerAICount >= 5 : red6 moveInCargo playerHeli1
+? playerAICount >= 6 : red7 assignAsCargo playerHeli2
+? playerAICount >= 6 : red7 moveInCargo playerHeli2
+? playerAICount >= 7 : red8 assignAsCargo playerHeli2
+? playerAICount >= 7 : red8 moveInCargo playerHeli2
+? playerAICount >= 8 : red9 assignAsCargo playerHeli2
+? playerAICount >= 8 : red9 moveInCargo playerHeli2
+? playerAICount >= 9 : red10 assignAsCargo playerHeli2
+? playerAICount >= 9 : red10 moveInCargo playerHeli2
+? playerAICount >= 10 : red11 assignAsCargo playerHeli2
+? playerAICount >= 10 : red11 moveInCargo playerHeli2
+? playerAICount >= 11 : red12 assignAsCargo playerHeli2
+? playerAICount >= 11 : red12 moveInCargo playerHeli2
+#heliPlayerLoaded
+? alliedCount < 1 : goto "heliAfterA1"
+a1ldr assignAsCargo a1heli
+a1ldr moveInCargo a1heli
+a1r2 assignAsCargo a1heli
+a1r2 moveInCargo a1heli
+a1gren assignAsCargo a1heli
+a1gren moveInCargo a1heli
+a1med assignAsCargo a1heli
+a1med moveInCargo a1heli
+a1mg assignAsCargo a1heli
+a1mg moveInCargo a1heli
+a1at assignAsCargo a1heli
+a1at moveInCargo a1heli
+a1r7 assignAsCargo a1heli
+a1r7 moveInCargo a1heli
+a1r8 assignAsCargo a1heli
+a1r8 moveInCargo a1heli
+#heliAfterA1
+? alliedCount < 2 : goto "heliAfterA2"
+a2ldr assignAsCargo a2heli
+a2ldr moveInCargo a2heli
+a2r2 assignAsCargo a2heli
+a2r2 moveInCargo a2heli
+a2gren assignAsCargo a2heli
+a2gren moveInCargo a2heli
+a2med assignAsCargo a2heli
+a2med moveInCargo a2heli
+a2mg assignAsCargo a2heli
+a2mg moveInCargo a2heli
+a2at assignAsCargo a2heli
+a2at moveInCargo a2heli
+a2r7 assignAsCargo a2heli
+a2r7 moveInCargo a2heli
+a2r8 assignAsCargo a2heli
+a2r8 moveInCargo a2heli
+#heliAfterA2
+? alliedCount < 3 : goto "heliAfterA3"
+a3ldr assignAsCargo a3heli
+a3ldr moveInCargo a3heli
+a3r2 assignAsCargo a3heli
+a3r2 moveInCargo a3heli
+a3gren assignAsCargo a3heli
+a3gren moveInCargo a3heli
+a3med assignAsCargo a3heli
+a3med moveInCargo a3heli
+a3mg assignAsCargo a3heli
+a3mg moveInCargo a3heli
+a3at assignAsCargo a3heli
+a3at moveInCargo a3heli
+a3r7 assignAsCargo a3heli
+a3r7 moveInCargo a3heli
+a3r8 assignAsCargo a3heli
+a3r8 moveInCargo a3heli
+#heliAfterA3
+? alliedCount < 4 : goto "heliAfterA4"
+a4ldr assignAsCargo a4heli
+a4ldr moveInCargo a4heli
+a4r2 assignAsCargo a4heli
+a4r2 moveInCargo a4heli
+a4gren assignAsCargo a4heli
+a4gren moveInCargo a4heli
+a4med assignAsCargo a4heli
+a4med moveInCargo a4heli
+a4mg assignAsCargo a4heli
+a4mg moveInCargo a4heli
+a4at assignAsCargo a4heli
+a4at moveInCargo a4heli
+a4r7 assignAsCargo a4heli
+a4r7 moveInCargo a4heli
+a4r8 assignAsCargo a4heli
+a4r8 moveInCargo a4heli
+#heliAfterA4
+; v129: cargo is aboard on the ground. Landing insertion uses rotor flight; paradrop uses a high, fast, straight pass.
+~8
+? insertionPara : goto "launchAircraftStyleParadrop"
+? !(heliSplit) : [heliP1, _airX, _airY, lzX, lzY, 130] exec "friendlyAirborneTransportStart.sqs"
+? !(heliSplit) : [heliP2, _airX + 60, _airY + 20, lzX + 70, lzY + 20, 130] exec "friendlyAirborneTransportStart.sqs"
+? heliSplit : [heliU1, _airX, _airY, lzX, lzY, 130] exec "friendlyAirborneTransportStart.sqs"
+? heliSplit : [heliU2, _airX + 60, _airY + 20, lzX + 70, lzY + 20, 130] exec "friendlyAirborneTransportStart.sqs"
+? alliedCount >= 1 : [a1heli, _airX - 70, _airY + 35, lzX - 70, lzY + 40, 130] exec "friendlyAirborneTransportStart.sqs"
+? alliedCount >= 2 : [a2heli, _airX - 100, _airY + 55, lzX - 110, lzY + 65, 130] exec "friendlyAirborneTransportStart.sqs"
+? alliedCount >= 3 : [a3heli, _airX - 130, _airY + 75, lzX + 110, lzY + 65, 130] exec "friendlyAirborneTransportStart.sqs"
+? alliedCount >= 4 : [a4heli, _airX - 160, _airY + 95, lzX + 170, lzY + 95, 130] exec "friendlyAirborneTransportStart.sqs"
+goto "afterAirborneLaunch"
+#launchAircraftStyleParadrop
+[playerHeli1, _airX, _airY, lzX, lzY, 220] exec "friendlyParadropTransportStart.sqs"
+? !(heliTransportTwoActive) : [heliP2, _airX + 90, _airY - 30, lzX + 100, lzY - 25, 220] exec "friendlyParadropTransportStart.sqs"
+? alliedCount >= 1 : [a1heli, _airX - 100, _airY + 40, lzX - 100, lzY + 40, 220] exec "friendlyParadropTransportStart.sqs"
+? alliedCount >= 2 : [a2heli, _airX - 160, _airY + 80, lzX - 160, lzY + 80, 220] exec "friendlyParadropTransportStart.sqs"
+? alliedCount >= 3 : [a3heli, _airX + 120, _airY - 60, lzX + 120, lzY - 60, 220] exec "friendlyParadropTransportStart.sqs"
+? alliedCount >= 4 : [a4heli, _airX + 180, _airY - 100, lzX + 180, lzY - 100, 220] exec "friendlyParadropTransportStart.sqs"
+#afterAirborneLaunch
+~2
+? insertionPara : goto "afterAirborneMoveOrders"
+driver playerHeli1 doMove [lzX, lzY, 0]
+? heliTransportTwoActive : driver playerHeli2 doMove [lzX + 70, lzY + 20, 0]
+? !(heliTransportTwoActive) : driver heliP2 doMove [lzX + 70, lzY + 20, 0]
+? alliedCount < 1 : goto "heliMoveDone"
+a1heli flyInHeight 130
+driver a1heli doMove [lzX - 70, lzY + 40, 0]
+? alliedCount < 2 : goto "heliMoveDone"
+a2heli flyInHeight 130
+driver a2heli doMove [lzX - 110, lzY + 65, 0]
+? alliedCount < 3 : goto "heliMoveDone"
+a3heli flyInHeight 130
+driver a3heli doMove [lzX + 110, lzY + 65, 0]
+? alliedCount < 4 : goto "heliMoveDone"
+a4heli flyInHeight 130
+driver a4heli doMove [lzX + 170, lzY + 95, 0]
+#heliMoveDone
+#afterAirborneMoveOrders
+leadTransport = playerHeli1
+goto "waitArrival"
+#waitArrival
+~2
+"lz_marker" setMarkerText format ["Insertion underway: %1", insertionLabel]
+_wait = 0
+#arrivalLoop
+~2
+_wait = _wait + 1
+_curX = getPos leadTransport select 0
+_curY = getPos leadTransport select 1
+? _curX < lzX - 90 : goto "arrivalNotYet"
+? _curX > lzX + 90 : goto "arrivalNotYet"
+? _curY < lzY - 90 : goto "arrivalNotYet"
+? _curY > lzY + 90 : goto "arrivalNotYet"
+goto "arrivalReached"
+#arrivalNotYet
+? _wait > 45 : goto "arrivalReached"
+goto "arrivalLoop"
+#arrivalReached
+? insertionPara : goto "heliParadrop"
+? insertionHeli : goto "heliLanding"
+goto "dismount"
+#heliModeRoll
+_heliMode = random 2
+? _heliMode < 1 : goto "heliParadrop"
+goto "heliLanding"
+#heliLanding
+? debugMode : debugLog "ERA DEBUG INSERTION: helicopter landing branch selected"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG INSERTION: helicopter landing branch selected"
+"lz_marker" setMarkerText "Helicopters landing at open LZ"
+; Landing branch used about half the time. Helipads give OFP a concrete landing target, which is apparently necessary for aircraft with pilots.
+hpadP1 = "HeliHEmpty" createVehicle [lzX, lzY, 0]
+hpadP2 = "HeliHEmpty" createVehicle [lzX + 70, lzY + 20, 0]
+? alliedCount < 1 : goto "heliPadAfterA1"
+hpadA1 = "HeliHEmpty" createVehicle [lzX - 70, lzY + 40, 0]
+#heliPadAfterA1
+? alliedCount < 2 : goto "heliPadAfterA2"
+hpadA2 = "HeliHEmpty" createVehicle [lzX - 110, lzY + 65, 0]
+#heliPadAfterA2
+? alliedCount < 3 : goto "heliPadAfterA3"
+hpadA3 = "HeliHEmpty" createVehicle [lzX + 110, lzY + 65, 0]
+#heliPadAfterA3
+? alliedCount < 4 : goto "heliPadAfterA4"
+hpadA4 = "HeliHEmpty" createVehicle [lzX + 170, lzY + 95, 0]
+#heliPadAfterA4
+playerHeli1 flyInHeight 0
+? heliTransportTwoActive : playerHeli2 flyInHeight 0
+? !(heliTransportTwoActive) : heliP2 flyInHeight 0
+driver playerHeli1 doMove [lzX, lzY, 0]
+? heliTransportTwoActive : driver playerHeli2 doMove [lzX + 70, lzY + 20, 0]
+? !(heliTransportTwoActive) : driver heliP2 doMove [lzX + 70, lzY + 20, 0]
+? alliedCount < 1 : goto "heliLandOrder"
+a1heli flyInHeight 0
+driver a1heli doMove [lzX - 70, lzY + 40, 0]
+? alliedCount < 2 : goto "heliLandOrder"
+a2heli flyInHeight 0
+driver a2heli doMove [lzX - 110, lzY + 65, 0]
+? alliedCount < 3 : goto "heliLandOrder"
+a3heli flyInHeight 0
+driver a3heli doMove [lzX + 110, lzY + 65, 0]
+? alliedCount < 4 : goto "heliLandOrder"
+a4heli flyInHeight 0
+driver a4heli doMove [lzX + 170, lzY + 95, 0]
+#heliLandOrder
+~6
+playerHeli1 land "GET OUT"
+? heliTransportTwoActive : playerHeli2 land "GET OUT"
+? !(heliTransportTwoActive) : heliP2 land "GET OUT"
+? alliedCount < 1 : goto "heliLandingWait"
+a1heli land "GET OUT"
+? alliedCount < 2 : goto "heliLandingWait"
+a2heli land "GET OUT"
+? alliedCount < 3 : goto "heliLandingWait"
+a3heli land "GET OUT"
+? alliedCount < 4 : goto "heliLandingWait"
+a4heli land "GET OUT"
+#heliLandingWait
+; v129: do not eject until the player transport is genuinely on or very near the ground.
+_touchWait = 0
+#heliTouchdownCheck
+~1
+_touchWait = _touchWait + 1
+_playerTouchdown = true
+? alive playerHeli1 && (getPos playerHeli1 select 2) > 3 : _playerTouchdown = false
+? heliTransportTwoActive && alive playerHeli2 && (getPos playerHeli2 select 2) > 3 : _playerTouchdown = false
+? _playerTouchdown : goto "dismount"
+? _touchWait < 60 : goto "heliTouchdownCheck"
+; CWA landing AI occasionally hovers forever. Force only the player transports into a safe low final position after the timeout.
+? alive playerHeli1 : playerHeli1 setVelocity [0,0,0]
+? alive playerHeli1 : playerHeli1 setPos [lzX, lzY, 0.6]
+? heliTransportTwoActive && alive playerHeli2 : playerHeli2 setVelocity [0,0,0]
+? heliTransportTwoActive && alive playerHeli2 : playerHeli2 setPos [lzX + 70, lzY + 20, 0.6]
+~2
+goto "dismount"
+#heliParadrop
+? debugMode : debugLog "ERA DEBUG INSERTION: aircraft-style paradrop branch selected"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG INSERTION: aircraft-style paradrop branch selected"
+"lz_marker" setMarkerText "High-altitude transport drop zone"
+_paraExitX = lzX + 1900
+_paraExitY = lzY + 1450
+playerHeli1 flyInHeight 220
+playerHeli1 setDir 53
+playerHeli1 setPos [lzX - 180, lzY - 140, 220]
+playerHeli1 setVelocity [48,36,0]
+driver playerHeli1 doMove [_paraExitX, _paraExitY, 0]
+? !(heliTransportTwoActive) : heliP2 flyInHeight 220
+? !(heliTransportTwoActive) : heliP2 setDir 53
+? !(heliTransportTwoActive) : heliP2 setPos [lzX - 250, lzY - 190, 230]
+? !(heliTransportTwoActive) : heliP2 setVelocity [48,36,0]
+? !(heliTransportTwoActive) : driver heliP2 doMove [_paraExitX + 150, _paraExitY - 80, 0]
+? alliedCount >= 1 : a1heli flyInHeight 220
+? alliedCount >= 1 : a1heli setDir 53
+? alliedCount >= 1 : a1heli setPos [lzX - 280, lzY - 90, 220]
+? alliedCount >= 1 : a1heli setVelocity [48,36,0]
+? alliedCount >= 1 : driver a1heli doMove [_paraExitX - 180, _paraExitY + 100, 0]
+? alliedCount >= 2 : a2heli flyInHeight 220
+? alliedCount >= 2 : a2heli setDir 53
+? alliedCount >= 2 : a2heli setPos [lzX - 360, lzY - 130, 225]
+? alliedCount >= 2 : a2heli setVelocity [48,36,0]
+? alliedCount >= 2 : driver a2heli doMove [_paraExitX - 280, _paraExitY + 180, 0]
+? alliedCount >= 3 : a3heli flyInHeight 220
+? alliedCount >= 3 : a3heli setDir 53
+? alliedCount >= 3 : a3heli setPos [lzX - 440, lzY - 170, 230]
+? alliedCount >= 3 : a3heli setVelocity [48,36,0]
+? alliedCount >= 3 : driver a3heli doMove [_paraExitX + 220, _paraExitY + 180, 0]
+? alliedCount >= 4 : a4heli flyInHeight 220
+? alliedCount >= 4 : a4heli setDir 53
+? alliedCount >= 4 : a4heli setPos [lzX - 520, lzY - 210, 235]
+? alliedCount >= 4 : a4heli setVelocity [48,36,0]
+? alliedCount >= 4 : driver a4heli doMove [_paraExitX + 320, _paraExitY + 260, 0]
+~2
+"lz_marker" setMarkerText "Paradrop stick in progress"
+player action ["EJECT", playerHeli1]
+unassignVehicle player
+~0.25
+? playerAICount >= 1 : red2 action ["EJECT", playerHeli1]
+? playerAICount >= 1 : unassignVehicle red2
+~0.25
+? playerAICount >= 2 : red3 action ["EJECT", playerHeli1]
+? playerAICount >= 2 : unassignVehicle red3
+~0.25
+? playerAICount >= 3 : medic1 action ["EJECT", playerHeli1]
+? playerAICount >= 3 : unassignVehicle medic1
+~0.25
+? playerAICount >= 4 : medic2 action ["EJECT", playerHeli1]
+? playerAICount >= 4 : unassignVehicle medic2
+~0.25
+? playerAICount >= 5 : red6 action ["EJECT", playerHeli1]
+? playerAICount >= 5 : unassignVehicle red6
+~0.25
+? playerAICount >= 6 : red7 action ["EJECT", playerHeli1]
+? playerAICount >= 6 : unassignVehicle red7
+~0.25
+? playerAICount >= 7 : red8 action ["EJECT", playerHeli1]
+? playerAICount >= 7 : unassignVehicle red8
+~0.25
+? playerAICount >= 8 : red9 action ["EJECT", playerHeli1]
+? playerAICount >= 8 : unassignVehicle red9
+~0.25
+? playerAICount >= 9 : red10 action ["EJECT", playerHeli1]
+? playerAICount >= 9 : unassignVehicle red10
+~0.25
+? playerAICount >= 10 : red11 action ["EJECT", playerHeli1]
+? playerAICount >= 10 : unassignVehicle red11
+~0.25
+? playerAICount >= 11 : red12 action ["EJECT", playerHeli1]
+? playerAICount >= 11 : unassignVehicle red12
+~0.25
+? alliedCount < 1 : goto "paraDropAfterA1"
+a1ldr action ["EJECT", a1heli]
+~0.25
+a1r2 action ["EJECT", a1heli]
+~0.25
+a1gren action ["EJECT", a1heli]
+~0.25
+a1med action ["EJECT", a1heli]
+~0.25
+a1mg action ["EJECT", a1heli]
+~0.25
+a1at action ["EJECT", a1heli]
+~0.25
+a1r7 action ["EJECT", a1heli]
+~0.25
+a1r8 action ["EJECT", a1heli]
+#paraDropAfterA1
+? alliedCount < 2 : goto "paraDropAfterA2"
+a2ldr action ["EJECT", a2heli]
+~0.25
+a2r2 action ["EJECT", a2heli]
+~0.25
+a2gren action ["EJECT", a2heli]
+~0.25
+a2med action ["EJECT", a2heli]
+~0.25
+a2mg action ["EJECT", a2heli]
+~0.25
+a2at action ["EJECT", a2heli]
+~0.25
+a2r7 action ["EJECT", a2heli]
+~0.25
+a2r8 action ["EJECT", a2heli]
+#paraDropAfterA2
+? alliedCount < 3 : goto "paraDropAfterA3"
+a3ldr action ["EJECT", a3heli]
+~0.25
+a3r2 action ["EJECT", a3heli]
+~0.25
+a3gren action ["EJECT", a3heli]
+~0.25
+a3med action ["EJECT", a3heli]
+~0.25
+a3mg action ["EJECT", a3heli]
+~0.25
+a3at action ["EJECT", a3heli]
+~0.25
+a3r7 action ["EJECT", a3heli]
+~0.25
+a3r8 action ["EJECT", a3heli]
+#paraDropAfterA3
+? alliedCount < 4 : goto "paraDropAfterA4"
+a4ldr action ["EJECT", a4heli]
+~0.25
+a4r2 action ["EJECT", a4heli]
+~0.25
+a4gren action ["EJECT", a4heli]
+~0.25
+a4med action ["EJECT", a4heli]
+~0.25
+a4mg action ["EJECT", a4heli]
+~0.25
+a4at action ["EJECT", a4heli]
+~0.25
+a4r7 action ["EJECT", a4heli]
+~0.25
+a4r8 action ["EJECT", a4heli]
+#paraDropAfterA4
+? alliedCount >= 1 : unassignVehicle a1ldr
+? alliedCount >= 1 : unassignVehicle a1r2
+? alliedCount >= 1 : unassignVehicle a1gren
+? alliedCount >= 1 : unassignVehicle a1med
+? alliedCount >= 1 : unassignVehicle a1mg
+? alliedCount >= 1 : unassignVehicle a1at
+? alliedCount >= 1 : unassignVehicle a1r7
+? alliedCount >= 1 : unassignVehicle a1r8
+? alliedCount >= 2 : unassignVehicle a2ldr
+? alliedCount >= 2 : unassignVehicle a2r2
+? alliedCount >= 2 : unassignVehicle a2gren
+? alliedCount >= 2 : unassignVehicle a2med
+? alliedCount >= 2 : unassignVehicle a2mg
+? alliedCount >= 2 : unassignVehicle a2at
+? alliedCount >= 2 : unassignVehicle a2r7
+? alliedCount >= 2 : unassignVehicle a2r8
+? alliedCount >= 3 : unassignVehicle a3ldr
+? alliedCount >= 3 : unassignVehicle a3r2
+? alliedCount >= 3 : unassignVehicle a3gren
+? alliedCount >= 3 : unassignVehicle a3med
+? alliedCount >= 3 : unassignVehicle a3mg
+? alliedCount >= 3 : unassignVehicle a3at
+? alliedCount >= 3 : unassignVehicle a3r7
+? alliedCount >= 3 : unassignVehicle a3r8
+? alliedCount >= 4 : unassignVehicle a4ldr
+? alliedCount >= 4 : unassignVehicle a4r2
+? alliedCount >= 4 : unassignVehicle a4gren
+? alliedCount >= 4 : unassignVehicle a4med
+? alliedCount >= 4 : unassignVehicle a4mg
+? alliedCount >= 4 : unassignVehicle a4at
+? alliedCount >= 4 : unassignVehicle a4r7
+? alliedCount >= 4 : unassignVehicle a4r8
+[playerHeli1, lzX, lzY, _paraExitX, _paraExitY] exec "friendlyParadropDeparture.sqs"
+? !(heliTransportTwoActive) : [heliP2, lzX, lzY, _paraExitX + 150, _paraExitY - 80] exec "friendlyParadropDeparture.sqs"
+? alliedCount >= 1 : [a1heli, lzX, lzY, _paraExitX - 180, _paraExitY + 100] exec "friendlyParadropDeparture.sqs"
+? alliedCount >= 2 : [a2heli, lzX, lzY, _paraExitX - 280, _paraExitY + 180] exec "friendlyParadropDeparture.sqs"
+? alliedCount >= 3 : [a3heli, lzX, lzY, _paraExitX + 220, _paraExitY + 180] exec "friendlyParadropDeparture.sqs"
+? alliedCount >= 4 : [a4heli, lzX, lzY, _paraExitX + 320, _paraExitY + 260] exec "friendlyParadropDeparture.sqs"
+heliDepartureStarted = true
+~24
+goto "insertionFinished"
+#dismount
+"lz_marker" setMarkerText "Dismount area - move to objective"
+; v53: ground transports are stopped before any cargo is told to get out.
+; Previous builds issued GETOUT first and froze vehicles afterward, which could dump infantry beside moving trucks/APCs.
+? (insertionHeli || insertionPara) : goto "afterGroundStopBeforeGetOut"
+? debugMode : debugLog "ERA DEBUG INSERTION: stopping ground transports before cargo dismount"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG INSERTION: stopping ground transports before cargo dismount"
+? !(insertionTruck) : goto "v53SkipTruckPreStop"
+truckP1 setFuel 0
+[truckP1] exec "friendlyGroundTransportStop.sqs"
+truckP2 setFuel 0
+[truckP2] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 1 : goto "v53SkipTruckPreStop"
+a1truck setFuel 0
+[a1truck] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 2 : goto "v53SkipTruckPreStop"
+a2truck setFuel 0
+[a2truck] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 3 : goto "v53SkipTruckPreStop"
+a3truck setFuel 0
+[a3truck] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 4 : goto "v53SkipTruckPreStop"
+a4truck setFuel 0
+[a4truck] exec "friendlyGroundTransportStop.sqs"
+#v53SkipTruckPreStop
+? !(insertionAPC) : goto "v53SkipAPCPreStop"
+apcP1 setFuel 0
+[apcP1] exec "friendlyGroundTransportStop.sqs"
+apcP2 setFuel 0
+[apcP2] exec "friendlyGroundTransportStop.sqs"
+supportM113 setFuel 0
+[supportM113] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 1 : goto "v53SkipAPCPreStop"
+a1apc setFuel 0
+[a1apc] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 2 : goto "v53SkipAPCPreStop"
+a2apc setFuel 0
+[a2apc] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 3 : goto "v53SkipAPCPreStop"
+a3apc setFuel 0
+[a3apc] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 4 : goto "v53SkipAPCPreStop"
+a4apc setFuel 0
+[a4apc] exec "friendlyGroundTransportStop.sqs"
+#v53SkipAPCPreStop
+? !(insertionMixed) : goto "v53SkipMixedPreStop"
+apcP1 setFuel 0
+[apcP1] exec "friendlyGroundTransportStop.sqs"
+apcP2 setFuel 0
+[apcP2] exec "friendlyGroundTransportStop.sqs"
+supportM113 setFuel 0
+[supportM113] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 1 : goto "v53SkipMixedPreStop"
+a1apc setFuel 0
+[a1apc] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 2 : goto "v53SkipMixedPreStop"
+a2truck setFuel 0
+[a2truck] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 3 : goto "v53SkipMixedPreStop"
+a3apc setFuel 0
+[a3apc] exec "friendlyGroundTransportStop.sqs"
+? alliedCount < 4 : goto "v53SkipMixedPreStop"
+a4truck setFuel 0
+[a4truck] exec "friendlyGroundTransportStop.sqs"
+#v53SkipMixedPreStop
+~8
+#afterGroundStopBeforeGetOut
+player action ["GETOUT", vehicle player]
+? playerAICount >= 1 : red2 action ["GETOUT", vehicle red2]
+? playerAICount >= 2 : red3 action ["GETOUT", vehicle red3]
+? playerAICount >= 3 : medic1 action ["GETOUT", vehicle medic1]
+? playerAICount >= 4 : medic2 action ["GETOUT", vehicle medic2]
+? playerAICount >= 5 : red6 action ["GETOUT", vehicle red6]
+? playerAICount >= 6 : red7 action ["GETOUT", vehicle red7]
+? playerAICount >= 7 : red8 action ["GETOUT", vehicle red8]
+? playerAICount >= 8 : red9 action ["GETOUT", vehicle red9]
+? playerAICount >= 9 : red10 action ["GETOUT", vehicle red10]
+? playerAICount >= 10 : red11 action ["GETOUT", vehicle red11]
+? playerAICount >= 11 : red12 action ["GETOUT", vehicle red12]
+? alliedCount < 1 : goto "afterGetOutA1"
+a1ldr action ["GETOUT", vehicle a1ldr]
+a1r2 action ["GETOUT", vehicle a1r2]
+a1gren action ["GETOUT", vehicle a1gren]
+a1med action ["GETOUT", vehicle a1med]
+a1mg action ["GETOUT", vehicle a1mg]
+a1at action ["GETOUT", vehicle a1at]
+a1r7 action ["GETOUT", vehicle a1r7]
+a1r8 action ["GETOUT", vehicle a1r8]
+#afterGetOutA1
+? alliedCount < 2 : goto "afterGetOutA2"
+a2ldr action ["GETOUT", vehicle a2ldr]
+a2r2 action ["GETOUT", vehicle a2r2]
+a2gren action ["GETOUT", vehicle a2gren]
+a2med action ["GETOUT", vehicle a2med]
+a2mg action ["GETOUT", vehicle a2mg]
+a2at action ["GETOUT", vehicle a2at]
+a2r7 action ["GETOUT", vehicle a2r7]
+a2r8 action ["GETOUT", vehicle a2r8]
+#afterGetOutA2
+? alliedCount < 3 : goto "afterGetOutA3"
+a3ldr action ["GETOUT", vehicle a3ldr]
+a3r2 action ["GETOUT", vehicle a3r2]
+a3gren action ["GETOUT", vehicle a3gren]
+a3med action ["GETOUT", vehicle a3med]
+a3mg action ["GETOUT", vehicle a3mg]
+a3at action ["GETOUT", vehicle a3at]
+a3r7 action ["GETOUT", vehicle a3r7]
+a3r8 action ["GETOUT", vehicle a3r8]
+#afterGetOutA3
+? alliedCount < 4 : goto "afterGetOutA4"
+a4ldr action ["GETOUT", vehicle a4ldr]
+a4r2 action ["GETOUT", vehicle a4r2]
+a4gren action ["GETOUT", vehicle a4gren]
+a4med action ["GETOUT", vehicle a4med]
+a4mg action ["GETOUT", vehicle a4mg]
+a4at action ["GETOUT", vehicle a4at]
+a4r7 action ["GETOUT", vehicle a4r7]
+a4r8 action ["GETOUT", vehicle a4r8]
+#afterGetOutA4
+~10
+; v53 safety hold: keep ground transports stopped while infantry finishes getting out / fallback placement runs.
+? !(insertionTruck) : goto "skipTruckFuelStop"
+truckP1 setFuel 0
+truckP2 setFuel 0
+? alliedCount < 1 : goto "skipTruckFuelStop"
+a1truck setFuel 0
+? alliedCount < 2 : goto "skipTruckFuelStop"
+a2truck setFuel 0
+? alliedCount < 3 : goto "skipTruckFuelStop"
+a3truck setFuel 0
+? alliedCount < 4 : goto "skipTruckFuelStop"
+a4truck setFuel 0
+#skipTruckFuelStop
+? !(insertionAPC) : goto "skipAPCFuelStop"
+apcP1 setFuel 0
+apcP2 setFuel 0
+supportM113 setFuel 0
+? alliedCount < 1 : goto "skipAPCFuelStop"
+a1apc setFuel 0
+? alliedCount < 2 : goto "skipAPCFuelStop"
+a2apc setFuel 0
+? alliedCount < 3 : goto "skipAPCFuelStop"
+a3apc setFuel 0
+? alliedCount < 4 : goto "skipAPCFuelStop"
+a4apc setFuel 0
+#skipAPCFuelStop
+? !(insertionMixed) : goto "skipMixedFuelStop"
+apcP1 setFuel 0
+apcP2 setFuel 0
+supportM113 setFuel 0
+? alliedCount < 1 : goto "skipMixedFuelStop"
+a1apc setFuel 0
+? alliedCount < 2 : goto "skipMixedFuelStop"
+a2truck setFuel 0
+? alliedCount < 3 : goto "skipMixedFuelStop"
+a3apc setFuel 0
+? alliedCount < 4 : goto "skipMixedFuelStop"
+a4truck setFuel 0
+#skipMixedFuelStop
+; Work out a simple safe dismount offset. Units are placed on the side away from the target town,
+; so if transports continue toward the objective they do not drive through their own infantry.
+_backX = -35
+? primaryX < lzX : _backX = 35
+_backY = -35
+? primaryY < lzY : _backY = 35
+; Pick base points from the actual transport positions, not raw LZ coordinates.
+_b1x = getPos truckP1 select 0
+_b1y = getPos truckP1 select 1
+_b2x = getPos truckP2 select 0
+_b2y = getPos truckP2 select 1
+_a1x = getPos a1truck select 0
+_a1y = getPos a1truck select 1
+_a2x = getPos a2truck select 0
+_a2y = getPos a2truck select 1
+_a3x = getPos a3truck select 0
+_a3y = getPos a3truck select 1
+_a4x = getPos a4truck select 0
+_a4y = getPos a4truck select 1
+? insertionAPC : _b1x = getPos apcP1 select 0
+? insertionAPC : _b1y = getPos apcP1 select 1
+? insertionAPC : _b2x = getPos apcP2 select 0
+? insertionAPC : _b2y = getPos apcP2 select 1
+? insertionAPC : _a1x = getPos a1apc select 0
+? insertionAPC : _a1y = getPos a1apc select 1
+? insertionAPC : _a2x = getPos a2apc select 0
+? insertionAPC : _a2y = getPos a2apc select 1
+? insertionAPC : _a3x = getPos a3apc select 0
+? insertionAPC : _a3y = getPos a3apc select 1
+? insertionAPC : _a4x = getPos a4apc select 0
+? insertionAPC : _a4y = getPos a4apc select 1
+? (insertionHeli || insertionPara) : _b1x = getPos playerHeli1 select 0
+? (insertionHeli || insertionPara) : _b1y = getPos playerHeli1 select 1
+? (insertionHeli || insertionPara) : _b2x = getPos playerHeli1 select 0
+? (insertionHeli || insertionPara) : _b2y = getPos playerHeli1 select 1
+? (insertionHeli || insertionPara) && heliTransportTwoActive : _b2x = getPos playerHeli2 select 0
+? (insertionHeli || insertionPara) && heliTransportTwoActive : _b2y = getPos playerHeli2 select 1
+? (insertionHeli || insertionPara) : _a1x = getPos a1heli select 0
+? (insertionHeli || insertionPara) : _a1y = getPos a1heli select 1
+? (insertionHeli || insertionPara) : _a2x = getPos a2heli select 0
+? (insertionHeli || insertionPara) : _a2y = getPos a2heli select 1
+? (insertionHeli || insertionPara) : _a3x = getPos a3heli select 0
+? (insertionHeli || insertionPara) : _a3y = getPos a3heli select 1
+? (insertionHeli || insertionPara) : _a4x = getPos a4heli select 0
+? (insertionHeli || insertionPara) : _a4y = getPos a4heli select 1
+? insertionMixed : _b1x = getPos apcP1 select 0
+? insertionMixed : _b1y = getPos apcP1 select 1
+? insertionMixed : _b2x = getPos apcP2 select 0
+? insertionMixed : _b2y = getPos apcP2 select 1
+? insertionMixed : _a1x = getPos a1apc select 0
+? insertionMixed : _a1y = getPos a1apc select 1
+? insertionMixed : _a2x = getPos a2truck select 0
+? insertionMixed : _a2y = getPos a2truck select 1
+? insertionMixed : _a3x = getPos a3apc select 0
+? insertionMixed : _a3y = getPos a3apc select 1
+? insertionMixed : _a4x = getPos a4truck select 0
+? insertionMixed : _a4y = getPos a4truck select 1
+unassignVehicle player
+player setPos [_b1x + _backX - 10, _b1y + _backY - 6, 0]
+? playerAICount >= 1 : unassignVehicle red2
+? playerAICount >= 1 : red2 setPos [_b1x + _backX - 4, _b1y + _backY - 6, 0]
+? playerAICount >= 2 : unassignVehicle red3
+? playerAICount >= 2 : red3 setPos [_b1x + _backX + 2, _b1y + _backY - 6, 0]
+? playerAICount >= 3 : unassignVehicle medic1
+? playerAICount >= 3 : medic1 setPos [_b1x + _backX + 8, _b1y + _backY - 6, 0]
+? playerAICount >= 4 : unassignVehicle medic2
+? playerAICount >= 4 : medic2 setPos [_b1x + _backX - 10, _b1y + _backY + 0, 0]
+? playerAICount >= 5 : unassignVehicle red6
+? playerAICount >= 5 : red6 setPos [_b1x + _backX - 4, _b1y + _backY + 0, 0]
+? playerAICount >= 6 : unassignVehicle red7
+? playerAICount >= 6 : red7 setPos [_b2x + _backX - 10, _b2y + _backY - 6, 0]
+? playerAICount >= 7 : unassignVehicle red8
+? playerAICount >= 7 : red8 setPos [_b2x + _backX - 4, _b2y + _backY - 6, 0]
+? playerAICount >= 8 : unassignVehicle red9
+? playerAICount >= 8 : red9 setPos [_b2x + _backX + 2, _b2y + _backY - 6, 0]
+? playerAICount >= 9 : unassignVehicle red10
+? playerAICount >= 9 : red10 setPos [_b2x + _backX + 8, _b2y + _backY - 6, 0]
+? playerAICount >= 10 : unassignVehicle red11
+? playerAICount >= 10 : red11 setPos [_b2x + _backX - 10, _b2y + _backY + 0, 0]
+? playerAICount >= 11 : unassignVehicle red12
+? playerAICount >= 11 : red12 setPos [_b2x + _backX - 4, _b2y + _backY + 0, 0]
+? alliedCount < 1 : goto "dismountAfterA1"
+unassignVehicle a1ldr
+a1ldr setPos [_a1x + _backX - 10, _a1y + _backY - 6, 0]
+unassignVehicle a1r2
+a1r2 setPos [_a1x + _backX - 4, _a1y + _backY - 6, 0]
+unassignVehicle a1gren
+a1gren setPos [_a1x + _backX + 2, _a1y + _backY - 6, 0]
+unassignVehicle a1med
+a1med setPos [_a1x + _backX + 8, _a1y + _backY - 6, 0]
+unassignVehicle a1mg
+a1mg setPos [_a1x + _backX - 10, _a1y + _backY + 0, 0]
+unassignVehicle a1at
+a1at setPos [_a1x + _backX - 4, _a1y + _backY + 0, 0]
+unassignVehicle a1r7
+a1r7 setPos [_a1x + _backX + 2, _a1y + _backY + 0, 0]
+unassignVehicle a1r8
+a1r8 setPos [_a1x + _backX + 8, _a1y + _backY + 0, 0]
+#dismountAfterA1
+? alliedCount < 2 : goto "dismountAfterA2"
+unassignVehicle a2ldr
+a2ldr setPos [_a2x + _backX - 10, _a2y + _backY - 6, 0]
+unassignVehicle a2r2
+a2r2 setPos [_a2x + _backX - 4, _a2y + _backY - 6, 0]
+unassignVehicle a2gren
+a2gren setPos [_a2x + _backX + 2, _a2y + _backY - 6, 0]
+unassignVehicle a2med
+a2med setPos [_a2x + _backX + 8, _a2y + _backY - 6, 0]
+unassignVehicle a2mg
+a2mg setPos [_a2x + _backX - 10, _a2y + _backY + 0, 0]
+unassignVehicle a2at
+a2at setPos [_a2x + _backX - 4, _a2y + _backY + 0, 0]
+unassignVehicle a2r7
+a2r7 setPos [_a2x + _backX + 2, _a2y + _backY + 0, 0]
+unassignVehicle a2r8
+a2r8 setPos [_a2x + _backX + 8, _a2y + _backY + 0, 0]
+#dismountAfterA2
+? alliedCount < 3 : goto "dismountAfterA3"
+unassignVehicle a3ldr
+a3ldr setPos [_a3x + _backX - 10, _a3y + _backY - 6, 0]
+unassignVehicle a3r2
+a3r2 setPos [_a3x + _backX - 4, _a3y + _backY - 6, 0]
+unassignVehicle a3gren
+a3gren setPos [_a3x + _backX + 2, _a3y + _backY - 6, 0]
+unassignVehicle a3med
+a3med setPos [_a3x + _backX + 8, _a3y + _backY - 6, 0]
+unassignVehicle a3mg
+a3mg setPos [_a3x + _backX - 10, _a3y + _backY + 0, 0]
+unassignVehicle a3at
+a3at setPos [_a3x + _backX - 4, _a3y + _backY + 0, 0]
+unassignVehicle a3r7
+a3r7 setPos [_a3x + _backX + 2, _a3y + _backY + 0, 0]
+unassignVehicle a3r8
+a3r8 setPos [_a3x + _backX + 8, _a3y + _backY + 0, 0]
+#dismountAfterA3
+? alliedCount < 4 : goto "dismountAfterA4"
+unassignVehicle a4ldr
+a4ldr setPos [_a4x + _backX - 10, _a4y + _backY - 6, 0]
+unassignVehicle a4r2
+a4r2 setPos [_a4x + _backX - 4, _a4y + _backY - 6, 0]
+unassignVehicle a4gren
+a4gren setPos [_a4x + _backX + 2, _a4y + _backY - 6, 0]
+unassignVehicle a4med
+a4med setPos [_a4x + _backX + 8, _a4y + _backY - 6, 0]
+unassignVehicle a4mg
+a4mg setPos [_a4x + _backX - 10, _a4y + _backY + 0, 0]
+unassignVehicle a4at
+a4at setPos [_a4x + _backX - 4, _a4y + _backY + 0, 0]
+unassignVehicle a4r7
+a4r7 setPos [_a4x + _backX + 2, _a4y + _backY + 0, 0]
+unassignVehicle a4r8
+a4r8 setPos [_a4x + _backX + 8, _a4y + _backY + 0, 0]
+#dismountAfterA4
+~4
+? !(insertionTruck) : goto "skipTruckFuelRestore"
+truckP1 setFuel 1
+truckP2 setFuel 1
+? alliedCount < 1 : goto "skipTruckFuelRestore"
+a1truck setFuel 1
+? alliedCount < 2 : goto "skipTruckFuelRestore"
+a2truck setFuel 1
+? alliedCount < 3 : goto "skipTruckFuelRestore"
+a3truck setFuel 1
+? alliedCount < 4 : goto "skipTruckFuelRestore"
+a4truck setFuel 1
+#skipTruckFuelRestore
+? !(insertionAPC) : goto "skipAPCFuelRestore"
+apcP1 setFuel 1
+apcP2 setFuel 1
+supportM113 setFuel 1
+? alliedCount < 1 : goto "skipAPCFuelRestore"
+a1apc setFuel 1
+? alliedCount < 2 : goto "skipAPCFuelRestore"
+a2apc setFuel 1
+? alliedCount < 3 : goto "skipAPCFuelRestore"
+a3apc setFuel 1
+? alliedCount < 4 : goto "skipAPCFuelRestore"
+a4apc setFuel 1
+#skipAPCFuelRestore
+? !(insertionMixed) : goto "skipMixedFuelRestore"
+apcP1 setFuel 1
+apcP2 setFuel 1
+supportM113 setFuel 1
+? alliedCount < 1 : goto "skipMixedFuelRestore"
+a1apc setFuel 1
+? alliedCount < 2 : goto "skipMixedFuelRestore"
+a2truck setFuel 1
+? alliedCount < 3 : goto "skipMixedFuelRestore"
+a3apc setFuel 1
+? alliedCount < 4 : goto "skipMixedFuelRestore"
+a4truck setFuel 1
+#skipMixedFuelRestore
+; v125: doStop/stop true clears the previous LZ order. Explicitly release each active transport and give it a new move order.
+? (insertionHeli || insertionPara) : goto "afterGroundTransportRelease"
+? !(insertionTruck) : goto "releaseTruckDone"
+[truckP1, primaryX + 80, primaryY + 20] exec "friendlyGroundTransportRelease.sqs"
+[truckP2, primaryX + 95, primaryY + 35] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 1 : [a1truck, primaryX + 65, primaryY - 30] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 2 : [a2truck, primaryX + 50, primaryY - 45] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 3 : [a3truck, primaryX + 35, primaryY - 60] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 4 : [a4truck, primaryX + 20, primaryY - 75] exec "friendlyGroundTransportRelease.sqs"
+#releaseTruckDone
+? !(insertionAPC) : goto "releaseAPCDone"
+[apcP1, primaryX + 80, primaryY + 20] exec "friendlyGroundTransportRelease.sqs"
+[apcP2, primaryX + 95, primaryY + 35] exec "friendlyGroundTransportRelease.sqs"
+[supportM113, primaryX + 110, primaryY + 50] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 1 : [a1apc, primaryX + 65, primaryY - 30] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 2 : [a2apc, primaryX + 50, primaryY - 45] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 3 : [a3apc, primaryX + 35, primaryY - 60] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 4 : [a4apc, primaryX + 20, primaryY - 75] exec "friendlyGroundTransportRelease.sqs"
+#releaseAPCDone
+? !(insertionMixed) : goto "releaseMixedDone"
+[apcP1, primaryX + 80, primaryY + 20] exec "friendlyGroundTransportRelease.sqs"
+[apcP2, primaryX + 95, primaryY + 35] exec "friendlyGroundTransportRelease.sqs"
+[supportM113, primaryX + 110, primaryY + 50] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 1 : [a1apc, primaryX + 65, primaryY - 30] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 2 : [a2truck, primaryX + 50, primaryY - 45] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 3 : [a3apc, primaryX + 35, primaryY - 60] exec "friendlyGroundTransportRelease.sqs"
+? alliedCount >= 4 : [a4truck, primaryX + 20, primaryY - 75] exec "friendlyGroundTransportRelease.sqs"
+#releaseMixedDone
+#afterGroundTransportRelease
+#insertionFinished
+; Landing helicopters lift off after unloading. Paradrop helicopters already started this helper above.
+? !((insertionHeli || insertionPara)) : goto "afterHelicopterDepartureStart"
+? heliDepartureStarted : goto "afterHelicopterDepartureStart"
+_departX = lzX + ((lzX - _airX) * 2)
+_departY = lzY + ((lzY - _airY) * 2)
+[playerHeli1, lzX, lzY, _departX, _departY] exec "friendlyHelicopterDeparture.sqs"
+? heliTransportTwoActive : [playerHeli2, lzX, lzY, _departX + 120, _departY - 80] exec "friendlyHelicopterDeparture.sqs"
+? !(heliTransportTwoActive) : [heliP2, lzX, lzY, _departX + 120, _departY - 80] exec "friendlyHelicopterDeparture.sqs"
+? alliedCount >= 1 : [a1heli, lzX, lzY, _departX - 120, _departY + 80] exec "friendlyHelicopterDeparture.sqs"
+? alliedCount >= 2 : [a2heli, lzX, lzY, _departX - 220, _departY + 140] exec "friendlyHelicopterDeparture.sqs"
+? alliedCount >= 3 : [a3heli, lzX, lzY, _departX + 220, _departY + 140] exec "friendlyHelicopterDeparture.sqs"
+? alliedCount >= 4 : [a4heli, lzX, lzY, _departX + 320, _departY + 200] exec "friendlyHelicopterDeparture.sqs"
+heliDepartureStarted = true
+#afterHelicopterDepartureStart
+; Runtime landing pads are no longer needed once the helicopters have begun departure.
+? !(isNull hpadP1) : deleteVehicle hpadP1
+? !(isNull hpadP2) : deleteVehicle hpadP2
+? !(isNull hpadA1) : deleteVehicle hpadA1
+? !(isNull hpadA2) : deleteVehicle hpadA2
+? !(isNull hpadA3) : deleteVehicle hpadA3
+? !(isNull hpadA4) : deleteVehicle hpadA4
+hpadP1 = objNull
+hpadP2 = objNull
+hpadA1 = objNull
+hpadA2 = objNull
+hpadA3 = objNull
+hpadA4 = objNull
+[] exec "westAmmoBox.sqs"
+? debugMode : debugLog "ERA DEBUG INSERTION: player-side squads inserted, ammo box placed"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG INSERTION: player-side squads inserted, ammo box placed"
+player addWeapon "Binocular"
+player addWeapon "NVGoggles"
+insertionComplete = true
+[] exec "updateObjectiveMarkerLabels.sqs"
+[] exec "alliedSearchDestroy.sqs"
+? alliedCount < 1 : goto "moveAfterA1"
+a1ldr doMove [primaryX, primaryY, 0]
+#moveAfterA1
+? alliedCount < 2 : goto "moveAfterA2"
+a2ldr doMove [primaryX, primaryY, 0]
+#moveAfterA2
+? alliedCount < 3 : goto "moveAfterA3"
+a3ldr doMove [primaryX, primaryY, 0]
+#moveAfterA3
+? alliedCount < 4 : goto "moveAfterA4"
+a4ldr doMove [primaryX, primaryY, 0]
+#moveAfterA4
+? supportGround : [] exec "sendGroundSupportPrimary.sqs"
+; Air support is now Radio Alpha only. Do not auto-call it after insertion.
+exit

@@ -1,0 +1,24 @@
+; v156 short-range Follow Me action. Server owns the civilian and movement.
+_civ = _this select 0
+_caller = _this select 1
+? isNull _civ : exit
+? !(alive _civ) : exit
+? isNull _caller : exit
+_cp = getPos _civ
+_pp = getPos _caller
+_dx = (_cp select 0) - (_pp select 0)
+_dy = (_cp select 1) - (_pp select 1)
+? ((_dx * _dx) + (_dy * _dy)) > 25 : goto "tooFar"
+civilianCommandUnit = _civ
+civilianCommandCaller = _caller
+civilianCommandType = 1
+civilianCommandRequestStamp = time + random 100000
+publicVariable "civilianCommandUnit"
+publicVariable "civilianCommandCaller"
+publicVariable "civilianCommandType"
+publicVariable "civilianCommandRequestStamp"
+titleText ["Civilian ordered to follow.", "PLAIN DOWN"]
+exit
+#tooFar
+titleText ["Move closer to that civilian.", "PLAIN DOWN"]
+exit

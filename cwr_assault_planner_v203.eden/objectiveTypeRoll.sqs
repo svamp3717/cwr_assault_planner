@@ -1,0 +1,51 @@
+; v164 select one enabled objective type with equal probability.
+objectiveTypeRollReady = false
+_count = 0
+? guiObjectiveType0 : _count = _count + 1
+? guiObjectiveType1 : _count = _count + 1
+? guiObjectiveType2 : _count = _count + 1
+? guiObjectiveType3 : _count = _count + 1
+? guiObjectiveType4 : _count = _count + 1
+? guiObjectiveType5 : _count = _count + 1
+? guiObjectiveType6 : _count = _count + 1
+? guiObjectiveType7 : _count = _count + 1
+? guiObjectiveType8 : _count = _count + 1
+? guiObjectiveType9 : _count = _count + 1
+? _count > 0 : goto "rollEnabled"
+_count = 10
+guiObjectiveType0 = true
+guiObjectiveType1 = true
+guiObjectiveType2 = true
+guiObjectiveType3 = true
+guiObjectiveType4 = true
+guiObjectiveType5 = true
+guiObjectiveType6 = true
+guiObjectiveType7 = true
+guiObjectiveType8 = true
+guiObjectiveType9 = true
+#rollEnabled
+_roll = random _count
+_pick = _roll - (_roll % 1)
+_seen = 0
+? guiObjectiveType0 && _seen == _pick : objectiveTypeRollResult = 0; goto "rollDone"
+? guiObjectiveType0 : _seen = _seen + 1
+? guiObjectiveType1 && _seen == _pick : objectiveTypeRollResult = 1; goto "rollDone"
+? guiObjectiveType1 : _seen = _seen + 1
+? guiObjectiveType2 && _seen == _pick : objectiveTypeRollResult = 2; goto "rollDone"
+? guiObjectiveType2 : _seen = _seen + 1
+? guiObjectiveType3 && _seen == _pick : objectiveTypeRollResult = 3; goto "rollDone"
+? guiObjectiveType3 : _seen = _seen + 1
+? guiObjectiveType4 && _seen == _pick : objectiveTypeRollResult = 4; goto "rollDone"
+? guiObjectiveType4 : _seen = _seen + 1
+? guiObjectiveType5 && _seen == _pick : objectiveTypeRollResult = 5; goto "rollDone"
+? guiObjectiveType5 : _seen = _seen + 1
+? guiObjectiveType6 && _seen == _pick : objectiveTypeRollResult = 6; goto "rollDone"
+? guiObjectiveType6 : _seen = _seen + 1
+? guiObjectiveType7 && _seen == _pick : objectiveTypeRollResult = 7; goto "rollDone"
+? guiObjectiveType7 : _seen = _seen + 1
+? guiObjectiveType8 && _seen == _pick : objectiveTypeRollResult = 8; goto "rollDone"
+? guiObjectiveType8 : _seen = _seen + 1
+objectiveTypeRollResult = 9
+#rollDone
+objectiveTypeRollReady = true
+exit

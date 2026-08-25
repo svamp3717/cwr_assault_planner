@@ -1,0 +1,25 @@
+; v83 allied search-and-destroy routing for up to five objectives.
+? alliedCount < 1 : goto "afterA1"
+group a1ldr setBehaviour "COMBAT"
+group a1ldr setCombatMode "RED"
+a1ldr doMove [primaryX, primaryY, 0]
+#afterA1
+? alliedCount < 2 : goto "afterA2"
+group a2ldr setBehaviour "COMBAT"
+group a2ldr setCombatMode "RED"
+? townCount >= 2 : a2ldr doMove [secondaryX, secondaryY, 0]
+? townCount < 2 : a2ldr doMove [primaryX, primaryY, 0]
+#afterA2
+? alliedCount < 3 : goto "afterA3"
+group a3ldr setBehaviour "COMBAT"
+group a3ldr setCombatMode "RED"
+? townCount >= 3 : a3ldr doMove [thirdX, thirdY, 0]
+? townCount < 3 : a3ldr doMove [primaryX, primaryY, 0]
+#afterA3
+? alliedCount < 4 : goto "afterA4"
+group a4ldr setBehaviour "COMBAT"
+group a4ldr setCombatMode "RED"
+? townCount >= 4 : a4ldr doMove [fourthX, fourthY, 0]
+? townCount < 4 : a4ldr doMove [primaryX, primaryY, 0]
+#afterA4
+exit

@@ -1,0 +1,105 @@
+; v164 toggle one objective type, or use -1 to restore Random/all.
+? objectiveTypeToggleBusy : exit
+objectiveTypeToggleBusy = true
+_idx = objectiveTypeToggleIndex
+objectiveTypeToggleIndex = -2
+? _idx == -1 : goto "randomAll"
+guiObjectiveTypesRandom = false
+? _idx == 0 : goto "toggle0"
+? _idx == 1 : goto "toggle1"
+? _idx == 2 : goto "toggle2"
+? _idx == 3 : goto "toggle3"
+? _idx == 4 : goto "toggle4"
+? _idx == 5 : goto "toggle5"
+? _idx == 6 : goto "toggle6"
+? _idx == 7 : goto "toggle7"
+? _idx == 8 : goto "toggle8"
+? _idx == 9 : goto "toggle9"
+goto "refresh"
+#toggle0
+? guiObjectiveType0 : goto "disable0"
+guiObjectiveType0 = true
+goto "refresh"
+#disable0
+guiObjectiveType0 = false
+goto "refresh"
+#toggle1
+? guiObjectiveType1 : goto "disable1"
+guiObjectiveType1 = true
+goto "refresh"
+#disable1
+guiObjectiveType1 = false
+goto "refresh"
+#toggle2
+? guiObjectiveType2 : goto "disable2"
+guiObjectiveType2 = true
+goto "refresh"
+#disable2
+guiObjectiveType2 = false
+goto "refresh"
+#toggle3
+? guiObjectiveType3 : goto "disable3"
+guiObjectiveType3 = true
+goto "refresh"
+#disable3
+guiObjectiveType3 = false
+goto "refresh"
+#toggle4
+? guiObjectiveType4 : goto "disable4"
+guiObjectiveType4 = true
+goto "refresh"
+#disable4
+guiObjectiveType4 = false
+goto "refresh"
+#toggle5
+? guiObjectiveType5 : goto "disable5"
+guiObjectiveType5 = true
+goto "refresh"
+#disable5
+guiObjectiveType5 = false
+goto "refresh"
+#toggle6
+? guiObjectiveType6 : goto "disable6"
+guiObjectiveType6 = true
+goto "refresh"
+#disable6
+guiObjectiveType6 = false
+goto "refresh"
+#toggle7
+? guiObjectiveType7 : goto "disable7"
+guiObjectiveType7 = true
+goto "refresh"
+#disable7
+guiObjectiveType7 = false
+goto "refresh"
+#toggle8
+? guiObjectiveType8 : goto "disable8"
+guiObjectiveType8 = true
+goto "refresh"
+#disable8
+guiObjectiveType8 = false
+goto "refresh"
+#toggle9
+? guiObjectiveType9 : goto "disable9"
+guiObjectiveType9 = true
+goto "refresh"
+#disable9
+guiObjectiveType9 = false
+goto "refresh"
+#randomAll
+guiObjectiveTypesRandom = true
+guiObjectiveType0 = true
+guiObjectiveType1 = true
+guiObjectiveType2 = true
+guiObjectiveType3 = true
+guiObjectiveType4 = true
+guiObjectiveType5 = true
+guiObjectiveType6 = true
+guiObjectiveType7 = true
+guiObjectiveType8 = true
+guiObjectiveType9 = true
+#refresh
+[] exec "objectiveTypeRefresh.sqs"
+~0.1
+objectiveTypeToggleBusy = false
+exit

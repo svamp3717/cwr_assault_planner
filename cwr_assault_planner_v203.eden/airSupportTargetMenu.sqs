@@ -1,0 +1,50 @@
+; v83: select one of up to five active numbered objectives for one-use friendly air support.
+airSupportTargetChosen = false
+#openDialog
+_ok = false
+? townCount <= 1 : _ok = createDialog "ERA_AirTargetDialog1"
+? townCount == 2 : _ok = createDialog "ERA_AirTargetDialog2"
+? townCount == 3 : _ok = createDialog "ERA_AirTargetDialog3"
+? townCount == 4 : _ok = createDialog "ERA_AirTargetDialog4"
+? townCount >= 5 : _ok = createDialog "ERA_AirTargetDialog5"
+? !(_ok) : goto "fallback"
+#waitDialog
+~0.1
+? airSupportTargetChosen : goto "validateTarget"
+? dialog : goto "waitDialog"
+airSupportMenuOpen = false
+exit
+#validateTarget
+? dialog : closeDialog 1
+? airSupportTarget == 1 && objective1Done : goto "securedTarget"
+? airSupportTarget == 2 && objective2Done : goto "securedTarget"
+? airSupportTarget == 3 && objective3Done : goto "securedTarget"
+? airSupportTarget == 4 && objective4Done : goto "securedTarget"
+? airSupportTarget == 5 && objective5Done : goto "securedTarget"
+airSupportMenuOpen = false
+? mpMode : mpAirSupportTarget = airSupportTarget
+? mpMode : mpAirSupportRequest = true
+? mpMode : publicVariable "mpAirSupportTarget"
+? mpMode : publicVariable "mpAirSupportRequest"
+? mpMode : exit
+[] exec "callAirSupport.sqs"
+exit
+#securedTarget
+player sideChat format ["HQ: Objective %1 is already secured. Select another target.", airSupportTarget]
+airSupportTargetChosen = false
+~0.2
+goto "openDialog"
+#fallback
+airSupportTarget = 1
+? objective1Done && townCount >= 2 : airSupportTarget = 2
+? objective1Done && objective2Done && townCount >= 3 : airSupportTarget = 3
+? objective1Done && objective2Done && objective3Done && townCount >= 4 : airSupportTarget = 4
+? objective1Done && objective2Done && objective3Done && objective4Done && townCount >= 5 : airSupportTarget = 5
+airSupportMenuOpen = false
+? mpMode : mpAirSupportTarget = airSupportTarget
+? mpMode : mpAirSupportRequest = true
+? mpMode : publicVariable "mpAirSupportTarget"
+? mpMode : publicVariable "mpAirSupportRequest"
+? mpMode : exit
+[] exec "callAirSupport.sqs"
+exit

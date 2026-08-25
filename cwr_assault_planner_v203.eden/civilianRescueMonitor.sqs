@@ -1,0 +1,145 @@
+; custom v203: monitor one Save Civilians objective. Three of four must reach the safe town.
+; Civilians are deleted after reaching safety, while local secured flags preserve objective accounting.
+_slot = _this select 0
+_destX = 0
+_destY = 0
+_required = 3
+_secured1 = false
+_secured2 = false
+_secured3 = false
+_secured4 = false
+? _slot == 1 : _destX = objectiveRescueDestinationX1; _destY = objectiveRescueDestinationY1
+? _slot == 2 : _destX = objectiveRescueDestinationX2; _destY = objectiveRescueDestinationY2
+? _slot == 3 : _destX = objectiveRescueDestinationX3; _destY = objectiveRescueDestinationY3
+? _slot == 4 : _destX = objectiveRescueDestinationX4; _destY = objectiveRescueDestinationY4
+? _slot == 5 : _destX = objectiveRescueDestinationX5; _destY = objectiveRescueDestinationY5
+#loop
+~2
+? missionEnded : exit
+_done = false
+? _slot == 1 : _done = objective1Done
+? _slot == 2 : _done = objective2Done
+? _slot == 3 : _done = objective3Done
+? _slot == 4 : _done = objective4Done
+? _slot == 5 : _done = objective5Done
+? _done : exit
+_units = []
+? _slot == 1 : _units = [s1Civ1,s1Civ2,s1Civ3,s1Civ4]
+? _slot == 2 : _units = [s2Civ1,s2Civ2,s2Civ3,s2Civ4]
+? _slot == 3 : _units = [s3Civ1,s3Civ2,s3Civ3,s3Civ4]
+? _slot == 4 : _units = [s4Civ1,s4Civ2,s4Civ3,s4Civ4]
+? _slot == 5 : _units = [s5Civ1,s5Civ2,s5Civ3,s5Civ4]
+_aliveCount = 0
+_safeCount = 0
+
+; Unit 1.
+? _secured1 : _aliveCount = _aliveCount + 1; _safeCount = _safeCount + 1; goto "afterUnit1"
+_u = _units select 0
+? isNull _u : goto "afterUnit1"
+? !(alive _u) : goto "afterUnit1"
+_aliveCount = _aliveCount + 1
+_p = getPos _u
+_dx = (_p select 0) - _destX
+_dy = (_p select 1) - _destY
+? ((_dx * _dx) + (_dy * _dy)) > 19600 : goto "afterUnit1"
+_secured1 = true
+_safeCount = _safeCount + 1
+unassignVehicle _u
+deleteVehicle _u
+#afterUnit1
+
+; Unit 2.
+? _secured2 : _aliveCount = _aliveCount + 1; _safeCount = _safeCount + 1; goto "afterUnit2"
+_u = _units select 1
+? isNull _u : goto "afterUnit2"
+? !(alive _u) : goto "afterUnit2"
+_aliveCount = _aliveCount + 1
+_p = getPos _u
+_dx = (_p select 0) - _destX
+_dy = (_p select 1) - _destY
+? ((_dx * _dx) + (_dy * _dy)) > 19600 : goto "afterUnit2"
+_secured2 = true
+_safeCount = _safeCount + 1
+unassignVehicle _u
+deleteVehicle _u
+#afterUnit2
+
+; Unit 3.
+? _secured3 : _aliveCount = _aliveCount + 1; _safeCount = _safeCount + 1; goto "afterUnit3"
+_u = _units select 2
+? isNull _u : goto "afterUnit3"
+? !(alive _u) : goto "afterUnit3"
+_aliveCount = _aliveCount + 1
+_p = getPos _u
+_dx = (_p select 0) - _destX
+_dy = (_p select 1) - _destY
+? ((_dx * _dx) + (_dy * _dy)) > 19600 : goto "afterUnit3"
+_secured3 = true
+_safeCount = _safeCount + 1
+unassignVehicle _u
+deleteVehicle _u
+#afterUnit3
+
+; Unit 4.
+? _secured4 : _aliveCount = _aliveCount + 1; _safeCount = _safeCount + 1; goto "afterUnit4"
+_u = _units select 3
+? isNull _u : goto "afterUnit4"
+? !(alive _u) : goto "afterUnit4"
+_aliveCount = _aliveCount + 1
+_p = getPos _u
+_dx = (_p select 0) - _destX
+_dy = (_p select 1) - _destY
+? ((_dx * _dx) + (_dy * _dy)) > 19600 : goto "afterUnit4"
+_secured4 = true
+_safeCount = _safeCount + 1
+unassignVehicle _u
+deleteVehicle _u
+#afterUnit4
+
+? _slot == 1 : objectiveRescueCount1 = _safeCount
+? _slot == 2 : objectiveRescueCount2 = _safeCount
+? _slot == 3 : objectiveRescueCount3 = _safeCount
+? _slot == 4 : objectiveRescueCount4 = _safeCount
+? _slot == 5 : objectiveRescueCount5 = _safeCount
+? _aliveCount < _required : goto "failed"
+? _safeCount < _required : goto "loop"
+? _slot == 1 : objectiveRescueReady1 = true; s1Civ1Following=false; s1Civ2Following=false; s1Civ3Following=false; s1Civ4Following=false
+? _slot == 2 : objectiveRescueReady2 = true; s2Civ1Following=false; s2Civ2Following=false; s2Civ3Following=false; s2Civ4Following=false
+? _slot == 3 : objectiveRescueReady3 = true; s3Civ1Following=false; s3Civ2Following=false; s3Civ3Following=false; s3Civ4Following=false
+? _slot == 4 : objectiveRescueReady4 = true; s4Civ1Following=false; s4Civ2Following=false; s4Civ3Following=false; s4Civ4Following=false
+? _slot == 5 : objectiveRescueReady5 = true; s5Civ1Following=false; s5Civ2Following=false; s5Civ3Following=false; s5Civ4Following=false
+_marker = "rescue_marker_1"
+? _slot == 2 : _marker = "rescue_marker_2"
+? _slot == 3 : _marker = "rescue_marker_3"
+? _slot == 4 : _marker = "rescue_marker_4"
+? _slot == 5 : _marker = "rescue_marker_5"
+_marker setMarkerColor "ColorGreen"
+_marker setMarkerText format ["CIVILIANS SECURED: %1/4", _safeCount]
+? debugMode : debugLog format ["ERA DEBUG RESCUE: objective=%1 secured=%2 surviving-or-secured=%3", _slot, _safeCount, _aliveCount]
+exit
+
+#failed
+? _slot == 1 : objectiveRescueFailed1 = true
+? _slot == 2 : objectiveRescueFailed2 = true
+? _slot == 3 : objectiveRescueFailed3 = true
+? _slot == 4 : objectiveRescueFailed4 = true
+? _slot == 5 : objectiveRescueFailed5 = true
+_marker = "rescue_marker_1"
+? _slot == 2 : _marker = "rescue_marker_2"
+? _slot == 3 : _marker = "rescue_marker_3"
+? _slot == 4 : _marker = "rescue_marker_4"
+? _slot == 5 : _marker = "rescue_marker_5"
+_marker setMarkerColor "ColorRed"
+_marker setMarkerText "CIVILIAN RESCUE FAILED"
+missionWin = false
+missionLose = true
+missionEnded = true
+mpHQMessage = format ["HQ: Civilian rescue failed at Objective %1. Fewer than three civilians survived.", _slot]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "missionWin"
+publicVariable "missionLose"
+publicVariable "missionEnded"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? debugMode : debugLog format ["ERA DEBUG RESCUE FAILED: objective=%1 surviving-or-secured=%2 required=%3", _slot, _aliveCount, _required]
+exit

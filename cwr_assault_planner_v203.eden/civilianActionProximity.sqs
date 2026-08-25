@@ -1,0 +1,40 @@
+; v156 CWA-safe local proximity monitor for one rescue civilian.
+; Original OFP/CWA addAction accepts [title,script]. Range is enforced by adding inside 4m and removing beyond 5m.
+_civ = _this select 0
+_slot = _this select 1
+_followAction = -1
+_stopAction = -1
+#monitor
+~0.4
+_active = false
+? _slot == 1 && objectiveType1 == 7 && !(objective1Done) && !(missionEnded) : _active = true
+? _slot == 2 && objectiveType2 == 7 && !(objective2Done) && !(missionEnded) : _active = true
+? _slot == 3 && objectiveType3 == 7 && !(objective3Done) && !(missionEnded) : _active = true
+? _slot == 4 && objectiveType4 == 7 && !(objective4Done) && !(missionEnded) : _active = true
+? _slot == 5 && objectiveType5 == 7 && !(objective5Done) && !(missionEnded) : _active = true
+_near = false
+? !(_active) : goto "removeActions"
+? isNull _civ : goto "removeActions"
+? !(alive _civ) : goto "removeActions"
+? isNull player : goto "removeActions"
+? !(alive player) : goto "removeActions"
+_cp = getPos _civ
+_pp = getPos player
+_dx = (_cp select 0) - (_pp select 0)
+_dy = (_cp select 1) - (_pp select 1)
+_distanceSq = (_dx * _dx) + (_dy * _dy)
+? _distanceSq <= 16 : _near = true
+? _near : goto "addActions"
+? _distanceSq <= 25 && _followAction >= 0 : goto "continue"
+#removeActions
+? !(isNull _civ) && _followAction >= 0 : _civ removeAction _followAction
+? !(isNull _civ) && _stopAction >= 0 : _civ removeAction _stopAction
+_followAction = -1
+_stopAction = -1
+goto "continue"
+#addActions
+? _followAction < 0 : _followAction = _civ addAction ["Follow Me","civilianFollowMe.sqs"]
+? _stopAction < 0 : _stopAction = _civ addAction ["Stop","civilianStop.sqs"]
+#continue
+? _active : goto "monitor"
+exit

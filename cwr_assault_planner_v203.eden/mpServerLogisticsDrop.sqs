@@ -1,0 +1,180 @@
+; v199 Everon-safe server-side repeated Chinook logistics delivery near the squad leader's request position.
+? !(isServer) : exit
+? missionEnded : goto "requestFailed"
+_lzX = logisticsDropRequestX + 35
+_lzY = logisticsDropRequestY + 25
+_dropX = logisticsDropRequestX + 12
+_dropY = logisticsDropRequestY - 10
+logisticsDropMarkerStatus = 1
+logisticsDropMarkerX = _lzX
+logisticsDropMarkerY = _lzY
+logisticsDropMarkerLabel = format ["LOGISTICS DROP INBOUND: %1", logisticsDropRequestLabel]
+publicVariable "logisticsDropMarkerStatus"
+publicVariable "logisticsDropMarkerX"
+publicVariable "logisticsDropMarkerY"
+publicVariable "logisticsDropMarkerLabel"
+logisticsDropPad = "HeliHEmpty" createVehicle [_lzX, _lzY, 0]
+
+; Everon's old offshore ground staging point could resolve on water or shoreline terrain.
+; Build a clamped airborne approach point instead, so the Chinook never touches the spawn terrain.
+_stageX = _lzX + 1600
+? _stageX > 12200 : _stageX = _lzX - 1600
+? _stageX < 600 : _stageX = 600
+_stageY = _lzY - 1600
+? _stageY < 600 : _stageY = _lzY + 1600
+? _stageY > 12200 : _stageY = 12200
+friendlyRuntimeVehicleSpawnComplete = false
+["Ch47D", _stageX, _stageY, 320, 315, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+logisticsDropHeli = friendlyRuntimeVehicleSpawned
+publicVariable "logisticsDropHeli"
+? isNull logisticsDropHeli : goto "requestFailed"
+? isNull (driver logisticsDropHeli) : goto "requestFailed"
+logisticsDropHeli setDammage 0
+logisticsDropHeli setFuel 1
+logisticsDropHeli setPos [_stageX, _stageY, 320]
+logisticsDropHeli setDir 315
+logisticsDropHeli setVelocity [0,0,25]
+logisticsDropHeli flyInHeight 150
+logisticsDropHeli engineOn true
+(driver logisticsDropHeli) stop false
+(group (driver logisticsDropHeli)) setBehaviour "CARELESS"
+(group (driver logisticsDropHeli)) setCombatMode "BLUE"
+~6
+? !(alive logisticsDropHeli) : goto "aircraftLost"
+? isNull (driver logisticsDropHeli) : goto "aircraftLost"
+? !(alive (driver logisticsDropHeli)) : goto "aircraftLost"
+
+_vx = 0
+_vy = 0
+? _stageX > _lzX : _vx = -28
+? _stageX < _lzX : _vx = 28
+? _stageY > _lzY : _vy = -28
+? _stageY < _lzY : _vy = 28
+logisticsDropHeli setPos [_stageX, _stageY, 180]
+logisticsDropHeli setVelocity [_vx,_vy,4]
+logisticsDropHeli flyInHeight 120
+(driver logisticsDropHeli) doMove [_lzX, _lzY, 0]
+_approachTicks = 0
+#approach
+~2
+? missionEnded : goto "requestFailed"
+? !(alive logisticsDropHeli) : goto "aircraftLost"
+? getDammage logisticsDropHeli > 0.85 : goto "aircraftLost"
+? isNull (driver logisticsDropHeli) : goto "aircraftLost"
+? !(alive (driver logisticsDropHeli)) : goto "aircraftLost"
+_hx = getPos logisticsDropHeli select 0
+_hy = getPos logisticsDropHeli select 1
+? _hx > _lzX - 180 && _hx < _lzX + 180 && _hy > _lzY - 180 && _hy < _lzY + 180 : goto "hoverDeliver"
+_approachTicks = _approachTicks + 1
+? _approachTicks > 90 : goto "hoverDeliver"
+goto "approach"
+
+#hoverDeliver
+? !(alive logisticsDropHeli) : goto "aircraftLost"
+? isNull (driver logisticsDropHeli) : goto "aircraftLost"
+logisticsDropHeli setDammage 0
+logisticsDropHeli setFuel 1
+logisticsDropHeli setPos [_lzX, _lzY, 48]
+logisticsDropHeli setVelocity [0,0,0]
+logisticsDropHeli flyInHeight 45
+(driver logisticsDropHeli) stop true
+~3
+
+#deliver
+logisticsDropAsset = objNull
+? logisticsDropRequestType == 1 : logisticsDropAsset = "WW4EXT_JeepBIS" createVehicle [_dropX, _dropY, 0]
+? logisticsDropRequestType == 2 : logisticsDropAsset = "WW4EXT_HMMWVBIS" createVehicle [_dropX, _dropY, 0]
+? logisticsDropRequestType == 3 : logisticsDropAsset = "ReammoBoxWest" createVehicle [_dropX, _dropY, 0]
+? isNull logisticsDropAsset : goto "assetFailed"
+logisticsDropAsset setPos [_dropX, _dropY, 0]
+logisticsDropAsset setDir 45
+logisticsDropAsset setDammage 0
+? logisticsDropRequestType < 3 : logisticsDropAsset setFuel 1
+? logisticsDropRequestType == 3 : [logisticsDropAsset] exec "logisticsAmmoBoxLoad.sqs"
+~0.5
+logisticsDropDelivered = true
+logisticsDropDeliveryId = logisticsDropDeliveryId + 1
+logisticsDropMarkerStatus = 2
+logisticsDropMarkerX = _lzX
+logisticsDropMarkerY = _lzY
+logisticsDropMarkerLabel = format ["LOGISTICS LZ - DELIVERED: %1", logisticsDropRequestLabel]
+publicVariable "logisticsDropAsset"
+publicVariable "logisticsDropRequestType"
+publicVariable "logisticsDropDelivered"
+publicVariable "logisticsDropDeliveryId"
+publicVariable "logisticsDropMarkerStatus"
+publicVariable "logisticsDropMarkerX"
+publicVariable "logisticsDropMarkerY"
+publicVariable "logisticsDropMarkerLabel"
+mpHQMessage = format ["HQ: %1 delivered at the marked position. Chinook departing. %2 logistics request(s) remain.", logisticsDropRequestLabel, logisticsDropsRemaining]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? debugMode : debugLog format ["ERA DEBUG LOGISTICS: delivered %1 at %2,%3; remaining=%4", logisticsDropRequestLabel, _dropX, _dropY, logisticsDropsRemaining]
+_departX = _lzX + 1800
+? _departX > 12700 : _departX = _lzX - 1800
+_departY = _lzY + 1800
+? _departY > 12700 : _departY = _lzY - 1800
+[logisticsDropHeli, _lzX, _lzY, _departX, _departY] exec "friendlyHelicopterDeparture.sqs"
+~20
+? !(isNull logisticsDropPad) : deleteVehicle logisticsDropPad
+logisticsDropPad = objNull
+logisticsDropInProgress = false
+logisticsDropDelivered = false
+publicVariable "logisticsDropInProgress"
+publicVariable "logisticsDropDelivered"
+exit
+
+#assetFailed
+logisticsDropMarkerStatus = 3
+logisticsDropMarkerLabel = "LOGISTICS DROP FAILED"
+publicVariable "logisticsDropMarkerStatus"
+publicVariable "logisticsDropMarkerLabel"
+mpHQMessage = "HQ: Logistics aircraft reached the drop zone, but the requested asset could not be created. Request expended."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+_departX = _lzX + 1800
+? _departX > 12700 : _departX = _lzX - 1800
+_departY = _lzY + 1800
+? _departY > 12700 : _departY = _lzY - 1800
+[logisticsDropHeli, _lzX, _lzY, _departX, _departY] exec "friendlyHelicopterDeparture.sqs"
+~20
+? !(isNull logisticsDropPad) : deleteVehicle logisticsDropPad
+logisticsDropPad = objNull
+logisticsDropInProgress = false
+logisticsDropDelivered = false
+publicVariable "logisticsDropInProgress"
+publicVariable "logisticsDropDelivered"
+exit
+
+#aircraftLost
+logisticsDropMarkerStatus = 3
+logisticsDropMarkerLabel = "LOGISTICS AIRCRAFT LOST"
+publicVariable "logisticsDropMarkerStatus"
+publicVariable "logisticsDropMarkerLabel"
+mpHQMessage = "HQ: Logistics Chinook was lost before delivery. The request is expended."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? !(isNull logisticsDropPad) : deleteVehicle logisticsDropPad
+logisticsDropPad = objNull
+logisticsDropInProgress = false
+logisticsDropDelivered = false
+publicVariable "logisticsDropInProgress"
+publicVariable "logisticsDropDelivered"
+exit
+
+#requestFailed
+logisticsDropMarkerStatus = 3
+logisticsDropMarkerLabel = "LOGISTICS REQUEST FAILED"
+publicVariable "logisticsDropMarkerStatus"
+publicVariable "logisticsDropMarkerLabel"
+? !(isNull logisticsDropPad) : deleteVehicle logisticsDropPad
+logisticsDropPad = objNull
+logisticsDropInProgress = false
+logisticsDropDelivered = false
+publicVariable "logisticsDropInProgress"
+publicVariable "logisticsDropDelivered"
+exit

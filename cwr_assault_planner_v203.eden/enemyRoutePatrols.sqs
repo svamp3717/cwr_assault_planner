@@ -1,0 +1,62 @@
+; v166 generate the explicitly selected number of streamed enemy patrol routes between active objectives and nearby non-objective settlements.
+enemyRoutePatrolsReady = false
+_patrolCount = enemyPatrolDensityLevel
+? _patrolCount < 0 : _patrolCount = 2
+? _patrolCount > 3 : _patrolCount = 2
+enemyRoutePatrolCount = _patrolCount
+_objXs = [primaryX,secondaryX,thirdX,fourthX,fifthX]
+_objYs = [primaryY,secondaryY,thirdY,fourthY,fifthY]
+_objLabels = [townLabel,secondaryLabel,thirdLabel,fourthLabel,fifthLabel]
+_route = 0
+#routeBuild
+? _route >= _patrolCount : goto "done"
+_slotIndex = _route % townCount
+_sourceX = _objXs select _slotIndex
+_sourceY = _objYs select _slotIndex
+_sourceLabel = _objLabels select _slotIndex
+_i = 0
+_bestDistance = 999999999
+_bestPos = [_sourceX + 900,_sourceY,0]
+_bestLabel = "patrol settlement"
+_fallbackDistance = 999999999
+_fallbackPos = _bestPos
+_fallbackLabel = _bestLabel
+#routeScan
+? _i >= missionTownTotal : goto "routeScanDone"
+_marker = missionTownMarkers select _i
+_label = missionTownLabels select _i
+_blocked = false
+? _label == townLabel : _blocked = true
+? townCount >= 2 && _label == secondaryLabel : _blocked = true
+? townCount >= 3 && _label == thirdLabel : _blocked = true
+? townCount >= 4 && _label == fourthLabel : _blocked = true
+? townCount >= 5 && _label == fifthLabel : _blocked = true
+? _blocked : goto "routeNext"
+_pos = getMarkerPos _marker
+_dx = (_pos select 0) - _sourceX
+_dy = (_pos select 1) - _sourceY
+_distance = (_dx * _dx) + (_dy * _dy)
+? _distance < _fallbackDistance : _fallbackDistance = _distance; _fallbackPos = _pos; _fallbackLabel = _label
+? _distance < 360000 : goto "routeNext"
+? _distance > 6250000 : goto "routeNext"
+? _distance >= _bestDistance : goto "routeNext"
+_bestDistance = _distance
+_bestPos = _pos
+_bestLabel = _label
+#routeNext
+_i = _i + 1
+goto "routeScan"
+#routeScanDone
+? _bestDistance >= 999999999 : _bestPos = _fallbackPos; _bestLabel = _fallbackLabel
+_extraRoll = random 5
+_extra = _extraRoll - (_extraRoll % 1)
+_unitCount = 2 + _extra
+_vehiclePatrol = false
+? enemyGroundVehicles && (random 100) < 30 : _vehiclePatrol = true
+[_route + 1,_sourceX,_sourceY,(_bestPos select 0),(_bestPos select 1),_sourceLabel,_bestLabel,_unitCount,_vehiclePatrol] exec "enemyRoutePatrolProfile.sqs"
+_route = _route + 1
+goto "routeBuild"
+#done
+? debugMode : debugLog format ["ERA DEBUG ROUTE PATROLS: profiles=%1",_patrolCount]
+enemyRoutePatrolsReady = true
+exit

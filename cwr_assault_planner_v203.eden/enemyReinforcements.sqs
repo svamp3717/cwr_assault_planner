@@ -1,0 +1,198 @@
+; Enemy ground reinforcement wave. v173 uses 6/9/12 infantry with a randomized runtime transport.
+; Old SQS/CWA-compatible commands only.
+; v133: reinfTargetX/Y/Label are locked by enemyReinforcementDispatch.sqs at the 75 percent casualty threshold.
+_delay = 55 + random 70
+~_delay
+? missionEnded : exit
+? debugMode : debugLog "ERA DEBUG REINFORCEMENT: enemy ground reinforcement convoy inbound"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG REINFORCEMENT: enemy ground reinforcement convoy inbound"
+reinfGroundX = reinfTargetX + 900
+reinfGroundY = reinfTargetY - 850
+reinfGroundDstX = reinfTargetX + 170
+reinfGroundDstY = reinfTargetY - 140
+_groundTransportClass = "WW4EXT_BTR80"
+_groundTransportPool = enemyEastReinforcementTransportPool
+? enemyResistance : _groundTransportPool = enemyResistanceReinforcementTransportPool
+_groundTransportRandom = random (count _groundTransportPool)
+_groundTransportIndex = _groundTransportRandom - (_groundTransportRandom % 1)
+_groundTransportClass = _groundTransportPool select _groundTransportIndex
+? debugMode : debugLog format ["ERA DEBUG REINFORCEMENT: ground transport selected %1", _groundTransportClass]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG REINFORCEMENT: ground transport selected %1", _groundTransportClass]
+? enemyEast : goto "eastGround"
+goto "resGround"
+#eastGround
+enemyGroundReinfVeh = _groundTransportClass createVehicle [reinfGroundX, reinfGroundY, 0]
+? debugMode : [] exec "debugGroundReinforcementMarker.sqs"
+enemyGroundReinfVeh setDir 315
+enemyGroundReinfVeh setFuel 1
+? alive w4eAirR1 : w4eAirR1 moveInDriver enemyGroundReinfVeh
+? alive w4eAirR2 : w4eAirR2 moveInGunner enemyGroundReinfVeh
+? alive w4eAirR3 : w4eAirR3 moveInCommander enemyGroundReinfVeh
+~0.2
+? alive w4eAirR2 && vehicle w4eAirR2 != enemyGroundReinfVeh : w4eAirR2 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR3 && vehicle w4eAirR3 != enemyGroundReinfVeh : w4eAirR3 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR4 : w4eAirR4 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR5 : w4eAirR5 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR6 : w4eAirR6 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR7 : w4eAirR7 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR8 : w4eAirR8 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR9 : w4eAirR9 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR10 : w4eAirR10 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR11 : w4eAirR11 moveInCargo enemyGroundReinfVeh
+? alive w4eAirR12 : w4eAirR12 moveInCargo enemyGroundReinfVeh
+~1
+? alive w4eAirR1 : (group w4eAirR1) setBehaviour "AWARE"
+? alive w4eAirR1 : (group w4eAirR1) setCombatMode "RED"
+? alive w4eAirR1 : (group w4eAirR1) setSpeedMode "FULL"
+? !(alive (driver enemyGroundReinfVeh)) : goto "eastFallback"
+driver enemyGroundReinfVeh doMove [reinfGroundDstX, reinfGroundDstY, 0]
+enemyGroundReinfVeh doMove [reinfGroundDstX, reinfGroundDstY, 0]
+~65
+? missionEnded : exit
+? alive w4eAirR1 : w4eAirR1 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR2 : w4eAirR2 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR3 : w4eAirR3 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR4 : w4eAirR4 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR5 : w4eAirR5 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR6 : w4eAirR6 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR7 : w4eAirR7 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR8 : w4eAirR8 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR9 : w4eAirR9 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR10 : w4eAirR10 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR11 : w4eAirR11 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4eAirR12 : w4eAirR12 action ["GETOUT", enemyGroundReinfVeh]
+~8
+#eastFallback
+? alive w4eAirR1 : unassignVehicle w4eAirR1
+? alive w4eAirR2 : unassignVehicle w4eAirR2
+? alive w4eAirR3 : unassignVehicle w4eAirR3
+? alive w4eAirR4 : unassignVehicle w4eAirR4
+? alive w4eAirR5 : unassignVehicle w4eAirR5
+? alive w4eAirR6 : unassignVehicle w4eAirR6
+? alive w4eAirR7 : unassignVehicle w4eAirR7
+? alive w4eAirR8 : unassignVehicle w4eAirR8
+? alive w4eAirR9 : unassignVehicle w4eAirR9
+? alive w4eAirR10 : unassignVehicle w4eAirR10
+? alive w4eAirR11 : unassignVehicle w4eAirR11
+? alive w4eAirR12 : unassignVehicle w4eAirR12
+? alive w4eAirR1 : w4eAirR1 setPos [reinfGroundDstX - 14, reinfGroundDstY - 10, 0]
+? alive w4eAirR2 : w4eAirR2 setPos [reinfGroundDstX - 8, reinfGroundDstY - 8, 0]
+? alive w4eAirR3 : w4eAirR3 setPos [reinfGroundDstX - 2, reinfGroundDstY - 6, 0]
+? alive w4eAirR4 : w4eAirR4 setPos [reinfGroundDstX + 4, reinfGroundDstY - 4, 0]
+? alive w4eAirR5 : w4eAirR5 setPos [reinfGroundDstX + 10, reinfGroundDstY - 2, 0]
+? alive w4eAirR6 : w4eAirR6 setPos [reinfGroundDstX - 10, reinfGroundDstY + 4, 0]
+? alive w4eAirR7 : w4eAirR7 setPos [reinfGroundDstX - 4, reinfGroundDstY + 6, 0]
+? alive w4eAirR8 : w4eAirR8 setPos [reinfGroundDstX + 2, reinfGroundDstY + 8, 0]
+? alive w4eAirR9 : w4eAirR9 setPos [reinfGroundDstX + 8, reinfGroundDstY + 10, 0]
+? alive w4eAirR10 : w4eAirR10 setPos [reinfGroundDstX + 14, reinfGroundDstY + 12, 0]
+? alive w4eAirR11 : w4eAirR11 setPos [reinfGroundDstX - 14, reinfGroundDstY + 14, 0]
+? alive w4eAirR12 : w4eAirR12 setPos [reinfGroundDstX - 8, reinfGroundDstY + 16, 0]
+enemyAirReinforcementActive = true
+enemyReinforcementPending = false
+publicVariable "enemyReinforcementPending"
+? debugMode : debugLog "ERA DEBUG REINFORCEMENT: enemy ground reinforcements dismounted"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG REINFORCEMENT: enemy ground reinforcements dismounted"
+? alive w4eAirR1 : (group w4eAirR1) setBehaviour "COMBAT"
+? alive w4eAirR1 : (group w4eAirR1) setCombatMode "RED"
+? alive w4eAirR1 : (group w4eAirR1) setSpeedMode "NORMAL"
+? alive w4eAirR1 : w4eAirR1 doMove [reinfTargetX + 55, reinfTargetY + 35, 0]
+? alive w4eAirR2 : w4eAirR2 doMove [reinfTargetX + 25, reinfTargetY + 55, 0]
+? alive w4eAirR3 : w4eAirR3 doMove [reinfTargetX - 25, reinfTargetY + 50, 0]
+? alive w4eAirR4 : w4eAirR4 doMove [reinfTargetX - 55, reinfTargetY + 15, 0]
+? alive w4eAirR5 : w4eAirR5 doMove [reinfTargetX + 60, reinfTargetY - 25, 0]
+? alive w4eAirR6 : w4eAirR6 doMove [reinfTargetX + 15, reinfTargetY - 55, 0]
+? alive w4eAirR7 : w4eAirR7 doMove [reinfTargetX - 40, reinfTargetY - 45, 0]
+? alive w4eAirR8 : w4eAirR8 doMove [reinfTargetX - 70, reinfTargetY - 10, 0]
+? alive w4eAirR9 : w4eAirR9 doMove [reinfTargetX + 80, reinfTargetY + 5, 0]
+? alive w4eAirR10 : w4eAirR10 doMove [reinfTargetX + 45, reinfTargetY + 75, 0]
+? alive w4eAirR11 : w4eAirR11 doMove [reinfTargetX - 45, reinfTargetY + 75, 0]
+? alive w4eAirR12 : w4eAirR12 doMove [reinfTargetX - 80, reinfTargetY + 45, 0]
+exit
+#resGround
+enemyGroundReinfVeh = _groundTransportClass createVehicle [reinfGroundX, reinfGroundY, 0]
+? debugMode : [] exec "debugGroundReinforcementMarker.sqs"
+enemyGroundReinfVeh setDir 315
+enemyGroundReinfVeh setFuel 1
+? alive w4rAirR1 : w4rAirR1 moveInDriver enemyGroundReinfVeh
+? alive w4rAirR2 : w4rAirR2 moveInGunner enemyGroundReinfVeh
+? alive w4rAirR3 : w4rAirR3 moveInCommander enemyGroundReinfVeh
+~0.2
+? alive w4rAirR2 && vehicle w4rAirR2 != enemyGroundReinfVeh : w4rAirR2 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR3 && vehicle w4rAirR3 != enemyGroundReinfVeh : w4rAirR3 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR4 : w4rAirR4 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR5 : w4rAirR5 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR6 : w4rAirR6 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR7 : w4rAirR7 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR8 : w4rAirR8 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR9 : w4rAirR9 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR10 : w4rAirR10 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR11 : w4rAirR11 moveInCargo enemyGroundReinfVeh
+? alive w4rAirR12 : w4rAirR12 moveInCargo enemyGroundReinfVeh
+~1
+? alive w4rAirR1 : (group w4rAirR1) setBehaviour "AWARE"
+? alive w4rAirR1 : (group w4rAirR1) setCombatMode "RED"
+? alive w4rAirR1 : (group w4rAirR1) setSpeedMode "FULL"
+? !(alive (driver enemyGroundReinfVeh)) : goto "resFallback"
+driver enemyGroundReinfVeh doMove [reinfGroundDstX, reinfGroundDstY, 0]
+enemyGroundReinfVeh doMove [reinfGroundDstX, reinfGroundDstY, 0]
+~65
+? missionEnded : exit
+? alive w4rAirR1 : w4rAirR1 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR2 : w4rAirR2 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR3 : w4rAirR3 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR4 : w4rAirR4 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR5 : w4rAirR5 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR6 : w4rAirR6 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR7 : w4rAirR7 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR8 : w4rAirR8 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR9 : w4rAirR9 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR10 : w4rAirR10 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR11 : w4rAirR11 action ["GETOUT", enemyGroundReinfVeh]
+? alive w4rAirR12 : w4rAirR12 action ["GETOUT", enemyGroundReinfVeh]
+~8
+#resFallback
+? alive w4rAirR1 : unassignVehicle w4rAirR1
+? alive w4rAirR2 : unassignVehicle w4rAirR2
+? alive w4rAirR3 : unassignVehicle w4rAirR3
+? alive w4rAirR4 : unassignVehicle w4rAirR4
+? alive w4rAirR5 : unassignVehicle w4rAirR5
+? alive w4rAirR6 : unassignVehicle w4rAirR6
+? alive w4rAirR7 : unassignVehicle w4rAirR7
+? alive w4rAirR8 : unassignVehicle w4rAirR8
+? alive w4rAirR9 : unassignVehicle w4rAirR9
+? alive w4rAirR10 : unassignVehicle w4rAirR10
+? alive w4rAirR11 : unassignVehicle w4rAirR11
+? alive w4rAirR12 : unassignVehicle w4rAirR12
+? alive w4rAirR1 : w4rAirR1 setPos [reinfGroundDstX - 14, reinfGroundDstY - 10, 0]
+? alive w4rAirR2 : w4rAirR2 setPos [reinfGroundDstX - 8, reinfGroundDstY - 8, 0]
+? alive w4rAirR3 : w4rAirR3 setPos [reinfGroundDstX - 2, reinfGroundDstY - 6, 0]
+? alive w4rAirR4 : w4rAirR4 setPos [reinfGroundDstX + 4, reinfGroundDstY - 4, 0]
+? alive w4rAirR5 : w4rAirR5 setPos [reinfGroundDstX + 10, reinfGroundDstY - 2, 0]
+? alive w4rAirR6 : w4rAirR6 setPos [reinfGroundDstX - 10, reinfGroundDstY + 4, 0]
+? alive w4rAirR7 : w4rAirR7 setPos [reinfGroundDstX - 4, reinfGroundDstY + 6, 0]
+? alive w4rAirR8 : w4rAirR8 setPos [reinfGroundDstX + 2, reinfGroundDstY + 8, 0]
+? alive w4rAirR9 : w4rAirR9 setPos [reinfGroundDstX + 8, reinfGroundDstY + 10, 0]
+? alive w4rAirR10 : w4rAirR10 setPos [reinfGroundDstX + 14, reinfGroundDstY + 12, 0]
+? alive w4rAirR11 : w4rAirR11 setPos [reinfGroundDstX - 14, reinfGroundDstY + 14, 0]
+? alive w4rAirR12 : w4rAirR12 setPos [reinfGroundDstX - 8, reinfGroundDstY + 16, 0]
+enemyAirReinforcementActive = true
+enemyReinforcementPending = false
+publicVariable "enemyReinforcementPending"
+? debugMode : debugLog "ERA DEBUG REINFORCEMENT: enemy ground reinforcements dismounted"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG REINFORCEMENT: enemy ground reinforcements dismounted"
+? alive w4rAirR1 : (group w4rAirR1) setBehaviour "COMBAT"
+? alive w4rAirR1 : (group w4rAirR1) setCombatMode "RED"
+? alive w4rAirR1 : (group w4rAirR1) setSpeedMode "NORMAL"
+? alive w4rAirR1 : w4rAirR1 doMove [reinfTargetX + 55, reinfTargetY + 35, 0]
+? alive w4rAirR2 : w4rAirR2 doMove [reinfTargetX + 25, reinfTargetY + 55, 0]
+? alive w4rAirR3 : w4rAirR3 doMove [reinfTargetX - 25, reinfTargetY + 50, 0]
+? alive w4rAirR4 : w4rAirR4 doMove [reinfTargetX - 55, reinfTargetY + 15, 0]
+? alive w4rAirR5 : w4rAirR5 doMove [reinfTargetX + 60, reinfTargetY - 25, 0]
+? alive w4rAirR6 : w4rAirR6 doMove [reinfTargetX + 15, reinfTargetY - 55, 0]
+? alive w4rAirR7 : w4rAirR7 doMove [reinfTargetX - 40, reinfTargetY - 45, 0]
+? alive w4rAirR8 : w4rAirR8 doMove [reinfTargetX - 70, reinfTargetY - 10, 0]
+? alive w4rAirR9 : w4rAirR9 doMove [reinfTargetX + 80, reinfTargetY + 5, 0]
+? alive w4rAirR10 : w4rAirR10 doMove [reinfTargetX + 45, reinfTargetY + 75, 0]
+? alive w4rAirR11 : w4rAirR11 doMove [reinfTargetX - 45, reinfTargetY + 75, 0]
+? alive w4rAirR12 : w4rAirR12 doMove [reinfTargetX - 80, reinfTargetY + 45, 0]
+exit

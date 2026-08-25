@@ -1,0 +1,37 @@
+; v158 chooses and remembers one car type, location and heading for one eligible non-objective marker.
+; Args: [location marker, location label]
+civilianNonObjectiveCarProfileReady = false
+_marker = _this select 0
+_label = _this select 1
+_isObjective = false
+? townLabel == _label : _isObjective = true
+? townCount >= 2 && secondaryLabel == _label : _isObjective = true
+? townCount >= 3 && thirdLabel == _label : _isObjective = true
+? townCount >= 4 && fourthLabel == _label : _isObjective = true
+? townCount >= 5 && fifthLabel == _label : _isObjective = true
+? _isObjective : goto "civilianProfileDone"
+
+; v203 custom: weighted civilian vehicle variety. Ordinary cars remain the majority.
+; Vanilla CWA specialty vehicle class names are used alongside WW4 EXT civilian cars.
+_classes = ["WW4EXT_SkodaCiv", "WW4EXT_SkodaBlueCiv", "WW4EXT_SkodaRedCiv", "WW4EXT_SkodaGreenCiv", "WW4EXT_Trabant", "WW4EXT_Mini", "WW4EXT_Rapid", "WW4EXT_SkodaCiv", "WW4EXT_SkodaBlueCiv", "WW4EXT_Trabant", "WW4EXT_PV3SCiv", "Tractor", "Jawa", "Kolo", "Bus", "JeepPolice"]
+_offsets = [[28,18],[-30,12],[16,-32],[-24,-26],[38,-8],[-8,36],[44,24],[-42,30]]
+_largeOffsets = [[58,24],[-60,20],[42,-58],[-50,-50],[70,-14],[-16,66],[64,42],[-68,36]]
+_randomClass = random (count _classes)
+_classIndex = _randomClass - (_randomClass % 1)
+_carClass = _classes select _classIndex
+? _carClass == "WW4EXT_PV3SCiv" : _offsets = _largeOffsets
+? _carClass == "Bus" : _offsets = _largeOffsets
+? _carClass == "Tractor" : _offsets = _largeOffsets
+_randomOffset = random (count _offsets)
+_offsetIndex = _randomOffset - (_randomOffset % 1)
+_offset = _offsets select _offsetIndex
+_townPos = getMarkerPos _marker
+_carPos = [(_townPos select 0) + (_offset select 0), (_townPos select 1) + (_offset select 1), 0]
+_carDir = random 360
+[_carClass, _carPos, _carDir, _label] exec "civilianNonObjectiveCarTown.sqs"
+civilianNonObjectiveCarProfileCount = civilianNonObjectiveCarProfileCount + 1
+? debugMode : debugLog format ["ERA DEBUG CIVSTREAM PROFILE: town=%1 class=%2 pos=%3 dir=%4", _label, _carClass, _carPos, _carDir]
+
+#civilianProfileDone
+civilianNonObjectiveCarProfileReady = true
+exit

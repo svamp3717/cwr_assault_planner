@@ -1,0 +1,52 @@
+; MP v104 server-authoritative generation, slot purge and server-local AI insertion.
+[] exec "mpServerSafeInitial.sqs"
+@ mpSetupReady
+
+; Server owns all unoccupied playable AI slots. Cull before randomization or insertion.
+mpAISlotsCulled = false
+[] exec "mpCullLocalPlayerSlots.sqs"
+@ mpAISlotsCulled
+@ mpFReviveStarted
+
+debugMode = false
+debugConsole = false
+? guiDebugChoice == 1 : debugMode = true
+? guiDebugChoice == 1 : debugConsole = true
+
+randomizeComplete = false
+[] exec "randomize.sqs"
+@ randomizeComplete
+; Create only the friendly insertion transports selected by the planner.
+friendlyRuntimeInsertionVehiclesReady = false
+[] exec "friendlyRuntimeInsertionVehicles.sqs"
+@ friendlyRuntimeInsertionVehiclesReady
+[] exec "mpPublishState.sqs"
+; Give server-created objects time to obtain network identities, then rebroadcast references.
+~1
+[] exec "mpPublishObjectiveAssets.sqs"
+[] exec "mpPublishEnemyVehicles.sqs"
+[] exec "mpPublishFriendlyInsertionVehicles.sqs"
+~0.2
+mpRandomizeComplete = true
+publicVariable "mpRandomizeComplete"
+extractionCallAvailable = true
+publicVariable "extractionCallAvailable"
+[] exec "mpServerExtractionRequestMonitor.sqs"
+[] exec "mpServerLogisticsDropRequestMonitor.sqs"
+[] exec "mpServerCivilianControl.sqs"
+[] exec "mpServerPilotControl.sqs"
+
+; Seat or place server-local AI subordinates while clients handle human players.
+[] exec "mpServerAIInsertion.sqs"
+; Give local insertion scripts time to assign cargo before transports move.
+~2
+? insertionFoot : goto "serverFoot"
+[] exec "mpServerInsertion.sqs"
+goto "serverAfterInsertionLaunch"
+#serverFoot
+[] exec "mpServerFootInsertion.sqs"
+#serverAfterInsertionLaunch
+[] exec "mpServerObjectives.sqs"
+[] exec "mpServerMission.sqs"
+[] exec "mpAirSupportMonitor.sqs"
+exit

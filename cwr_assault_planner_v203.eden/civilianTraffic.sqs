@@ -1,0 +1,72 @@
+; v135 civilian vehicle controller.
+; Active objectives keep the original three persistent parked vehicles per town.
+; Every non-objective traffic marker independently rolls a 25 percent chance for one remembered profile.
+civilianTrafficReady = false
+civCarCount = 0
+? townCount < 1 : goto "carAfter1"
+s1Car1 = "WW4EXT_SkodaBlueCiv" createVehicle [primaryX + 55, primaryY + 42, 0]
+s1Car1 setDir 70
+s1Car1 setFuel 0.6
+s1Car2 = "WW4EXT_Trabant" createVehicle [primaryX - 62, primaryY + 36, 0]
+s1Car2 setDir 145
+s1Car2 setFuel 0.6
+s1Car3 = "WW4EXT_PV3SCiv" createVehicle [primaryX + 30, primaryY - 68, 0]
+s1Car3 setDir 250
+s1Car3 setFuel 0.6
+civCarCount = civCarCount + 3
+#carAfter1
+? townCount < 2 : goto "carAfter2"
+s2Car1 = "WW4EXT_SkodaBlueCiv" createVehicle [secondaryX + 55, secondaryY + 42, 0]
+s2Car1 setDir 70
+s2Car1 setFuel 0.6
+s2Car2 = "WW4EXT_Trabant" createVehicle [secondaryX - 62, secondaryY + 36, 0]
+s2Car2 setDir 145
+s2Car2 setFuel 0.6
+s2Car3 = "WW4EXT_PV3SCiv" createVehicle [secondaryX + 30, secondaryY - 68, 0]
+s2Car3 setDir 250
+s2Car3 setFuel 0.6
+civCarCount = civCarCount + 3
+#carAfter2
+? townCount < 3 : goto "carAfter3"
+s3Car1 = "WW4EXT_SkodaBlueCiv" createVehicle [thirdX + 55, thirdY + 42, 0]
+s3Car1 setDir 70
+s3Car1 setFuel 0.6
+s3Car2 = "WW4EXT_Trabant" createVehicle [thirdX - 62, thirdY + 36, 0]
+s3Car2 setDir 145
+s3Car2 setFuel 0.6
+s3Car3 = "WW4EXT_PV3SCiv" createVehicle [thirdX + 30, thirdY - 68, 0]
+s3Car3 setDir 250
+s3Car3 setFuel 0.6
+civCarCount = civCarCount + 3
+#carAfter3
+? townCount < 4 : goto "carAfter4"
+s4Car1 = "WW4EXT_SkodaBlueCiv" createVehicle [fourthX + 55, fourthY + 42, 0]
+s4Car1 setDir 70
+s4Car1 setFuel 0.6
+s4Car2 = "WW4EXT_Trabant" createVehicle [fourthX - 62, fourthY + 36, 0]
+s4Car2 setDir 145
+s4Car2 setFuel 0.6
+s4Car3 = "WW4EXT_PV3SCiv" createVehicle [fourthX + 30, fourthY - 68, 0]
+s4Car3 setDir 250
+s4Car3 setFuel 0.6
+civCarCount = civCarCount + 3
+#carAfter4
+? townCount < 5 : goto "carAfter5"
+s5Car1 = "WW4EXT_SkodaBlueCiv" createVehicle [fifthX + 55, fifthY + 42, 0]
+s5Car1 setDir 70
+s5Car1 setFuel 0.6
+s5Car2 = "WW4EXT_Trabant" createVehicle [fifthX - 62, fifthY + 36, 0]
+s5Car2 setDir 145
+s5Car2 setFuel 0.6
+s5Car3 = "WW4EXT_PV3SCiv" createVehicle [fifthX + 30, fifthY - 68, 0]
+s5Car3 setDir 250
+s5Car3 setFuel 0.6
+civCarCount = civCarCount + 3
+#carAfter5
+
+civilianNonObjectiveCarsReady = false
+[] exec "civilianNonObjectiveCars.sqs"
+@ civilianNonObjectiveCarsReady
+? debugMode : debugLog format ["ERA DEBUG CIVCARS: objective parked=%1 imported25pct profiles=%2 legacyUnnamed25pct profiles=%3 total profiles=%4", civCarCount, civilianNamedCarProfileCount, civilianUnnamedCarProfileCount, civilianNonObjectiveCarProfileCount]
+civilianTrafficReady = true
+exit

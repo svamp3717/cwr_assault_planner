@@ -1,0 +1,156 @@
+; v118: Place one existing defender in a verified CWA building position.
+; Args: [centerX, centerY, unit, searchOffset]
+; Uses only Operation Flashpoint / Cold War Assault-era commands.
+buildingDefenderPlacementReady = false
+_centerX = _this select 0
+_centerY = _this select 1
+_unit = _this select 2
+_searchOffset = _this select 3
+_failureReason = "unknown"
+_unitName = "unknown"
+_unitType = "unknown"
+_anchor = objNull
+_anchorMade = false
+_originalPos = [0,0,0]
+_originalDir = 0
+
+buildingDefenseAttemptTotal = buildingDefenseAttemptTotal + 1
+
+_failureReason = "unit object is null"
+? isNull _unit : goto "buildingPlacementFailed"
+_unitName = name _unit
+_unitType = typeOf _unit
+_originalPos = getPos _unit
+_originalDir = getDir _unit
+
+_failureReason = "unit is dead"
+? !(alive _unit) : goto "buildingPlacementFailed"
+_failureReason = "unit is not local to the server"
+? !(local _unit) : goto "buildingPlacementFailed"
+
+; A local camera supplies the Object operand required by CWA nearestBuilding without creating a network object.
+_anchor = "camera" camCreate [_centerX, _centerY, 0]
+? isNull _anchor : goto "buildingAnchorFailed"
+_anchorMade = true
+goto "buildingAnchorReady"
+
+#buildingAnchorFailed
+_failureReason = "local camera search anchor could not be created"
+goto "buildingPlacementFailed"
+
+#buildingAnchorReady
+; Probe the town centre and rings out to 140 metres. Different defenders rotate the order.
+_searchOffsets = [[0,0],[35,0],[-35,0],[0,35],[0,-35],[35,35],[-35,35],[35,-35],[-35,-35],[70,0],[-70,0],[0,70],[0,-70],[70,70],[-70,70],[70,-70],[-70,-70],[105,0],[-105,0],[0,105],[0,-105],[105,52],[-105,52],[105,-52],[-105,-52],[52,105],[-52,105],[52,-105],[-52,-105],[140,0],[-140,0],[0,140],[0,-140]]
+_searchCount = count _searchOffsets
+_searchTry = 0
+_triedBuildings = []
+
+#buildingSearchLoop
+? _searchTry >= _searchCount : goto "buildingSearchExhausted"
+_searchIndex = (_searchTry + _searchOffset) mod _searchCount
+_searchPoint = _searchOffsets select _searchIndex
+_searchX = _centerX + (_searchPoint select 0)
+_searchY = _centerY + (_searchPoint select 1)
+_anchor setPos [_searchX, _searchY, 0]
+_building = nearestBuilding _anchor
+_searchTry = _searchTry + 1
+? isNull _building : goto "buildingSearchLoop"
+? !(alive _building) : goto "buildingSearchLoop"
+
+_buildingAlreadyTried = false
+{if (_x == _building) then {_buildingAlreadyTried = true}} forEach _triedBuildings
+? _buildingAlreadyTried : goto "buildingSearchLoop"
+_triedBuildings = _triedBuildings + [_building]
+
+_buildingWorldPos = getPos _building
+_buildingDX = (_buildingWorldPos select 0) - _centerX
+_buildingDY = (_buildingWorldPos select 1) - _centerY
+? ((_buildingDX * _buildingDX) + (_buildingDY * _buildingDY)) > 32400 : goto "buildingSearchLoop"
+
+; Prefer raised window/floor positions, then accept ground-floor positions.
+_elevatedOnly = true
+_positionTry = 0
+
+#buildingPositionLoop
+? _positionTry >= 30 : goto "buildingFallbackPass"
+_positionIndex = (_positionTry + _searchOffset) mod 30
+_candidate = _building buildingPos _positionIndex
+_candidateX = _candidate select 0
+_candidateY = _candidate select 1
+_candidateZ = _candidate select 2
+? (_candidateX == 0) && (_candidateY == 0) : goto "buildingNextPosition"
+? _elevatedOnly && _candidateZ < 0.8 : goto "buildingNextPosition"
+_candidateDX = _candidateX - _centerX
+_candidateDY = _candidateY - _centerY
+? ((_candidateDX * _candidateDX) + (_candidateDY * _candidateDY)) > 32400 : goto "buildingNextPosition"
+
+_positionUsed = false
+{if ((abs ((_x select 0) - _candidateX) < 1.5) && (abs ((_x select 1) - _candidateY) < 1.5) && (abs ((_x select 2) - _candidateZ) < 1.5)) then {_positionUsed = true}} forEach buildingDefenseUsedPositions
+? _positionUsed : goto "buildingNextPosition"
+goto "buildingPositionFound"
+
+#buildingNextPosition
+_positionTry = _positionTry + 1
+goto "buildingPositionLoop"
+
+#buildingFallbackPass
+? !(_elevatedOnly) : goto "buildingSearchLoop"
+_elevatedOnly = false
+_positionTry = 0
+goto "buildingPositionLoop"
+
+#buildingPositionFound
+_unit setPos _candidate
+~0.05
+_actualPos = getPos _unit
+_actualX = _actualPos select 0
+_actualY = _actualPos select 1
+_actualZ = _actualPos select 2
+_verifyDX = _actualX - _candidateX
+_verifyDY = _actualY - _candidateY
+_verifyDZ = abs (_actualZ - _candidateZ)
+? ((_verifyDX * _verifyDX) + (_verifyDY * _verifyDY)) > 16 : goto "buildingPositionRejected"
+? _verifyDZ > 5 : goto "buildingPositionRejected"
+
+; Face outward and issue an initial hold order without disabling movement or later forcing the soldier back.
+; Once combat makes a defender leave the building, the mission no longer teleports that unit inside.
+_faceDX = _candidateX - _centerX
+_faceDY = _candidateY - _centerY
+_faceDir = _faceDX atan2 _faceDY
+_unit setDir _faceDir
+_unit setUnitPos "UP"
+doStop _unit
+(group _unit) setBehaviour "COMBAT"
+(group _unit) setCombatMode "RED"
+_unit setSkill enemyAISkill
+
+buildingDefenseUsedPositions = buildingDefenseUsedPositions + [_actualPos]
+buildingDefenseAllUsedPositions = buildingDefenseAllUsedPositions + [_actualPos]
+buildingDefensePlacedCount = buildingDefensePlacedCount + 1
+buildingDefensePlacedTotal = buildingDefensePlacedTotal + 1
+? !(debugMode) : goto "buildingPlacementDone"
+_logText = format ["ERA BUILDING DEFENDER PLACED: total=%1 town=%2 unit=%3 name=%4 type=%5 pos=%6 building=%7 index=%8", buildingDefensePlacedTotal, buildingDefensePlacedCount, _unit, _unitName, _unitType, _actualPos, _building, _positionIndex]
+buildingDefensePlacementLog = buildingDefensePlacementLog + [_logText]
+goto "buildingPlacementDone"
+
+#buildingPositionRejected
+; setPos did not leave the unit at the requested building position. Restore it and test the next position.
+_unit setPos _originalPos
+_unit setDir _originalDir
+_positionTry = _positionTry + 1
+goto "buildingPositionLoop"
+
+#buildingSearchExhausted
+_failureReason = "no nearby building had a free verified buildingPos"
+goto "buildingPlacementFailed"
+
+#buildingPlacementFailed
+buildingDefenseFailedTotal = buildingDefenseFailedTotal + 1
+? !(debugMode) : goto "buildingPlacementDone"
+_failText = format ["ERA BUILDING DEFENDER FAILED: total=%1 unit=%2 name=%3 type=%4 town=%5/%6 reason=%7", buildingDefenseFailedTotal, _unit, _unitName, _unitType, _centerX, _centerY, _failureReason]
+buildingDefenseFailureLog = buildingDefenseFailureLog + [_failText]
+
+#buildingPlacementDone
+? _anchorMade && !(isNull _anchor) : camDestroy _anchor
+buildingDefenderPlacementReady = true
+exit

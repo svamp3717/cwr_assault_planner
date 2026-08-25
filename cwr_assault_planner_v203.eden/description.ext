@@ -1,0 +1,328 @@
+#include "ww4_arsenal\dialog.hpp"
+#include "FRevive\classes\FREVIVE_AspectRatio.txt"
+#include "FRevive\classes\FREVIVE_RscText.txt"
+#include "FRevive\classes\FREVIVE_RscActiveMenu.txt"
+#include "FRevive\classes\FREVIVE_RscFDFDlgSpectateDeath1st.txt"
+#include "FRevive\classes\FREVIVE_RscFDFDlgSpectateDeath.txt"
+#include "FRevive\classes\RscTitles.txt"
+
+onLoadMission="assault_planner_v203";
+onLoadIntro="12-player cooperative Everon assault. Complete the selected objectives and extract the active squad by Chinook. Radio Bravo may call extraction early; Radio Charlie requests the configured number of logistics deliveries.";
+
+// FRevive uses instant respawn, then suspends the replacement unit until a teammate revives it.
+respawn = 2;
+respawnDelay = 3;
+
+class Header
+{
+    gameType = "COOP";
+    minPlayers = 1;
+    maxPlayers = 12;
+};
+
+class ERA_RscText
+{
+    type=0; idc=-1; style=0; x=0; y=0; w=0.1; h=0.04;
+    font="TahomaB"; sizeEx=0.025;
+    colorText[]={1,1,1,1}; colorBackground[]={0,0,0,0};
+};
+class ERA_RscButton
+{
+    type=1; idc=-1; style=2; x=0; y=0; w=0.1; h=0.04;
+    font="TahomaB"; sizeEx=0.020; text="";
+    colorText[]={1,1,1,1}; colorDisabled[]={0.45,0.45,0.45,1};
+    colorBackground[]={0.12,0.16,0.20,1}; colorBackgroundActive[]={0.25,0.38,0.25,1}; colorFocused[]={0.25,0.38,0.25,1};
+    soundEnter[]={"",0.1,1}; soundPush[]={"",0.1,1}; soundClick[]={"",0.1,1}; soundEscape[]={"",0.1,1}; default=0;
+};
+
+class ERA_StartDialog
+{
+    idd=7100; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.035; y=0.005; w=0.93; h=0.990; text=""; colorBackground[]={0.02,0.03,0.04,0.96}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.08; y=0.012; w=0.84; h=0.034; sizeEx=0.028; text="assault_planner_v203"; colorText[]={0.85,0.92,0.78,1}; };
+        class Subtitle : ERA_RscText { idc=-1; style=2; x=0.08; y=0.044; w=0.84; h=0.018; sizeEx=0.014; text="Squad leader configures the operation for all players."; colorText[]={0.70,0.73,0.75,1}; };
+
+        class InsertionHeading : ERA_RscText { idc=-1; x=0.08; y=0.070; w=0.35; h=0.018; sizeEx=0.016; text="INSERTION"; colorText[]={0.85,0.92,0.78,1}; };
+        class InsertionSelected : ERA_RscText { idc=1101; style=1; x=0.53; y=0.070; w=0.39; h=0.018; sizeEx=0.016; text="On Foot"; colorText[]={1,0.86,0.35,1}; };
+        class InsRandom : ERA_RscButton { idc=1200; x=0.08; y=0.090; w=0.115; h=0.026; text="Random"; action="guiInsertionChoice=-1; ctrlSetText [1101, ""Random""]"; };
+        class InsFoot : ERA_RscButton { idc=1201; x=0.225; y=0.090; w=0.115; h=0.026; text="On Foot"; action="guiInsertionChoice=0; ctrlSetText [1101, ""On Foot""]"; };
+        class InsTruck : ERA_RscButton { idc=1202; x=0.370; y=0.090; w=0.115; h=0.026; text="Truck"; action="guiInsertionChoice=1; ctrlSetText [1101, ""Truck""]"; };
+        class InsAPC : ERA_RscButton { idc=1203; x=0.515; y=0.090; w=0.115; h=0.026; text="APC"; action="guiInsertionChoice=2; ctrlSetText [1101, ""APC""]"; };
+        class InsParadrop : ERA_RscButton { idc=1204; x=0.660; y=0.090; w=0.115; h=0.026; text="Paradrop"; action="guiInsertionChoice=3; ctrlSetText [1101, ""Paradrop""]"; };
+        class InsHeli : ERA_RscButton { idc=1205; x=0.805; y=0.090; w=0.115; h=0.026; text="Heli"; action="guiInsertionChoice=4; ctrlSetText [1101, ""Helicopter""]"; };
+
+        class EnemyHeading : ERA_RscText { idc=-1; x=0.08; y=0.127; w=0.35; h=0.018; sizeEx=0.016; text="ENEMY SIDE"; colorText[]={0.85,0.92,0.78,1}; };
+        class EnemySelected : ERA_RscText { idc=1102; style=1; x=0.53; y=0.127; w=0.39; h=0.018; sizeEx=0.016; text="Random"; colorText[]={1,0.86,0.35,1}; };
+        class EnemyRandom : ERA_RscButton { idc=1300; x=0.15; y=0.147; w=0.20; h=0.026; text="Random"; action="guiEnemyChoice=-1; ctrlSetText [1102, ""Random""]"; };
+        class EnemyEast : ERA_RscButton { idc=1301; x=0.40; y=0.147; w=0.20; h=0.026; text="EAST"; action="guiEnemyChoice=0; ctrlSetText [1102, ""EAST""]"; };
+        class EnemyRes : ERA_RscButton { idc=1302; x=0.65; y=0.147; w=0.20; h=0.026; text="Resistance"; action="guiEnemyChoice=1; ctrlSetText [1102, ""Resistance""]"; };
+
+        class AlliesHeading : ERA_RscText { idc=-1; x=0.08; y=0.184; w=0.35; h=0.018; sizeEx=0.016; text="EXTRA FRIENDLY SQUADS"; colorText[]={0.85,0.92,0.78,1}; };
+        class AlliesSelected : ERA_RscText { idc=1103; style=1; x=0.53; y=0.184; w=0.39; h=0.018; sizeEx=0.016; text="0 squads"; colorText[]={1,0.86,0.35,1}; };
+        class Allies0 : ERA_RscButton { idc=1400; x=0.13; y=0.204; w=0.12; h=0.026; text="0"; action="guiFriendlySquads=0; ctrlSetText [1103, ""0 squads""]"; };
+        class Allies1 : ERA_RscButton { idc=1401; x=0.285; y=0.204; w=0.12; h=0.026; text="1"; action="guiFriendlySquads=1; ctrlSetText [1103, ""1 squad""]"; };
+        class Allies2 : ERA_RscButton { idc=1402; x=0.440; y=0.204; w=0.12; h=0.026; text="2"; action="guiFriendlySquads=2; ctrlSetText [1103, ""2 squads""]"; };
+        class Allies3 : ERA_RscButton { idc=1403; x=0.595; y=0.204; w=0.12; h=0.026; text="3"; action="guiFriendlySquads=3; ctrlSetText [1103, ""3 squads""]"; };
+        class Allies4 : ERA_RscButton { idc=1404; x=0.750; y=0.204; w=0.12; h=0.026; text="4"; action="guiFriendlySquads=4; ctrlSetText [1103, ""4 squads""]"; };
+
+        class PlayerAIHeading : ERA_RscText { idc=-1; x=0.08; y=0.241; w=0.35; h=0.018; sizeEx=0.016; text="PLAYER AI SQUAD MEMBERS"; colorText[]={0.85,0.92,0.78,1}; };
+        class PlayerAISelected : ERA_RscText { idc=1110; style=1; x=0.53; y=0.241; w=0.39; h=0.018; sizeEx=0.016; text="3 AI"; colorText[]={1,0.86,0.35,1}; };
+        class PlayerAI0 : ERA_RscButton { idc=2200; x=0.13; y=0.261; w=0.12; h=0.026; text="0"; action="guiPlayerAI=0; ctrlSetText [1110, ""0 AI""]"; };
+        class PlayerAI3 : ERA_RscButton { idc=2201; x=0.285; y=0.261; w=0.12; h=0.026; text="3"; action="guiPlayerAI=3; ctrlSetText [1110, ""3 AI""]"; };
+        class PlayerAI6 : ERA_RscButton { idc=2202; x=0.440; y=0.261; w=0.12; h=0.026; text="6"; action="guiPlayerAI=6; ctrlSetText [1110, ""6 AI""]"; };
+        class PlayerAI9 : ERA_RscButton { idc=2203; x=0.595; y=0.261; w=0.12; h=0.026; text="9"; action="guiPlayerAI=9; ctrlSetText [1110, ""9 AI""]"; };
+        class PlayerAI11 : ERA_RscButton { idc=2204; x=0.750; y=0.261; w=0.12; h=0.026; text="11"; action="guiPlayerAI=11; ctrlSetText [1110, ""11 AI""]"; };
+
+        class ObjectivesHeading : ERA_RscText { idc=-1; x=0.08; y=0.298; w=0.27; h=0.018; sizeEx=0.016; text="NUMBER OF OBJECTIVES"; colorText[]={0.85,0.92,0.78,1}; };
+        class ObjectivesSelected : ERA_RscText { idc=1104; style=1; x=0.36; y=0.298; w=0.22; h=0.018; sizeEx=0.016; text="1 objective"; colorText[]={1,0.86,0.35,1}; };
+        class ObjectiveTypesSelected : ERA_RscText { idc=1114; style=1; x=0.59; y=0.298; w=0.17; h=0.018; sizeEx=0.014; text="Types: Random"; colorText[]={1,0.86,0.35,1}; };
+        class ObjectiveTypesButton : ERA_RscButton { idc=1510; x=0.78; y=0.294; w=0.14; h=0.026; sizeEx=0.014; text="SELECT TYPES"; action="objectiveTypeMenuRequested=true; closeDialog 1"; };
+        class ObjectivesRandom : ERA_RscButton { idc=1500; x=0.08; y=0.318; w=0.115; h=0.026; text="Random"; action="guiObjectiveCount=-1; ctrlSetText [1104, ""Random (1-5)""]"; };
+        class Objectives1 : ERA_RscButton { idc=1501; x=0.225; y=0.318; w=0.115; h=0.026; text="1"; action="guiObjectiveCount=1; ctrlSetText [1104, ""1 objective""]"; };
+        class Objectives2 : ERA_RscButton { idc=1502; x=0.370; y=0.318; w=0.115; h=0.026; text="2"; action="guiObjectiveCount=2; ctrlSetText [1104, ""2 objectives""]"; };
+        class Objectives3 : ERA_RscButton { idc=1503; x=0.515; y=0.318; w=0.115; h=0.026; text="3"; action="guiObjectiveCount=3; ctrlSetText [1104, ""3 objectives""]"; };
+        class Objectives4 : ERA_RscButton { idc=1504; x=0.660; y=0.318; w=0.115; h=0.026; text="4"; action="guiObjectiveCount=4; ctrlSetText [1104, ""4 objectives""]"; };
+        class Objectives5 : ERA_RscButton { idc=1505; x=0.805; y=0.318; w=0.115; h=0.026; text="5"; action="guiObjectiveCount=5; ctrlSetText [1104, ""5 objectives""]"; };
+
+        class AirHeading : ERA_RscText { idc=-1; x=0.08; y=0.355; w=0.35; h=0.016; sizeEx=0.015; text="FRIENDLY AIR SUPPORT"; colorText[]={0.85,0.92,0.78,1}; };
+        class AirSelected : ERA_RscText { idc=1105; style=1; x=0.53; y=0.355; w=0.39; h=0.016; sizeEx=0.015; text="Disabled"; colorText[]={1,0.86,0.35,1}; };
+        class AirRandom : ERA_RscButton { idc=1600; x=0.15; y=0.374; w=0.20; h=0.026; text="Random"; action="guiAirSupportChoice=-1; ctrlSetText [1105, ""Random""]"; };
+        class AirAvailable : ERA_RscButton { idc=1601; x=0.40; y=0.374; w=0.20; h=0.026; text="Available"; action="guiAirSupportChoice=1; ctrlSetText [1105, ""Available""]"; };
+        class AirDisabled : ERA_RscButton { idc=1602; x=0.65; y=0.374; w=0.20; h=0.026; text="Disabled"; action="guiAirSupportChoice=0; ctrlSetText [1105, ""Disabled""]"; };
+
+        class ArmorHeading : ERA_RscText { idc=-1; x=0.08; y=0.402; w=0.35; h=0.016; sizeEx=0.015; text="FRIENDLY ARMORED SUPPORT"; colorText[]={0.85,0.92,0.78,1}; };
+        class ArmorSelected : ERA_RscText { idc=1111; style=1; x=0.53; y=0.402; w=0.39; h=0.016; sizeEx=0.015; text="Disabled"; colorText[]={1,0.86,0.35,1}; };
+        class ArmorDisabled : ERA_RscButton { idc=2300; x=0.14; y=0.421; w=0.15; h=0.026; text="Disabled"; action="guiFriendlyArmorChoice=0; ctrlSetText [1111, ""Disabled""]"; };
+        class ArmorSmall : ERA_RscButton { idc=2301; x=0.345; y=0.421; w=0.15; h=0.026; text="Small"; action="guiFriendlyArmorChoice=1; ctrlSetText [1111, ""Small""]"; };
+        class ArmorMedium : ERA_RscButton { idc=2302; x=0.550; y=0.421; w=0.15; h=0.026; text="Medium"; action="guiFriendlyArmorChoice=2; ctrlSetText [1111, ""Medium""]"; };
+        class ArmorLarge : ERA_RscButton { idc=2303; x=0.755; y=0.421; w=0.15; h=0.026; text="Large"; action="guiFriendlyArmorChoice=3; ctrlSetText [1111, ""Large""]"; };
+
+        class EnemyVehiclesHeading : ERA_RscText { idc=-1; x=0.08; y=0.449; w=0.35; h=0.016; sizeEx=0.015; text="ENEMY VEHICLES"; colorText[]={0.85,0.92,0.78,1}; };
+        class EnemyVehiclesSelected : ERA_RscText { idc=1106; style=1; x=0.53; y=0.449; w=0.39; h=0.016; sizeEx=0.015; text="Small"; colorText[]={1,0.86,0.35,1}; };
+        class EnemyVehiclesDisabled : ERA_RscButton { idc=1800; x=0.14; y=0.468; w=0.15; h=0.026; text="Disabled"; action="guiEnemyVehiclesChoice=0; ctrlSetText [1106, ""Disabled""]"; };
+        class EnemyVehiclesSmall : ERA_RscButton { idc=1801; x=0.345; y=0.468; w=0.15; h=0.026; text="Small"; action="guiEnemyVehiclesChoice=1; ctrlSetText [1106, ""Small""]"; };
+        class EnemyVehiclesMedium : ERA_RscButton { idc=1802; x=0.550; y=0.468; w=0.15; h=0.026; text="Medium"; action="guiEnemyVehiclesChoice=2; ctrlSetText [1106, ""Medium""]"; };
+        class EnemyVehiclesLarge : ERA_RscButton { idc=1803; x=0.755; y=0.468; w=0.15; h=0.026; text="Large"; action="guiEnemyVehiclesChoice=3; ctrlSetText [1106, ""Large""]"; };
+
+        class EnemyInfantryHeading : ERA_RscText { idc=-1; x=0.08; y=0.496; w=0.35; h=0.016; sizeEx=0.015; text="ENEMY INFANTRY"; colorText[]={0.85,0.92,0.78,1}; };
+        class EnemyInfantrySelected : ERA_RscText { idc=1112; style=1; x=0.53; y=0.496; w=0.39; h=0.016; sizeEx=0.015; text="Medium"; colorText[]={1,0.86,0.35,1}; };
+        class EnemyInfantrySmall : ERA_RscButton { idc=2401; x=0.18; y=0.515; w=0.16; h=0.026; text="Small"; action="guiEnemyInfantryChoice=1; ctrlSetText [1112, ""Small""]"; };
+        class EnemyInfantryMedium : ERA_RscButton { idc=2402; x=0.42; y=0.515; w=0.16; h=0.026; text="Medium"; action="guiEnemyInfantryChoice=2; ctrlSetText [1112, ""Medium""]"; };
+        class EnemyInfantryLarge : ERA_RscButton { idc=2403; x=0.66; y=0.515; w=0.16; h=0.026; text="Large"; action="guiEnemyInfantryChoice=3; ctrlSetText [1112, ""Large""]"; };
+
+        class EnemyAircraftHeading : ERA_RscText { idc=-1; x=0.08; y=0.543; w=0.35; h=0.016; sizeEx=0.015; text="ENEMY AIRCRAFT"; colorText[]={0.85,0.92,0.78,1}; };
+        class EnemyAircraftSelected : ERA_RscText { idc=1116; style=1; x=0.53; y=0.543; w=0.39; h=0.016; sizeEx=0.015; text="Rare"; colorText[]={1,0.86,0.35,1}; };
+        class EnemyAircraftDisabled : ERA_RscButton { idc=2700; x=0.08; y=0.562; w=0.14; h=0.026; sizeEx=0.014; text="Disabled"; action="guiEnemyAircraftChoice=0; ctrlSetText [1116, ""Disabled""]"; };
+        class EnemyAircraftRare : ERA_RscButton { idc=2701; x=0.255; y=0.562; w=0.14; h=0.026; sizeEx=0.014; text="Rare"; action="guiEnemyAircraftChoice=1; ctrlSetText [1116, ""Rare""]"; };
+        class EnemyAircraftNormal : ERA_RscButton { idc=2702; x=0.430; y=0.562; w=0.14; h=0.026; sizeEx=0.014; text="Normal"; action="guiEnemyAircraftChoice=2; ctrlSetText [1116, ""Normal""]"; };
+        class EnemyAircraftFrequent : ERA_RscButton { idc=2703; x=0.605; y=0.562; w=0.14; h=0.026; sizeEx=0.013; text="Frequent"; action="guiEnemyAircraftChoice=3; ctrlSetText [1116, ""Frequent""]"; };
+        class EnemyAircraftGuaranteed : ERA_RscButton { idc=2704; x=0.780; y=0.562; w=0.14; h=0.026; sizeEx=0.012; text="Always"; action="guiEnemyAircraftChoice=4; ctrlSetText [1116, ""Guaranteed""]"; };
+
+        class PatrolDensityHeading : ERA_RscText { idc=-1; x=0.08; y=0.590; w=0.35; h=0.016; sizeEx=0.015; text="PATROL DENSITY"; colorText[]={0.85,0.92,0.78,1}; };
+        class PatrolDensitySelected : ERA_RscText { idc=1117; style=1; x=0.53; y=0.590; w=0.39; h=0.016; sizeEx=0.015; text="Normal"; colorText[]={1,0.86,0.35,1}; };
+        class PatrolDensityDisabled : ERA_RscButton { idc=2800; x=0.14; y=0.609; w=0.15; h=0.026; text="Disabled"; action="guiPatrolDensityChoice=0; ctrlSetText [1117, ""Disabled""]"; };
+        class PatrolDensityLow : ERA_RscButton { idc=2801; x=0.345; y=0.609; w=0.15; h=0.026; text="Low"; action="guiPatrolDensityChoice=1; ctrlSetText [1117, ""Low""]"; };
+        class PatrolDensityNormal : ERA_RscButton { idc=2802; x=0.550; y=0.609; w=0.15; h=0.026; text="Normal"; action="guiPatrolDensityChoice=2; ctrlSetText [1117, ""Normal""]"; };
+        class PatrolDensityHigh : ERA_RscButton { idc=2803; x=0.755; y=0.609; w=0.15; h=0.026; text="High"; action="guiPatrolDensityChoice=3; ctrlSetText [1117, ""High""]"; };
+
+        class BunkersHeading : ERA_RscText { idc=-1; x=0.08; y=0.637; w=0.35; h=0.016; sizeEx=0.015; text="FORTIFIED BUNKERS"; colorText[]={0.85,0.92,0.78,1}; };
+        class BunkersSelected : ERA_RscText { idc=1113; style=1; x=0.53; y=0.637; w=0.39; h=0.016; sizeEx=0.015; text="1 bunker"; colorText[]={1,0.86,0.35,1}; };
+        class BunkersDisabled : ERA_RscButton { idc=2500; x=0.14; y=0.656; w=0.15; h=0.026; text="Disabled"; action="guiBunkerChoice=0; ctrlSetText [1113, ""Disabled""]"; };
+        class Bunkers1 : ERA_RscButton { idc=2501; x=0.345; y=0.656; w=0.15; h=0.026; text="1"; action="guiBunkerChoice=1; ctrlSetText [1113, ""1 bunker""]"; };
+        class Bunkers2 : ERA_RscButton { idc=2502; x=0.550; y=0.656; w=0.15; h=0.026; text="2"; action="guiBunkerChoice=2; ctrlSetText [1113, ""2 bunkers""]"; };
+        class Bunkers3 : ERA_RscButton { idc=2503; x=0.755; y=0.656; w=0.15; h=0.026; text="3"; action="guiBunkerChoice=3; ctrlSetText [1113, ""3 bunkers""]"; };
+
+        class TimeHeading : ERA_RscText { idc=-1; x=0.08; y=0.684; w=0.35; h=0.016; sizeEx=0.015; text="TIME OF DAY"; colorText[]={0.85,0.92,0.78,1}; };
+        class TimeSelected : ERA_RscText { idc=1107; style=1; x=0.53; y=0.684; w=0.39; h=0.016; sizeEx=0.015; text="Day 12:00"; colorText[]={1,0.86,0.35,1}; };
+        class TimeRandom : ERA_RscButton { idc=1900; x=0.13; y=0.703; w=0.12; h=0.026; text="Random"; action="guiTimeChoice=-1; ctrlSetText [1107, ""Random""]"; };
+        class TimeDawn : ERA_RscButton { idc=1901; x=0.285; y=0.703; w=0.12; h=0.026; text="Dawn"; action="guiTimeChoice=0; ctrlSetText [1107, ""Dawn 05:00""]"; };
+        class TimeDay : ERA_RscButton { idc=1902; x=0.440; y=0.703; w=0.12; h=0.026; text="Day"; action="guiTimeChoice=1; ctrlSetText [1107, ""Day 12:00""]"; };
+        class TimeDusk : ERA_RscButton { idc=1903; x=0.595; y=0.703; w=0.12; h=0.026; text="Dusk"; action="guiTimeChoice=2; ctrlSetText [1107, ""Dusk 19:00""]"; };
+        class TimeNight : ERA_RscButton { idc=1904; x=0.750; y=0.703; w=0.12; h=0.026; text="Night"; action="guiTimeChoice=3; ctrlSetText [1107, ""Night 23:00""]"; };
+
+        class WeatherHeading : ERA_RscText { idc=-1; x=0.08; y=0.731; w=0.35; h=0.016; sizeEx=0.015; text="WEATHER"; colorText[]={0.85,0.92,0.78,1}; };
+        class WeatherSelected : ERA_RscText { idc=1118; style=1; x=0.53; y=0.731; w=0.39; h=0.016; sizeEx=0.015; text="Clear"; colorText[]={1,0.86,0.35,1}; };
+        class WeatherRandom : ERA_RscButton { idc=2900; x=0.08; y=0.750; w=0.14; h=0.026; sizeEx=0.014; text="Random"; action="guiWeatherChoice=-1; ctrlSetText [1118, ""Random""]"; };
+        class WeatherClear : ERA_RscButton { idc=2901; x=0.255; y=0.750; w=0.14; h=0.026; sizeEx=0.014; text="Clear"; action="guiWeatherChoice=0; ctrlSetText [1118, ""Clear""]"; };
+        class WeatherOvercast : ERA_RscButton { idc=2902; x=0.430; y=0.750; w=0.14; h=0.026; sizeEx=0.013; text="Overcast"; action="guiWeatherChoice=1; ctrlSetText [1118, ""Overcast""]"; };
+        class WeatherStorm : ERA_RscButton { idc=2903; x=0.605; y=0.750; w=0.14; h=0.026; sizeEx=0.014; text="Storm"; action="guiWeatherChoice=2; ctrlSetText [1118, ""Storm""]"; };
+        class WeatherFog : ERA_RscButton { idc=2904; x=0.780; y=0.750; w=0.14; h=0.026; sizeEx=0.014; text="Fog"; action="guiWeatherChoice=3; ctrlSetText [1118, ""Fog""]"; };
+
+        class CiviliansHeading : ERA_RscText { idc=-1; x=0.08; y=0.778; w=0.35; h=0.016; sizeEx=0.015; text="CIVILIAN CHARACTERS"; colorText[]={0.85,0.92,0.78,1}; };
+        class CiviliansSelected : ERA_RscText { idc=1108; style=1; x=0.53; y=0.778; w=0.39; h=0.016; sizeEx=0.015; text="Present"; colorText[]={1,0.86,0.35,1}; };
+        class CiviliansPresent : ERA_RscButton { idc=2000; x=0.25; y=0.797; w=0.20; h=0.026; text="Present"; action="guiCivilianChoice=1; ctrlSetText [1108, ""Present""]"; };
+        class CiviliansRemoved : ERA_RscButton { idc=2001; x=0.55; y=0.797; w=0.20; h=0.026; text="Removed"; action="guiCivilianChoice=0; ctrlSetText [1108, ""Removed""]"; };
+
+        class LogisticsDropsHeading : ERA_RscText { idc=-1; x=0.08; y=0.825; w=0.35; h=0.016; sizeEx=0.015; text="LOGISTICS AIRDROPS"; colorText[]={0.85,0.92,0.78,1}; };
+        class LogisticsDropsSelected : ERA_RscText { idc=1115; style=1; x=0.53; y=0.825; w=0.39; h=0.016; sizeEx=0.015; text="1 airdrop"; colorText[]={1,0.86,0.35,1}; };
+        class LogisticsDrops0 : ERA_RscButton { idc=2600; x=0.14; y=0.844; w=0.15; h=0.026; text="Disabled"; action="guiLogisticsDropCount=0; ctrlSetText [1115, ""Disabled""]"; };
+        class LogisticsDrops1 : ERA_RscButton { idc=2601; x=0.345; y=0.844; w=0.15; h=0.026; text="1"; action="guiLogisticsDropCount=1; ctrlSetText [1115, ""1 airdrop""]"; };
+        class LogisticsDrops2 : ERA_RscButton { idc=2602; x=0.550; y=0.844; w=0.15; h=0.026; text="2"; action="guiLogisticsDropCount=2; ctrlSetText [1115, ""2 airdrops""]"; };
+        class LogisticsDrops3 : ERA_RscButton { idc=2603; x=0.755; y=0.844; w=0.15; h=0.026; text="3"; action="guiLogisticsDropCount=3; ctrlSetText [1115, ""3 airdrops""]"; };
+
+        class EnemySkillHeading : ERA_RscText { idc=-1; x=0.08; y=0.872; w=0.35; h=0.016; sizeEx=0.015; text="ENEMY AI SKILL"; colorText[]={0.85,0.92,0.78,1}; };
+        class EnemySkillSelected : ERA_RscText { idc=1119; style=1; x=0.53; y=0.872; w=0.39; h=0.016; sizeEx=0.015; text="Recruit - 0.35"; colorText[]={1,0.86,0.35,1}; };
+        class EnemySkillRecruit : ERA_RscButton { idc=3000; x=0.14; y=0.891; w=0.15; h=0.026; sizeEx=0.014; text="Recruit"; action="guiEnemySkillChoice=0; ctrlSetText [1119, ""Recruit - 0.35""]"; };
+        class EnemySkillRegular : ERA_RscButton { idc=3001; x=0.345; y=0.891; w=0.15; h=0.026; sizeEx=0.014; text="Regular"; action="guiEnemySkillChoice=1; ctrlSetText [1119, ""Regular - 0.55""]"; };
+        class EnemySkillVeteran : ERA_RscButton { idc=3002; x=0.550; y=0.891; w=0.15; h=0.026; sizeEx=0.014; text="Veteran"; action="guiEnemySkillChoice=2; ctrlSetText [1119, ""Veteran - 0.70""]"; };
+        class EnemySkillElite : ERA_RscButton { idc=3003; x=0.755; y=0.891; w=0.15; h=0.026; sizeEx=0.014; text="Elite"; action="guiEnemySkillChoice=3; ctrlSetText [1119, ""Elite - 0.85""]"; };
+
+        class DebugHeading : ERA_RscText { idc=-1; x=0.08; y=0.923; w=0.10; h=0.014; sizeEx=0.012; text="DEBUG"; colorText[]={0.85,0.92,0.78,1}; };
+        class DebugSelected : ERA_RscText { idc=1109; style=1; x=0.18; y=0.923; w=0.12; h=0.014; sizeEx=0.012; text="Disabled"; colorText[]={1,0.86,0.35,1}; };
+        class DebugDisabled : ERA_RscButton { idc=2100; x=0.31; y=0.919; w=0.10; h=0.024; sizeEx=0.012; text="OFF"; action="guiDebugChoice=0; ctrlSetText [1109, ""Disabled""]"; };
+        class DebugEnabled : ERA_RscButton { idc=2101; x=0.425; y=0.919; w=0.10; h=0.024; sizeEx=0.012; text="ON"; action="guiDebugChoice=1; ctrlSetText [1109, ""Enabled""]"; };
+        class MissionSettings : ERA_RscButton { idc=1701; x=0.56; y=0.916; w=0.17; h=0.034; sizeEx=0.016; text="MISSION SETTINGS"; action="missionSettingsMenuRequested=true; closeDialog 1"; };
+        class Launch : ERA_RscButton { idc=1700; x=0.75; y=0.916; w=0.17; h=0.034; sizeEx=0.017; text="LAUNCH"; colorBackground[]={0.18,0.34,0.18,1}; colorBackgroundActive[]={0.30,0.55,0.30,1}; colorFocused[]={0.30,0.55,0.30,1}; action="mpLaunchRequested=true; closeDialog 1"; };
+        class Note1 : ERA_RscText { idc=-1; style=2; x=0.06; y=0.955; w=0.88; h=0.014; sizeEx=0.011; text="Enemy AI skill applies to infantry, defenders, patrols, vehicle crews, reinforcements and pilots."; colorText[]={0.70,0.73,0.75,1}; };
+        class EscapeNote : ERA_RscText { idc=-1; style=2; x=0.08; y=0.980; w=0.84; h=0.014; sizeEx=0.011; text="Only the squad-leader slot can launch the operation."; colorText[]={0.52,0.55,0.58,1}; };
+    };
+};
+
+
+class ERA_MissionSettingsDialog
+{
+    idd=7140; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.16; y=0.20; w=0.68; h=0.56; text=""; colorBackground[]={0.02,0.03,0.04,0.97}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.22; y=0.235; w=0.56; h=0.050; sizeEx=0.030; text="MISSION SETTINGS"; colorText[]={0.85,0.92,0.78,1}; };
+        class Note : ERA_RscText { idc=-1; style=2; x=0.20; y=0.290; w=0.60; h=0.040; sizeEx=0.015; text="These settings apply to every player for this operation."; colorText[]={0.72,0.75,0.77,1}; };
+
+        class ArsenalLabel : ERA_RscText { idc=-1; x=0.22; y=0.355; w=0.27; h=0.030; sizeEx=0.019; text="WW4 ARSENAL"; colorText[]={0.85,0.92,0.78,1}; };
+        class ArsenalState : ERA_RscText { idc=4320; style=2; x=0.49; y=0.355; w=0.16; h=0.030; sizeEx=0.018; text="Enabled"; colorText[]={1,0.86,0.35,1}; };
+        class ArsenalOn : ERA_RscButton { idc=4321; x=0.66; y=0.350; w=0.075; h=0.040; sizeEx=0.016; text="ON"; action="guiArsenalEnabled=true; ctrlSetText [4320, ""Enabled""]"; };
+        class ArsenalOff : ERA_RscButton { idc=4322; x=0.745; y=0.350; w=0.075; h=0.040; sizeEx=0.016; text="OFF"; action="guiArsenalEnabled=false; ctrlSetText [4320, ""Disabled""]"; };
+
+        class FReviveLabel : ERA_RscText { idc=-1; x=0.22; y=0.435; w=0.27; h=0.030; sizeEx=0.019; text="FREVIVE"; colorText[]={0.85,0.92,0.78,1}; };
+        class FReviveState : ERA_RscText { idc=4330; style=2; x=0.49; y=0.435; w=0.16; h=0.030; sizeEx=0.018; text="Enabled"; colorText[]={1,0.86,0.35,1}; };
+        class FReviveOn : ERA_RscButton { idc=4331; x=0.66; y=0.430; w=0.075; h=0.040; sizeEx=0.016; text="ON"; action="guiFReviveEnabled=true; ctrlSetText [4330, ""Enabled""]"; };
+        class FReviveOff : ERA_RscButton { idc=4332; x=0.745; y=0.430; w=0.075; h=0.040; sizeEx=0.016; text="OFF"; action="guiFReviveEnabled=false; ctrlSetText [4330, ""Disabled""]"; };
+
+        class MusicLabel : ERA_RscText { idc=-1; x=0.22; y=0.515; w=0.27; h=0.030; sizeEx=0.019; text="MISSION MUSIC"; colorText[]={0.85,0.92,0.78,1}; };
+        class MusicState : ERA_RscText { idc=4350; style=2; x=0.49; y=0.515; w=0.16; h=0.030; sizeEx=0.018; text="Enabled"; colorText[]={1,0.86,0.35,1}; };
+        class MusicOn : ERA_RscButton { idc=4351; x=0.66; y=0.510; w=0.075; h=0.040; sizeEx=0.016; text="ON"; action="guiMusicEnabled=true; ctrlSetText [4350, ""Enabled""]"; };
+        class MusicOff : ERA_RscButton { idc=4352; x=0.745; y=0.510; w=0.075; h=0.040; sizeEx=0.016; text="OFF"; action="guiMusicEnabled=false; ctrlSetText [4350, ""Disabled""]"; };
+
+        class FReviveNote : ERA_RscText { idc=-1; style=2; x=0.20; y=0.575; w=0.60; h=0.045; sizeEx=0.013; text="FRevive OFF uses the mission's normal instant respawn and removes incapacitation/revival."; colorText[]={0.72,0.75,0.77,1}; };
+        class Done : ERA_RscButton { idc=4360; x=0.34; y=0.650; w=0.32; h=0.060; sizeEx=0.022; text="DONE"; colorBackground[]={0.18,0.34,0.18,1}; colorBackgroundActive[]={0.30,0.55,0.30,1}; action="missionSettingsMenuDone=true; closeDialog 1"; };
+    };
+};
+
+
+class ERA_ObjectiveTypeDialog
+{
+    idd=7150; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.08; y=0.10; w=0.84; h=0.80; text=""; colorBackground[]={0.02,0.03,0.04,0.97}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.14; y=0.13; w=0.72; h=0.05; sizeEx=0.030; text="SELECT OBJECTIVE TYPES"; colorText[]={0.85,0.92,0.78,1}; };
+        class Note : ERA_RscText { idc=-1; style=2; x=0.14; y=0.185; w=0.72; h=0.038; sizeEx=0.016; text="Each active objective is randomly chosen from the enabled types."; colorText[]={0.72,0.75,0.77,1}; };
+        class Mode : ERA_RscText { idc=4110; style=2; x=0.20; y=0.230; w=0.60; h=0.028; sizeEx=0.019; text="Mode: Random / all 10 types"; colorText[]={1,0.86,0.35,1}; };
+        class RandomAll : ERA_RscButton { idc=4120; x=0.31; y=0.270; w=0.38; h=0.042; sizeEx=0.019; text="RANDOM - ENABLE ALL"; action="objectiveTypeToggleIndex=-1"; };
+        class Type0 : ERA_RscButton { idc=4100; x=0.15; y=0.335; w=0.32; h=0.052; sizeEx=0.017; text="[X] Clear Area"; action="objectiveTypeToggleIndex=0"; };
+        class Type1 : ERA_RscButton { idc=4101; x=0.53; y=0.335; w=0.32; h=0.052; sizeEx=0.017; text="[X] Destroy Strategic Target"; action="objectiveTypeToggleIndex=1"; };
+        class Type2 : ERA_RscButton { idc=4102; x=0.15; y=0.405; w=0.32; h=0.052; sizeEx=0.017; text="[X] Collect Intel"; action="objectiveTypeToggleIndex=2"; };
+        class Type3 : ERA_RscButton { idc=4103; x=0.53; y=0.405; w=0.32; h=0.052; sizeEx=0.017; text="[X] Destroy Ammo Box"; action="objectiveTypeToggleIndex=3"; };
+        class Type4 : ERA_RscButton { idc=4104; x=0.15; y=0.475; w=0.32; h=0.052; sizeEx=0.017; text="[X] Destroy Communications"; action="objectiveTypeToggleIndex=4"; };
+        class Type5 : ERA_RscButton { idc=4105; x=0.53; y=0.475; w=0.32; h=0.052; sizeEx=0.017; text="[X] Neutralize Artillery"; action="objectiveTypeToggleIndex=5"; };
+        class Type6 : ERA_RscButton { idc=4106; x=0.15; y=0.545; w=0.32; h=0.052; sizeEx=0.017; text="[X] Destroy Fuel Depot"; action="objectiveTypeToggleIndex=6"; };
+        class Type7 : ERA_RscButton { idc=4107; x=0.53; y=0.545; w=0.32; h=0.052; sizeEx=0.017; text="[X] Save Civilians"; action="objectiveTypeToggleIndex=7"; };
+        class Type8 : ERA_RscButton { idc=4108; x=0.15; y=0.615; w=0.32; h=0.052; sizeEx=0.017; text="[X] Steal a Vehicle"; action="objectiveTypeToggleIndex=8"; };
+        class Type9 : ERA_RscButton { idc=4109; x=0.53; y=0.615; w=0.32; h=0.052; sizeEx=0.015; text="[X] Recover Downed Pilot"; action="objectiveTypeToggleIndex=9"; };
+        class Warning : ERA_RscText { idc=-1; style=2; x=0.16; y=0.682; w=0.68; h=0.040; sizeEx=0.015; text="At least one type must remain enabled. Selecting one type makes every objective use it."; colorText[]={0.72,0.75,0.77,1}; };
+        class Done : ERA_RscButton { idc=4130; x=0.34; y=0.750; w=0.32; h=0.056; sizeEx=0.022; text="DONE"; colorBackground[]={0.18,0.34,0.18,1}; colorBackgroundActive[]={0.30,0.55,0.30,1}; action="objectiveTypeMenuDone=true; closeDialog 1"; };
+    };
+};
+
+
+class ERA_LogisticsDropDialog
+{
+    idd=7160; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.08; y=0.25; w=0.84; h=0.50; text=""; colorBackground[]={0.02,0.03,0.04,0.97}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.14; y=0.285; w=0.72; h=0.050; sizeEx=0.030; text="REQUEST LOGISTICS HELIDROP"; colorText[]={0.85,0.92,0.78,1}; };
+        class Note : ERA_RscText { idc=4210; style=2; x=0.14; y=0.345; w=0.72; h=0.050; sizeEx=0.017; text="Delivery will land near the squad leader's current position."; colorText[]={0.72,0.75,0.77,1}; };
+        class Jeep : ERA_RscButton { idc=4201; x=0.13; y=0.445; w=0.22; h=0.070; sizeEx=0.022; text="JEEP"; action="logisticsDropMenuChoice=1; logisticsDropMenuDone=true; closeDialog 1"; };
+        class HMMWV : ERA_RscButton { idc=4202; x=0.39; y=0.445; w=0.22; h=0.070; sizeEx=0.022; text="HMMWV"; action="logisticsDropMenuChoice=2; logisticsDropMenuDone=true; closeDialog 1"; };
+        class AmmoBox : ERA_RscButton { idc=4203; x=0.65; y=0.445; w=0.22; h=0.070; sizeEx=0.022; text="AMMO BOX"; action="logisticsDropMenuChoice=3; logisticsDropMenuDone=true; closeDialog 1"; };
+        class Cancel : ERA_RscButton { idc=4209; x=0.36; y=0.610; w=0.28; h=0.052; sizeEx=0.020; text="CANCEL"; action="logisticsDropMenuCancelled=true; closeDialog 1"; };
+    };
+};
+
+class ERA_AirTargetDialog1
+{
+    idd=7201; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.05; y=0.31; w=0.90; h=0.34; text=""; colorBackground[]={0.02,0.03,0.04,0.96}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.15; y=0.345; w=0.70; h=0.050; sizeEx=0.032; text="SELECT AIR SUPPORT TARGET"; colorText[]={0.85,0.92,0.78,1}; };
+        class Note : ERA_RscText { idc=-1; style=2; x=0.15; y=0.405; w=0.70; h=0.036; sizeEx=0.020; text="Choose an active numbered objective marker."; colorText[]={0.75,0.78,0.80,1}; };
+        class Target1 : ERA_RscButton { idc=3101; x=0.390; y=0.49; w=0.220; h=0.060; sizeEx=0.024; text="OBJECTIVE 1"; action="airSupportTarget=1; airSupportTargetChosen=true; closeDialog 1"; };
+        class Cancel : ERA_RscButton { idc=3109; x=0.39; y=0.575; w=0.22; h=0.044; text="CANCEL"; action="closeDialog 1"; };
+    };
+};
+
+class ERA_AirTargetDialog2
+{
+    idd=7202; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.05; y=0.31; w=0.90; h=0.34; text=""; colorBackground[]={0.02,0.03,0.04,0.96}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.15; y=0.345; w=0.70; h=0.050; sizeEx=0.032; text="SELECT AIR SUPPORT TARGET"; colorText[]={0.85,0.92,0.78,1}; };
+        class Note : ERA_RscText { idc=-1; style=2; x=0.15; y=0.405; w=0.70; h=0.036; sizeEx=0.020; text="Choose an active numbered objective marker."; colorText[]={0.75,0.78,0.80,1}; };
+        class Target1 : ERA_RscButton { idc=3201; x=0.270; y=0.49; w=0.200; h=0.060; sizeEx=0.024; text="OBJECTIVE 1"; action="airSupportTarget=1; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target2 : ERA_RscButton { idc=3202; x=0.530; y=0.49; w=0.200; h=0.060; sizeEx=0.024; text="OBJECTIVE 2"; action="airSupportTarget=2; airSupportTargetChosen=true; closeDialog 1"; };
+        class Cancel : ERA_RscButton { idc=3209; x=0.39; y=0.575; w=0.22; h=0.044; text="CANCEL"; action="closeDialog 1"; };
+    };
+};
+
+class ERA_AirTargetDialog3
+{
+    idd=7203; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.05; y=0.31; w=0.90; h=0.34; text=""; colorBackground[]={0.02,0.03,0.04,0.96}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.15; y=0.345; w=0.70; h=0.050; sizeEx=0.032; text="SELECT AIR SUPPORT TARGET"; colorText[]={0.85,0.92,0.78,1}; };
+        class Note : ERA_RscText { idc=-1; style=2; x=0.15; y=0.405; w=0.70; h=0.036; sizeEx=0.020; text="Choose an active numbered objective marker."; colorText[]={0.75,0.78,0.80,1}; };
+        class Target1 : ERA_RscButton { idc=3301; x=0.170; y=0.49; w=0.200; h=0.060; sizeEx=0.024; text="OBJECTIVE 1"; action="airSupportTarget=1; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target2 : ERA_RscButton { idc=3302; x=0.400; y=0.49; w=0.200; h=0.060; sizeEx=0.024; text="OBJECTIVE 2"; action="airSupportTarget=2; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target3 : ERA_RscButton { idc=3303; x=0.630; y=0.49; w=0.200; h=0.060; sizeEx=0.024; text="OBJECTIVE 3"; action="airSupportTarget=3; airSupportTargetChosen=true; closeDialog 1"; };
+        class Cancel : ERA_RscButton { idc=3309; x=0.39; y=0.575; w=0.22; h=0.044; text="CANCEL"; action="closeDialog 1"; };
+    };
+};
+
+class ERA_AirTargetDialog4
+{
+    idd=7204; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.05; y=0.31; w=0.90; h=0.34; text=""; colorBackground[]={0.02,0.03,0.04,0.96}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.15; y=0.345; w=0.70; h=0.050; sizeEx=0.032; text="SELECT AIR SUPPORT TARGET"; colorText[]={0.85,0.92,0.78,1}; };
+        class Note : ERA_RscText { idc=-1; style=2; x=0.15; y=0.405; w=0.70; h=0.036; sizeEx=0.020; text="Choose an active numbered objective marker."; colorText[]={0.75,0.78,0.80,1}; };
+        class Target1 : ERA_RscButton { idc=3401; x=0.150; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 1"; action="airSupportTarget=1; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target2 : ERA_RscButton { idc=3402; x=0.340; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 2"; action="airSupportTarget=2; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target3 : ERA_RscButton { idc=3403; x=0.530; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 3"; action="airSupportTarget=3; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target4 : ERA_RscButton { idc=3404; x=0.720; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 4"; action="airSupportTarget=4; airSupportTargetChosen=true; closeDialog 1"; };
+        class Cancel : ERA_RscButton { idc=3409; x=0.39; y=0.575; w=0.22; h=0.044; text="CANCEL"; action="closeDialog 1"; };
+    };
+};
+
+class ERA_AirTargetDialog5
+{
+    idd=7205; movingEnable=0;
+    class controls
+    {
+        class Background : ERA_RscText { idc=-1; x=0.05; y=0.31; w=0.90; h=0.34; text=""; colorBackground[]={0.02,0.03,0.04,0.96}; };
+        class Title : ERA_RscText { idc=-1; style=2; x=0.15; y=0.345; w=0.70; h=0.050; sizeEx=0.032; text="SELECT AIR SUPPORT TARGET"; colorText[]={0.85,0.92,0.78,1}; };
+        class Note : ERA_RscText { idc=-1; style=2; x=0.15; y=0.405; w=0.70; h=0.036; sizeEx=0.020; text="Choose an active numbered objective marker."; colorText[]={0.75,0.78,0.80,1}; };
+        class Target1 : ERA_RscButton { idc=3501; x=0.080; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 1"; action="airSupportTarget=1; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target2 : ERA_RscButton { idc=3502; x=0.255; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 2"; action="airSupportTarget=2; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target3 : ERA_RscButton { idc=3503; x=0.430; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 3"; action="airSupportTarget=3; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target4 : ERA_RscButton { idc=3504; x=0.605; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 4"; action="airSupportTarget=4; airSupportTargetChosen=true; closeDialog 1"; };
+        class Target5 : ERA_RscButton { idc=3505; x=0.780; y=0.49; w=0.140; h=0.060; sizeEx=0.024; text="OBJECTIVE 5"; action="airSupportTarget=5; airSupportTargetChosen=true; closeDialog 1"; };
+        class Cancel : ERA_RscButton { idc=3509; x=0.39; y=0.575; w=0.22; h=0.044; text="CANCEL"; action="closeDialog 1"; };
+    };
+};

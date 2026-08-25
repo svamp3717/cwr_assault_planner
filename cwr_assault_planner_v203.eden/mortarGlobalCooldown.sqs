@@ -1,0 +1,4 @@
+; v145: global artillery-rate limiter. At most one battery may begin a salvo in this interval.
+~35
+mortarGlobalReady = true
+exit

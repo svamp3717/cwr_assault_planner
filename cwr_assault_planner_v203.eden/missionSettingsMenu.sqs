@@ -1,0 +1,19 @@
+; v188 mission-settings subdialog for the startup planner.
+missionSettingsMenuDone = false
+_ok = createDialog "ERA_MissionSettingsDialog"
+? !(_ok) : missionSettingsMenuComplete = true; exit
+
+ctrlSetText [4320, "Enabled"]
+? !(guiArsenalEnabled) : ctrlSetText [4320, "Disabled"]
+ctrlSetText [4330, "Enabled"]
+? !(guiFReviveEnabled) : ctrlSetText [4330, "Disabled"]
+ctrlSetText [4350, "Enabled"]
+? !(guiMusicEnabled) : ctrlSetText [4350, "Disabled"]
+
+#waitDialog
+~0.1
+? missionSettingsMenuDone : goto "done"
+? dialog : goto "waitDialog"
+#done
+missionSettingsMenuComplete = true
+exit

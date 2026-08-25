@@ -1,0 +1,43 @@
+; v146 objective-type selector submenu.
+objectiveTypeMenuComplete = false
+objectiveTypeMenuDone = false
+_ok = createDialog "ERA_ObjectiveTypeDialog"
+? _ok : goto "menuOpen"
+objectiveTypeMenuComplete = true
+exit
+#menuOpen
+objectiveTypeToggleIndex = -2
+~0.1
+[] exec "objectiveTypeRefresh.sqs"
+#menuWait
+~0.1
+? objectiveTypeToggleIndex != -2 && !(objectiveTypeToggleBusy) : [] exec "objectiveTypeToggle.sqs"
+? dialog : goto "menuWait"
+_count = 0
+? guiObjectiveType0 : _count = _count + 1
+? guiObjectiveType1 : _count = _count + 1
+? guiObjectiveType2 : _count = _count + 1
+? guiObjectiveType3 : _count = _count + 1
+? guiObjectiveType4 : _count = _count + 1
+? guiObjectiveType5 : _count = _count + 1
+? guiObjectiveType6 : _count = _count + 1
+? guiObjectiveType7 : _count = _count + 1
+? guiObjectiveType8 : _count = _count + 1
+? guiObjectiveType9 : _count = _count + 1
+? _count > 0 : goto "menuValid"
+guiObjectiveTypesRandom = true
+guiObjectiveType0 = true
+guiObjectiveType1 = true
+guiObjectiveType2 = true
+guiObjectiveType3 = true
+guiObjectiveType4 = true
+guiObjectiveType5 = true
+guiObjectiveType6 = true
+guiObjectiveType7 = true
+guiObjectiveType8 = true
+guiObjectiveType9 = true
+#menuValid
+guiObjectiveTypeModeLabel = "Custom"
+? guiObjectiveTypesRandom : guiObjectiveTypeModeLabel = "Random"
+objectiveTypeMenuComplete = true
+exit

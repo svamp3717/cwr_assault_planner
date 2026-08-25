@@ -1,0 +1,69 @@
+; custom v203: monitor one Recover Downed Pilot objective and remove the pilot after he reaches safety.
+_slot = _this select 0
+_pilot = objNull
+_destX = 0
+_destY = 0
+? _slot == 1 : _pilot = objectivePilotUnit1; _destX = objectivePilotDestinationX1; _destY = objectivePilotDestinationY1
+? _slot == 2 : _pilot = objectivePilotUnit2; _destX = objectivePilotDestinationX2; _destY = objectivePilotDestinationY2
+? _slot == 3 : _pilot = objectivePilotUnit3; _destX = objectivePilotDestinationX3; _destY = objectivePilotDestinationY3
+? _slot == 4 : _pilot = objectivePilotUnit4; _destX = objectivePilotDestinationX4; _destY = objectivePilotDestinationY4
+? _slot == 5 : _pilot = objectivePilotUnit5; _destX = objectivePilotDestinationX5; _destY = objectivePilotDestinationY5
+#loop
+~2
+? missionEnded : exit
+_done = false
+? _slot == 1 : _done = objective1Done
+? _slot == 2 : _done = objective2Done
+? _slot == 3 : _done = objective3Done
+? _slot == 4 : _done = objective4Done
+? _slot == 5 : _done = objective5Done
+? _done : exit
+? isNull _pilot : goto "loop"
+? !(alive _pilot) : goto "failed"
+_p = getPos _pilot
+_dx = (_p select 0) - _destX
+_dy = (_p select 1) - _destY
+? ((_dx * _dx) + (_dy * _dy)) > 14400 : goto "loop"
+? _slot == 1 : objectivePilotReady1 = true; objectivePilotFollowing1 = false; objectivePilotFollowTarget1 = objNull
+? _slot == 2 : objectivePilotReady2 = true; objectivePilotFollowing2 = false; objectivePilotFollowTarget2 = objNull
+? _slot == 3 : objectivePilotReady3 = true; objectivePilotFollowing3 = false; objectivePilotFollowTarget3 = objNull
+? _slot == 4 : objectivePilotReady4 = true; objectivePilotFollowing4 = false; objectivePilotFollowTarget4 = objNull
+? _slot == 5 : objectivePilotReady5 = true; objectivePilotFollowing5 = false; objectivePilotFollowTarget5 = objNull
+_pilot setCaptive true
+doStop _pilot
+unassignVehicle _pilot
+deleteVehicle _pilot
+_marker = "pilot_marker_1"
+? _slot == 2 : _marker = "pilot_marker_2"
+? _slot == 3 : _marker = "pilot_marker_3"
+? _slot == 4 : _marker = "pilot_marker_4"
+? _slot == 5 : _marker = "pilot_marker_5"
+_marker setMarkerColor "ColorGreen"
+_marker setMarkerText "DOWNED PILOT SECURED"
+? debugMode : debugLog format ["ERA DEBUG PILOT SECURED: objective=%1",_slot]
+exit
+#failed
+? _slot == 1 : objectivePilotFailed1 = true
+? _slot == 2 : objectivePilotFailed2 = true
+? _slot == 3 : objectivePilotFailed3 = true
+? _slot == 4 : objectivePilotFailed4 = true
+? _slot == 5 : objectivePilotFailed5 = true
+_marker = "pilot_marker_1"
+? _slot == 2 : _marker = "pilot_marker_2"
+? _slot == 3 : _marker = "pilot_marker_3"
+? _slot == 4 : _marker = "pilot_marker_4"
+? _slot == 5 : _marker = "pilot_marker_5"
+_marker setMarkerColor "ColorRed"
+_marker setMarkerText "DOWNED PILOT KILLED"
+missionWin = false
+missionLose = true
+missionEnded = true
+mpHQMessage = format ["HQ: The downed pilot at Objective %1 has been killed. Operation failed.",_slot]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "missionWin"
+publicVariable "missionLose"
+publicVariable "missionEnded"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? debugMode : debugLog format ["ERA DEBUG PILOT FAILED: objective=%1",_slot]
+exit

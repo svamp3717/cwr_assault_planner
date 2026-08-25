@@ -1,0 +1,370 @@
+; custom v203 server-only Chinook extraction. The LZ is placed at the Radio Bravo caller position; legacy objective offset is only a fallback.
+? !(isServer) : exit
+? missionEnded : exit
+
+; Select the last active objective as the extraction reference point.
+_finalX = primaryX
+_finalY = primaryY
+_finalLabel = townLabel
+? townCount == 2 : _finalX = secondaryX
+? townCount == 2 : _finalY = secondaryY
+? townCount == 2 : _finalLabel = secondaryLabel
+? townCount == 3 : _finalX = thirdX
+? townCount == 3 : _finalY = thirdY
+? townCount == 3 : _finalLabel = thirdLabel
+? townCount == 4 : _finalX = fourthX
+? townCount == 4 : _finalY = fourthY
+? townCount == 4 : _finalLabel = fourthLabel
+? townCount == 5 : _finalX = fifthX
+? townCount == 5 : _finalY = fifthY
+? townCount == 5 : _finalLabel = fifthLabel
+
+; Put the pickup point where Radio Bravo was used. Players can call from a clearing instead of trusting the helicopter to negotiate a forest.
+extractionX = mpExtractionRequestX
+extractionY = mpExtractionRequestY
+? extractionX == 0 && extractionY == 0 : goto "legacyExtractionPosition"
+extractionLabel = "Extraction at request position"
+goto "extractionPositionReady"
+#legacyExtractionPosition
+_extractOffX = approachOffsetX * 2
+_extractOffY = approachOffsetY * 2
+? _extractOffX == 0 && _extractOffY == 0 : _extractOffX = 320
+? _extractOffX == 320 && _extractOffY == 0 : _extractOffY = 180
+extractionX = _finalX + _extractOffX
+extractionY = _finalY + _extractOffY
+extractionLabel = format ["Extraction near %1", _finalLabel]
+#extractionPositionReady
+
+; Reset arrival acknowledgements before publishing the LZ.
+mpExtractArrivedPlr = false
+mpExtractArrivedRed2 = false
+mpExtractArrivedRed3 = false
+mpExtractArrivedMedic1 = false
+mpExtractArrivedMedic2 = false
+mpExtractArrivedRed6 = false
+mpExtractArrivedRed7 = false
+mpExtractArrivedRed8 = false
+mpExtractArrivedRed9 = false
+mpExtractArrivedRed10 = false
+mpExtractArrivedRed11 = false
+mpExtractArrivedRed12 = false
+
+? !(isNull extractPad) : deleteVehicle extractPad
+extractPad = "HeliHEmpty" createVehicle [extractionX, extractionY, 0]
+"extraction_marker" setMarkerPos [extractionX, extractionY, 0]
+"extraction_marker" setMarkerType "Flag"
+"extraction_marker" setMarkerColor "ColorGreen"
+"extraction_marker" setMarkerText "FINAL EXTRACTION"
+
+extractionLZReady = true
+mpHQMessage = "HQ: Final extraction inbound at the Radio Bravo request position. Clear the marked LZ and board the Chinook."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "extractionX"
+publicVariable "extractionY"
+publicVariable "extractionLabel"
+publicVariable "extractionLZReady"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+
+; Create the final extraction Chinook only after Radio Bravo is accepted.
+extractHeli = objNull
+extractionVehicleSpawnComplete = false
+["Ch47D", 10880, 11520, 70] exec "friendlyRuntimeExtractionVehicleOne.sqs"
+@ extractionVehicleSpawnComplete
+extractHeli = extractionVehicleSpawned
+publicVariable "extractHeli"
+? isNull extractHeli : goto "crash"
+? isNull (driver extractHeli) : goto "crash"
+
+; Spin up on the ground before airborne staging. Runtime aircraft do not inherit editor FLY state.
+extractHeli lock false
+extractHeli setDammage 0
+extractHeli setFuel 1
+extractHeli setPos [10880, 11520, 0.6]
+extractHeli setDir 315
+extractHeli setVelocity [0,0,0]
+extractHeli engineOn true
+(driver extractHeli) stop false
+(group (driver extractHeli)) setBehaviour "CARELESS"
+(group (driver extractHeli)) setCombatMode "BLUE"
+~8
+? !(alive extractHeli) : goto "crash"
+? isNull (driver extractHeli) : goto "crash"
+? !(alive (driver extractHeli)) : goto "crash"
+
+_stageX = extractionX + 1500
+_stageY = extractionY - 1500
+extractHeli setDir 315
+extractHeli setPos [_stageX, _stageY, 140]
+extractHeli setVelocity [-28,28,6]
+extractHeli flyInHeight 100
+(driver extractHeli) doMove [extractionX, extractionY, 0]
+
+_approachTicks = 0
+#approach
+~2
+? missionEnded : exit
+? !(alive extractHeli) : goto "crash"
+? getDammage extractHeli > 0.85 : goto "crash"
+? isNull (driver extractHeli) : goto "crash"
+? !(alive (driver extractHeli)) : goto "crash"
+_hx = getPos extractHeli select 0
+_hy = getPos extractHeli select 1
+? _hx > extractionX - 140 && _hx < extractionX + 140 && _hy > extractionY - 140 && _hy < extractionY + 140 : goto "land"
+_approachTicks = _approachTicks + 1
+? _approachTicks > 90 : goto "forcedLanding"
+goto "approach"
+
+#land
+extractHeli flyInHeight 0
+(driver extractHeli) doMove [extractionX, extractionY, 0]
+~2
+extractHeli land "GET IN"
+_landingTicks = 0
+#landingWait
+~2
+? missionEnded : exit
+? !(alive extractHeli) : goto "crash"
+? getDammage extractHeli > 0.85 : goto "crash"
+? isNull (driver extractHeli) : goto "crash"
+? !(alive (driver extractHeli)) : goto "crash"
+_hz = getPos extractHeli select 2
+? _hz < 4 : goto "landed"
+_landingTicks = _landingTicks + 1
+? _landingTicks > 45 : goto "forcedLanding"
+extractHeli land "GET IN"
+goto "landingWait"
+
+#forcedLanding
+; Last-resort stabilisation for old AI pilots that orbit or descend badly.
+? !(alive extractHeli) : goto "crash"
+? isNull (driver extractHeli) : goto "crash"
+? !(alive (driver extractHeli)) : goto "crash"
+extractHeli setDammage 0
+extractHeli setFuel 1
+extractHeli setPos [extractionX, extractionY, 0.8]
+extractHeli setVelocity [0,0,0]
+extractHeli flyInHeight 0
+extractHeli land "GET IN"
+~2
+goto "landed"
+
+#landed
+extractionLanded = true
+mpHQMessage = "HQ: Chinook is on the extraction LZ. All active squad members must board."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "extractionLanded"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+
+#boarding
+~2
+? missionEnded : exit
+? !(alive extractHeli) : goto "crash"
+? getDammage extractHeli > 0.85 : goto "crash"
+? isNull (driver extractHeli) : goto "crash"
+? !(alive (driver extractHeli)) : goto "crash"
+
+; Keep the aircraft centred and almost grounded while boarding.
+_hx = getPos extractHeli select 0
+_hy = getPos extractHeli select 1
+_hz = getPos extractHeli select 2
+? _hx < extractionX - 35 || _hx > extractionX + 35 || _hy < extractionY - 35 || _hy > extractionY + 35 || _hz > 4 : extractHeli setPos [extractionX, extractionY, 0.8]
+? _hx < extractionX - 35 || _hx > extractionX + 35 || _hy < extractionY - 35 || _hy > extractionY + 35 || _hz > 4 : extractHeli setVelocity [0,0,0]
+extractHeli land "GET IN"
+
+; Server-local surviving AI are ordered aboard. Human players receive local cargo assignment separately.
+? "plr" in mpFReviveNames && alive plr && local plr && (getPos plr select 2) < 7000 && vehicle plr != extractHeli : plr assignAsCargo extractHeli
+? "plr" in mpFReviveNames && alive plr && local plr && (getPos plr select 2) < 7000 && vehicle plr != extractHeli : [plr] orderGetIn true
+? "red2" in mpFReviveNames && alive red2 && local red2 && (getPos red2 select 2) < 7000 && vehicle red2 != extractHeli : red2 assignAsCargo extractHeli
+? "red2" in mpFReviveNames && alive red2 && local red2 && (getPos red2 select 2) < 7000 && vehicle red2 != extractHeli : [red2] orderGetIn true
+? "red3" in mpFReviveNames && alive red3 && local red3 && (getPos red3 select 2) < 7000 && vehicle red3 != extractHeli : red3 assignAsCargo extractHeli
+? "red3" in mpFReviveNames && alive red3 && local red3 && (getPos red3 select 2) < 7000 && vehicle red3 != extractHeli : [red3] orderGetIn true
+? "medic1" in mpFReviveNames && alive medic1 && local medic1 && (getPos medic1 select 2) < 7000 && vehicle medic1 != extractHeli : medic1 assignAsCargo extractHeli
+? "medic1" in mpFReviveNames && alive medic1 && local medic1 && (getPos medic1 select 2) < 7000 && vehicle medic1 != extractHeli : [medic1] orderGetIn true
+? "medic2" in mpFReviveNames && alive medic2 && local medic2 && (getPos medic2 select 2) < 7000 && vehicle medic2 != extractHeli : medic2 assignAsCargo extractHeli
+? "medic2" in mpFReviveNames && alive medic2 && local medic2 && (getPos medic2 select 2) < 7000 && vehicle medic2 != extractHeli : [medic2] orderGetIn true
+? "red6" in mpFReviveNames && alive red6 && local red6 && (getPos red6 select 2) < 7000 && vehicle red6 != extractHeli : red6 assignAsCargo extractHeli
+? "red6" in mpFReviveNames && alive red6 && local red6 && (getPos red6 select 2) < 7000 && vehicle red6 != extractHeli : [red6] orderGetIn true
+? "red7" in mpFReviveNames && alive red7 && local red7 && (getPos red7 select 2) < 7000 && vehicle red7 != extractHeli : red7 assignAsCargo extractHeli
+? "red7" in mpFReviveNames && alive red7 && local red7 && (getPos red7 select 2) < 7000 && vehicle red7 != extractHeli : [red7] orderGetIn true
+? "red8" in mpFReviveNames && alive red8 && local red8 && (getPos red8 select 2) < 7000 && vehicle red8 != extractHeli : red8 assignAsCargo extractHeli
+? "red8" in mpFReviveNames && alive red8 && local red8 && (getPos red8 select 2) < 7000 && vehicle red8 != extractHeli : [red8] orderGetIn true
+? "red9" in mpFReviveNames && alive red9 && local red9 && (getPos red9 select 2) < 7000 && vehicle red9 != extractHeli : red9 assignAsCargo extractHeli
+? "red9" in mpFReviveNames && alive red9 && local red9 && (getPos red9 select 2) < 7000 && vehicle red9 != extractHeli : [red9] orderGetIn true
+? "red10" in mpFReviveNames && alive red10 && local red10 && (getPos red10 select 2) < 7000 && vehicle red10 != extractHeli : red10 assignAsCargo extractHeli
+? "red10" in mpFReviveNames && alive red10 && local red10 && (getPos red10 select 2) < 7000 && vehicle red10 != extractHeli : [red10] orderGetIn true
+? "red11" in mpFReviveNames && alive red11 && local red11 && (getPos red11 select 2) < 7000 && vehicle red11 != extractHeli : red11 assignAsCargo extractHeli
+? "red11" in mpFReviveNames && alive red11 && local red11 && (getPos red11 select 2) < 7000 && vehicle red11 != extractHeli : [red11] orderGetIn true
+? "red12" in mpFReviveNames && alive red12 && local red12 && (getPos red12 select 2) < 7000 && vehicle red12 != extractHeli : red12 assignAsCargo extractHeli
+? "red12" in mpFReviveNames && alive red12 && local red12 && (getPos red12 select 2) < 7000 && vehicle red12 != extractHeli : [red12] orderGetIn true
+
+_allAboard = true
+? "plr" in mpFReviveNames && (!(alive plr) || (getPos plr select 2) >= 7000 || vehicle plr != extractHeli) : _allAboard = false
+? "red2" in mpFReviveNames && (!(alive red2) || (getPos red2 select 2) >= 7000 || vehicle red2 != extractHeli) : _allAboard = false
+? "red3" in mpFReviveNames && (!(alive red3) || (getPos red3 select 2) >= 7000 || vehicle red3 != extractHeli) : _allAboard = false
+? "medic1" in mpFReviveNames && (!(alive medic1) || (getPos medic1 select 2) >= 7000 || vehicle medic1 != extractHeli) : _allAboard = false
+? "medic2" in mpFReviveNames && (!(alive medic2) || (getPos medic2 select 2) >= 7000 || vehicle medic2 != extractHeli) : _allAboard = false
+? "red6" in mpFReviveNames && (!(alive red6) || (getPos red6 select 2) >= 7000 || vehicle red6 != extractHeli) : _allAboard = false
+? "red7" in mpFReviveNames && (!(alive red7) || (getPos red7 select 2) >= 7000 || vehicle red7 != extractHeli) : _allAboard = false
+? "red8" in mpFReviveNames && (!(alive red8) || (getPos red8 select 2) >= 7000 || vehicle red8 != extractHeli) : _allAboard = false
+? "red9" in mpFReviveNames && (!(alive red9) || (getPos red9 select 2) >= 7000 || vehicle red9 != extractHeli) : _allAboard = false
+? "red10" in mpFReviveNames && (!(alive red10) || (getPos red10 select 2) >= 7000 || vehicle red10 != extractHeli) : _allAboard = false
+? "red11" in mpFReviveNames && (!(alive red11) || (getPos red11 select 2) >= 7000 || vehicle red11 != extractHeli) : _allAboard = false
+? "red12" in mpFReviveNames && (!(alive red12) || (getPos red12 select 2) >= 7000 || vehicle red12 != extractHeli) : _allAboard = false
+_objectivesComplete = missionObjectivesComplete && !(enemyReinforcementPending) && airReinfClear
+? _allAboard && _objectivesComplete : goto "depart"
+goto "boarding"
+
+#depart
+extractionBoarded = true
+extractHeli lock true
+extractHeli setDammage 0
+extractHeli setFuel 1
+extractHeli engineOn true
+mpHQMessage = "HQ: Squad aboard. Chinook departing the combat zone."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "extractionBoarded"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+
+; Cancel the persistent GET IN landing state before issuing any departure movement.
+; Without this, CWA lifts the helicopter briefly and immediately lands it again.
+extractHeli land "NONE"
+? !(isNull extractPad) : deleteVehicle extractPad
+extractPad = objNull
+(driver extractHeli) stop false
+(group (driver extractHeli)) setBehaviour "CARELESS"
+(group (driver extractHeli)) setCombatMode "BLUE"
+(group (driver extractHeli)) setSpeedMode "FULL"
+
+; First climb out of the pickup clearing, then fly to a distant exit point.
+_climbX = extractionX + 450
+_climbY = extractionY + 450
+_departX = extractionX + 2400
+_departY = extractionY + 2400
+extractHeli flyInHeight 120
+extractHeli setVelocity [0,0,12]
+(driver extractHeli) doMove [_climbX, _climbY, 0]
+(group (driver extractHeli)) move [_climbX, _climbY, 0]
+? debugMode : debugLog "ERA DEBUG EXTRACTION: cancelled GET IN landing state and began climb-out"
+
+_climbTicks = 0
+#departClimb
+~2
+? missionEnded : exit
+? !(alive extractHeli) : goto "crash"
+? getDammage extractHeli > 0.85 : goto "crash"
+? isNull (driver extractHeli) : goto "crash"
+? !(alive (driver extractHeli)) : goto "crash"
+extractHeli land "NONE"
+(driver extractHeli) stop false
+extractHeli flyInHeight 120
+_hz = getPos extractHeli select 2
+? _hz > 25 : goto "departCruise"
+_climbTicks = _climbTicks + 1
+? _climbTicks > 12 : goto "forceClimb"
+extractHeli setVelocity [4,4,12]
+(driver extractHeli) doMove [_climbX, _climbY, 0]
+(group (driver extractHeli)) move [_climbX, _climbY, 0]
+goto "departClimb"
+
+#forceClimb
+; Last-resort release from a landing loop. Move vertically clear of the LZ while retaining all passengers.
+_hx = getPos extractHeli select 0
+_hy = getPos extractHeli select 1
+extractHeli land "NONE"
+extractHeli setPos [_hx, _hy, 32]
+extractHeli setVelocity [8,8,10]
+? debugMode : debugLog "ERA DEBUG EXTRACTION: forced Chinook clear of stuck landing state"
+
+#departCruise
+extractHeli land "NONE"
+(driver extractHeli) stop false
+extractHeli flyInHeight 140
+(driver extractHeli) doMove [_departX, _departY, 0]
+(group (driver extractHeli)) move [_departX, _departY, 0]
+_departTicks = 0
+#departWait
+~2
+? missionEnded : exit
+? !(alive extractHeli) : goto "crash"
+? getDammage extractHeli > 0.85 : goto "crash"
+? isNull (driver extractHeli) : goto "crash"
+? !(alive (driver extractHeli)) : goto "crash"
+_hx = getPos extractHeli select 0
+_hy = getPos extractHeli select 1
+_hz = getPos extractHeli select 2
+_ddx = _hx - extractionX
+_ddy = _hy - extractionY
+? ((_ddx * _ddx) + (_ddy * _ddy)) > 1440000 : goto "normalSuccess"
+
+; Keep cancelling the old landing state because OFP may reassert it after a low-altitude GET IN landing.
+extractHeli land "NONE"
+(driver extractHeli) stop false
+extractHeli flyInHeight 140
+(driver extractHeli) doMove [_departX, _departY, 0]
+(group (driver extractHeli)) move [_departX, _departY, 0]
+? _hz < 12 : extractHeli setVelocity [8,8,12]
+_departTicks = _departTicks + 1
+? _departTicks > 90 : goto "forcedDepartureSuccess"
+goto "departWait"
+
+#forcedDepartureSuccess
+; Do not fail an otherwise completed mission because the 2001 flight AI refuses to leave a clearing.
+extractHeli land "NONE"
+extractHeli setPos [_departX, _departY, 140]
+extractHeli setVelocity [22,22,0]
+? debugMode : debugLog "ERA DEBUG EXTRACTION: used off-map departure failsafe"
+goto "normalSuccess"
+
+#normalSuccess
+_successMessage = "HQ: Chinook clear of the combat zone. Mission accomplished."
+goto "finishSuccess"
+
+#crash
+? missionEnded : exit
+extractionFailed = true
+extractionComplete = false
+missionLose = true
+missionWin = false
+missionEnded = true
+"extraction_marker" setMarkerColor "ColorRed"
+"extraction_marker" setMarkerText "EXTRACTION AIRCRAFT LOST"
+mpHQMessage = "HQ: Extraction aircraft destroyed. No replacement is available. Mission failed."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "extractionFailed"
+publicVariable "extractionComplete"
+publicVariable "missionLose"
+publicVariable "missionWin"
+publicVariable "missionEnded"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+exit
+
+#finishSuccess
+? missionEnded : exit
+? missionObjectivesComplete && !(enemyReinforcementPending) && airReinfClear : goto "commitSuccess"
+~2
+goto "finishSuccess"
+
+#commitSuccess
+extractionComplete = true
+extractionFailed = false
+allTownsClear = true
+missionLose = false
+missionWin = true
+missionEnded = true
+"extraction_marker" setMarkerColor "ColorGreen"
+"extraction_marker" setMarkerText "EXTRACTION COMPLETE"
+mpHQMessage = _successMessage
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "extractionComplete"
+publicVariable "extractionFailed"
+publicVariable "allTownsClear"
+publicVariable "missionLose"
+publicVariable "missionWin"
+publicVariable "missionEnded"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+exit
