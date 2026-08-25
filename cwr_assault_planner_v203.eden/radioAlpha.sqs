@@ -1,0 +1,17 @@
+; v140 Radio Alpha entry point. Correct CWA slot index: Alpha is 1.
+_radioLeader = leader (group player)
+? mpMode && player != _radioLeader : exit
+? missionEnded : exit
+? airSupportUsed : exit
+? airSupportMenuOpen : exit
+? !(supportAir) : goto "noAir"
+airSupportMenuOpen = true
+[] exec "airSupportTargetMenu.sqs"
+exit
+#noAir
+? !(airSupportUnavailableReported) : player sideChat "HQ: No air support is available for this operation."
+airSupportUnavailableReported = true
+? debugMode : debugLog "ERA DEBUG RADIO: Radio Alpha used - no air support available"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG RADIO: Radio Alpha used - no air support available"
+1 setRadioMsg "NULL"
+exit

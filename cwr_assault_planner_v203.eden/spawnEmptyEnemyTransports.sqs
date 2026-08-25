@@ -1,0 +1,305 @@
+emptyEnemyTransportsComplete = false
+; v87: create empty support vehicles according to enemy vehicle amount.
+? enemyVehicleLevel < 2 : goto "vehiclesDisabled"
+? enemyEast : goto "eastTransports"
+goto "resTransports"
+#eastTransports
+? townCount < 1 : goto "east_after_s1"
+? !(alive s1Eveh2) : goto "e_s1v2"
+_old = s1Eveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s1Eveh2 = _new
+#e_s1v2
+? enemyVehicleLevel < 3 : goto "e_s1v4"
+? !(alive s1Eveh4) : goto "e_s1v4"
+_old = s1Eveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UralBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s1Eveh4 = _new
+#e_s1v4
+#east_after_s1
+? townCount < 2 : goto "east_after_s2"
+? !(alive s2Eveh2) : goto "e_s2v2"
+_old = s2Eveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s2Eveh2 = _new
+#e_s2v2
+? enemyVehicleLevel < 3 : goto "e_s2v4"
+? !(alive s2Eveh4) : goto "e_s2v4"
+_old = s2Eveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UralBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s2Eveh4 = _new
+#e_s2v4
+#east_after_s2
+? townCount < 3 : goto "east_after_s3"
+? !(alive s3Eveh2) : goto "e_s3v2"
+_old = s3Eveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s3Eveh2 = _new
+#e_s3v2
+? enemyVehicleLevel < 3 : goto "e_s3v4"
+? !(alive s3Eveh4) : goto "e_s3v4"
+_old = s3Eveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UralBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s3Eveh4 = _new
+#e_s3v4
+#east_after_s3
+? townCount < 4 : goto "east_after_s4"
+? !(alive s4Eveh2) : goto "e_s4v2"
+_old = s4Eveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s4Eveh2 = _new
+#e_s4v2
+? enemyVehicleLevel < 3 : goto "e_s4v4"
+? !(alive s4Eveh4) : goto "e_s4v4"
+_old = s4Eveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UralBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s4Eveh4 = _new
+#e_s4v4
+#east_after_s4
+? townCount < 5 : goto "east_after_s5"
+? !(alive s5Eveh2) : goto "e_s5v2"
+_old = s5Eveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s5Eveh2 = _new
+#e_s5v2
+? enemyVehicleLevel < 3 : goto "e_s5v4"
+? !(alive s5Eveh4) : goto "e_s5v4"
+_old = s5Eveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_UralBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s5Eveh4 = _new
+#e_s5v4
+#east_after_s5
+goto "done"
+#resTransports
+? townCount < 1 : goto "res_after_s1"
+? !(alive s1Rveh2) : goto "r_s1v2"
+_old = s1Rveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_JeepR" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s1Rveh2 = _new
+#r_s1v2
+? enemyVehicleLevel < 3 : goto "r_s1v4"
+? !(alive s1Rveh4) : goto "r_s1v4"
+_old = s1Rveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s1Rveh4 = _new
+#r_s1v4
+#res_after_s1
+? townCount < 2 : goto "res_after_s2"
+? !(alive s2Rveh2) : goto "r_s2v2"
+_old = s2Rveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_JeepR" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s2Rveh2 = _new
+#r_s2v2
+? enemyVehicleLevel < 3 : goto "r_s2v4"
+? !(alive s2Rveh4) : goto "r_s2v4"
+_old = s2Rveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s2Rveh4 = _new
+#r_s2v4
+#res_after_s2
+? townCount < 3 : goto "res_after_s3"
+? !(alive s3Rveh2) : goto "r_s3v2"
+_old = s3Rveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_JeepR" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s3Rveh2 = _new
+#r_s3v2
+? enemyVehicleLevel < 3 : goto "r_s3v4"
+? !(alive s3Rveh4) : goto "r_s3v4"
+_old = s3Rveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s3Rveh4 = _new
+#r_s3v4
+#res_after_s3
+? townCount < 4 : goto "res_after_s4"
+? !(alive s4Rveh2) : goto "r_s4v2"
+_old = s4Rveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_JeepR" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s4Rveh2 = _new
+#r_s4v2
+? enemyVehicleLevel < 3 : goto "r_s4v4"
+? !(alive s4Rveh4) : goto "r_s4v4"
+_old = s4Rveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s4Rveh4 = _new
+#r_s4v4
+#res_after_s4
+? townCount < 5 : goto "res_after_s5"
+? !(alive s5Rveh2) : goto "r_s5v2"
+_old = s5Rveh2
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_JeepR" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s5Rveh2 = _new
+#r_s5v2
+? enemyVehicleLevel < 3 : goto "r_s5v4"
+? !(alive s5Rveh4) : goto "r_s5v4"
+_old = s5Rveh4
+_p = getPos _old
+_d = getDir _old
+deleteVehicle (driver _old)
+deleteVehicle (gunner _old)
+deleteVehicle (commander _old)
+deleteVehicle _old
+_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new setDir _d
+_new setFuel 1
+s5Rveh4 = _new
+#r_s5v4
+#res_after_s5
+goto "done"
+#vehiclesDisabled
+? debugMode : debugLog "ERA DEBUG EMPTY VEHICLES: enemy ground vehicles disabled"
+#done
+emptyEnemyTransportsComplete = true
+? debugMode : debugLog "ERA DEBUG EMPTY VEHICLES: active-side replacement finished"
+exit

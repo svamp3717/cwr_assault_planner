@@ -1,0 +1,13 @@
+; v125: hard-stop a server-local runtime ground transport before multiplayer dismount is broadcast.
+; Argument: [vehicle].
+_veh = _this select 0
+? isNull _veh : exit
+? !(alive _veh) : exit
+_drv = driver _veh
+? !(isNull _drv) : doStop _drv
+? !(isNull _drv) : _drv stop true
+_veh setFuel 0
+_veh setVelocity [0,0,0]
+~1
+_veh setVelocity [0,0,0]
+exit

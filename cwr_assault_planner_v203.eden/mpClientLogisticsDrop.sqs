@@ -1,0 +1,19 @@
+; v149 attach the WW4 Arsenal action locally to every delivered logistics ammunition box.
+#loop
+~0.25
+? missionEnded : exit
+? logisticsDropDeliveryId <= mpLastLogisticsDropDeliveryId : goto "loop"
+mpLastLogisticsDropDeliveryId = logisticsDropDeliveryId
+? logisticsDropRequestType != 3 : goto "loop"
+_deliveryBox = logisticsDropAsset
+_waitTicks = 0
+#waitBox
+? !(isNull _deliveryBox) && alive _deliveryBox : goto "addAction"
+~0.25
+_waitTicks = _waitTicks + 1
+? _waitTicks > 40 : goto "loop"
+_deliveryBox = logisticsDropAsset
+goto "waitBox"
+#addAction
+WW4_LogisticsBoxAction = _deliveryBox addAction ["Open WW4 Arsenal","ww4_arsenal\open.sqs"]
+goto "loop"

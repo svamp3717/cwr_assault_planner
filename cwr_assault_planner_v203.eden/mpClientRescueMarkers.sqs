@@ -1,0 +1,47 @@
+; v152 apply visible safe-town markers locally after setup.
+? objectiveType1 != 7 : goto "hide1"
+"rescue_marker_1" setMarkerPos [objectiveRescueDestinationX1,objectiveRescueDestinationY1]
+"rescue_marker_1" setMarkerType "Flag"
+"rescue_marker_1" setMarkerColor "ColorGreen"
+"rescue_marker_1" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel1]
+goto "after1"
+#hide1
+"rescue_marker_1" setMarkerType "Empty"
+#after1
+? objectiveType2 != 7 : goto "hide2"
+"rescue_marker_2" setMarkerPos [objectiveRescueDestinationX2,objectiveRescueDestinationY2]
+"rescue_marker_2" setMarkerType "Flag"
+"rescue_marker_2" setMarkerColor "ColorGreen"
+"rescue_marker_2" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel2]
+goto "after2"
+#hide2
+"rescue_marker_2" setMarkerType "Empty"
+#after2
+? objectiveType3 != 7 : goto "hide3"
+"rescue_marker_3" setMarkerPos [objectiveRescueDestinationX3,objectiveRescueDestinationY3]
+"rescue_marker_3" setMarkerType "Flag"
+"rescue_marker_3" setMarkerColor "ColorGreen"
+"rescue_marker_3" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel3]
+goto "after3"
+#hide3
+"rescue_marker_3" setMarkerType "Empty"
+#after3
+? objectiveType4 != 7 : goto "hide4"
+"rescue_marker_4" setMarkerPos [objectiveRescueDestinationX4,objectiveRescueDestinationY4]
+"rescue_marker_4" setMarkerType "Flag"
+"rescue_marker_4" setMarkerColor "ColorGreen"
+"rescue_marker_4" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel4]
+goto "after4"
+#hide4
+"rescue_marker_4" setMarkerType "Empty"
+#after4
+? objectiveType5 != 7 : goto "hide5"
+"rescue_marker_5" setMarkerPos [objectiveRescueDestinationX5,objectiveRescueDestinationY5]
+"rescue_marker_5" setMarkerType "Flag"
+"rescue_marker_5" setMarkerColor "ColorGreen"
+"rescue_marker_5" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel5]
+goto "after5"
+#hide5
+"rescue_marker_5" setMarkerType "Empty"
+#after5
+exit

@@ -1,0 +1,29 @@
+; v128: compact runtime truck column inside a selected non-objective town.
+; Arguments: [vehicle, town-center X, town-center Y, departure heading, column slot].
+; CWA cannot reliably enumerate road segments, so the mission uses the actual town marker and
+; spaces trucks in a short column facing the objective instead of pretending an empty field is a road.
+friendlyTruckRoadStageComplete = false
+_veh = _this select 0
+_x = _this select 1
+_y = _this select 2
+_dir = _this select 3
+_slot = _this select 4
+? isNull _veh : goto "truckRoadStageDone"
+? !(alive _veh) : goto "truckRoadStageDone"
+_spacing = 22 + (_slot * 16)
+_spawnX = _x - ((sin _dir) * _spacing)
+_spawnY = _y - ((cos _dir) * _spacing)
+_veh setPos [_spawnX, _spawnY, 0]
+_veh setDir _dir
+_veh setVelocity [0,0,0]
+_driver = driver _veh
+? isNull _driver : goto "truckRoadStageDone"
+_driver stop false
+_grp = group _driver
+_grp setBehaviour "SAFE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "NORMAL"
+? debugMode : debugLog format ["ERA DEBUG FRIENDLY TRUCK ROAD COLUMN: vehicle=%1 slot=%2 pos=%3 dir=%4", _veh, _slot, getPos _veh, _dir]
+#truckRoadStageDone
+friendlyTruckRoadStageComplete = true
+exit

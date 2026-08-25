@@ -1,0 +1,75 @@
+; v133 reinforcement dispatcher. One reserve wave maximum.
+; The wave is called only after at least 75 percent of the current objective infantry are dead.
+#waitThreshold
+~1
+? missionEnded : exit
+? !(insertionComplete) : goto "waitThreshold"
+? enemyReinforcementLaunched : exit
+? !(enemyAirReinforcement) && !(enemyReinforcements) : goto "cancelPending"
+
+; Select the first unfinished active objective. If all objectives just completed, inspect the final active objective once before allowing mission completion.
+enemyReinforcementTargetSlot = 1
+reinfTargetX = primaryX
+reinfTargetY = primaryY
+reinfTargetLabel = townLabel
+? !(objective1Done) : goto "countTarget"
+? townCount >= 2 && !(objective2Done) : goto "targetSecond"
+? townCount >= 3 && !(objective3Done) : goto "targetThird"
+? townCount >= 4 && !(objective4Done) : goto "targetFourth"
+? townCount >= 5 && !(objective5Done) : goto "targetFifth"
+? townCount == 1 : goto "countTarget"
+? townCount == 2 : goto "targetSecond"
+? townCount == 3 : goto "targetThird"
+? townCount == 4 : goto "targetFourth"
+goto "targetFifth"
+
+#targetSecond
+enemyReinforcementTargetSlot = 2
+reinfTargetX = secondaryX
+reinfTargetY = secondaryY
+reinfTargetLabel = secondaryLabel
+goto "countTarget"
+#targetThird
+enemyReinforcementTargetSlot = 3
+reinfTargetX = thirdX
+reinfTargetY = thirdY
+reinfTargetLabel = thirdLabel
+goto "countTarget"
+#targetFourth
+enemyReinforcementTargetSlot = 4
+reinfTargetX = fourthX
+reinfTargetY = fourthY
+reinfTargetLabel = fourthLabel
+goto "countTarget"
+#targetFifth
+enemyReinforcementTargetSlot = 5
+reinfTargetX = fifthX
+reinfTargetY = fifthY
+reinfTargetLabel = fifthLabel
+
+#countTarget
+reinforcementDefenderCountReady = false
+[enemyReinforcementTargetSlot] exec "countObjectiveDefenders.sqs"
+@ reinforcementDefenderCountReady
+? reinforcementDefendersAlive > reinforcementDefendersMaxAlive : goto "waitThreshold"
+
+; Threshold reached: from this point until deployment, completion is blocked by enemyReinforcementPending.
+enemyReinforcementPending = true
+publicVariable "enemyReinforcementPending"
+enemyReinforcementLaunched = true
+mpReinforcementMessage = format ["HQ: Enemy reinforcements are being called toward %1.", reinfTargetLabel]
+? enemyAirReinforcement && !(enemyReinforcements) : mpReinforcementMessage = format ["HQ: Enemy airborne reinforcements are being called toward %1.", reinfTargetLabel]
+? enemyReinforcements && !(enemyAirReinforcement) : mpReinforcementMessage = format ["HQ: Enemy ground reinforcements are being called toward %1.", reinfTargetLabel]
+mpReinforcementMessageId = mpReinforcementMessageId + 1
+publicVariable "mpReinforcementMessage"
+publicVariable "mpReinforcementMessageId"
+? debugMode : debugLog format ["ERA DEBUG REINFORCEMENT: 75 percent threshold reached at %1; alive=%2 total=%3", reinfTargetLabel, reinforcementDefendersAlive, reinforcementDefendersTotal]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG REINFORCEMENT: threshold at %1; alive=%2/%3", reinfTargetLabel, reinforcementDefendersAlive, reinforcementDefendersTotal]
+? enemyAirReinforcement : [] exec "enemyAirReinforcement.sqs"
+? enemyReinforcements : [] exec "enemyReinforcements.sqs"
+exit
+
+#cancelPending
+enemyReinforcementPending = false
+publicVariable "enemyReinforcementPending"
+exit

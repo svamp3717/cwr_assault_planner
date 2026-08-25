@@ -1,0 +1,303 @@
+enemyVehicleCrewsComplete = false
+; v83: enemy armed-vehicle crew randomization for five objective slots.
+? !(enemyGroundVehicles) : goto "vehicleCrewDone"
+deleteVehicle (driver s1Eveh2)
+deleteVehicle (gunner s1Eveh2)
+deleteVehicle (commander s1Eveh2)
+deleteVehicle (driver s1Eveh4)
+deleteVehicle (gunner s1Eveh4)
+deleteVehicle (commander s1Eveh4)
+deleteVehicle (driver s1Rveh2)
+deleteVehicle (gunner s1Rveh2)
+deleteVehicle (commander s1Rveh2)
+deleteVehicle (driver s1Rveh4)
+deleteVehicle (gunner s1Rveh4)
+deleteVehicle (commander s1Rveh4)
+deleteVehicle (driver s2Eveh2)
+deleteVehicle (gunner s2Eveh2)
+deleteVehicle (commander s2Eveh2)
+deleteVehicle (driver s2Eveh4)
+deleteVehicle (gunner s2Eveh4)
+deleteVehicle (commander s2Eveh4)
+deleteVehicle (driver s2Rveh2)
+deleteVehicle (gunner s2Rveh2)
+deleteVehicle (commander s2Rveh2)
+deleteVehicle (driver s2Rveh4)
+deleteVehicle (gunner s2Rveh4)
+deleteVehicle (commander s2Rveh4)
+deleteVehicle (driver s3Eveh2)
+deleteVehicle (gunner s3Eveh2)
+deleteVehicle (commander s3Eveh2)
+deleteVehicle (driver s3Eveh4)
+deleteVehicle (gunner s3Eveh4)
+deleteVehicle (commander s3Eveh4)
+deleteVehicle (driver s3Rveh2)
+deleteVehicle (gunner s3Rveh2)
+deleteVehicle (commander s3Rveh2)
+deleteVehicle (driver s3Rveh4)
+deleteVehicle (gunner s3Rveh4)
+deleteVehicle (commander s3Rveh4)
+deleteVehicle (driver s4Eveh2)
+deleteVehicle (gunner s4Eveh2)
+deleteVehicle (commander s4Eveh2)
+deleteVehicle (driver s4Eveh4)
+deleteVehicle (gunner s4Eveh4)
+deleteVehicle (commander s4Eveh4)
+deleteVehicle (driver s4Rveh2)
+deleteVehicle (gunner s4Rveh2)
+deleteVehicle (commander s4Rveh2)
+deleteVehicle (driver s4Rveh4)
+deleteVehicle (gunner s4Rveh4)
+deleteVehicle (commander s4Rveh4)
+deleteVehicle (driver s5Eveh2)
+deleteVehicle (gunner s5Eveh2)
+deleteVehicle (commander s5Eveh2)
+deleteVehicle (driver s5Eveh4)
+deleteVehicle (gunner s5Eveh4)
+deleteVehicle (commander s5Eveh4)
+deleteVehicle (driver s5Rveh2)
+deleteVehicle (gunner s5Rveh2)
+deleteVehicle (commander s5Rveh2)
+deleteVehicle (driver s5Rveh4)
+deleteVehicle (gunner s5Rveh4)
+deleteVehicle (commander s5Rveh4)
+? enemyEast : goto "eastVehicles"
+goto "resVehicles"
+#eastVehicles
+? townCount < 1 : goto "eastAfterSlot1"
+? !(alive s1Eveh1) : goto "skipcrew_s1Eveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s1Eveh1"
+deleteVehicle (driver s1Eveh1)
+deleteVehicle (gunner s1Eveh1)
+deleteVehicle (commander s1Eveh1)
+#skipcrew_s1Eveh1
+? !(alive s1Eveh3) : goto "skipcrew_s1Eveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s1Eveh3"
+deleteVehicle (driver s1Eveh3)
+deleteVehicle (gunner s1Eveh3)
+deleteVehicle (commander s1Eveh3)
+#skipcrew_s1Eveh3
+? !(alive s1Eveh5) : goto "skipcrew_s1Eveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s1Eveh5"
+deleteVehicle (driver s1Eveh5)
+deleteVehicle (gunner s1Eveh5)
+deleteVehicle (commander s1Eveh5)
+#skipcrew_s1Eveh5
+#eastAfterSlot1
+? townCount < 2 : goto "eastAfterSlot2"
+? !(alive s2Eveh1) : goto "skipcrew_s2Eveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s2Eveh1"
+deleteVehicle (driver s2Eveh1)
+deleteVehicle (gunner s2Eveh1)
+deleteVehicle (commander s2Eveh1)
+#skipcrew_s2Eveh1
+? !(alive s2Eveh3) : goto "skipcrew_s2Eveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s2Eveh3"
+deleteVehicle (driver s2Eveh3)
+deleteVehicle (gunner s2Eveh3)
+deleteVehicle (commander s2Eveh3)
+#skipcrew_s2Eveh3
+? !(alive s2Eveh5) : goto "skipcrew_s2Eveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s2Eveh5"
+deleteVehicle (driver s2Eveh5)
+deleteVehicle (gunner s2Eveh5)
+deleteVehicle (commander s2Eveh5)
+#skipcrew_s2Eveh5
+#eastAfterSlot2
+? townCount < 3 : goto "eastAfterSlot3"
+? !(alive s3Eveh1) : goto "skipcrew_s3Eveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s3Eveh1"
+deleteVehicle (driver s3Eveh1)
+deleteVehicle (gunner s3Eveh1)
+deleteVehicle (commander s3Eveh1)
+#skipcrew_s3Eveh1
+? !(alive s3Eveh3) : goto "skipcrew_s3Eveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s3Eveh3"
+deleteVehicle (driver s3Eveh3)
+deleteVehicle (gunner s3Eveh3)
+deleteVehicle (commander s3Eveh3)
+#skipcrew_s3Eveh3
+? !(alive s3Eveh5) : goto "skipcrew_s3Eveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s3Eveh5"
+deleteVehicle (driver s3Eveh5)
+deleteVehicle (gunner s3Eveh5)
+deleteVehicle (commander s3Eveh5)
+#skipcrew_s3Eveh5
+#eastAfterSlot3
+? townCount < 4 : goto "eastAfterSlot4"
+? !(alive s4Eveh1) : goto "skipcrew_s4Eveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s4Eveh1"
+deleteVehicle (driver s4Eveh1)
+deleteVehicle (gunner s4Eveh1)
+deleteVehicle (commander s4Eveh1)
+#skipcrew_s4Eveh1
+? !(alive s4Eveh3) : goto "skipcrew_s4Eveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s4Eveh3"
+deleteVehicle (driver s4Eveh3)
+deleteVehicle (gunner s4Eveh3)
+deleteVehicle (commander s4Eveh3)
+#skipcrew_s4Eveh3
+? !(alive s4Eveh5) : goto "skipcrew_s4Eveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s4Eveh5"
+deleteVehicle (driver s4Eveh5)
+deleteVehicle (gunner s4Eveh5)
+deleteVehicle (commander s4Eveh5)
+#skipcrew_s4Eveh5
+#eastAfterSlot4
+? townCount < 5 : goto "eastAfterSlot5"
+? !(alive s5Eveh1) : goto "skipcrew_s5Eveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s5Eveh1"
+deleteVehicle (driver s5Eveh1)
+deleteVehicle (gunner s5Eveh1)
+deleteVehicle (commander s5Eveh1)
+#skipcrew_s5Eveh1
+? !(alive s5Eveh3) : goto "skipcrew_s5Eveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s5Eveh3"
+deleteVehicle (driver s5Eveh3)
+deleteVehicle (gunner s5Eveh3)
+deleteVehicle (commander s5Eveh3)
+#skipcrew_s5Eveh3
+? !(alive s5Eveh5) : goto "skipcrew_s5Eveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s5Eveh5"
+deleteVehicle (driver s5Eveh5)
+deleteVehicle (gunner s5Eveh5)
+deleteVehicle (commander s5Eveh5)
+#skipcrew_s5Eveh5
+#eastAfterSlot5
+goto "vehicleCrewDone"
+#resVehicles
+? townCount < 1 : goto "resAfterSlot1"
+? !(alive s1Rveh1) : goto "skipcrew_s1Rveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s1Rveh1"
+deleteVehicle (driver s1Rveh1)
+deleteVehicle (gunner s1Rveh1)
+deleteVehicle (commander s1Rveh1)
+#skipcrew_s1Rveh1
+? !(alive s1Rveh3) : goto "skipcrew_s1Rveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s1Rveh3"
+deleteVehicle (driver s1Rveh3)
+deleteVehicle (gunner s1Rveh3)
+deleteVehicle (commander s1Rveh3)
+#skipcrew_s1Rveh3
+? !(alive s1Rveh5) : goto "skipcrew_s1Rveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s1Rveh5"
+deleteVehicle (driver s1Rveh5)
+deleteVehicle (gunner s1Rveh5)
+deleteVehicle (commander s1Rveh5)
+#skipcrew_s1Rveh5
+#resAfterSlot1
+? townCount < 2 : goto "resAfterSlot2"
+? !(alive s2Rveh1) : goto "skipcrew_s2Rveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s2Rveh1"
+deleteVehicle (driver s2Rveh1)
+deleteVehicle (gunner s2Rveh1)
+deleteVehicle (commander s2Rveh1)
+#skipcrew_s2Rveh1
+? !(alive s2Rveh3) : goto "skipcrew_s2Rveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s2Rveh3"
+deleteVehicle (driver s2Rveh3)
+deleteVehicle (gunner s2Rveh3)
+deleteVehicle (commander s2Rveh3)
+#skipcrew_s2Rveh3
+? !(alive s2Rveh5) : goto "skipcrew_s2Rveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s2Rveh5"
+deleteVehicle (driver s2Rveh5)
+deleteVehicle (gunner s2Rveh5)
+deleteVehicle (commander s2Rveh5)
+#skipcrew_s2Rveh5
+#resAfterSlot2
+? townCount < 3 : goto "resAfterSlot3"
+? !(alive s3Rveh1) : goto "skipcrew_s3Rveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s3Rveh1"
+deleteVehicle (driver s3Rveh1)
+deleteVehicle (gunner s3Rveh1)
+deleteVehicle (commander s3Rveh1)
+#skipcrew_s3Rveh1
+? !(alive s3Rveh3) : goto "skipcrew_s3Rveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s3Rveh3"
+deleteVehicle (driver s3Rveh3)
+deleteVehicle (gunner s3Rveh3)
+deleteVehicle (commander s3Rveh3)
+#skipcrew_s3Rveh3
+? !(alive s3Rveh5) : goto "skipcrew_s3Rveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s3Rveh5"
+deleteVehicle (driver s3Rveh5)
+deleteVehicle (gunner s3Rveh5)
+deleteVehicle (commander s3Rveh5)
+#skipcrew_s3Rveh5
+#resAfterSlot3
+? townCount < 4 : goto "resAfterSlot4"
+? !(alive s4Rveh1) : goto "skipcrew_s4Rveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s4Rveh1"
+deleteVehicle (driver s4Rveh1)
+deleteVehicle (gunner s4Rveh1)
+deleteVehicle (commander s4Rveh1)
+#skipcrew_s4Rveh1
+? !(alive s4Rveh3) : goto "skipcrew_s4Rveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s4Rveh3"
+deleteVehicle (driver s4Rveh3)
+deleteVehicle (gunner s4Rveh3)
+deleteVehicle (commander s4Rveh3)
+#skipcrew_s4Rveh3
+? !(alive s4Rveh5) : goto "skipcrew_s4Rveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s4Rveh5"
+deleteVehicle (driver s4Rveh5)
+deleteVehicle (gunner s4Rveh5)
+deleteVehicle (commander s4Rveh5)
+#skipcrew_s4Rveh5
+#resAfterSlot4
+? townCount < 5 : goto "resAfterSlot5"
+? !(alive s5Rveh1) : goto "skipcrew_s5Rveh1"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s5Rveh1"
+deleteVehicle (driver s5Rveh1)
+deleteVehicle (gunner s5Rveh1)
+deleteVehicle (commander s5Rveh1)
+#skipcrew_s5Rveh1
+? !(alive s5Rveh3) : goto "skipcrew_s5Rveh3"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s5Rveh3"
+deleteVehicle (driver s5Rveh3)
+deleteVehicle (gunner s5Rveh3)
+deleteVehicle (commander s5Rveh3)
+#skipcrew_s5Rveh3
+? !(alive s5Rveh5) : goto "skipcrew_s5Rveh5"
+_r = random 1
+? _r < 0.85 : goto "skipcrew_s5Rveh5"
+deleteVehicle (driver s5Rveh5)
+deleteVehicle (gunner s5Rveh5)
+deleteVehicle (commander s5Rveh5)
+#skipcrew_s5Rveh5
+#resAfterSlot5
+goto "vehicleCrewDone"
+
+#vehicleCrewDone
+enemyVehicleCrewsComplete = true
+exit

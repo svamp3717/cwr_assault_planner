@@ -1,0 +1,2 @@
+; v129: legacy compatibility no-op. Enemy forces are created for only the selected side.
+exit

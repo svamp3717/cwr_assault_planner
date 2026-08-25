@@ -1,0 +1,321 @@
+; Called after the player selects a numbered objective from Radio Alpha. Old SQS only.
+? !(supportAir) : exit
+? airSupportUsed : exit
+; Validate selection and resolve the target coordinate globals.
+? airSupportTarget < 1 : airSupportTarget = 1
+? airSupportTarget > townCount : airSupportTarget = 1
+airTargetX = primaryX
+airTargetY = primaryY
+airTargetLabel = "1"
+? airSupportTarget == 2 : airTargetX = secondaryX
+? airSupportTarget == 2 : airTargetY = secondaryY
+? airSupportTarget == 2 : airTargetLabel = "2"
+? airSupportTarget == 3 : airTargetX = thirdX
+? airSupportTarget == 3 : airTargetY = thirdY
+? airSupportTarget == 3 : airTargetLabel = "3"
+? airSupportTarget == 4 : airTargetX = fourthX
+? airSupportTarget == 4 : airTargetY = fourthY
+? airSupportTarget == 4 : airTargetLabel = "4"
+? airSupportTarget == 5 : airTargetX = fifthX
+? airSupportTarget == 5 : airTargetY = fifthY
+? airSupportTarget == 5 : airTargetLabel = "5"
+airSupportUsed = true
+? mpMode : publicVariable "airSupportUsed"
+cobraProxyX = airTargetX - 1100
+cobraProxyY = airTargetY - 1100
+cobraNoDriverReported = false
+cobraMonitorReady = false
+cobraStuckCount = 0
+cobraCrashReported = false
+1 setRadioMsg "NULL"
+? debugMode : debugLog format ["ERA DEBUG AIR: target objective %1 selected", airTargetLabel]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG AIR: target objective %1 selected", airTargetLabel]
+"lz_marker" setMarkerText format ["Air support inbound to objective %1", airTargetLabel]
+; Re-stage the existing support aircraft high and moving before attack orders.
+supportAirVehicle setDammage 0
+supportAirVehicle setFuel 1
+supportAirVehicle setPos [airTargetX - 1100, airTargetY - 1100, 260]
+supportAirVehicle setDir 45
+supportAirVehicle flyInHeight 210
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+"cobra_marker" setMarkerType "Flag"
+"cobra_marker" setMarkerColor "ColorGreen"
+"cobra_marker" setMarkerText format ["AIR SUPPORT: %1", airTargetLabel]
+"cobra_marker" setMarkerPos [cobraProxyX, cobraProxyY, 0]
+? !(cobraMarkerRunning) : [] exec "cobraMarker.sqs"
+supportAirVehicle doMove [airTargetX - 550, airTargetY - 550, 0]
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airTargetX - 550, airTargetY - 550, 0]
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airTargetX - 550, airTargetY - 550, 0]
+? debugMode : debugLog format ["ERA DEBUG AIR: aircraft moving to objective %1", airTargetLabel]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG AIR: aircraft moving to objective %1", airTargetLabel]
+~2
+_pos = getPos supportAirVehicle
+_z = _pos select 2
+? _z < 90 : supportAirVehicle setPos [airTargetX - 950, airTargetY - 950, 240]
+supportAirVehicle flyInHeight 190
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+supportAirVehicle doMove [airTargetX - 400, airTargetY - 400, 0]
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airTargetX - 400, airTargetY - 400, 0]
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airTargetX - 400, airTargetY - 400, 0]
+~8
+? missionEnded : exit
+supportAirVehicle flyInHeight 150
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+supportAirVehicle doMove [airTargetX, airTargetY, 0]
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airTargetX, airTargetY, 0]
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airTargetX, airTargetY, 0]
+? enemyEast && airSupportTarget == 1 : goto "eastTargets1"
+? enemyEast && airSupportTarget == 2 : goto "eastTargets2"
+? enemyEast && airSupportTarget == 3 : goto "eastTargets3"
+? enemyEast && airSupportTarget == 4 : goto "eastTargets4"
+? enemyEast && airSupportTarget == 5 : goto "eastTargets5"
+? !(enemyEast) && airSupportTarget == 1 : goto "resTargets1"
+? !(enemyEast) && airSupportTarget == 2 : goto "resTargets2"
+? !(enemyEast) && airSupportTarget == 3 : goto "resTargets3"
+? !(enemyEast) && airSupportTarget == 4 : goto "resTargets4"
+goto "resTargets5"
+#eastTargets1
+? alive s1Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s1Eveh1
+? alive s1Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s1Eveh1
+? alive s1Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s1Eveh1
+? alive s1Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s1Eveh1
+? alive s1Eveh2 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s1Eveh2
+? alive s1Eveh2 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s1Eveh2
+? alive s1Eveh2 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s1Eveh2
+? alive s1Eveh2 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s1Eveh2
+? alive s1Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s1Eveh3
+? alive s1Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s1Eveh3
+? alive s1Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s1Eveh3
+? alive s1Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s1Eveh3
+? alive s1Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s1Eveh5
+? alive s1Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s1Eveh5
+? alive s1Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s1Eveh5
+? alive s1Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s1Eveh5
+? alive w4s1E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s1E6
+? alive w4s1E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s1E6
+? alive w4s1E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s1E6
+? alive w4s1E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s1E6
+? alive w4s1E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s1E8
+? alive w4s1E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s1E8
+? alive w4s1E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s1E8
+? alive w4s1E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s1E8
+goto "airPatrol"
+#eastTargets2
+? alive s2Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s2Eveh1
+? alive s2Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s2Eveh1
+? alive s2Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s2Eveh1
+? alive s2Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s2Eveh1
+? alive s2Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s2Eveh3
+? alive s2Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s2Eveh3
+? alive s2Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s2Eveh3
+? alive s2Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s2Eveh3
+? alive s2Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s2Eveh5
+? alive s2Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s2Eveh5
+? alive s2Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s2Eveh5
+? alive s2Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s2Eveh5
+? alive w4s2E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s2E6
+? alive w4s2E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s2E6
+? alive w4s2E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s2E6
+? alive w4s2E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s2E6
+? alive w4s2E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s2E8
+? alive w4s2E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s2E8
+? alive w4s2E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s2E8
+? alive w4s2E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s2E8
+goto "airPatrol"
+#eastTargets3
+? alive s3Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s3Eveh1
+? alive s3Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s3Eveh1
+? alive s3Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s3Eveh1
+? alive s3Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s3Eveh1
+? alive s3Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s3Eveh3
+? alive s3Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s3Eveh3
+? alive s3Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s3Eveh3
+? alive s3Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s3Eveh3
+? alive s3Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s3Eveh5
+? alive s3Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s3Eveh5
+? alive s3Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s3Eveh5
+? alive s3Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s3Eveh5
+? alive w4s3E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s3E6
+? alive w4s3E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s3E6
+? alive w4s3E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s3E6
+? alive w4s3E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s3E6
+? alive w4s3E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s3E8
+? alive w4s3E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s3E8
+? alive w4s3E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s3E8
+? alive w4s3E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s3E8
+goto "airPatrol"
+#eastTargets4
+? alive s4Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s4Eveh1
+? alive s4Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s4Eveh1
+? alive s4Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s4Eveh1
+? alive s4Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s4Eveh1
+? alive s4Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s4Eveh3
+? alive s4Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s4Eveh3
+? alive s4Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s4Eveh3
+? alive s4Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s4Eveh3
+? alive s4Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s4Eveh5
+? alive s4Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s4Eveh5
+? alive s4Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s4Eveh5
+? alive s4Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s4Eveh5
+? alive w4s4E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s4E6
+? alive w4s4E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s4E6
+? alive w4s4E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s4E6
+? alive w4s4E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s4E6
+? alive w4s4E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s4E8
+? alive w4s4E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s4E8
+? alive w4s4E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s4E8
+? alive w4s4E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s4E8
+goto "airPatrol"
+#eastTargets5
+? alive s5Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s5Eveh1
+? alive s5Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s5Eveh1
+? alive s5Eveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s5Eveh1
+? alive s5Eveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s5Eveh1
+? alive s5Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s5Eveh3
+? alive s5Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s5Eveh3
+? alive s5Eveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s5Eveh3
+? alive s5Eveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s5Eveh3
+? alive s5Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s5Eveh5
+? alive s5Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s5Eveh5
+? alive s5Eveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s5Eveh5
+? alive s5Eveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s5Eveh5
+? alive w4s5E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s5E6
+? alive w4s5E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s5E6
+? alive w4s5E6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s5E6
+? alive w4s5E6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s5E6
+? alive w4s5E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s5E8
+? alive w4s5E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s5E8
+? alive w4s5E8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s5E8
+? alive w4s5E8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s5E8
+goto "airPatrol"
+#resTargets1
+? alive s1Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s1Rveh1
+? alive s1Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s1Rveh1
+? alive s1Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s1Rveh1
+? alive s1Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s1Rveh1
+? alive s1Rveh2 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s1Rveh2
+? alive s1Rveh2 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s1Rveh2
+? alive s1Rveh2 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s1Rveh2
+? alive s1Rveh2 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s1Rveh2
+? alive s1Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s1Rveh3
+? alive s1Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s1Rveh3
+? alive s1Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s1Rveh3
+? alive s1Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s1Rveh3
+? alive s1Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s1Rveh5
+? alive s1Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s1Rveh5
+? alive s1Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s1Rveh5
+? alive s1Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s1Rveh5
+? alive w4s1R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s1R6
+? alive w4s1R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s1R6
+? alive w4s1R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s1R6
+? alive w4s1R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s1R6
+? alive w4s1R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s1R8
+? alive w4s1R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s1R8
+? alive w4s1R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s1R8
+? alive w4s1R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s1R8
+goto "airPatrol"
+#resTargets2
+? alive s2Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s2Rveh1
+? alive s2Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s2Rveh1
+? alive s2Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s2Rveh1
+? alive s2Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s2Rveh1
+? alive s2Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s2Rveh3
+? alive s2Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s2Rveh3
+? alive s2Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s2Rveh3
+? alive s2Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s2Rveh3
+? alive s2Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s2Rveh5
+? alive s2Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s2Rveh5
+? alive s2Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s2Rveh5
+? alive s2Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s2Rveh5
+? alive w4s2R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s2R6
+? alive w4s2R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s2R6
+? alive w4s2R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s2R6
+? alive w4s2R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s2R6
+? alive w4s2R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s2R8
+? alive w4s2R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s2R8
+? alive w4s2R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s2R8
+? alive w4s2R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s2R8
+goto "airPatrol"
+#resTargets3
+? alive s3Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s3Rveh1
+? alive s3Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s3Rveh1
+? alive s3Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s3Rveh1
+? alive s3Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s3Rveh1
+? alive s3Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s3Rveh3
+? alive s3Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s3Rveh3
+? alive s3Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s3Rveh3
+? alive s3Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s3Rveh3
+? alive s3Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s3Rveh5
+? alive s3Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s3Rveh5
+? alive s3Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s3Rveh5
+? alive s3Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s3Rveh5
+? alive w4s3R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s3R6
+? alive w4s3R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s3R6
+? alive w4s3R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s3R6
+? alive w4s3R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s3R6
+? alive w4s3R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s3R8
+? alive w4s3R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s3R8
+? alive w4s3R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s3R8
+? alive w4s3R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s3R8
+goto "airPatrol"
+#resTargets4
+? alive s4Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s4Rveh1
+? alive s4Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s4Rveh1
+? alive s4Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s4Rveh1
+? alive s4Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s4Rveh1
+? alive s4Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s4Rveh3
+? alive s4Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s4Rveh3
+? alive s4Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s4Rveh3
+? alive s4Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s4Rveh3
+? alive s4Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s4Rveh5
+? alive s4Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s4Rveh5
+? alive s4Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s4Rveh5
+? alive s4Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s4Rveh5
+? alive w4s4R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s4R6
+? alive w4s4R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s4R6
+? alive w4s4R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s4R6
+? alive w4s4R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s4R6
+? alive w4s4R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s4R8
+? alive w4s4R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s4R8
+? alive w4s4R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s4R8
+? alive w4s4R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s4R8
+goto "airPatrol"
+#resTargets5
+? alive s5Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s5Rveh1
+? alive s5Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s5Rveh1
+? alive s5Rveh1 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s5Rveh1
+? alive s5Rveh1 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s5Rveh1
+? alive s5Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s5Rveh3
+? alive s5Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s5Rveh3
+? alive s5Rveh3 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s5Rveh3
+? alive s5Rveh3 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s5Rveh3
+? alive s5Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget s5Rveh5
+? alive s5Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget s5Rveh5
+? alive s5Rveh5 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire s5Rveh5
+? alive s5Rveh5 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire s5Rveh5
+? alive w4s5R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s5R6
+? alive w4s5R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s5R6
+? alive w4s5R6 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s5R6
+? alive w4s5R6 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s5R6
+? alive w4s5R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doTarget w4s5R8
+? alive w4s5R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doTarget w4s5R8
+? alive w4s5R8 && alive (gunner supportAirVehicle) : gunner supportAirVehicle doFire w4s5R8
+? alive w4s5R8 && alive (driver supportAirVehicle) : driver supportAirVehicle doFire w4s5R8
+goto "airPatrol"
+#airPatrol
+~20
+? missionEnded : exit
+supportAirVehicle doMove [airTargetX + 350, airTargetY, 0]
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+~25
+? missionEnded : exit
+supportAirVehicle doMove [airTargetX - 350, airTargetY, 0]
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+~25
+? missionEnded : exit
+supportAirVehicle doMove [airTargetX, airTargetY + 350, 0]
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+~25
+? missionEnded : exit
+supportAirVehicle doMove [airTargetX, airTargetY - 350, 0]
+exit

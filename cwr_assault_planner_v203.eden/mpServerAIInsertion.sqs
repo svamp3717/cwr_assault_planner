@@ -1,0 +1,244 @@
+; MP v104 server-local AI insertion.
+; Mirrors player insertion for subordinate AI owned by the server.
+; Human players are moved by their own client scripts.
+~0.5
+? insertionFoot : goto "mpFoot"
+? insertionTruck : goto "mpTruck"
+? insertionAPC : goto "mpAPC"
+? insertionPara : goto "mpDirectParadrop"
+? insertionHeli : goto "mpHeli"
+goto "mpDone"
+#mpTruck
+? alive red2 && local red2 : red2 assignAsCargo truckP1
+? alive red2 && local red2 : red2 moveInCargo truckP1
+? alive red3 && local red3 : red3 assignAsCargo truckP1
+? alive red3 && local red3 : red3 moveInCargo truckP1
+? alive medic1 && local medic1 : medic1 assignAsCargo truckP1
+? alive medic1 && local medic1 : medic1 moveInCargo truckP1
+? alive medic2 && local medic2 : medic2 assignAsCargo truckP1
+? alive medic2 && local medic2 : medic2 moveInCargo truckP1
+? alive red6 && local red6 : red6 assignAsCargo truckP1
+? alive red6 && local red6 : red6 moveInCargo truckP1
+? alive red7 && local red7 : red7 assignAsCargo truckP2
+? alive red7 && local red7 : red7 moveInCargo truckP2
+? alive red8 && local red8 : red8 assignAsCargo truckP2
+? alive red8 && local red8 : red8 moveInCargo truckP2
+? alive red9 && local red9 : red9 assignAsCargo truckP2
+? alive red9 && local red9 : red9 moveInCargo truckP2
+? alive red10 && local red10 : red10 assignAsCargo truckP2
+? alive red10 && local red10 : red10 moveInCargo truckP2
+? alive red11 && local red11 : red11 assignAsCargo truckP2
+? alive red11 && local red11 : red11 moveInCargo truckP2
+? alive red12 && local red12 : red12 assignAsCargo truckP2
+? alive red12 && local red12 : red12 moveInCargo truckP2
+goto "mpWaitDismount"
+#mpAPC
+? alive red2 && local red2 : red2 assignAsCargo apcP1
+? alive red2 && local red2 : red2 moveInCargo apcP1
+? alive red3 && local red3 : red3 assignAsCargo apcP1
+? alive red3 && local red3 : red3 moveInCargo apcP1
+? alive medic1 && local medic1 : medic1 assignAsCargo apcP1
+? alive medic1 && local medic1 : medic1 moveInCargo apcP1
+? alive medic2 && local medic2 : medic2 assignAsCargo apcP1
+? alive medic2 && local medic2 : medic2 moveInCargo apcP1
+? alive red6 && local red6 : red6 assignAsCargo apcP1
+? alive red6 && local red6 : red6 moveInCargo apcP1
+? alive red7 && local red7 : red7 assignAsCargo apcP2
+? alive red7 && local red7 : red7 moveInCargo apcP2
+? alive red8 && local red8 : red8 assignAsCargo apcP2
+? alive red8 && local red8 : red8 moveInCargo apcP2
+? alive red9 && local red9 : red9 assignAsCargo apcP2
+? alive red9 && local red9 : red9 moveInCargo apcP2
+? alive red10 && local red10 : red10 assignAsCargo apcP2
+? alive red10 && local red10 : red10 moveInCargo apcP2
+? alive red11 && local red11 : red11 assignAsCargo apcP2
+? alive red11 && local red11 : red11 moveInCargo apcP2
+? alive red12 && local red12 : red12 assignAsCargo apcP2
+? alive red12 && local red12 : red12 moveInCargo apcP2
+goto "mpWaitDismount"
+#mpMixed
+? alive red2 && local red2 : red2 assignAsCargo apcP1
+? alive red2 && local red2 : red2 moveInCargo apcP1
+? alive red3 && local red3 : red3 assignAsCargo apcP1
+? alive red3 && local red3 : red3 moveInCargo apcP1
+? alive medic1 && local medic1 : medic1 assignAsCargo apcP1
+? alive medic1 && local medic1 : medic1 moveInCargo apcP1
+? alive medic2 && local medic2 : medic2 assignAsCargo apcP1
+? alive medic2 && local medic2 : medic2 moveInCargo apcP1
+? alive red6 && local red6 : red6 assignAsCargo apcP1
+? alive red6 && local red6 : red6 moveInCargo apcP1
+? alive red7 && local red7 : red7 assignAsCargo apcP2
+? alive red7 && local red7 : red7 moveInCargo apcP2
+? alive red8 && local red8 : red8 assignAsCargo apcP2
+? alive red8 && local red8 : red8 moveInCargo apcP2
+? alive red9 && local red9 : red9 assignAsCargo apcP2
+? alive red9 && local red9 : red9 moveInCargo apcP2
+? alive red10 && local red10 : red10 assignAsCargo apcP2
+? alive red10 && local red10 : red10 moveInCargo apcP2
+? alive red11 && local red11 : red11 assignAsCargo apcP2
+? alive red11 && local red11 : red11 moveInCargo apcP2
+? alive red12 && local red12 : red12 assignAsCargo apcP2
+? alive red12 && local red12 : red12 moveInCargo apcP2
+goto "mpWaitDismount"
+#mpDirectParadrop
+? alive red2 && local red2 : [red2, lzX + -12, lzY + -12, 170, 53] exec "friendlyDirectParachute.sqs"
+? alive red3 && local red3 : [red3, lzX + -6, lzY + -12, 172, 53] exec "friendlyDirectParachute.sqs"
+? alive medic1 && local medic1 : [medic1, lzX + 0, lzY + -12, 174, 53] exec "friendlyDirectParachute.sqs"
+? alive medic2 && local medic2 : [medic2, lzX + 6, lzY + -12, 176, 53] exec "friendlyDirectParachute.sqs"
+? alive red6 && local red6 : [red6, lzX + 12, lzY + -12, 178, 53] exec "friendlyDirectParachute.sqs"
+? alive red7 && local red7 : [red7, lzX + -18, lzY + -4, 170, 53] exec "friendlyDirectParachute.sqs"
+? alive red8 && local red8 : [red8, lzX + -12, lzY + -4, 172, 53] exec "friendlyDirectParachute.sqs"
+? alive red9 && local red9 : [red9, lzX + -6, lzY + -4, 174, 53] exec "friendlyDirectParachute.sqs"
+? alive red10 && local red10 : [red10, lzX + 0, lzY + -4, 176, 53] exec "friendlyDirectParachute.sqs"
+? alive red11 && local red11 : [red11, lzX + 6, lzY + -4, 178, 53] exec "friendlyDirectParachute.sqs"
+? alive red12 && local red12 : [red12, lzX + 12, lzY + -4, 180, 53] exec "friendlyDirectParachute.sqs"
+goto "mpDone"
+#mpHeli
+? heliSplit : goto "mpHeliSplit"
+? alive red2 && local red2 : red2 assignAsCargo heliP1
+? alive red2 && local red2 : red2 moveInCargo heliP1
+? alive red3 && local red3 : red3 assignAsCargo heliP1
+? alive red3 && local red3 : red3 moveInCargo heliP1
+? alive medic1 && local medic1 : medic1 assignAsCargo heliP1
+? alive medic1 && local medic1 : medic1 moveInCargo heliP1
+? alive medic2 && local medic2 : medic2 assignAsCargo heliP1
+? alive medic2 && local medic2 : medic2 moveInCargo heliP1
+? alive red6 && local red6 : red6 assignAsCargo heliP1
+? alive red6 && local red6 : red6 moveInCargo heliP1
+? alive red7 && local red7 : red7 assignAsCargo heliP1
+? alive red7 && local red7 : red7 moveInCargo heliP1
+? alive red8 && local red8 : red8 assignAsCargo heliP1
+? alive red8 && local red8 : red8 moveInCargo heliP1
+? alive red9 && local red9 : red9 assignAsCargo heliP1
+? alive red9 && local red9 : red9 moveInCargo heliP1
+? alive red10 && local red10 : red10 assignAsCargo heliP1
+? alive red10 && local red10 : red10 moveInCargo heliP1
+? alive red11 && local red11 : red11 assignAsCargo heliP1
+? alive red11 && local red11 : red11 moveInCargo heliP1
+? alive red12 && local red12 : red12 assignAsCargo heliP1
+? alive red12 && local red12 : red12 moveInCargo heliP1
+goto "mpWaitDismount"
+#mpHeliSplit
+? alive red2 && local red2 : red2 assignAsCargo heliU1
+? alive red2 && local red2 : red2 moveInCargo heliU1
+? alive red3 && local red3 : red3 assignAsCargo heliU1
+? alive red3 && local red3 : red3 moveInCargo heliU1
+? alive medic1 && local medic1 : medic1 assignAsCargo heliU1
+? alive medic1 && local medic1 : medic1 moveInCargo heliU1
+? alive medic2 && local medic2 : medic2 assignAsCargo heliU1
+? alive medic2 && local medic2 : medic2 moveInCargo heliU1
+? alive red6 && local red6 : red6 assignAsCargo heliU1
+? alive red6 && local red6 : red6 moveInCargo heliU1
+? alive red7 && local red7 : red7 assignAsCargo heliU2
+? alive red7 && local red7 : red7 moveInCargo heliU2
+? alive red8 && local red8 : red8 assignAsCargo heliU2
+? alive red8 && local red8 : red8 moveInCargo heliU2
+? alive red9 && local red9 : red9 assignAsCargo heliU2
+? alive red9 && local red9 : red9 moveInCargo heliU2
+? alive red10 && local red10 : red10 assignAsCargo heliU2
+? alive red10 && local red10 : red10 moveInCargo heliU2
+? alive red11 && local red11 : red11 assignAsCargo heliU2
+? alive red11 && local red11 : red11 moveInCargo heliU2
+? alive red12 && local red12 : red12 assignAsCargo heliU2
+? alive red12 && local red12 : red12 moveInCargo heliU2
+goto "mpWaitDismount"
+#mpFoot
+? alive red2 && local red2 : unassignVehicle red2
+? alive red2 && local red2 : red2 setPos [lzX + -12, lzY + -10, 0]
+? alive red3 && local red3 : unassignVehicle red3
+? alive red3 && local red3 : red3 setPos [lzX + -6, lzY + -10, 0]
+? alive medic1 && local medic1 : unassignVehicle medic1
+? alive medic1 && local medic1 : medic1 setPos [lzX + 0, lzY + -10, 0]
+? alive medic2 && local medic2 : unassignVehicle medic2
+? alive medic2 && local medic2 : medic2 setPos [lzX + 6, lzY + -10, 0]
+? alive red6 && local red6 : unassignVehicle red6
+? alive red6 && local red6 : red6 setPos [lzX + 12, lzY + -10, 0]
+? alive red7 && local red7 : unassignVehicle red7
+? alive red7 && local red7 : red7 setPos [lzX + -18, lzY + -3, 0]
+? alive red8 && local red8 : unassignVehicle red8
+? alive red8 && local red8 : red8 setPos [lzX + -12, lzY + -3, 0]
+? alive red9 && local red9 : unassignVehicle red9
+? alive red9 && local red9 : red9 setPos [lzX + -6, lzY + -3, 0]
+? alive red10 && local red10 : unassignVehicle red10
+? alive red10 && local red10 : red10 setPos [lzX + 0, lzY + -3, 0]
+? alive red11 && local red11 : unassignVehicle red11
+? alive red11 && local red11 : red11 setPos [lzX + 6, lzY + -3, 0]
+? alive red12 && local red12 : unassignVehicle red12
+? alive red12 && local red12 : red12 setPos [lzX + 12, lzY + -3, 0]
+goto "mpDone"
+#mpWaitDismount
+@ mpDismountNow
+? insertionPara : goto "mpParadropStick"
+? alive red2 && local red2 : red2 action ["GETOUT", vehicle red2]
+? alive red2 && local red2 : unassignVehicle red2
+? alive red3 && local red3 : red3 action ["GETOUT", vehicle red3]
+? alive red3 && local red3 : unassignVehicle red3
+? alive medic1 && local medic1 : medic1 action ["GETOUT", vehicle medic1]
+? alive medic1 && local medic1 : unassignVehicle medic1
+? alive medic2 && local medic2 : medic2 action ["GETOUT", vehicle medic2]
+? alive medic2 && local medic2 : unassignVehicle medic2
+? alive red6 && local red6 : red6 action ["GETOUT", vehicle red6]
+? alive red6 && local red6 : unassignVehicle red6
+? alive red7 && local red7 : red7 action ["GETOUT", vehicle red7]
+? alive red7 && local red7 : unassignVehicle red7
+? alive red8 && local red8 : red8 action ["GETOUT", vehicle red8]
+? alive red8 && local red8 : unassignVehicle red8
+? alive red9 && local red9 : red9 action ["GETOUT", vehicle red9]
+? alive red9 && local red9 : unassignVehicle red9
+? alive red10 && local red10 : red10 action ["GETOUT", vehicle red10]
+? alive red10 && local red10 : unassignVehicle red10
+? alive red11 && local red11 : red11 action ["GETOUT", vehicle red11]
+? alive red11 && local red11 : unassignVehicle red11
+? alive red12 && local red12 : red12 action ["GETOUT", vehicle red12]
+? alive red12 && local red12 : unassignVehicle red12
+goto "mpGroundDismountDone"
+#mpParadropStick
+? alive red2 && local red2 : red2 action ["EJECT", vehicle red2]
+? alive red2 && local red2 : unassignVehicle red2
+~0.25
+? alive red3 && local red3 : red3 action ["EJECT", vehicle red3]
+? alive red3 && local red3 : unassignVehicle red3
+~0.25
+? alive medic1 && local medic1 : medic1 action ["EJECT", vehicle medic1]
+? alive medic1 && local medic1 : unassignVehicle medic1
+~0.25
+? alive medic2 && local medic2 : medic2 action ["EJECT", vehicle medic2]
+? alive medic2 && local medic2 : unassignVehicle medic2
+~0.25
+? alive red6 && local red6 : red6 action ["EJECT", vehicle red6]
+? alive red6 && local red6 : unassignVehicle red6
+~0.25
+? alive red7 && local red7 : red7 action ["EJECT", vehicle red7]
+? alive red7 && local red7 : unassignVehicle red7
+~0.25
+? alive red8 && local red8 : red8 action ["EJECT", vehicle red8]
+? alive red8 && local red8 : unassignVehicle red8
+~0.25
+? alive red9 && local red9 : red9 action ["EJECT", vehicle red9]
+? alive red9 && local red9 : unassignVehicle red9
+~0.25
+? alive red10 && local red10 : red10 action ["EJECT", vehicle red10]
+? alive red10 && local red10 : unassignVehicle red10
+~0.25
+? alive red11 && local red11 : red11 action ["EJECT", vehicle red11]
+? alive red11 && local red11 : unassignVehicle red11
+~0.25
+? alive red12 && local red12 : red12 action ["EJECT", vehicle red12]
+? alive red12 && local red12 : unassignVehicle red12
+~0.25
+goto "mpDone"
+#mpGroundDismountDone
+~8
+? alive red2 && local red2 && vehicle red2 != red2 : red2 setPos [lzX + -12, lzY + -10, 0]
+? alive red3 && local red3 && vehicle red3 != red3 : red3 setPos [lzX + -6, lzY + -10, 0]
+? alive medic1 && local medic1 && vehicle medic1 != medic1 : medic1 setPos [lzX + 0, lzY + -10, 0]
+? alive medic2 && local medic2 && vehicle medic2 != medic2 : medic2 setPos [lzX + 6, lzY + -10, 0]
+? alive red6 && local red6 && vehicle red6 != red6 : red6 setPos [lzX + 12, lzY + -10, 0]
+? alive red7 && local red7 && vehicle red7 != red7 : red7 setPos [lzX + -18, lzY + -3, 0]
+? alive red8 && local red8 && vehicle red8 != red8 : red8 setPos [lzX + -12, lzY + -3, 0]
+? alive red9 && local red9 && vehicle red9 != red9 : red9 setPos [lzX + -6, lzY + -3, 0]
+? alive red10 && local red10 && vehicle red10 != red10 : red10 setPos [lzX + 0, lzY + -3, 0]
+? alive red11 && local red11 && vehicle red11 != red11 : red11 setPos [lzX + 6, lzY + -3, 0]
+? alive red12 && local red12 && vehicle red12 != red12 : red12 setPos [lzX + 12, lzY + -3, 0]
+#mpDone
+exit

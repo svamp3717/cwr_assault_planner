@@ -1,0 +1,29 @@
+; v125: launch a fully loaded runtime helicopter after ground boarding and rotor spin-up.
+; Arguments: [helicopter, start X, start Y, destination X, destination Y, flight height].
+_veh = _this select 0
+_startX = _this select 1
+_startY = _this select 2
+_destX = _this select 3
+_destY = _this select 4
+_height = _this select 5
+? isNull _veh : exit
+? !(alive _veh) : exit
+_pilot = driver _veh
+? isNull _pilot : exit
+_veh setFuel 1
+_veh setDammage 0
+_veh engineOn true
+_pilot action ["ENGINE ON", _veh]
+_pilot stop false
+_veh flyInHeight _height
+; Reproduce editor special="FLY" only after the final cargo mass is aboard.
+_veh setPos [_startX, _startY, _height + 30]
+_veh setVelocity [0,0,6]
+_pilot doMove [_destX, _destY, 0]
+~0.5
+_veh setDammage 0
+_z = getPos _veh select 2
+? _z < (_height - 20) : _veh setPos [_startX, _startY, _height + 30]
+? _z < (_height - 20) : _veh setVelocity [0,0,6]
+_pilot doMove [_destX, _destY, 0]
+exit

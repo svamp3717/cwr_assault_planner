@@ -1,0 +1,27 @@
+; Apply locally displayed tasks, marker positions and leader-only radio access.
+"1" objStatus "ACTIVE"
+? townCount >= 2 : "2" objStatus "ACTIVE"
+? townCount < 2 : "2" objStatus "HIDDEN"
+? townCount >= 3 : "3" objStatus "ACTIVE"
+? townCount < 3 : "3" objStatus "HIDDEN"
+? townCount >= 4 : "4" objStatus "ACTIVE"
+? townCount < 4 : "4" objStatus "HIDDEN"
+? townCount >= 5 : "5" objStatus "ACTIVE"
+? townCount < 5 : "5" objStatus "HIDDEN"
+"primary_marker" setMarkerPos [primaryX, primaryY, 0]
+? townCount >= 2 : "secondary_marker" setMarkerPos [secondaryX, secondaryY, 0]
+? townCount >= 3 : "third_marker" setMarkerPos [thirdX, thirdY, 0]
+? townCount >= 4 : "fourth_marker" setMarkerPos [fourthX, fourthY, 0]
+? townCount >= 5 : "fifth_marker" setMarkerPos [fifthX, fifthY, 0]
+[] exec "updateObjectiveMarkerLabels.sqs"
+"lz_marker" setMarkerPos [lzX, lzY, 0]
+1 setRadioMsg "NULL"
+2 setRadioMsg "NULL"
+3 setRadioMsg "NULL"
+_radioLeader = leader (group player)
+? player == _radioLeader && !(airSupportUsed) && !(airSupportUnavailableReported) : 1 setRadioMsg "Request Air Support"
+? player == _radioLeader && extractionCallAvailable && !(extractionActive) : 2 setRadioMsg "Call Final Extraction"
+? player == _radioLeader && logisticsDropAvailable && logisticsDropsRemaining > 0 && !(logisticsDropInProgress) && !(logisticsDropLocalPending) : 3 setRadioMsg "Request Logistics Drop"
+[] exec "mpApplySelectedBriefing.sqs"
+[] exec "mpShowBuildingDefenseLog.sqs"
+exit

@@ -1,0 +1,295 @@
+; v133 CWA-safe objective defender counter. Counts only scripted objective infantry.
+; The bunker and building systems reuse these same soldiers, so they remain part of the threshold.
+reinforcementDefenderCountReady = false
+_slot = _this select 0
+reinforcementDefendersAlive = 0
+reinforcementDefendersTotal = 8
+? enemyInfantryLevel == 2 : reinforcementDefendersTotal = 16
+? enemyInfantryLevel == 3 : reinforcementDefendersTotal = 24
+reinforcementDefendersMaxAlive = 2
+? enemyInfantryLevel == 2 : reinforcementDefendersMaxAlive = 4
+? enemyInfantryLevel == 3 : reinforcementDefendersMaxAlive = 6
+? _slot == 1 : goto "slot1"
+? _slot == 2 : goto "slot2"
+? _slot == 3 : goto "slot3"
+? _slot == 4 : goto "slot4"
+? _slot == 5 : goto "slot5"
+goto "done"
+#slot1
+? enemyEast : goto "slot1East"
+goto "slot1Resistance"
+#slot1East
+? alive w4s1E1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1E24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot1Resistance
+? alive w4s1R1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s1R24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot2
+? enemyEast : goto "slot2East"
+goto "slot2Resistance"
+#slot2East
+? alive w4s2E1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2E24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot2Resistance
+? alive w4s2R1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s2R24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot3
+? enemyEast : goto "slot3East"
+goto "slot3Resistance"
+#slot3East
+? alive w4s3E1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3E24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot3Resistance
+? alive w4s3R1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s3R24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot4
+? enemyEast : goto "slot4East"
+goto "slot4Resistance"
+#slot4East
+? alive w4s4E1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4E24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot4Resistance
+? alive w4s4R1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s4R24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot5
+? enemyEast : goto "slot5East"
+goto "slot5Resistance"
+#slot5East
+? alive w4s5E1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5E24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#slot5Resistance
+? alive w4s5R1 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R2 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R3 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R4 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R5 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R6 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R7 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R8 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R9 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R10 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R11 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R12 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R13 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R14 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R15 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R16 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R17 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R18 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R19 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R20 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R21 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R22 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R23 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+? alive w4s5R24 : reinforcementDefendersAlive = reinforcementDefendersAlive + 1
+goto "done"
+#done
+reinforcementDefenderCountReady = true
+exit

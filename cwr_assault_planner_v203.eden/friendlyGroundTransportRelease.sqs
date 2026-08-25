@@ -1,0 +1,13 @@
+; v125: release a ground transport after cargo has disembarked.
+; Arguments: [vehicle, destination X, destination Y].
+_veh = _this select 0
+_destX = _this select 1
+_destY = _this select 2
+? isNull _veh : exit
+? !(alive _veh) : exit
+_drv = driver _veh
+_veh setFuel 1
+? isNull _drv : exit
+_drv stop false
+_drv doMove [_destX, _destY, 0]
+exit

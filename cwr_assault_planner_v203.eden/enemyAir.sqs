@@ -1,0 +1,12 @@
+; v133 runtime enemy air/reinforcement manager. Old SQS only.
+enemyAirReinforcementActive = false
+airReinfClear = true
+? debugMode && enemyAirSupport : debugLog format ["ERA DEBUG ENEMY AIR: %1 support scheduled", enemyAttackName]
+? debugMode && enemyAirSupport && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG ENEMY AIR: %1 support scheduled", enemyAttackName]
+? debugMode && enemyAirReinforcement : debugLog "ERA DEBUG ENEMY AIR: transport reinforcement armed"
+? debugMode && enemyAirReinforcement && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: transport reinforcement armed"
+? debugMode && enemyReinforcements : debugLog "ERA DEBUG REINFORCEMENT: ground reinforcement armed"
+? debugMode && enemyReinforcements && debugConsole && !(isNull player) : player globalChat "ERA DEBUG REINFORCEMENT: ground reinforcement armed"
+? enemyAirSupport : [] exec "enemyAirSupport.sqs"
+? (enemyAirReinforcement) || (enemyReinforcements) : [] exec "enemyReinforcementDispatch.sqs"
+exit

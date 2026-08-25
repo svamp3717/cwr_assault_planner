@@ -1,0 +1,697 @@
+; v121: CWA-safe runtime enemy vehicle pool selection. Uses modulo truncation because floor is not available in CWA/OFP.
+enemyRuntimeVehiclesReady = false
+enemyRuntimeVehicleRequestedTotal = 0
+enemyRuntimeVehicleCreatedTotal = 0
+enemyRuntimeVehicleCrewedTotal = 0
+enemyRuntimeVehicleCrewSeatTotal = 0
+@ enemyGroundVehiclePoolsReady
+? !(enemyGroundVehicles) : goto "runtimeVehicleFinish"
+? enemyVehicleLevel <= 0 : goto "runtimeVehicleFinish"
+? enemyEast : goto "spawnRuntimeEast"
+goto "spawnRuntimeResistance"
+#spawnRuntimeEast
+? townCount < 1 : goto "spawnRuntimeEastAfter1"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeEastAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + 135, primaryY + -95, 315, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Eveh1 = runtimeVehicleSpawned
+? alive s1Eveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Eveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Eveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + -145, primaryY + 105, 135, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Eveh2 = runtimeVehicleSpawned
+? alive s1Eveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Eveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Eveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + 165, primaryY + 35, 270, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Eveh3 = runtimeVehicleSpawned
+? alive s1Eveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Eveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Eveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + -175, primaryY + -90, 45, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Eveh4 = runtimeVehicleSpawned
+? alive s1Eveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Eveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Eveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + 55, primaryY + 180, 180, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Eveh5 = runtimeVehicleSpawned
+? alive s1Eveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Eveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Eveh5"
+#spawnRuntimeEastAfter1
+? townCount < 2 : goto "spawnRuntimeEastAfter2"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeEastAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + 135, secondaryY + -95, 315, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Eveh1 = runtimeVehicleSpawned
+? alive s2Eveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Eveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Eveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + -145, secondaryY + 105, 135, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Eveh2 = runtimeVehicleSpawned
+? alive s2Eveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Eveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Eveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + 165, secondaryY + 35, 270, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Eveh3 = runtimeVehicleSpawned
+? alive s2Eveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Eveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Eveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + -175, secondaryY + -90, 45, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Eveh4 = runtimeVehicleSpawned
+? alive s2Eveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Eveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Eveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + 55, secondaryY + 180, 180, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Eveh5 = runtimeVehicleSpawned
+? alive s2Eveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Eveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Eveh5"
+#spawnRuntimeEastAfter2
+? townCount < 3 : goto "spawnRuntimeEastAfter3"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeEastAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + 135, thirdY + -95, 315, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Eveh1 = runtimeVehicleSpawned
+? alive s3Eveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Eveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Eveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + -145, thirdY + 105, 135, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Eveh2 = runtimeVehicleSpawned
+? alive s3Eveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Eveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Eveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + 165, thirdY + 35, 270, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Eveh3 = runtimeVehicleSpawned
+? alive s3Eveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Eveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Eveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + -175, thirdY + -90, 45, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Eveh4 = runtimeVehicleSpawned
+? alive s3Eveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Eveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Eveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + 55, thirdY + 180, 180, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Eveh5 = runtimeVehicleSpawned
+? alive s3Eveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Eveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Eveh5"
+#spawnRuntimeEastAfter3
+? townCount < 4 : goto "spawnRuntimeEastAfter4"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeEastAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + 135, fourthY + -95, 315, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Eveh1 = runtimeVehicleSpawned
+? alive s4Eveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Eveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Eveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + -145, fourthY + 105, 135, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Eveh2 = runtimeVehicleSpawned
+? alive s4Eveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Eveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Eveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + 165, fourthY + 35, 270, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Eveh3 = runtimeVehicleSpawned
+? alive s4Eveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Eveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Eveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + -175, fourthY + -90, 45, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Eveh4 = runtimeVehicleSpawned
+? alive s4Eveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Eveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Eveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + 55, fourthY + 180, 180, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Eveh5 = runtimeVehicleSpawned
+? alive s4Eveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Eveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Eveh5"
+#spawnRuntimeEastAfter4
+? townCount < 5 : goto "spawnRuntimeEastAfter5"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeEastAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + 135, fifthY + -95, 315, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Eveh1 = runtimeVehicleSpawned
+? alive s5Eveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Eveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Eveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + -145, fifthY + 105, 135, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Eveh2 = runtimeVehicleSpawned
+? alive s5Eveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Eveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Eveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeEastAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + 165, fifthY + 35, 270, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Eveh3 = runtimeVehicleSpawned
+? alive s5Eveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Eveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Eveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + -175, fifthY + -90, 45, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Eveh4 = runtimeVehicleSpawned
+? alive s5Eveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Eveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Eveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeEastAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyEastHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyEastHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + 55, fifthY + 180, 180, 0] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Eveh5 = runtimeVehicleSpawned
+? alive s5Eveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Eveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Eveh5"
+#spawnRuntimeEastAfter5
+goto "runtimeVehicleFinish"
+#spawnRuntimeResistance
+? townCount < 1 : goto "spawnRuntimeResistanceAfter1"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeResistanceAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + 135, primaryY + -95, 315, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Rveh1 = runtimeVehicleSpawned
+? alive s1Rveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Rveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Rveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + -145, primaryY + 105, 135, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Rveh2 = runtimeVehicleSpawned
+? alive s1Rveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Rveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Rveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + 165, primaryY + 35, 270, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Rveh3 = runtimeVehicleSpawned
+? alive s1Rveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Rveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Rveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + -175, primaryY + -90, 45, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Rveh4 = runtimeVehicleSpawned
+? alive s1Rveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Rveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Rveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter1"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, primaryX + 55, primaryY + 180, 180, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s1Rveh5 = runtimeVehicleSpawned
+? alive s1Rveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s1Rveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s1Rveh5"
+#spawnRuntimeResistanceAfter1
+? townCount < 2 : goto "spawnRuntimeResistanceAfter2"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeResistanceAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + 135, secondaryY + -95, 315, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Rveh1 = runtimeVehicleSpawned
+? alive s2Rveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Rveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Rveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + -145, secondaryY + 105, 135, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Rveh2 = runtimeVehicleSpawned
+? alive s2Rveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Rveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Rveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + 165, secondaryY + 35, 270, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Rveh3 = runtimeVehicleSpawned
+? alive s2Rveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Rveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Rveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + -175, secondaryY + -90, 45, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Rveh4 = runtimeVehicleSpawned
+? alive s2Rveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Rveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Rveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter2"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, secondaryX + 55, secondaryY + 180, 180, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s2Rveh5 = runtimeVehicleSpawned
+? alive s2Rveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s2Rveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s2Rveh5"
+#spawnRuntimeResistanceAfter2
+? townCount < 3 : goto "spawnRuntimeResistanceAfter3"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeResistanceAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + 135, thirdY + -95, 315, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Rveh1 = runtimeVehicleSpawned
+? alive s3Rveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Rveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Rveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + -145, thirdY + 105, 135, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Rveh2 = runtimeVehicleSpawned
+? alive s3Rveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Rveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Rveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + 165, thirdY + 35, 270, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Rveh3 = runtimeVehicleSpawned
+? alive s3Rveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Rveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Rveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + -175, thirdY + -90, 45, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Rveh4 = runtimeVehicleSpawned
+? alive s3Rveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Rveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Rveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter3"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, thirdX + 55, thirdY + 180, 180, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s3Rveh5 = runtimeVehicleSpawned
+? alive s3Rveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s3Rveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s3Rveh5"
+#spawnRuntimeResistanceAfter3
+? townCount < 4 : goto "spawnRuntimeResistanceAfter4"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeResistanceAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + 135, fourthY + -95, 315, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Rveh1 = runtimeVehicleSpawned
+? alive s4Rveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Rveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Rveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + -145, fourthY + 105, 135, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Rveh2 = runtimeVehicleSpawned
+? alive s4Rveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Rveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Rveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + 165, fourthY + 35, 270, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Rveh3 = runtimeVehicleSpawned
+? alive s4Rveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Rveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Rveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + -175, fourthY + -90, 45, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Rveh4 = runtimeVehicleSpawned
+? alive s4Rveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Rveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Rveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter4"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fourthX + 55, fourthY + 180, 180, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s4Rveh5 = runtimeVehicleSpawned
+? alive s4Rveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s4Rveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s4Rveh5"
+#spawnRuntimeResistanceAfter4
+? townCount < 5 : goto "spawnRuntimeResistanceAfter5"
+? enemyVehicleLevel < 1 : goto "spawnRuntimeResistanceAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceAPCVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceAPCVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + 135, fifthY + -95, 315, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Rveh1 = runtimeVehicleSpawned
+? alive s5Rveh1 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Rveh1 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Rveh1"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceLightVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceLightVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + -145, fifthY + 105, 135, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Rveh2 = runtimeVehicleSpawned
+? alive s5Rveh2 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Rveh2 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Rveh2"
+? enemyVehicleLevel < 2 : goto "spawnRuntimeResistanceAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceTankVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceTankVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + 165, fifthY + 35, 270, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Rveh3 = runtimeVehicleSpawned
+? alive s5Rveh3 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Rveh3 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Rveh3"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceSupportVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceSupportVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + -175, fifthY + -90, 45, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Rveh4 = runtimeVehicleSpawned
+? alive s5Rveh4 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Rveh4 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Rveh4"
+? enemyVehicleLevel < 3 : goto "spawnRuntimeResistanceAfter5"
+enemyRuntimeVehicleRequestedTotal = enemyRuntimeVehicleRequestedTotal + 1
+runtimeVehicleSpawnComplete = false
+_runtimeVehicleRandom = random (count enemyResistanceHeavyVehiclePool)
+_runtimeVehicleIndex = _runtimeVehicleRandom - (_runtimeVehicleRandom % 1)
+_runtimeVehicleClass = enemyResistanceHeavyVehiclePool select _runtimeVehicleIndex
+[_runtimeVehicleClass, fifthX + 55, fifthY + 180, 180, 1] exec "enemyRuntimeVehicleOne.sqs"
+@ runtimeVehicleSpawnComplete
+s5Rveh5 = runtimeVehicleSpawned
+? alive s5Rveh5 : enemyRuntimeVehicleCreatedTotal = enemyRuntimeVehicleCreatedTotal + 1
+? alive s5Rveh5 && runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewedTotal = enemyRuntimeVehicleCrewedTotal + 1
+? runtimeVehicleSpawnCrewCount > 0 : enemyRuntimeVehicleCrewSeatTotal = enemyRuntimeVehicleCrewSeatTotal + runtimeVehicleSpawnCrewCount
+publicVariable "s5Rveh5"
+#spawnRuntimeResistanceAfter5
+goto "runtimeVehicleFinish"
+#runtimeVehicleFinish
+enemyRuntimeVehicleFailedTotal = enemyRuntimeVehicleRequestedTotal - enemyRuntimeVehicleCreatedTotal
+enemyRuntimeVehicleSummary = format ["ERA RUNTIME ENEMY VEHICLES: requested=%1 created=%2 crewed=%3 crewSeats=%4 failed=%5", enemyRuntimeVehicleRequestedTotal, enemyRuntimeVehicleCreatedTotal, enemyRuntimeVehicleCrewedTotal, enemyRuntimeVehicleCrewSeatTotal, enemyRuntimeVehicleFailedTotal]
+publicVariable "enemyRuntimeVehicleRequestedTotal"
+publicVariable "enemyRuntimeVehicleCreatedTotal"
+publicVariable "enemyRuntimeVehicleCrewedTotal"
+publicVariable "enemyRuntimeVehicleCrewSeatTotal"
+publicVariable "enemyRuntimeVehicleFailedTotal"
+publicVariable "enemyRuntimeVehicleSummary"
+enemyRuntimeVehiclesReady = true
+publicVariable "enemyRuntimeVehiclesReady"
+exit

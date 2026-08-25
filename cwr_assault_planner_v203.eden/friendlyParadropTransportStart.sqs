@@ -1,0 +1,24 @@
+; v129 aircraft-style high-speed straight pass using a known-safe transport helicopter model.
+_vehicle = _this select 0
+_startX = _this select 1
+_startY = _this select 2
+_dropX = _this select 3
+_dropY = _this select 4
+_height = _this select 5
+? !(alive _vehicle) : exit
+_dx = _dropX - _startX
+_dy = _dropY - _startY
+_dir = _dx atan2 _dy
+_vx = _dx / 25
+_vy = _dy / 25
+_vehicle setFuel 1
+_vehicle setDammage 0
+_vehicle setDir _dir
+_vehicle action ["ENGINEON", _vehicle]
+_vehicle flyInHeight _height
+_vehicle setPos [_startX, _startY, _height]
+_vehicle setVelocity [_vx, _vy, 1]
+? alive (driver _vehicle) : (group (driver _vehicle)) setBehaviour "CARELESS"
+? alive (driver _vehicle) : (group (driver _vehicle)) setCombatMode "BLUE"
+? alive (driver _vehicle) : driver _vehicle doMove [_dropX, _dropY, 0]
+exit

@@ -1,0 +1,38 @@
+; v129 keep a paradrop transport high, fast and straight until it is safely deleted.
+_vehicle = _this select 0
+_originX = _this select 1
+_originY = _this select 2
+_exitX = _this select 3
+_exitY = _this select 4
+? !(alive _vehicle) : exit
+_dx = _exitX - _originX
+_dy = _exitY - _originY
+_vx = _dx / 28
+_vy = _dy / 28
+_vehicle setFuel 1
+_vehicle flyInHeight 220
+_vehicle setVelocity [_vx, _vy, 1]
+? alive (driver _vehicle) : driver _vehicle doMove [_exitX, _exitY, 0]
+_wait = 0
+#paraDepartureLoop
+~3
+_wait = _wait + 1
+? !(alive _vehicle) : exit
+_px = getPos _vehicle select 0
+_py = getPos _vehicle select 1
+_farX = _px - _originX
+? _farX < 0 : _farX = 0 - _farX
+_farY = _py - _originY
+? _farY < 0 : _farY = 0 - _farY
+? _farX > 2200 : goto "deleteParaTransport"
+? _farY > 2200 : goto "deleteParaTransport"
+? _wait < 40 : goto "paraDepartureLoop"
+#deleteParaTransport
+_drv = driver _vehicle
+_gun = gunner _vehicle
+_cmd = commander _vehicle
+? alive _drv : deleteVehicle _drv
+? alive _gun : deleteVehicle _gun
+? alive _cmd : deleteVehicle _cmd
+deleteVehicle _vehicle
+exit

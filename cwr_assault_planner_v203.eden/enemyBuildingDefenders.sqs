@@ -1,0 +1,80 @@
+; v118: Assign existing enemy infantry to verified positions inside town buildings.
+; Small / Medium / Large infantry settings place 2 / 4 / 6 defenders per active objective.
+; Units used here are not patrol leaders and are not the static-gun crews from v112.
+buildingDefensesReady = false
+buildingDefensePlacementLog = []
+buildingDefenseFailureLog = []
+buildingDefenseAllUsedPositions = []
+buildingDefenseAttemptTotal = 0
+buildingDefensePlacedTotal = 0
+buildingDefenseFailedTotal = 0
+buildingDefenseSummary = "ERA BUILDING DEFENDERS: placement not finished"
+
+? enemyEast : goto "eastBuildingDefenses"
+goto "resistanceBuildingDefenses"
+
+#eastBuildingDefenses
+? townCount < 1 : goto "eastBuildingsAfter1"
+buildingDefenderTownReady = false
+[primaryX, primaryY, east, [w4s1E6, w4s1E7, w4s1E14, w4s1E15, w4s1E22, w4s1E23], 15] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+#eastBuildingsAfter1
+? townCount < 2 : goto "eastBuildingsAfter2"
+buildingDefenderTownReady = false
+[secondaryX, secondaryY, east, [w4s2E6, w4s2E7, w4s2E14, w4s2E15, w4s2E22, w4s2E23], 75] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+#eastBuildingsAfter2
+? townCount < 3 : goto "eastBuildingsAfter3"
+buildingDefenderTownReady = false
+[thirdX, thirdY, east, [w4s3E6, w4s3E7, w4s3E14, w4s3E15, w4s3E22, w4s3E23], 135] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+#eastBuildingsAfter3
+? townCount < 4 : goto "eastBuildingsAfter4"
+buildingDefenderTownReady = false
+[fourthX, fourthY, east, [w4s4E6, w4s4E7, w4s4E14, w4s4E15, w4s4E22, w4s4E23], 195] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+#eastBuildingsAfter4
+? townCount < 5 : goto "buildingDefensesDone"
+buildingDefenderTownReady = false
+[fifthX, fifthY, east, [w4s5E6, w4s5E7, w4s5E14, w4s5E15, w4s5E22, w4s5E23], 255] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+goto "buildingDefensesDone"
+
+#resistanceBuildingDefenses
+? townCount < 1 : goto "resBuildingsAfter1"
+buildingDefenderTownReady = false
+[primaryX, primaryY, resistance, [w4s1R6, w4s1R7, w4s1R14, w4s1R15, w4s1R22, w4s1R23], 15] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+#resBuildingsAfter1
+? townCount < 2 : goto "resBuildingsAfter2"
+buildingDefenderTownReady = false
+[secondaryX, secondaryY, resistance, [w4s2R6, w4s2R7, w4s2R14, w4s2R15, w4s2R22, w4s2R23], 75] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+#resBuildingsAfter2
+? townCount < 3 : goto "resBuildingsAfter3"
+buildingDefenderTownReady = false
+[thirdX, thirdY, resistance, [w4s3R6, w4s3R7, w4s3R14, w4s3R15, w4s3R22, w4s3R23], 135] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+#resBuildingsAfter3
+? townCount < 4 : goto "resBuildingsAfter4"
+buildingDefenderTownReady = false
+[fourthX, fourthY, resistance, [w4s4R6, w4s4R7, w4s4R14, w4s4R15, w4s4R22, w4s4R23], 195] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+#resBuildingsAfter4
+? townCount < 5 : goto "buildingDefensesDone"
+buildingDefenderTownReady = false
+[fifthX, fifthY, resistance, [w4s5R6, w4s5R7, w4s5R14, w4s5R15, w4s5R22, w4s5R23], 255] exec "enemyBuildingDefendersTown.sqs"
+@ buildingDefenderTownReady
+
+#buildingDefensesDone
+buildingDefenseSummary = format ["ERA BUILDING DEFENDERS SUMMARY: attempted=%1 placed=%2 failed=%3 objectives=%4 infantryLevel=%5", buildingDefenseAttemptTotal, buildingDefensePlacedTotal, buildingDefenseFailedTotal, townCount, enemyInfantryLevel]
+? !(debugMode) : goto "buildingDefensesReady"
+publicVariable "buildingDefensePlacementLog"
+publicVariable "buildingDefenseFailureLog"
+publicVariable "buildingDefenseAttemptTotal"
+publicVariable "buildingDefensePlacedTotal"
+publicVariable "buildingDefenseFailedTotal"
+publicVariable "buildingDefenseSummary"
+#buildingDefensesReady
+buildingDefensesReady = true
+exit

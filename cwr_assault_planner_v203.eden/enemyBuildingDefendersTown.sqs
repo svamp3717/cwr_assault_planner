@@ -1,0 +1,43 @@
+; v118: Fortify one objective town with existing infantry, without creating MP groups.
+; Args: [centerX, centerY, enemySide, defenderArray, angleSeed]
+; enemySide and angleSeed are retained for call compatibility; defenders stay in their original groups.
+buildingDefenderTownReady = false
+_centerX = _this select 0
+_centerY = _this select 1
+_enemySide = _this select 2
+_defenders = _this select 3
+_angleSeed = _this select 4
+
+; Position reuse is tracked separately for each town.
+buildingDefenseUsedPositions = []
+buildingDefensePlacedCount = 0
+
+; Small always uses the first two defenders.
+buildingDefenderPlacementReady = false
+[_centerX, _centerY, _defenders select 0, 0] exec "enemyBuildingDefenderPosition.sqs"
+@ buildingDefenderPlacementReady
+buildingDefenderPlacementReady = false
+[_centerX, _centerY, _defenders select 1, 5] exec "enemyBuildingDefenderPosition.sqs"
+@ buildingDefenderPlacementReady
+
+? enemyInfantryLevel < 2 : goto "townBuildingsDone"
+; Medium adds two defenders from the second infantry group.
+buildingDefenderPlacementReady = false
+[_centerX, _centerY, _defenders select 2, 2] exec "enemyBuildingDefenderPosition.sqs"
+@ buildingDefenderPlacementReady
+buildingDefenderPlacementReady = false
+[_centerX, _centerY, _defenders select 3, 7] exec "enemyBuildingDefenderPosition.sqs"
+@ buildingDefenderPlacementReady
+
+? enemyInfantryLevel < 3 : goto "townBuildingsDone"
+; Large adds another pair, preserving the 24-man objective total.
+buildingDefenderPlacementReady = false
+[_centerX, _centerY, _defenders select 4, 4] exec "enemyBuildingDefenderPosition.sqs"
+@ buildingDefenderPlacementReady
+buildingDefenderPlacementReady = false
+[_centerX, _centerY, _defenders select 5, 9] exec "enemyBuildingDefenderPosition.sqs"
+@ buildingDefenderPlacementReady
+
+#townBuildingsDone
+buildingDefenderTownReady = true
+exit

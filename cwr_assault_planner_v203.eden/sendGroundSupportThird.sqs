@@ -1,0 +1,7 @@
+; v87: move only the selected friendly armored support elements.
+? friendlyArmorLevel >= 1 && alive supportM113 : driver supportM113 doMove [thirdX, thirdY, 0]
+? friendlyArmorLevel >= 2 && alive supportTank : driver supportTank doMove [thirdX, thirdY, 0]
+? friendlyArmorLevel >= 3 && alive supportAA : driver supportAA doMove [thirdX + 120, thirdY - 120, 0]
+? friendlyArmorLevel >= 3 && alive supportJeep : driver supportJeep doMove [thirdX - 180, thirdY + 80, 0]
+? friendlyArmorLevel >= 3 && alive supportHMMWV : driver supportHMMWV doMove [thirdX - 210, thirdY + 100, 0]
+exit

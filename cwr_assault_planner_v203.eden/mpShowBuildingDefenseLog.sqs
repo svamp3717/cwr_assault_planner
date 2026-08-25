@@ -1,0 +1,30 @@
+; v118: Display server-verified building placement results on each CWA client.
+; globalChat is local, so each client prints the server-published arrays through its own player object.
+? !(debugMode) : exit
+? mpBuildingDefenseLogShown : exit
+mpBuildingDefenseLogShown = true
+@ !(isNull player)
+~0.5
+player globalChat buildingDefenseSummary
+~0.2
+_i = 0
+
+#showPlacedLoop
+? _i >= count buildingDefensePlacementLog : goto "showFailedStart"
+player globalChat (buildingDefensePlacementLog select _i)
+_i = _i + 1
+~0.12
+goto "showPlacedLoop"
+
+#showFailedStart
+_i = 0
+
+#showFailedLoop
+? _i >= count buildingDefenseFailureLog : goto "showBuildingLogDone"
+player globalChat (buildingDefenseFailureLog select _i)
+_i = _i + 1
+~0.12
+goto "showFailedLoop"
+
+#showBuildingLogDone
+exit

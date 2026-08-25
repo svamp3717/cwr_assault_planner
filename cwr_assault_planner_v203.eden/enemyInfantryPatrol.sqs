@@ -1,0 +1,49 @@
+; v100: CWA-safe walking patrol for one existing enemy infantry group.
+; Args: [leaderUnit, centerX, centerY, patrolRadius]
+; Uses doMove/unitReady on the current leader. Avoids OFP-incompatible object-to-array distance checks
+; and avoids the group move command that produced AIGroupImpl assertion spam under the tested engine/mod setup.
+_patrolUnit = _this select 0
+_patrolCenterX = _this select 1
+_patrolCenterY = _this select 2
+_patrolRadius = _this select 3
+_patrolGroup = group _patrolUnit
+_patrolGroup setBehaviour "SAFE"
+_patrolGroup setCombatMode "YELLOW"
+_patrolGroup setSpeedMode "LIMITED"
+_patrolGroup setFormation "COLUMN"
+~5
+
+#patrolLoop
+? (count (units _patrolGroup)) < 1 : goto "patrolEnd"
+_patrolLeader = leader _patrolGroup
+? !(alive _patrolLeader) : goto "patrolRetry"
+_patrolAngle = random 360
+_patrolDistance = 45 + random (_patrolRadius - 45)
+_patrolX = _patrolCenterX + ((sin _patrolAngle) * _patrolDistance)
+_patrolY = _patrolCenterY + ((cos _patrolAngle) * _patrolDistance)
+_patrolGroup setBehaviour "SAFE"
+_patrolGroup setSpeedMode "LIMITED"
+_patrolLeader doMove [_patrolX, _patrolY, 0]
+_patrolTimeout = time + 120
+
+#patrolWait
+~4
+? (count (units _patrolGroup)) < 1 : goto "patrolEnd"
+? !(alive _patrolLeader) : goto "patrolRetry"
+? (leader _patrolGroup) != _patrolLeader : goto "patrolRetry"
+? unitReady _patrolLeader : goto "patrolPause"
+? time > _patrolTimeout : goto "patrolPause"
+goto "patrolWait"
+
+#patrolRetry
+~2
+goto "patrolLoop"
+
+#patrolPause
+_patrolGroup setBehaviour "SAFE"
+_patrolGroup setSpeedMode "LIMITED"
+~12
+goto "patrolLoop"
+
+#patrolEnd
+exit

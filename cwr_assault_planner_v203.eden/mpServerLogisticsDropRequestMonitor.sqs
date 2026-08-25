@@ -1,0 +1,77 @@
+; v149 server monitor for configurable squad-leader Radio Charlie logistics requests.
+? !(isServer) : exit
+@ mpInsertionFinished
+? missionEnded : exit
+logisticsDropsAllowed = guiLogisticsDropCount
+logisticsDropsRemaining = logisticsDropsAllowed
+logisticsDropUsed = false
+? logisticsDropsRemaining < 1 : logisticsDropUsed = true
+logisticsDropAvailable = false
+? logisticsDropsRemaining > 0 : logisticsDropAvailable = true
+publicVariable "logisticsDropsAllowed"
+publicVariable "logisticsDropsRemaining"
+publicVariable "logisticsDropAvailable"
+publicVariable "logisticsDropUsed"
+
+#waitRequest
+~0.25
+? missionEnded : exit
+? logisticsDropInProgress : goto "waitRequest"
+? logisticsDropsRemaining < 1 : goto "noRequests"
+? !(mpLogisticsDropRequest) : goto "waitRequest"
+mpLogisticsDropRequest = false
+publicVariable "mpLogisticsDropRequest"
+? logisticsDropRequestType < 1 || logisticsDropRequestType > 3 : goto "invalidRequest"
+? isNull logisticsDropRequester : goto "invalidRequest"
+? !(alive logisticsDropRequester) : goto "invalidRequest"
+? logisticsDropRequester != leader (group logisticsDropRequester) : goto "invalidRequest"
+_requestPos = getPos logisticsDropRequester
+logisticsDropRequestX = _requestPos select 0
+logisticsDropRequestY = _requestPos select 1
+logisticsDropsRemaining = logisticsDropsRemaining - 1
+logisticsDropUsed = false
+? logisticsDropsRemaining < 1 : logisticsDropUsed = true
+logisticsDropAvailable = false
+logisticsDropInProgress = true
+logisticsDropDelivered = false
+publicVariable "logisticsDropRequestX"
+publicVariable "logisticsDropRequestY"
+publicVariable "logisticsDropsRemaining"
+publicVariable "logisticsDropAvailable"
+publicVariable "logisticsDropUsed"
+publicVariable "logisticsDropInProgress"
+publicVariable "logisticsDropDelivered"
+mpHQMessage = format ["HQ: %1 logistics helidrop approved. Chinook inbound to the marked position. %2 request(s) remain after this delivery.", logisticsDropRequestLabel, logisticsDropsRemaining]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+[] exec "mpServerLogisticsDrop.sqs"
+goto "waitDeliveryEnd"
+
+#waitDeliveryEnd
+~0.5
+? missionEnded : exit
+? logisticsDropInProgress : goto "waitDeliveryEnd"
+logisticsDropAvailable = false
+? logisticsDropsRemaining > 0 : logisticsDropAvailable = true
+publicVariable "logisticsDropAvailable"
+goto "waitRequest"
+
+#noRequests
+logisticsDropAvailable = false
+logisticsDropUsed = true
+publicVariable "logisticsDropAvailable"
+publicVariable "logisticsDropUsed"
+goto "waitRequest"
+
+#invalidRequest
+logisticsDropAvailable = false
+? logisticsDropsRemaining > 0 : logisticsDropAvailable = true
+logisticsDropInProgress = false
+publicVariable "logisticsDropAvailable"
+publicVariable "logisticsDropInProgress"
+mpHQMessage = "HQ: Logistics request rejected. Radio Charlie remains available to the current squad leader."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+goto "waitRequest"

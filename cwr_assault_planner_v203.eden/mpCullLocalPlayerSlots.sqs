@@ -1,0 +1,153 @@
+; MP v104 server-only playable-slot AI cull.
+; Keeps every occupied remote human slot and exactly guiPlayerAI server-local AI subordinates.
+; The commander slot is never considered for deletion.
+? !(isServer) : exit
+_kept = 0
+_deleted = 0
+? !(alive red2) : goto "slot2Done"
+? !(local red2) : goto "slot2Done"
+? _kept < guiPlayerAI : goto "slot2Keep"
+goto "slot2Delete"
+#slot2Keep
+_kept = _kept + 1
+goto "slot2Done"
+#slot2Delete
+deleteVehicle red2
+_deleted = _deleted + 1
+#slot2Done
+? !(alive red3) : goto "slot3Done"
+? !(local red3) : goto "slot3Done"
+? _kept < guiPlayerAI : goto "slot3Keep"
+goto "slot3Delete"
+#slot3Keep
+_kept = _kept + 1
+goto "slot3Done"
+#slot3Delete
+deleteVehicle red3
+_deleted = _deleted + 1
+#slot3Done
+? !(alive medic1) : goto "slot4Done"
+? !(local medic1) : goto "slot4Done"
+? _kept < guiPlayerAI : goto "slot4Keep"
+goto "slot4Delete"
+#slot4Keep
+_kept = _kept + 1
+goto "slot4Done"
+#slot4Delete
+deleteVehicle medic1
+_deleted = _deleted + 1
+#slot4Done
+? !(alive medic2) : goto "slot5Done"
+? !(local medic2) : goto "slot5Done"
+? _kept < guiPlayerAI : goto "slot5Keep"
+goto "slot5Delete"
+#slot5Keep
+_kept = _kept + 1
+goto "slot5Done"
+#slot5Delete
+deleteVehicle medic2
+_deleted = _deleted + 1
+#slot5Done
+? !(alive red6) : goto "slot6Done"
+? !(local red6) : goto "slot6Done"
+? _kept < guiPlayerAI : goto "slot6Keep"
+goto "slot6Delete"
+#slot6Keep
+_kept = _kept + 1
+goto "slot6Done"
+#slot6Delete
+deleteVehicle red6
+_deleted = _deleted + 1
+#slot6Done
+? !(alive red7) : goto "slot7Done"
+? !(local red7) : goto "slot7Done"
+? _kept < guiPlayerAI : goto "slot7Keep"
+goto "slot7Delete"
+#slot7Keep
+_kept = _kept + 1
+goto "slot7Done"
+#slot7Delete
+deleteVehicle red7
+_deleted = _deleted + 1
+#slot7Done
+? !(alive red8) : goto "slot8Done"
+? !(local red8) : goto "slot8Done"
+? _kept < guiPlayerAI : goto "slot8Keep"
+goto "slot8Delete"
+#slot8Keep
+_kept = _kept + 1
+goto "slot8Done"
+#slot8Delete
+deleteVehicle red8
+_deleted = _deleted + 1
+#slot8Done
+? !(alive red9) : goto "slot9Done"
+? !(local red9) : goto "slot9Done"
+? _kept < guiPlayerAI : goto "slot9Keep"
+goto "slot9Delete"
+#slot9Keep
+_kept = _kept + 1
+goto "slot9Done"
+#slot9Delete
+deleteVehicle red9
+_deleted = _deleted + 1
+#slot9Done
+? !(alive red10) : goto "slot10Done"
+? !(local red10) : goto "slot10Done"
+? _kept < guiPlayerAI : goto "slot10Keep"
+goto "slot10Delete"
+#slot10Keep
+_kept = _kept + 1
+goto "slot10Done"
+#slot10Delete
+deleteVehicle red10
+_deleted = _deleted + 1
+#slot10Done
+? !(alive red11) : goto "slot11Done"
+? !(local red11) : goto "slot11Done"
+? _kept < guiPlayerAI : goto "slot11Keep"
+goto "slot11Delete"
+#slot11Keep
+_kept = _kept + 1
+goto "slot11Done"
+#slot11Delete
+deleteVehicle red11
+_deleted = _deleted + 1
+#slot11Done
+? !(alive red12) : goto "slot12Done"
+? !(local red12) : goto "slot12Done"
+? _kept < guiPlayerAI : goto "slot12Keep"
+goto "slot12Delete"
+#slot12Keep
+_kept = _kept + 1
+goto "slot12Done"
+#slot12Delete
+deleteVehicle red12
+_deleted = _deleted + 1
+#slot12Done
+mpAIKept = _kept
+mpAIDeleted = _deleted
+
+; Publish the exact active playable roster for FRevive. Deleted AI slots are omitted.
+mpFReviveNames = []
+? alive plr : mpFReviveNames = mpFReviveNames + ["plr"]
+? alive red2 : mpFReviveNames = mpFReviveNames + ["red2"]
+? alive red3 : mpFReviveNames = mpFReviveNames + ["red3"]
+? alive medic1 : mpFReviveNames = mpFReviveNames + ["medic1"]
+? alive medic2 : mpFReviveNames = mpFReviveNames + ["medic2"]
+? alive red6 : mpFReviveNames = mpFReviveNames + ["red6"]
+? alive red7 : mpFReviveNames = mpFReviveNames + ["red7"]
+? alive red8 : mpFReviveNames = mpFReviveNames + ["red8"]
+? alive red9 : mpFReviveNames = mpFReviveNames + ["red9"]
+? alive red10 : mpFReviveNames = mpFReviveNames + ["red10"]
+? alive red11 : mpFReviveNames = mpFReviveNames + ["red11"]
+? alive red12 : mpFReviveNames = mpFReviveNames + ["red12"]
+mpFReviveNamesReady = true
+mpAISlotsCulled = true
+publicVariable "mpAIKept"
+publicVariable "mpAIDeleted"
+publicVariable "mpFReviveNames"
+publicVariable "mpFReviveNamesReady"
+publicVariable "mpAISlotsCulled"
+? debugMode : debugLog format ["ERA MP AI CULL: requested=%1 kept=%2 deleted=%3", guiPlayerAI, mpAIKept, mpAIDeleted]
+exit

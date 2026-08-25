@@ -1,0 +1,52 @@
+; MP v111 server-only overall win/failure controller with FRevive and extraction awareness.
+; FRevive holds incapacitated respawn bodies above 7000m until a revive completes.
+#loop
+~2
+? missionEnded : exit
+? extractionComplete && missionObjectivesComplete && !(enemyReinforcementPending) && airReinfClear : goto "win"
+_operational = false
+? alive plr && (getPos plr select 2) < 7000 : _operational = true
+? alive red2 && (getPos red2 select 2) < 7000 : _operational = true
+? alive red3 && (getPos red3 select 2) < 7000 : _operational = true
+? alive medic1 && (getPos medic1 select 2) < 7000 : _operational = true
+? alive medic2 && (getPos medic2 select 2) < 7000 : _operational = true
+? alive red6 && (getPos red6 select 2) < 7000 : _operational = true
+? alive red7 && (getPos red7 select 2) < 7000 : _operational = true
+? alive red8 && (getPos red8 select 2) < 7000 : _operational = true
+? alive red9 && (getPos red9 select 2) < 7000 : _operational = true
+? alive red10 && (getPos red10 select 2) < 7000 : _operational = true
+? alive red11 && (getPos red11 select 2) < 7000 : _operational = true
+? alive red12 && (getPos red12 select 2) < 7000 : _operational = true
+? _operational : goto "operational"
+? mpAllDownSince < 0 : mpAllDownSince = time
+; Three-second respawn plus network propagation must complete before declaring the squad unrecoverable.
+? time < mpAllDownSince + 12 : goto "loop"
+goto "fail"
+#operational
+mpAllDownSince = -1
+goto "loop"
+#win
+? missionEnded : exit
+missionLose = false
+missionWin = true
+missionEnded = true
+allTownsClear = true
+publicVariable "missionLose"
+publicVariable "missionWin"
+publicVariable "missionEnded"
+publicVariable "allTownsClear"
+exit
+#fail
+? missionEnded : exit
+? missionWin : exit
+missionWin = false
+missionLose = true
+missionEnded = true
+mpHQMessage = "HQ: All player-squad members are dead or incapacitated. Mission failed."
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "missionWin"
+publicVariable "missionLose"
+publicVariable "missionEnded"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+exit

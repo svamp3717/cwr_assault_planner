@@ -1,0 +1,20 @@
+; v149 local marker monitor for the current or most recent Radio Charlie delivery.
+#loop
+~0.5
+? missionEnded : goto "hide"
+? logisticsDropMarkerStatus < 1 : goto "hideContinue"
+"logistics_drop_marker" setMarkerPos [logisticsDropMarkerX, logisticsDropMarkerY, 0]
+"logistics_drop_marker" setMarkerType "Flag"
+"logistics_drop_marker" setMarkerText logisticsDropMarkerLabel
+? logisticsDropMarkerStatus == 1 : "logistics_drop_marker" setMarkerColor "ColorBlue"
+? logisticsDropMarkerStatus == 2 : "logistics_drop_marker" setMarkerColor "ColorGreen"
+? logisticsDropMarkerStatus == 3 : "logistics_drop_marker" setMarkerColor "ColorRed"
+goto "loop"
+#hideContinue
+"logistics_drop_marker" setMarkerType "Empty"
+"logistics_drop_marker" setMarkerText ""
+goto "loop"
+#hide
+"logistics_drop_marker" setMarkerType "Empty"
+"logistics_drop_marker" setMarkerText ""
+exit

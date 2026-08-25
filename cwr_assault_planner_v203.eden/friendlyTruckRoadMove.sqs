@@ -1,0 +1,26 @@
+; v127: give an insertion truck a short road-heading departure before its final LZ order.
+; Arguments: [vehicle, road heading, target X, target Y].
+_veh = _this select 0
+_dir = _this select 1
+_targetX = _this select 2
+_targetY = _this select 3
+? isNull _veh : exit
+? !(alive _veh) : exit
+_driver = driver _veh
+? isNull _driver : exit
+_driver stop false
+_grp = group _driver
+_grp setBehaviour "SAFE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "NORMAL"
+_pos = getPos _veh
+_roadX = (_pos select 0) + ((sin _dir) * 75)
+_roadY = (_pos select 1) + ((cos _dir) * 75)
+_driver doMove [_roadX, _roadY, 0]
+~8
+? isNull _veh : exit
+? !(alive _veh) : exit
+_driver = driver _veh
+? isNull _driver : exit
+_driver doMove [_targetX, _targetY, 0]
+exit

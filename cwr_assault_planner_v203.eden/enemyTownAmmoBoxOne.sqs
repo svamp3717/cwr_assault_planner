@@ -1,0 +1,28 @@
+; Create one enemy ammunition box for one active objective town. Params: x,y,label.
+_x = _this select 0
+_y = _this select 1
+_label = _this select 2
+enemyTownAmmoBoxCreateReady = false
+_ox = 42
+_oy = -28
+_dir = 70
+? _label == "Cancon" : _ox = -38; _oy = 34; _dir = 145
+? _label == "Chapoi" : _ox = 48; _oy = 28; _dir = 220
+? _label == "Dourdan" : _ox = -44; _oy = -32; _dir = 300
+? _label == "Goisse" : _ox = 36; _oy = 40; _dir = 90
+? _label == "Houdan" : _ox = -50; _oy = 22; _dir = 175
+? _label == "La Pessagne" : _ox = 40; _oy = -40; _dir = 260
+? _label == "La Riviere" : _ox = -36; _oy = 36; _dir = 30
+? _label == "La Trinite" : _ox = 52; _oy = -20; _dir = 110
+? _label == "Larche" : _ox = -46; _oy = -38; _dir = 210
+? _label == "Le Port" : _ox = 34; _oy = 46; _dir = 15
+? _label == "Lolisse" : _ox = -42; _oy = 30; _dir = 130
+? _label == "Saint-Louis" : _ox = 46; _oy = 34; _dir = 245
+? _label == "Sainte-Marie" : _ox = -34; _oy = -44; _dir = 325
+? _label == "Vigny" : _ox = 44; _oy = -26; _dir = 80
+enemyTownAmmoBoxCreated = "ReammoBoxEast" createVehicle [_x + _ox, _y + _oy, 0]
+enemyTownAmmoBoxCreated setDir _dir
+enemyTownAmmoBoxCreated setDammage 0
+[enemyTownAmmoBoxCreated] exec "enemyTownAmmoBoxLoad.sqs"
+enemyTownAmmoBoxCreateReady = true
+exit

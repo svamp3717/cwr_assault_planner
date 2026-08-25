@@ -1,0 +1,70 @@
+; v152 dedicated CWA/OFP extraction Chinook and crew helper.
+; Uses separate completion globals so Radio Bravo cannot race a Radio Charlie logistics spawn.
+extractionVehicleSpawnComplete = false
+extractionVehicleSpawned = objNull
+_class = _this select 0
+_x = _this select 1
+_y = _this select 2
+_dir = _this select 3
+_veh = _class createVehicle [_x, _y, 0]
+? isNull _veh : goto "spawnFailed"
+_veh setFuel 0
+_veh setDir _dir
+_veh setDammage 0
+_veh setVelocity [0,0,0]
+~0.2
+_grp = createGroup west
+_crewPos = [_x + 6, _y + 6, 0]
+"WW4_WARPilot" createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 1 : goto "spawnFailedDeleteVehicle"
+_driver = _units select 0
+_driver setSkill 0.60
+_driver moveInDriver _veh
+"WW4_WARPilot" createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 2 : goto "skipGunnerCreate"
+_gunner = _units select 1
+_gunner setSkill 0.60
+_gunner moveInGunner _veh
+#skipGunnerCreate
+"WW4_WARPilot" createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 3 : goto "skipCommanderCreate"
+_commander = _units select 2
+_commander setSkill 0.60
+_commander moveInCommander _veh
+#skipCommanderCreate
+~0.3
+_units = units _grp
+? count _units >= 1 : (_units select 0) moveInDriver _veh
+? count _units >= 2 : (_units select 1) moveInGunner _veh
+? count _units >= 3 : (_units select 2) moveInCommander _veh
+~0.2
+_units = units _grp
+? count _units < 1 : goto "spawnFailedDeleteVehicle"
+_driver = _units select 0
+? vehicle _driver != _veh : goto "spawnFailedDeleteCrew"
+? count _units >= 2 && vehicle (_units select 1) != _veh : deleteVehicle (_units select 1)
+? count _units >= 3 && vehicle (_units select 2) != _veh : deleteVehicle (_units select 2)
+_grp setBehaviour "CARELESS"
+_grp setCombatMode "BLUE"
+_grp setSpeedMode "NORMAL"
+_veh setFuel 1
+_veh engineOn true
+_driver action ["ENGINE ON", _veh]
+_driver stop true
+extractionVehicleSpawned = _veh
+extractionVehicleSpawnComplete = true
+exit
+#spawnFailedDeleteCrew
+{deleteVehicle _x} forEach units _grp
+#spawnFailedDeleteVehicle
+deleteVehicle _veh
+#spawnFailed
+extractionVehicleSpawned = objNull
+extractionVehicleSpawnComplete = true
+exit
