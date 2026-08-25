@@ -1,0 +1,191 @@
+; v158 proximity-streams one persistent civilian car at an eligible non-objective location.
+; Args: [class, remembered position, remembered direction, location label]
+? !(isServer) : exit
+_carClass = _this select 0
+_carPos = _this select 1
+_carDir = _this select 2
+_townLabel = _this select 3
+_car = objNull
+_spawnRadiusSq = 1000000
+_keepRadiusSq = 1690000
+
+#civilianCarMonitor
+~5
+? missionEnded : goto "civilianCarCleanup"
+_nearSpawn = false
+_nearKeep = false
+_anyRegistered = false
+_playerUsingCar = false
+_proximityPos = _carPos
+? !(isNull _car) : _proximityPos = getPos _car
+
+? !(mpHumanPlr) : goto "streamRed2"
+_anyRegistered = true
+? alive plr && vehicle plr == _car : _playerUsingCar = true
+? !(alive plr) : goto "streamRed2"
+_p = getPos plr
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed2
+? !(mpHumanRed2) : goto "streamRed3"
+_anyRegistered = true
+? alive red2 && vehicle red2 == _car : _playerUsingCar = true
+? !(alive red2) : goto "streamRed3"
+_p = getPos red2
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed3
+? !(mpHumanRed3) : goto "streamMedic1"
+_anyRegistered = true
+? alive red3 && vehicle red3 == _car : _playerUsingCar = true
+? !(alive red3) : goto "streamMedic1"
+_p = getPos red3
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamMedic1
+? !(mpHumanMedic1) : goto "streamMedic2"
+_anyRegistered = true
+? alive medic1 && vehicle medic1 == _car : _playerUsingCar = true
+? !(alive medic1) : goto "streamMedic2"
+_p = getPos medic1
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamMedic2
+? !(mpHumanMedic2) : goto "streamRed6"
+_anyRegistered = true
+? alive medic2 && vehicle medic2 == _car : _playerUsingCar = true
+? !(alive medic2) : goto "streamRed6"
+_p = getPos medic2
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed6
+? !(mpHumanRed6) : goto "streamRed7"
+_anyRegistered = true
+? alive red6 && vehicle red6 == _car : _playerUsingCar = true
+? !(alive red6) : goto "streamRed7"
+_p = getPos red6
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed7
+? !(mpHumanRed7) : goto "streamRed8"
+_anyRegistered = true
+? alive red7 && vehicle red7 == _car : _playerUsingCar = true
+? !(alive red7) : goto "streamRed8"
+_p = getPos red7
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed8
+? !(mpHumanRed8) : goto "streamRed9"
+_anyRegistered = true
+? alive red8 && vehicle red8 == _car : _playerUsingCar = true
+? !(alive red8) : goto "streamRed9"
+_p = getPos red8
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed9
+? !(mpHumanRed9) : goto "streamRed10"
+_anyRegistered = true
+? alive red9 && vehicle red9 == _car : _playerUsingCar = true
+? !(alive red9) : goto "streamRed10"
+_p = getPos red9
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed10
+? !(mpHumanRed10) : goto "streamRed11"
+_anyRegistered = true
+? alive red10 && vehicle red10 == _car : _playerUsingCar = true
+? !(alive red10) : goto "streamRed11"
+_p = getPos red10
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed11
+? !(mpHumanRed11) : goto "streamRed12"
+_anyRegistered = true
+? alive red11 && vehicle red11 == _car : _playerUsingCar = true
+? !(alive red11) : goto "streamRed12"
+_p = getPos red11
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+#streamRed12
+? !(mpHumanRed12) : goto "streamFallback"
+_anyRegistered = true
+? alive red12 && vehicle red12 == _car : _playerUsingCar = true
+? !(alive red12) : goto "streamFallback"
+_p = getPos red12
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+
+#streamFallback
+; Single-player or very early startup fallback before MP slot registration arrives.
+? _anyRegistered : goto "streamApply"
+? !(alive plr) : goto "streamApply"
+? vehicle plr == _car : _playerUsingCar = true
+_p = getPos plr
+_dx = (_p select 0) - (_proximityPos select 0)
+_dy = (_p select 1) - (_proximityPos select 1)
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < _spawnRadiusSq : _nearSpawn = true
+? _d2 < _keepRadiusSq : _nearKeep = true
+
+#streamApply
+
+#streamSpawnCheck
+? !(_nearSpawn) : goto "streamDespawnCheck"
+? !(isNull _car) : goto "streamDespawnCheck"
+_car = _carClass createVehicle _carPos
+_car setDir _carDir
+_car setFuel 0.6
+? debugMode : debugLog format ["ERA DEBUG CIVSTREAM SPAWN: town=%1 class=%2 pos=%3", _townLabel, _carClass, _carPos]
+
+#streamDespawnCheck
+? _nearKeep : goto "civilianCarMonitor"
+? _playerUsingCar : goto "civilianCarMonitor"
+? isNull _car : goto "civilianCarMonitor"
+; v137: keep the streamed car alive while any human or AI occupies any seat.
+? (count (crew _car)) > 0 : goto "civilianCarMonitor"
+_carPos = getPos _car
+_carDir = getDir _car
+deleteVehicle _car
+_car = objNull
+? debugMode : debugLog format ["ERA DEBUG CIVSTREAM DESPAWN: town=%1 class=%2 savedPos=%3 savedDir=%4", _townLabel, _carClass, _carPos, _carDir]
+goto "civilianCarMonitor"
+
+#civilianCarCleanup
+? !(isNull _car) : deleteVehicle _car
+exit

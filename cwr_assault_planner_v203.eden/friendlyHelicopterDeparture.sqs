@@ -1,0 +1,31 @@
+; v128: take a completed insertion helicopter away and delete it after it is clear of the LZ.
+; Args: [helicopter, LZ X, LZ Y, departure X, departure Y]
+_heli = _this select 0
+_lzX = _this select 1
+_lzY = _this select 2
+_departX = _this select 3
+_departY = _this select 4
+? isNull _heli : exit
+? !(alive _heli) : exit
+_heli setFuel 1
+_heli setDammage 0
+_heli engineOn true
+_heli flyInHeight 140
+? !(isNull (driver _heli)) : (driver _heli) stop false
+? !(isNull (driver _heli)) : (driver _heli) doMove [_departX, _departY, 0]
+_wait = 0
+#departureLoop
+~5
+? isNull _heli : exit
+? !(alive _heli) : exit
+_pos = getPos _heli
+_dx = (_pos select 0) - _lzX
+_dy = (_pos select 1) - _lzY
+? ((_dx * _dx) + (_dy * _dy)) > 4000000 : goto "departureDelete"
+_wait = _wait + 1
+? _wait > 60 : goto "departureDelete"
+goto "departureLoop"
+#departureDelete
+{deleteVehicle _x} forEach crew _heli
+deleteVehicle _heli
+exit

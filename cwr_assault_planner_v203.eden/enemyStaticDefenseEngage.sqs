@@ -1,0 +1,72 @@
+; custom v203: keep a fortified static gunner seated, alert, and able to acquire the nearest player squad unit.
+; Args: [static weapon, gunner, original direction]
+; No later-Arma commands and no new network group are used.
+_gun = _this select 0
+_gunner = _this select 1
+_originalDirection = _this select 2
+_players = [plr,red2,red3,medic1,medic2,red6,red7,red8,red9,red10,red11,red12]
+_maxDistanceSq = 810000
+
+#monitorLoop
+~2
+? missionEnded : exit
+? isNull _gun : exit
+? isNull _gunner : exit
+? !(alive _gun) : goto "releaseGunner"
+? !(alive _gunner) : exit
+
+; Restore the assigned seat if group orders or engine timing pulled the soldier out.
+? vehicle _gunner == _gun : goto "seatReady"
+_gunner assignAsGunner _gun
+_gunner moveInGunner _gun
+[_gunner] orderGetIn true
+~0.2
+? vehicle _gunner != _gun : goto "monitorLoop"
+
+#seatReady
+_gunner setUnitPos "UP"
+_gunner setSkill enemyAISkill
+doStop _gunner
+_gunPos = getPos _gun
+_bestTarget = objNull
+_bestDistanceSq = _maxDistanceSq
+_i = 0
+
+#targetScan
+? _i >= count _players : goto "targetScanDone"
+_candidate = _players select _i
+? isNull _candidate : goto "targetNext"
+? !(alive _candidate) : goto "targetNext"
+_candidatePos = getPos _candidate
+? (_candidatePos select 2) >= 7000 : goto "targetNext"
+_dx = (_candidatePos select 0) - (_gunPos select 0)
+_dy = (_candidatePos select 1) - (_gunPos select 1)
+_distanceSq = (_dx * _dx) + (_dy * _dy)
+? _distanceSq >= _bestDistanceSq : goto "targetNext"
+_bestDistanceSq = _distanceSq
+_bestTarget = vehicle _candidate
+
+#targetNext
+_i = _i + 1
+goto "targetScan"
+
+#targetScanDone
+? isNull _bestTarget : goto "noTarget"
+? !(alive _bestTarget) : goto "noTarget"
+(group _gunner) setBehaviour "COMBAT"
+(group _gunner) setCombatMode "RED"
+(group _gunner) reveal _bestTarget
+_gunner doWatch _bestTarget
+_gunner doTarget _bestTarget
+goto "monitorLoop"
+
+#noTarget
+; Do not force the whole patrol group into COMBAT when nobody is nearby. Renew only the gunner hold
+; and return the weapon base to its designed covering direction.
+_gun setDir _originalDirection
+goto "monitorLoop"
+
+#releaseGunner
+? alive _gunner : unassignVehicle _gunner
+? alive _gunner : _gunner setUnitPos "AUTO"
+exit

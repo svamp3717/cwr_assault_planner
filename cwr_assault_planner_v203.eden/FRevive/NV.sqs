@@ -1,0 +1,22 @@
+? localize "STR_USRACT_CHEAT_1" != "FWATCH" : exit
+
+@alive player && Format ["%1",DeathCam] != "scalar bool array string 0xfcffffef"
+
+_weapons   = _this select 0
+_magazines = _this select 1
+? !FREVIVE_TAKE_GUNS_BEFORE : goto "Skip"
+
+#Loop
+~0.1
+? !([_weapons,weapons player] call FREVIVE_MATCH_ARRAY && [_magazines,magazines player] call FREVIVE_MATCH_ARRAY) : goto "Loop"
+
+#Skip
+_light = (call loadFile ":mem getdaylight") select 1
+? _light > 0.05 : exit
+
+player removeWeapon "NVGoggles"
+~0.01
+player addWeapon "NVGoggles"
+player action ["NVGOGGLES"]
+player switchCamera "Gunner"
+DeathCam cameraEffect ["internal","front"]

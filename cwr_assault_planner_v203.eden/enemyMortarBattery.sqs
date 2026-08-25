@@ -1,0 +1,94 @@
+; v150: balanced CWA artillery battery represented by AAA80Z static artillery.
+; Fires only at living WEST player/allied units detected by at least one registered enemy group.
+_slot = _this select 0
+_gun = _this select 1
+_cache = _this select 2
+_crew1 = _this select 3
+_crew2 = _this select 4
+; v203: give the player a longer opening grace period before artillery can engage.
+_initialDelay = 90 + random 60
+~_initialDelay
+#monitor
+? missionEnded : exit
+? isNull _gun : exit
+? !(alive _gun) : exit
+? isNull _cache : exit
+? !(alive _cache) : exit
+_aliveCrew = 0
+? !(isNull _crew1) && alive _crew1 : _aliveCrew = _aliveCrew + 1
+? !(isNull _crew2) && alive _crew2 : _aliveCrew = _aliveCrew + 1
+? _aliveCrew < 1 : goto "silenced"
+? !(mortarGlobalReady) : goto "waitShort"
+_candidates = [plr,red2,red3,medic1,medic2,red6,red7,red8,red9,red10,red11,red12,a1ldr,a1r2,a1gren,a1med,a1mg,a1at,a1r7,a1r8,a2ldr,a2r2,a2gren,a2med,a2mg,a2at,a2r7,a2r8,a3ldr,a3r2,a3gren,a3med,a3mg,a3at,a3r7,a3r8,a4ldr,a4r2,a4gren,a4med,a4mg,a4at,a4r7,a4r8]
+_detected = []
+_i = 0
+#candidateLoop
+? _i >= count _candidates : goto "candidateDone"
+_unit = _candidates select _i
+_i = _i + 1
+? isNull _unit : goto "candidateLoop"
+? !(alive _unit) : goto "candidateLoop"
+_range = _unit distance _gun
+? _range < 120 : goto "candidateLoop"
+? _range > 1100 : goto "candidateLoop"
+_knowledge = 0
+_groupIndex = 0
+#knowledgeGroupLoop
+? _groupIndex >= count enemyDetectionGroups : goto "knowledgeGroupDone"
+_observerGroup = enemyDetectionGroups select _groupIndex
+_groupIndex = _groupIndex + 1
+? count units _observerGroup < 1 : goto "knowledgeGroupLoop"
+_groupKnowledge = _observerGroup knowsAbout _unit
+? _groupKnowledge > _knowledge : _knowledge = _groupKnowledge
+? _knowledge >= 0.5 : goto "knowledgeGroupDone"
+goto "knowledgeGroupLoop"
+#knowledgeGroupDone
+? _knowledge < 0.5 : goto "candidateLoop"
+_detected = _detected + [_unit]
+goto "candidateLoop"
+#candidateDone
+? count _detected < 1 : goto "waitShort"
+_roll = random (count _detected)
+_index = _roll - (_roll % 1)
+_target = _detected select _index
+? isNull _target || !(alive _target) : goto "waitShort"
+mortarGlobalReady = false
+[] exec "mortarGlobalCooldown.sqs"
+_targetPos = getPos _target
+_impactX = (_targetPos select 0) + (random 90) - 45
+_impactY = (_targetPos select 1) + (random 90) - 45
+_shell = "MortarShell" createVehicle [_impactX, _impactY, 0]
+_shell setPos [_impactX, _impactY, 145]
+_shell setVelocity [0,0,-38]
+? debugMode : debugLog format ["ERA DEBUG MORTAR: battery=%1 spotting target=%2 knowledge=%3 impact=[%4,%5]", _slot, _target, _knowledge, _impactX, _impactY]
+~4
+? missionEnded || !(alive _gun) || !(alive _cache) : exit
+_aliveCrew = 0
+? !(isNull _crew1) && alive _crew1 : _aliveCrew = _aliveCrew + 1
+? !(isNull _crew2) && alive _crew2 : _aliveCrew = _aliveCrew + 1
+? _aliveCrew < 1 : goto "silenced"
+? !(alive _target) : goto "longCooldown"
+; A full two-man crew gets a second, somewhat more accurate round. One survivor fires only the spotting round.
+? _aliveCrew < 2 : goto "longCooldown"
+_targetPos = getPos _target
+_impactX = (_targetPos select 0) + (random 60) - 30
+_impactY = (_targetPos select 1) + (random 60) - 30
+_shell = "MortarShell" createVehicle [_impactX, _impactY, 0]
+_shell setPos [_impactX, _impactY, 145]
+_shell setVelocity [0,0,-38]
+? debugMode : debugLog format ["ERA DEBUG MORTAR: battery=%1 second impact=[%2,%3]", _slot, _impactX, _impactY]
+#longCooldown
+_batteryCooldown = 60 + random 30
+~_batteryCooldown
+goto "monitor"
+#waitShort
+~8
+goto "monitor"
+#silenced
+? _slot == 1 : objectiveMortarSilenced1 = true
+? _slot == 2 : objectiveMortarSilenced2 = true
+? _slot == 3 : objectiveMortarSilenced3 = true
+? _slot == 4 : objectiveMortarSilenced4 = true
+? _slot == 5 : objectiveMortarSilenced5 = true
+? debugMode : debugLog format ["ERA DEBUG MORTAR: battery=%1 silenced because both operators are dead", _slot]
+exit

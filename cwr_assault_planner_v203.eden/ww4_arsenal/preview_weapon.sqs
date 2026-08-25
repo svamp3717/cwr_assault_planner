@@ -1,0 +1,171 @@
+; Interruptible spectator-camera preview of the selected weapon on the active arsenal target.
+; Left-click anywhere during the preview to abort immediately.
+; Current gear is saved before preview and restored after normal completion or abort.
+
+? WW4_PreviewActive : exit
+
+_target = WW4_ArsenalTarget
+? isNull _target : hint "Arsenal target unavailable."; exit
+? !(alive _target) : hint "Arsenal target is not alive."; exit
+? _target == player : goto "TargetValid"
+? group _target == group player : goto "TargetValid"
+hint "The selected unit is no longer in your squad."
+exit
+
+#TargetValid
+_variantSelection = lbCurSel 1501
+? _variantSelection >= 0 : goto "HaveVariant"
+hint "Select a weapon variant first."
+exit
+
+#HaveVariant
+? _variantSelection < count WW4_ArsenalCurrentEntryIndexes : goto "HaveEntry"
+hint "The selected variant is no longer available."
+exit
+
+#HaveEntry
+_entryIndex = WW4_ArsenalCurrentEntryIndexes select _variantSelection
+_entry = WW4_ArsenalEntries select _entryIndex
+_weapon = _entry select 0
+_mags = _entry select 2
+? _weapon == "Put" : goto "NoSatchelPreview"
+
+_previewMag = ""
+? count _mags > 0 : _previewMag = _mags select 0
+
+WW4_PreviewActive = true
+WW4_PreviewAbort = false
+WW4_PreviewTarget = _target
+WW4_PreviewSavedWeapons = weapons _target
+WW4_PreviewSavedMagazines = magazines _target
+
+closeDialog 0
+~0.10
+
+removeAllWeapons _target
+
+? _previewMag == "" : goto "AddPreviewWeapon"
+_i = 0
+
+#AddPreviewMags
+? _i >= 3 : goto "AddPreviewWeapon"
+_target addMagazine _previewMag
+_i = _i + 1
+goto "AddPreviewMags"
+
+#AddPreviewWeapon
+_target addWeapon _weapon
+_target selectWeapon _weapon
+
+titleText [format ["Previewing %1 on %2. Click anywhere to exit preview.",_weapon,name _target],"PLAIN DOWN"]
+
+WW4_PreviewCamera = "camera" camCreate [0,0,0]
+WW4_PreviewCamera camSetTarget _target
+WW4_PreviewCamera camSetRelPos [4,-4,1.8]
+WW4_PreviewCamera cameraEffect ["internal","back"]
+showCinemaBorder false
+WW4_PreviewCamera camCommit 0
+
+_abortDialogCreated = createDialog "WW4_Preview_AbortDialog"
+
+#WaitInitialCommit
+? WW4_PreviewAbort : goto "AbortPreview"
+? camCommitted WW4_PreviewCamera : goto "InitialPause"
+~0.05
+goto "WaitInitialCommit"
+
+#InitialPause
+_waitCounter = 0
+
+#InitialPauseLoop
+? WW4_PreviewAbort : goto "AbortPreview"
+? _waitCounter >= 10 : goto "MoveTwo"
+~0.10
+_waitCounter = _waitCounter + 1
+goto "InitialPauseLoop"
+
+#MoveTwo
+WW4_PreviewCamera camSetRelPos [4,4,1.8]
+WW4_PreviewCamera camCommit 2.5
+
+#WaitMoveTwo
+? WW4_PreviewAbort : goto "AbortPreview"
+? camCommitted WW4_PreviewCamera : goto "MoveThree"
+~0.05
+goto "WaitMoveTwo"
+
+#MoveThree
+WW4_PreviewCamera camSetRelPos [-4,4,1.8]
+WW4_PreviewCamera camCommit 2.5
+
+#WaitMoveThree
+? WW4_PreviewAbort : goto "AbortPreview"
+? camCommitted WW4_PreviewCamera : goto "MoveFour"
+~0.05
+goto "WaitMoveThree"
+
+#MoveFour
+WW4_PreviewCamera camSetRelPos [-4,-4,1.8]
+WW4_PreviewCamera camCommit 2.5
+
+#WaitMoveFour
+? WW4_PreviewAbort : goto "AbortPreview"
+? camCommitted WW4_PreviewCamera : goto "MoveFive"
+~0.05
+goto "WaitMoveFour"
+
+#MoveFive
+WW4_PreviewCamera camSetRelPos [4,-4,1.8]
+WW4_PreviewCamera camCommit 2.5
+
+#WaitMoveFive
+? WW4_PreviewAbort : goto "AbortPreview"
+? camCommitted WW4_PreviewCamera : goto "PreviewFinished"
+~0.05
+goto "WaitMoveFive"
+
+#PreviewFinished
+_previewWasAborted = false
+goto "CleanupCamera"
+
+#AbortPreview
+_previewWasAborted = true
+
+#CleanupCamera
+closeDialog 0
+WW4_PreviewCamera cameraEffect ["terminate","back"]
+camDestroy WW4_PreviewCamera
+
+removeAllWeapons _target
+
+_i = 0
+
+#RestoreMagazines
+? _i >= count WW4_PreviewSavedMagazines : goto "RestoreWeapons"
+_savedMagazine = WW4_PreviewSavedMagazines select _i
+_target addMagazine _savedMagazine
+_i = _i + 1
+goto "RestoreMagazines"
+
+#RestoreWeapons
+_i = 0
+
+#RestoreWeaponLoop
+? _i >= count WW4_PreviewSavedWeapons : goto "RestoreFinished"
+_savedWeapon = WW4_PreviewSavedWeapons select _i
+_target addWeapon _savedWeapon
+_i = _i + 1
+goto "RestoreWeaponLoop"
+
+#RestoreFinished
+WW4_PreviewAbort = false
+WW4_PreviewActive = false
+
+titleText ["","PLAIN"]
+~0.25
+[] exec "ww4_arsenal\open.sqs"
+exit
+
+#NoSatchelPreview
+hint "Satchel charges cannot be previewed."
+exit

@@ -1,0 +1,33 @@
+; Malden Assault Planner MP v109 - FRevive bootstrap retained.
+; Wait until setup removes unused playable AI and the server publishes the surviving roster.
+@ mpFReviveNamesReady
+@ mpAISlotsCulled
+? !(guiFReviveEnabled) : goto "disabled"
+@ count mpFReviveNames > 0
+~0.5
+
+; FRevive settings. v171 sets a five-minute incapacitation timeout.
+FREVIVE_SIDE_RESISTANCE = []
+FREVIVE_PICKUP_RANGE = 2.5
+FREVIVE_PICKUP_TIME = 12
+FREVIVE_LIMIT = -1
+FREVIVE_TIMEOUT = 300
+FREVIVE_AI_MOVE_RANGE = 200
+FREVIVE_USE_FLAGS = false
+FREVIVE_TAKE_GUNS_BEFORE = false
+FREVIVE_DROP_PARTICLE = false
+FREVIVE_ONLY_MEDIC = false
+FREVIVE_INTERVAL = 0.1
+FREVIVE_MSG_STYLE = 0
+FREVIVE_SOUND = false
+FREVIVE_KILL_CAM = true
+
+mpFReviveStarted = true
+mpFReviveNames exec "FRevive\Start.sqs"
+exit
+
+#disabled
+; Keep existing server/client startup waits satisfied without starting FRevive.
+mpFReviveStarted = true
+publicVariable "mpFReviveStarted"
+exit

@@ -1,0 +1,7 @@
+; Compatibility wrapper: attack objective 3.
+? missionEnded : exit
+? airSupportUsed : exit
+? townCount < 3 : exit
+airSupportTarget = 3
+[] exec "callAirSupport.sqs"
+exit

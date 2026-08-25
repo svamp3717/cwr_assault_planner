@@ -1,0 +1,127 @@
+; v135 creates four civilians at one active objective town.
+; Args: [centerX, centerY, objectiveSlot, searchOffset]
+civilianPopulationTownReady = false
+_centerX = _this select 0
+_centerY = _this select 1
+_slot = _this select 2
+_searchOffset = _this select 3
+_grp = createGroup civilian
+_u1 = objNull
+_u2 = objNull
+_u3 = objNull
+_u4 = objNull
+
+_p = [_centerX - 45, _centerY + 80, 0]
+? _slot == 1 : "Civilian" createUnit [_p, _grp, "s1Civ1=this"]
+? _slot == 2 : "Civilian" createUnit [_p, _grp, "s2Civ1=this"]
+? _slot == 3 : "Civilian" createUnit [_p, _grp, "s3Civ1=this"]
+? _slot == 4 : "Civilian" createUnit [_p, _grp, "s4Civ1=this"]
+? _slot == 5 : "Civilian" createUnit [_p, _grp, "s5Civ1=this"]
+? _slot == 1 : _u1 = s1Civ1
+? _slot == 2 : _u1 = s2Civ1
+? _slot == 3 : _u1 = s3Civ1
+? _slot == 4 : _u1 = s4Civ1
+? _slot == 5 : _u1 = s5Civ1
+? _slot == 1 : s1Civ1OutdoorPos = _p; s1Civ1Indoor = false
+? _slot == 2 : s2Civ1OutdoorPos = _p; s2Civ1Indoor = false
+? _slot == 3 : s3Civ1OutdoorPos = _p; s3Civ1Indoor = false
+? _slot == 4 : s4Civ1OutdoorPos = _p; s4Civ1Indoor = false
+? _slot == 5 : s5Civ1OutdoorPos = _p; s5Civ1Indoor = false
+
+_p = [_centerX - 15, _centerY + 85, 0]
+? _slot == 1 : "Civilian2" createUnit [_p, _grp, "s1Civ2=this"]
+? _slot == 2 : "Civilian2" createUnit [_p, _grp, "s2Civ2=this"]
+? _slot == 3 : "Civilian2" createUnit [_p, _grp, "s3Civ2=this"]
+? _slot == 4 : "Civilian2" createUnit [_p, _grp, "s4Civ2=this"]
+? _slot == 5 : "Civilian2" createUnit [_p, _grp, "s5Civ2=this"]
+? _slot == 1 : _u2 = s1Civ2
+? _slot == 2 : _u2 = s2Civ2
+? _slot == 3 : _u2 = s3Civ2
+? _slot == 4 : _u2 = s4Civ2
+? _slot == 5 : _u2 = s5Civ2
+? _slot == 1 : s1Civ2OutdoorPos = _p; s1Civ2Indoor = false
+? _slot == 2 : s2Civ2OutdoorPos = _p; s2Civ2Indoor = false
+? _slot == 3 : s3Civ2OutdoorPos = _p; s3Civ2Indoor = false
+? _slot == 4 : s4Civ2OutdoorPos = _p; s4Civ2Indoor = false
+? _slot == 5 : s5Civ2OutdoorPos = _p; s5Civ2Indoor = false
+
+_p = [_centerX + 20, _centerY + 90, 0]
+? _slot == 1 : "Civilian3" createUnit [_p, _grp, "s1Civ3=this"]
+? _slot == 2 : "Civilian3" createUnit [_p, _grp, "s2Civ3=this"]
+? _slot == 3 : "Civilian3" createUnit [_p, _grp, "s3Civ3=this"]
+? _slot == 4 : "Civilian3" createUnit [_p, _grp, "s4Civ3=this"]
+? _slot == 5 : "Civilian3" createUnit [_p, _grp, "s5Civ3=this"]
+? _slot == 1 : _u3 = s1Civ3
+? _slot == 2 : _u3 = s2Civ3
+? _slot == 3 : _u3 = s3Civ3
+? _slot == 4 : _u3 = s4Civ3
+? _slot == 5 : _u3 = s5Civ3
+? _slot == 1 : s1Civ3OutdoorPos = _p; s1Civ3Indoor = false
+? _slot == 2 : s2Civ3OutdoorPos = _p; s2Civ3Indoor = false
+? _slot == 3 : s3Civ3OutdoorPos = _p; s3Civ3Indoor = false
+? _slot == 4 : s4Civ3OutdoorPos = _p; s4Civ3Indoor = false
+? _slot == 5 : s5Civ3OutdoorPos = _p; s5Civ3Indoor = false
+
+_p = [_centerX + 50, _centerY + 75, 0]
+? _slot == 1 : "Civilian4" createUnit [_p, _grp, "s1Civ4=this"]
+? _slot == 2 : "Civilian4" createUnit [_p, _grp, "s2Civ4=this"]
+? _slot == 3 : "Civilian4" createUnit [_p, _grp, "s3Civ4=this"]
+? _slot == 4 : "Civilian4" createUnit [_p, _grp, "s4Civ4=this"]
+? _slot == 5 : "Civilian4" createUnit [_p, _grp, "s5Civ4=this"]
+? _slot == 1 : _u4 = s1Civ4
+? _slot == 2 : _u4 = s2Civ4
+? _slot == 3 : _u4 = s3Civ4
+? _slot == 4 : _u4 = s4Civ4
+? _slot == 5 : _u4 = s5Civ4
+? _slot == 1 : s1Civ4OutdoorPos = _p; s1Civ4Indoor = false
+? _slot == 2 : s2Civ4OutdoorPos = _p; s2Civ4Indoor = false
+? _slot == 3 : s3Civ4OutdoorPos = _p; s3Civ4Indoor = false
+? _slot == 4 : s4Civ4OutdoorPos = _p; s4Civ4Indoor = false
+? _slot == 5 : s5Civ4OutdoorPos = _p; s5Civ4Indoor = false
+
+_grp setBehaviour "CARELESS"
+_grp setCombatMode "BLUE"
+? !(isNull _u1) : _u1 setSkill 0.30
+? !(isNull _u2) : _u2 setSkill 0.30
+? !(isNull _u3) : _u3 setSkill 0.30
+? !(isNull _u4) : _u4 setSkill 0.30
+? !(isNull _u1) : doStop _u1
+? !(isNull _u2) : doStop _u2
+? !(isNull _u3) : doStop _u3
+? !(isNull _u4) : doStop _u4
+civUnitCount = civUnitCount + 4
+
+; Three of four civilians attempt indoor building positions. Failed attempts stay at their outdoor fallback positions.
+? isNull _u1 : goto "afterIndoor1"
+civilianBuildingPlacementReady = false
+[_centerX, _centerY, _u1, _searchOffset] exec "civilianBuildingPosition.sqs"
+@ civilianBuildingPlacementReady
+? _slot == 1 : s1Civ1Indoor = civilianBuildingPlacementSucceeded
+? _slot == 2 : s2Civ1Indoor = civilianBuildingPlacementSucceeded
+? _slot == 3 : s3Civ1Indoor = civilianBuildingPlacementSucceeded
+? _slot == 4 : s4Civ1Indoor = civilianBuildingPlacementSucceeded
+? _slot == 5 : s5Civ1Indoor = civilianBuildingPlacementSucceeded
+#afterIndoor1
+? isNull _u2 : goto "afterIndoor2"
+civilianBuildingPlacementReady = false
+[_centerX, _centerY, _u2, _searchOffset + 9] exec "civilianBuildingPosition.sqs"
+@ civilianBuildingPlacementReady
+? _slot == 1 : s1Civ2Indoor = civilianBuildingPlacementSucceeded
+? _slot == 2 : s2Civ2Indoor = civilianBuildingPlacementSucceeded
+? _slot == 3 : s3Civ2Indoor = civilianBuildingPlacementSucceeded
+? _slot == 4 : s4Civ2Indoor = civilianBuildingPlacementSucceeded
+? _slot == 5 : s5Civ2Indoor = civilianBuildingPlacementSucceeded
+#afterIndoor2
+? isNull _u3 : goto "afterIndoor3"
+civilianBuildingPlacementReady = false
+[_centerX, _centerY, _u3, _searchOffset + 18] exec "civilianBuildingPosition.sqs"
+@ civilianBuildingPlacementReady
+? _slot == 1 : s1Civ3Indoor = civilianBuildingPlacementSucceeded
+? _slot == 2 : s2Civ3Indoor = civilianBuildingPlacementSucceeded
+? _slot == 3 : s3Civ3Indoor = civilianBuildingPlacementSucceeded
+? _slot == 4 : s4Civ3Indoor = civilianBuildingPlacementSucceeded
+? _slot == 5 : s5Civ3Indoor = civilianBuildingPlacementSucceeded
+#afterIndoor3
+
+civilianPopulationTownReady = true
+exit

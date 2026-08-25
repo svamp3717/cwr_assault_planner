@@ -1,0 +1,84 @@
+; v156 monitor one Steal a Vehicle objective; recovery marker identifies the source town.
+_slot = _this select 0
+_vehicle = objNull
+_destX = 0
+_destY = 0
+_vehicleLabel = "vehicle"
+_sourceLabel = "objective town"
+? _slot == 1 : _vehicle = objectiveTarget1; _destX = objectiveStealDestinationX1; _destY = objectiveStealDestinationY1; _vehicleLabel = objectiveStealVehicleLabel1; _sourceLabel = townLabel
+? _slot == 2 : _vehicle = objectiveTarget2; _destX = objectiveStealDestinationX2; _destY = objectiveStealDestinationY2; _vehicleLabel = objectiveStealVehicleLabel2; _sourceLabel = secondaryLabel
+? _slot == 3 : _vehicle = objectiveTarget3; _destX = objectiveStealDestinationX3; _destY = objectiveStealDestinationY3; _vehicleLabel = objectiveStealVehicleLabel3; _sourceLabel = thirdLabel
+? _slot == 4 : _vehicle = objectiveTarget4; _destX = objectiveStealDestinationX4; _destY = objectiveStealDestinationY4; _vehicleLabel = objectiveStealVehicleLabel4; _sourceLabel = fourthLabel
+? _slot == 5 : _vehicle = objectiveTarget5; _destX = objectiveStealDestinationX5; _destY = objectiveStealDestinationY5; _vehicleLabel = objectiveStealVehicleLabel5; _sourceLabel = fifthLabel
+#loop
+~1
+? missionEnded : exit
+_done = false
+? _slot == 1 : _done = objective1Done
+? _slot == 2 : _done = objective2Done
+? _slot == 3 : _done = objective3Done
+? _slot == 4 : _done = objective4Done
+? _slot == 5 : _done = objective5Done
+? _done : exit
+? isNull _vehicle : goto "failed"
+? !(alive _vehicle) : goto "failed"
+_driver = driver _vehicle
+? !(isNull _driver) && (side _driver == west) : goto "captured"
+goto "checkDestination"
+#captured
+? _slot == 1 : objectiveStealCaptured1 = true
+? _slot == 2 : objectiveStealCaptured2 = true
+? _slot == 3 : objectiveStealCaptured3 = true
+? _slot == 4 : objectiveStealCaptured4 = true
+? _slot == 5 : objectiveStealCaptured5 = true
+#checkDestination
+_captured = false
+? _slot == 1 : _captured = objectiveStealCaptured1
+? _slot == 2 : _captured = objectiveStealCaptured2
+? _slot == 3 : _captured = objectiveStealCaptured3
+? _slot == 4 : _captured = objectiveStealCaptured4
+? _slot == 5 : _captured = objectiveStealCaptured5
+? !(_captured) : goto "loop"
+_pos = getPos _vehicle
+_dx = (_pos select 0) - _destX
+_dy = (_pos select 1) - _destY
+? ((_dx * _dx) + (_dy * _dy)) > 25600 : goto "loop"
+? _slot == 1 : objectiveStealReady1 = true
+? _slot == 2 : objectiveStealReady2 = true
+? _slot == 3 : objectiveStealReady3 = true
+? _slot == 4 : objectiveStealReady4 = true
+? _slot == 5 : objectiveStealReady5 = true
+_markerName = "steal_marker_1"
+? _slot == 2 : _markerName = "steal_marker_2"
+? _slot == 3 : _markerName = "steal_marker_3"
+? _slot == 4 : _markerName = "steal_marker_4"
+? _slot == 5 : _markerName = "steal_marker_5"
+_markerName setMarkerColor "ColorGreen"
+_markerName setMarkerText format ["VEHICLE FROM %1 SECURED",_sourceLabel]
+? debugMode : debugLog format ["ERA DEBUG STEAL VEHICLE COMPLETE: objective=%1",_slot]
+exit
+#failed
+? _slot == 1 : objectiveStealFailed1 = true
+? _slot == 2 : objectiveStealFailed2 = true
+? _slot == 3 : objectiveStealFailed3 = true
+? _slot == 4 : objectiveStealFailed4 = true
+? _slot == 5 : objectiveStealFailed5 = true
+_markerName = "steal_marker_1"
+? _slot == 2 : _markerName = "steal_marker_2"
+? _slot == 3 : _markerName = "steal_marker_3"
+? _slot == 4 : _markerName = "steal_marker_4"
+? _slot == 5 : _markerName = "steal_marker_5"
+_markerName setMarkerColor "ColorRed"
+_markerName setMarkerText format ["VEHICLE FROM %1 RECOVERY FAILED",_sourceLabel]
+missionWin = false
+missionLose = true
+missionEnded = true
+mpHQMessage = format ["HQ: Vehicle recovery failed at Objective %1. The designated vehicle was destroyed.",_slot]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "missionWin"
+publicVariable "missionLose"
+publicVariable "missionEnded"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? debugMode : debugLog format ["ERA DEBUG STEAL VEHICLE FAILED: objective=%1",_slot]
+exit

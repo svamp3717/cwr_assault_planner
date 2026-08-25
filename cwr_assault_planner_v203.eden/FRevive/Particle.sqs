@@ -1,0 +1,16 @@
+; FRevive
+; This script will display particle effect on a dead body
+
+_bodies = _this select 0
+_id     = _this select 1
+_limit  = _this select 2
+
+#Loop
+_body = _bodies select _id
+? _limit select _id == 0 : exit
+? alive _body && typeof _body!="body" : exit
+
+drop ["sun", "", "Billboard", FREVIVE_PARTICLE_LF, FREVIVE_PARTICLE_LF, [0,0,0], [0,0,0], 0, 1.275, 1, 0, FREVIVE_PARTICLE_SIZE,[[1,0,0,1],[0,1,0,1],[0,0,1,1]], [0], 0, 0, "", "", _body]
+
+~FREVIVE_PARTICLE_LF
+goto "Loop"

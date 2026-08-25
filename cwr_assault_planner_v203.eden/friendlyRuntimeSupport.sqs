@@ -1,0 +1,60 @@
+; v128: create selected friendly armor, chosen air support and extraction helicopter on the server.
+friendlyRuntimeSupportReady = false
+
+; Bradley is available for selected armor, and remains the APC-column escort when armor is disabled.
+? friendlyArmorLevel < 1 && !(insertionAPC) : goto "supportAfterM113"
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M2A2BIS", 11150, 11310, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+supportM113 = friendlyRuntimeVehicleSpawned
+publicVariable "supportM113"
+#supportAfterM113
+
+? friendlyArmorLevel < 2 : goto "supportAfterTank"
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M60A3BIS", 11185, 11310, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+supportTank = friendlyRuntimeVehicleSpawned
+publicVariable "supportTank"
+#supportAfterTank
+
+? friendlyArmorLevel < 3 : goto "supportAfterLarge"
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_VulcanBIS", 11260, 11310, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+supportAA = friendlyRuntimeVehicleSpawned
+publicVariable "supportAA"
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_JeepBIS", 11295, 11280, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+supportJeep = friendlyRuntimeVehicleSpawned
+publicVariable "supportJeep"
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_HMMWVBIS", 11325, 11280, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+supportHMMWV = friendlyRuntimeVehicleSpawned
+publicVariable "supportHMMWV"
+#supportAfterLarge
+
+? !(supportAir) : goto "supportAfterAir"
+friendlyRuntimeVehicleSpawnComplete = false
+[supportAirClass, 11220, 11310, 0, 45, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+supportAirVehicle = friendlyRuntimeVehicleSpawned
+? supportAirSelection == 0 : supportCobra = supportAirVehicle
+? supportAirSelection == 1 : supportApache = supportAirVehicle
+? supportAirSelection == 2 : supportA10 = supportAirVehicle
+? supportAirSelection == 3 : supportA10LGB = supportAirVehicle
+? supportAirSelection == 4 : supportOH58 = supportAirVehicle
+publicVariable "supportAirVehicle"
+publicVariable "supportCobra"
+publicVariable "supportApache"
+publicVariable "supportA10"
+publicVariable "supportA10LGB"
+publicVariable "supportOH58"
+#supportAfterAir
+
+; Final extraction Chinook is created only after Radio Bravo is accepted.
+
+friendlyRuntimeSupportReady = true
+exit

@@ -1,0 +1,52 @@
+; v156 start local short-range action monitors for civilians used by Save Civilians objectives.
+? objectiveType1 != 7 : goto "afterRescueActions1"
+@ !(isNull s1Civ1)
+[s1Civ1,1] exec "civilianActionProximity.sqs"
+@ !(isNull s1Civ2)
+[s1Civ2,1] exec "civilianActionProximity.sqs"
+@ !(isNull s1Civ3)
+[s1Civ3,1] exec "civilianActionProximity.sqs"
+@ !(isNull s1Civ4)
+[s1Civ4,1] exec "civilianActionProximity.sqs"
+#afterRescueActions1
+? objectiveType2 != 7 : goto "afterRescueActions2"
+@ !(isNull s2Civ1)
+[s2Civ1,2] exec "civilianActionProximity.sqs"
+@ !(isNull s2Civ2)
+[s2Civ2,2] exec "civilianActionProximity.sqs"
+@ !(isNull s2Civ3)
+[s2Civ3,2] exec "civilianActionProximity.sqs"
+@ !(isNull s2Civ4)
+[s2Civ4,2] exec "civilianActionProximity.sqs"
+#afterRescueActions2
+? objectiveType3 != 7 : goto "afterRescueActions3"
+@ !(isNull s3Civ1)
+[s3Civ1,3] exec "civilianActionProximity.sqs"
+@ !(isNull s3Civ2)
+[s3Civ2,3] exec "civilianActionProximity.sqs"
+@ !(isNull s3Civ3)
+[s3Civ3,3] exec "civilianActionProximity.sqs"
+@ !(isNull s3Civ4)
+[s3Civ4,3] exec "civilianActionProximity.sqs"
+#afterRescueActions3
+? objectiveType4 != 7 : goto "afterRescueActions4"
+@ !(isNull s4Civ1)
+[s4Civ1,4] exec "civilianActionProximity.sqs"
+@ !(isNull s4Civ2)
+[s4Civ2,4] exec "civilianActionProximity.sqs"
+@ !(isNull s4Civ3)
+[s4Civ3,4] exec "civilianActionProximity.sqs"
+@ !(isNull s4Civ4)
+[s4Civ4,4] exec "civilianActionProximity.sqs"
+#afterRescueActions4
+? objectiveType5 != 7 : goto "afterRescueActions5"
+@ !(isNull s5Civ1)
+[s5Civ1,5] exec "civilianActionProximity.sqs"
+@ !(isNull s5Civ2)
+[s5Civ2,5] exec "civilianActionProximity.sqs"
+@ !(isNull s5Civ3)
+[s5Civ3,5] exec "civilianActionProximity.sqs"
+@ !(isNull s5Civ4)
+[s5Civ4,5] exec "civilianActionProximity.sqs"
+#afterRescueActions5
+exit

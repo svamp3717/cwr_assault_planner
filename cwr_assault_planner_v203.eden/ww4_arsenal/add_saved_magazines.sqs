@@ -1,0 +1,12 @@
+; Restore WW4_ModelSavedMagazines using the exact Add 5 command pattern.
+_i = 0
+
+#AddLoop
+? _i >= count WW4_ModelSavedMagazines : goto "Done"
+_mag = WW4_ModelSavedMagazines select _i
+player addMagazine _mag
+_i = _i + 1
+goto "AddLoop"
+
+#Done
+exit

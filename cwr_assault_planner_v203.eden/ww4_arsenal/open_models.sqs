@@ -1,0 +1,34 @@
+; Open the dedicated player-model dialog.
+
+? WW4_PlayerModelDataReady : goto "DataReady"
+hint "WW4 Arsenal: player-model data is not ready."
+exit
+
+#DataReady
+_ok = createDialog "WW4_PlayerModel_Dialog"
+? _ok : goto "DialogOpened"
+hint "WW4 Arsenal: player-model dialog could not be opened."
+exit
+
+#DialogOpened
+@dialog
+lbClear 1510
+lbClear 1511
+
+_i = 0
+
+#CategoryLoop
+? _i >= count WW4_PlayerModelGroups : goto "CategoryDone"
+_groupEntry = WW4_PlayerModelGroups select _i
+_row = lbAdd [1510,_groupEntry select 0]
+_i = _i + 1
+goto "CategoryLoop"
+
+#CategoryDone
+? count WW4_PlayerModelGroups == 0 : hint "No player-model classes were loaded."; exit
+
+WW4_ModelLastCategory = -1
+WW4_ModelLastClass = -1
+lbSetCurSel [1510,0]
+[] exec "ww4_arsenal\model_selection_watch.sqs"
+exit

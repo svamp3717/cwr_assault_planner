@@ -1,0 +1,4 @@
+; v128: optional friendly forces and civilians are runtime-created after planner selection.
+; Objective defenders and enemy ground vehicles were already runtime-created in earlier versions.
+cleanupForcesComplete = true
+exit

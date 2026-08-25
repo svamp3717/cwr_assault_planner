@@ -1,0 +1,148 @@
+; v122: Fortified bunker gun nests controlled independently from enemy infantry strength.
+; Bunker setting = 0, 1, 2, or 3 nests per active objective.
+; Existing defenders 4/5/3 become static gunners, so total infantry counts remain unchanged.
+staticDefensesReady = false
+? bunkerLevel < 1 : goto "defensesDone"
+? enemyEast : goto "eastDefenses"
+goto "resistanceDefenses"
+
+#eastDefenses
+? townCount < 1 : goto "eastAfter1"
+staticDefensePositionReady = false
+[primaryX, primaryY, "WW4EXT_tripodKord", w4s1E4, -85, 60, 315, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "eastAfter1"
+staticDefensePositionReady = false
+[primaryX, primaryY, "WW4EXT_tripodPKME", w4s1E5, 20, 95, 0, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "eastAfter1"
+staticDefensePositionReady = false
+[primaryX, primaryY, "WW4EXT_tripodNSVE", w4s1E3, -70, -85, 225, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#eastAfter1
+? townCount < 2 : goto "eastAfter2"
+staticDefensePositionReady = false
+[secondaryX, secondaryY, "WW4EXT_tripodKord", w4s2E4, 90, -55, 135, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "eastAfter2"
+staticDefensePositionReady = false
+[secondaryX, secondaryY, "WW4EXT_tripodPKME", w4s2E5, 55, 90, 30, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "eastAfter2"
+staticDefensePositionReady = false
+[secondaryX, secondaryY, "WW4EXT_tripodNSVE", w4s2E3, -70, -80, 225, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#eastAfter2
+? townCount < 3 : goto "eastAfter3"
+staticDefensePositionReady = false
+[thirdX, thirdY, "WW4EXT_tripodKord", w4s3E4, -90, -45, 225, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "eastAfter3"
+staticDefensePositionReady = false
+[thirdX, thirdY, "WW4EXT_tripodPKME", w4s3E5, 25, -100, 180, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "eastAfter3"
+staticDefensePositionReady = false
+[thirdX, thirdY, "WW4EXT_tripodNSVE", w4s3E3, -50, 100, 330, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#eastAfter3
+? townCount < 4 : goto "eastAfter4"
+staticDefensePositionReady = false
+[fourthX, fourthY, "WW4EXT_tripodKord", w4s4E4, 90, 45, 45, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "eastAfter4"
+staticDefensePositionReady = false
+[fourthX, fourthY, "WW4EXT_tripodPKME", w4s4E5, -15, 100, 0, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "eastAfter4"
+staticDefensePositionReady = false
+[fourthX, fourthY, "WW4EXT_tripodNSVE", w4s4E3, 65, -85, 150, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#eastAfter4
+? townCount < 5 : goto "eastAfter5"
+staticDefensePositionReady = false
+[fifthX, fifthY, "WW4EXT_tripodKord", w4s5E4, -90, 45, 315, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "eastAfter5"
+staticDefensePositionReady = false
+[fifthX, fifthY, "WW4EXT_tripodPKME", w4s5E5, -30, -95, 200, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "eastAfter5"
+staticDefensePositionReady = false
+[fifthX, fifthY, "WW4EXT_tripodNSVE", w4s5E3, 45, 100, 20, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#eastAfter5
+goto "defensesDone"
+
+#resistanceDefenses
+? townCount < 1 : goto "resAfter1"
+staticDefensePositionReady = false
+[primaryX, primaryY, "WW4EXT_tripodKordR", w4s1R4, -85, 60, 315, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "resAfter1"
+staticDefensePositionReady = false
+[primaryX, primaryY, "WW4EXT_tripodPKMR", w4s1R5, 20, 95, 0, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "resAfter1"
+staticDefensePositionReady = false
+[primaryX, primaryY, "WW4EXT_tripodNSVR", w4s1R3, -70, -85, 225, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#resAfter1
+? townCount < 2 : goto "resAfter2"
+staticDefensePositionReady = false
+[secondaryX, secondaryY, "WW4EXT_tripodKordR", w4s2R4, 90, -55, 135, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "resAfter2"
+staticDefensePositionReady = false
+[secondaryX, secondaryY, "WW4EXT_tripodPKMR", w4s2R5, 55, 90, 30, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "resAfter2"
+staticDefensePositionReady = false
+[secondaryX, secondaryY, "WW4EXT_tripodNSVR", w4s2R3, -70, -80, 225, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#resAfter2
+? townCount < 3 : goto "resAfter3"
+staticDefensePositionReady = false
+[thirdX, thirdY, "WW4EXT_tripodKordR", w4s3R4, -90, -45, 225, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "resAfter3"
+staticDefensePositionReady = false
+[thirdX, thirdY, "WW4EXT_tripodPKMR", w4s3R5, 25, -100, 180, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "resAfter3"
+staticDefensePositionReady = false
+[thirdX, thirdY, "WW4EXT_tripodNSVR", w4s3R3, -50, 100, 330, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#resAfter3
+? townCount < 4 : goto "resAfter4"
+staticDefensePositionReady = false
+[fourthX, fourthY, "WW4EXT_tripodKordR", w4s4R4, 90, 45, 45, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "resAfter4"
+staticDefensePositionReady = false
+[fourthX, fourthY, "WW4EXT_tripodPKMR", w4s4R5, -15, 100, 0, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "resAfter4"
+staticDefensePositionReady = false
+[fourthX, fourthY, "WW4EXT_tripodNSVR", w4s4R3, 65, -85, 150, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#resAfter4
+? townCount < 5 : goto "resAfter5"
+staticDefensePositionReady = false
+[fifthX, fifthY, "WW4EXT_tripodKordR", w4s5R4, -90, 45, 315, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 2 : goto "resAfter5"
+staticDefensePositionReady = false
+[fifthX, fifthY, "WW4EXT_tripodPKMR", w4s5R5, -30, -95, 200, "Fortress2"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+? bunkerLevel < 3 : goto "resAfter5"
+staticDefensePositionReady = false
+[fifthX, fifthY, "WW4EXT_tripodNSVR", w4s5R3, 45, 100, 20, "Fortress1"] exec "enemyStaticDefensePosition.sqs"
+@ staticDefensePositionReady
+#resAfter5
+
+#defensesDone
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG STATIC DEFENSES: objectives=%1 bunkerLevel=%2", townCount, bunkerLevel]
+? debugMode : debugLog format ["ERA DEBUG STATIC DEFENSES: objectives=%1 bunkerLevel=%2", townCount, bunkerLevel]
+staticDefensesReady = true
+exit

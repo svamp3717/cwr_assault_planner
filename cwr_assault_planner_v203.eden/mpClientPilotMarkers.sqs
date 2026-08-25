@@ -1,0 +1,42 @@
+; v164 apply downed-pilot safe-settlement markers locally.
+? objectiveType1 != 9 : goto "after1"
+"pilot_marker_1" setMarkerPos [objectivePilotDestinationX1,objectivePilotDestinationY1]
+"pilot_marker_1" setMarkerType "Flag"
+"pilot_marker_1" setMarkerColor "ColorGreen"
+"pilot_marker_1" setMarkerText format ["PILOT SAFE SETTLEMENT: %1",objectivePilotDestinationLabel1]
+? objectivePilotReady1 : "pilot_marker_1" setMarkerText "DOWNED PILOT SECURED"
+? objectivePilotFailed1 : "pilot_marker_1" setMarkerColor "ColorRed"; "pilot_marker_1" setMarkerText "DOWNED PILOT KILLED"
+#after1
+? objectiveType2 != 9 : goto "after2"
+"pilot_marker_2" setMarkerPos [objectivePilotDestinationX2,objectivePilotDestinationY2]
+"pilot_marker_2" setMarkerType "Flag"
+"pilot_marker_2" setMarkerColor "ColorGreen"
+"pilot_marker_2" setMarkerText format ["PILOT SAFE SETTLEMENT: %1",objectivePilotDestinationLabel2]
+? objectivePilotReady2 : "pilot_marker_2" setMarkerText "DOWNED PILOT SECURED"
+? objectivePilotFailed2 : "pilot_marker_2" setMarkerColor "ColorRed"; "pilot_marker_2" setMarkerText "DOWNED PILOT KILLED"
+#after2
+? objectiveType3 != 9 : goto "after3"
+"pilot_marker_3" setMarkerPos [objectivePilotDestinationX3,objectivePilotDestinationY3]
+"pilot_marker_3" setMarkerType "Flag"
+"pilot_marker_3" setMarkerColor "ColorGreen"
+"pilot_marker_3" setMarkerText format ["PILOT SAFE SETTLEMENT: %1",objectivePilotDestinationLabel3]
+? objectivePilotReady3 : "pilot_marker_3" setMarkerText "DOWNED PILOT SECURED"
+? objectivePilotFailed3 : "pilot_marker_3" setMarkerColor "ColorRed"; "pilot_marker_3" setMarkerText "DOWNED PILOT KILLED"
+#after3
+? objectiveType4 != 9 : goto "after4"
+"pilot_marker_4" setMarkerPos [objectivePilotDestinationX4,objectivePilotDestinationY4]
+"pilot_marker_4" setMarkerType "Flag"
+"pilot_marker_4" setMarkerColor "ColorGreen"
+"pilot_marker_4" setMarkerText format ["PILOT SAFE SETTLEMENT: %1",objectivePilotDestinationLabel4]
+? objectivePilotReady4 : "pilot_marker_4" setMarkerText "DOWNED PILOT SECURED"
+? objectivePilotFailed4 : "pilot_marker_4" setMarkerColor "ColorRed"; "pilot_marker_4" setMarkerText "DOWNED PILOT KILLED"
+#after4
+? objectiveType5 != 9 : goto "after5"
+"pilot_marker_5" setMarkerPos [objectivePilotDestinationX5,objectivePilotDestinationY5]
+"pilot_marker_5" setMarkerType "Flag"
+"pilot_marker_5" setMarkerColor "ColorGreen"
+"pilot_marker_5" setMarkerText format ["PILOT SAFE SETTLEMENT: %1",objectivePilotDestinationLabel5]
+? objectivePilotReady5 : "pilot_marker_5" setMarkerText "DOWNED PILOT SECURED"
+? objectivePilotFailed5 : "pilot_marker_5" setMarkerColor "ColorRed"; "pilot_marker_5" setMarkerText "DOWNED PILOT KILLED"
+#after5
+exit

@@ -1,0 +1,195 @@
+; v164 streamed route patrol profile. Spawns near players, patrols between two locations, and streams out when safely distant.
+; Args: [id,ax,ay,bx,by,aLabel,bLabel,unitCount,vehiclePatrol]
+_id = _this select 0
+_ax = _this select 1
+_ay = _this select 2
+_bx = _this select 3
+_by = _this select 4
+_aLabel = _this select 5
+_bLabel = _this select 6
+_unitCount = _this select 7
+_vehiclePatrol = _this select 8
+? enemyEast : _grp = createGroup east
+? enemyResistance : _grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_players = [plr,red2,red3,medic1,medic2,red6,red7,red8,red9,red10,red11,red12]
+_destroyed = false
+@ insertionComplete
+_startDelay = 20 + random 60
+~_startDelay
+#profileWait
+? missionEnded : exit
+? _destroyed : exit
+_midX = (_ax + _bx) / 2
+_midY = (_ay + _by) / 2
+_nearestMid = 999999999
+_i = 0
+#nearScan
+? _i >= count _players : goto "nearScanDone"
+_u = _players select _i
+? isNull _u : goto "nearNext"
+? !(alive _u) : goto "nearNext"
+_p = getPos _u
+_dx = (_p select 0) - _midX
+_dy = (_p select 1) - _midY
+_d = (_dx * _dx) + (_dy * _dy)
+? _d < _nearestMid : _nearestMid = _d
+#nearNext
+_i = _i + 1
+goto "nearScan"
+#nearScanDone
+? _nearestMid <= 3240000 : goto "spawnProfile"
+~10
+goto "profileWait"
+#spawnProfile
+; Spawn at whichever route end is farther from the nearest living player.
+_nearA = 999999999
+_nearB = 999999999
+_i = 0
+#spawnDistanceScan
+? _i >= count _players : goto "spawnDistanceDone"
+_u = _players select _i
+? isNull _u : goto "spawnDistanceNext"
+? !(alive _u) : goto "spawnDistanceNext"
+_p = getPos _u
+_dx = (_p select 0) - _ax
+_dy = (_p select 1) - _ay
+_d = (_dx * _dx) + (_dy * _dy)
+? _d < _nearA : _nearA = _d
+_dx = (_p select 0) - _bx
+_dy = (_p select 1) - _by
+_d = (_dx * _dx) + (_dy * _dy)
+? _d < _nearB : _nearB = _d
+#spawnDistanceNext
+_i = _i + 1
+goto "spawnDistanceScan"
+#spawnDistanceDone
+_spawnX = _ax
+_spawnY = _ay
+_targetX = _bx
+_targetY = _by
+_atB = false
+? _nearA < _nearB : _spawnX = _bx; _spawnY = _by; _targetX = _ax; _targetY = _ay; _atB = true
+_veh = objNull
+? _vehiclePatrol : goto "spawnVehicle"
+goto "spawnInfantry"
+#spawnVehicle
+? enemyEast : _vehClass = "WW4EXT_JeepMGE"
+? enemyResistance : _vehClass = "WW4EXT_JeepMGR"
+_veh = _vehClass createVehicle [_spawnX,_spawnY,0]
+_veh setFuel 1
+_veh lock false
+? enemyEast : _classes = [ww4EastCrew,ww4EastRifleman,ww4EastGrenadier,ww4EastRifleman,ww4EastMedic,ww4EastAT]
+? enemyResistance : _classes = [ww4ResCrew,ww4ResRifleman,ww4ResGrenadier,ww4ResRifleman,ww4ResMedic,ww4ResAT]
+_i = 0
+#vehicleCrewSpawn
+? _i >= _unitCount : goto "spawnReady"
+_class = _classes select (_i % (count _classes))
+_class createUnit [[_spawnX + (_i * 2),_spawnY + 2,0],_grp,""]
+_unitsNow = units _grp
+_newUnit = _unitsNow select ((count _unitsNow) - 1)
+_newUnit setSkill enemyAISkill
+? _i == 0 : _newUnit moveInDriver _veh
+? _i == 1 : _newUnit moveInGunner _veh
+? _i > 1 : _newUnit moveInCargo _veh
+_i = _i + 1
+goto "vehicleCrewSpawn"
+#spawnInfantry
+? enemyEast : _classes = [ww4EastSquadLeader,ww4EastRifleman,ww4EastGrenadier,ww4EastMachinegun,ww4EastAT,ww4EastMedic]
+? enemyResistance : _classes = [ww4ResSquadLeader,ww4ResRifleman,ww4ResGrenadier,ww4ResMachinegun,ww4ResAT,ww4ResMedic]
+_i = 0
+#infantrySpawn
+? _i >= _unitCount : goto "spawnReady"
+_class = _classes select (_i % (count _classes))
+_class createUnit [[_spawnX + ((_i % 3) * 3),_spawnY + ((_i % 2) * 3),0],_grp,""]
+_unitsNow = units _grp
+_newUnit = _unitsNow select ((count _unitsNow) - 1)
+_newUnit setSkill enemyAISkill
+_i = _i + 1
+goto "infantrySpawn"
+#spawnReady
+? !(_vehiclePatrol) : goto "infantryPatrolReady"
+; CWA can defer moveIn seat assignment by a scheduler frame. Repeat the two combat seats once.
+~0.3
+_unitsNow = units _grp
+? count _unitsNow >= 1 : (_unitsNow select 0) moveInDriver _veh
+? count _unitsNow >= 2 : (_unitsNow select 1) moveInGunner _veh
+_grp setBehaviour "AWARE"
+_grp setCombatMode "RED"
+_grp setSpeedMode "NORMAL"
+_grp setFormation "COLUMN"
+goto "patrolOrdersReady"
+#infantryPatrolReady
+_grp setBehaviour "SAFE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "LIMITED"
+_grp setFormation "COLUMN"
+#patrolOrdersReady
+_leader = leader _grp
+_leader doMove [_targetX,_targetY,0]
+_timeout = time + 240
+? debugMode : debugLog format ["ERA DEBUG ROUTE PATROL SPAWN: id=%1 %2 to %3 vehicle=%4 units=%5",_id,_aLabel,_bLabel,_vehiclePatrol,_unitCount]
+#activeLoop
+~5
+? missionEnded : exit
+? (count (units _grp)) < 1 : _destroyed = true; goto "profileWait"
+_leader = leader _grp
+? isNull _leader : _destroyed = true; goto "profileWait"
+; Preserve a vehicle captured by WEST rather than streaming it out.
+_captured = false
+? isNull _veh : goto "afterCapturedCheck"
+_driverUnit = driver _veh
+? !(isNull _driverUnit) && side _driverUnit == west : _captured = true
+#afterCapturedCheck
+? _captured : exit
+_nearest = 999999999
+_lp = getPos _leader
+_i = 0
+#activePlayerScan
+? _i >= count _players : goto "activePlayerDone"
+_u = _players select _i
+? isNull _u : goto "activePlayerNext"
+? !(alive _u) : goto "activePlayerNext"
+_p = getPos _u
+_dx = (_p select 0) - (_lp select 0)
+_dy = (_p select 1) - (_lp select 1)
+_d = (_dx * _dx) + (_dy * _dy)
+? _d < _nearest : _nearest = _d
+#activePlayerNext
+_i = _i + 1
+goto "activePlayerScan"
+#activePlayerDone
+_beh = behaviour _leader
+? _nearest > 6250000 && _beh != "COMBAT" : goto "streamOut"
+? unitReady _leader : goto "switchEnd"
+? time > _timeout : goto "switchEnd"
+goto "activeLoop"
+#switchEnd
+? _atB : goto "moveToB"
+_atB = true
+_targetX = _ax
+_targetY = _ay
+_leader doMove [_targetX,_targetY,0]
+_timeout = time + 240
+goto "activeLoop"
+#moveToB
+_atB = false
+_targetX = _bx
+_targetY = _by
+_leader doMove [_targetX,_targetY,0]
+_timeout = time + 240
+goto "activeLoop"
+#streamOut
+_unitsDelete = units _grp
+_i = 0
+#deleteUnits
+? _i >= count _unitsDelete : goto "deleteVehicle"
+_u = _unitsDelete select _i
+? !(isNull _u) : deleteVehicle _u
+_i = _i + 1
+goto "deleteUnits"
+#deleteVehicle
+? !(isNull _veh) : deleteVehicle _veh
+? debugMode : debugLog format ["ERA DEBUG ROUTE PATROL STREAMED: id=%1",_id]
+~10
+goto "profileWait"

@@ -1,0 +1,8 @@
+; v124: runtime vehicle creation summaries are visible only with Debug Messages enabled.
+? !(debugMode) : exit
+@ enemyRuntimeVehiclesReady
+@ friendlyRuntimeInsertionVehiclesReady
+? isNull player : exit
+player globalChat enemyRuntimeVehicleSummary
+player globalChat friendlyRuntimeInsertionVehicleSummary
+exit

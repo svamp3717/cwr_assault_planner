@@ -1,0 +1,100 @@
+; Server-side on-foot placement for allied AI and support, derived from v102.
+; Everon conversion: dedicated on-foot insertion. Old SQS only.
+_footX = lzX
+_footY = lzY
+? alliedCount < 1 : goto "footAfterA1"
+unassignVehicle a1ldr
+a1ldr setPos [_footX + -55, _footY + 20, 0]
+unassignVehicle a1r2
+a1r2 setPos [_footX + -49, _footY + 20, 0]
+unassignVehicle a1gren
+a1gren setPos [_footX + -43, _footY + 20, 0]
+unassignVehicle a1med
+a1med setPos [_footX + -37, _footY + 20, 0]
+unassignVehicle a1mg
+a1mg setPos [_footX + -55, _footY + 27, 0]
+unassignVehicle a1at
+a1at setPos [_footX + -49, _footY + 27, 0]
+unassignVehicle a1r7
+a1r7 setPos [_footX + -43, _footY + 27, 0]
+unassignVehicle a1r8
+a1r8 setPos [_footX + -37, _footY + 27, 0]
+#footAfterA1
+? alliedCount < 2 : goto "footAfterA2"
+unassignVehicle a2ldr
+a2ldr setPos [_footX + -15, _footY + 35, 0]
+unassignVehicle a2r2
+a2r2 setPos [_footX + -9, _footY + 35, 0]
+unassignVehicle a2gren
+a2gren setPos [_footX + -3, _footY + 35, 0]
+unassignVehicle a2med
+a2med setPos [_footX + 3, _footY + 35, 0]
+unassignVehicle a2mg
+a2mg setPos [_footX + -15, _footY + 42, 0]
+unassignVehicle a2at
+a2at setPos [_footX + -9, _footY + 42, 0]
+unassignVehicle a2r7
+a2r7 setPos [_footX + -3, _footY + 42, 0]
+unassignVehicle a2r8
+a2r8 setPos [_footX + 3, _footY + 42, 0]
+#footAfterA2
+? alliedCount < 3 : goto "footAfterA3"
+unassignVehicle a3ldr
+a3ldr setPos [_footX + 25, _footY + 20, 0]
+unassignVehicle a3r2
+a3r2 setPos [_footX + 31, _footY + 20, 0]
+unassignVehicle a3gren
+a3gren setPos [_footX + 37, _footY + 20, 0]
+unassignVehicle a3med
+a3med setPos [_footX + 43, _footY + 20, 0]
+unassignVehicle a3mg
+a3mg setPos [_footX + 25, _footY + 27, 0]
+unassignVehicle a3at
+a3at setPos [_footX + 31, _footY + 27, 0]
+unassignVehicle a3r7
+a3r7 setPos [_footX + 37, _footY + 27, 0]
+unassignVehicle a3r8
+a3r8 setPos [_footX + 43, _footY + 27, 0]
+#footAfterA3
+? alliedCount < 4 : goto "footAfterA4"
+unassignVehicle a4ldr
+a4ldr setPos [_footX + 55, _footY + -25, 0]
+unassignVehicle a4r2
+a4r2 setPos [_footX + 61, _footY + -25, 0]
+unassignVehicle a4gren
+a4gren setPos [_footX + 67, _footY + -25, 0]
+unassignVehicle a4med
+a4med setPos [_footX + 73, _footY + -25, 0]
+unassignVehicle a4mg
+a4mg setPos [_footX + 55, _footY + -18, 0]
+unassignVehicle a4at
+a4at setPos [_footX + 61, _footY + -18, 0]
+unassignVehicle a4r7
+a4r7 setPos [_footX + 67, _footY + -18, 0]
+unassignVehicle a4r8
+a4r8 setPos [_footX + 73, _footY + -18, 0]
+#footAfterA4
+~0.2
+"lz_marker" setMarkerPos [_footX, _footY, 0]
+"lz_marker" setMarkerText format ["Foot start: %1 / %2 / %3", approachLabel, timeOfDayLabel, playerAILabel]
+[] exec "westAmmoBox.sqs"
+insertionComplete = true
+mpInsertionFinished = true
+publicVariable "insertionComplete"
+publicVariable "mpInsertionFinished"
+[] exec "updateObjectiveMarkerLabels.sqs"
+[] exec "alliedSearchDestroy.sqs"
+? alliedCount < 1 : goto "footMoveAfterA1"
+a1ldr doMove [primaryX, primaryY, 0]
+#footMoveAfterA1
+? alliedCount < 2 : goto "footMoveAfterA2"
+a2ldr doMove [primaryX, primaryY, 0]
+#footMoveAfterA2
+? alliedCount < 3 : goto "footMoveAfterA3"
+a3ldr doMove [primaryX, primaryY, 0]
+#footMoveAfterA3
+? alliedCount < 4 : goto "footMoveAfterA4"
+a4ldr doMove [primaryX, primaryY, 0]
+#footMoveAfterA4
+? supportGround : [] exec "sendGroundSupportPrimary.sqs"
+exit

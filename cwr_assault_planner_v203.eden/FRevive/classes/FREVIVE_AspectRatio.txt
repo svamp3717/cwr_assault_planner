@@ -1,0 +1,8 @@
+// FRevive 0.5 script by Faguss (ofp-faguss.com)
+// Aspect ratio settings
+class FREVIVE_AspectRatio 
+{
+	__EXEC(AR_CENTER=0; AR_modifX=0; AR_modifY=0; AR_modifX_2NDMON=0; version=0);
+	FREVIVE_ar1 = __EVAL(if (localize "STR_USRACT_CHEAT_1" == "FWATCH") then {version=call loadFile ":info version"});
+	FREVIVE_ar2 = __EVAL(if (version>=1.15) then {call preProcessFile "..\fwatch\data\getAspectRatio.sqf"});
+}

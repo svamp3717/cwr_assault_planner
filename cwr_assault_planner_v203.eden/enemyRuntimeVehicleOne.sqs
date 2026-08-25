@@ -1,0 +1,81 @@
+; v120: CWA/OFP runtime enemy vehicle and crew helper.
+; Arguments: [vehicle class, x, y, direction, side code]. side code 0=EAST, 1=Resistance.
+runtimeVehicleSpawnComplete = false
+runtimeVehicleSpawned = objNull
+runtimeVehicleSpawnCrewCount = 0
+_class = _this select 0
+_x = _this select 1
+_y = _this select 2
+_dir = _this select 3
+_sideCode = _this select 4
+_crewClass = ww4EastCrew
+? _sideCode == 1 : _crewClass = ww4ResCrew
+_pos = [_x, _y, 0]
+_veh = _class createVehicle _pos
+? isNull _veh : goto "spawnFailed"
+_veh setFuel 0
+_veh setDir _dir
+_veh setDammage 0
+~0.2
+? _sideCode == 1 : goto "createResistanceGroup"
+_grp = createGroup east
+goto "vehicleGroupCreated"
+#createResistanceGroup
+_grp = createGroup resistance
+#vehicleGroupCreated
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_crewPos = [_x + 6, _y + 6, 0]
+_crewClass createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 1 : goto "spawnFailedDeleteVehicle"
+_driver = _units select 0
+_driver setSkill enemyAISkill
+_driver moveInDriver _veh
+_crewClass createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 2 : goto "skipGunnerCreate"
+_gunner = _units select 1
+_gunner setSkill enemyAISkill
+_gunner moveInGunner _veh
+#skipGunnerCreate
+_crewClass createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 3 : goto "skipCommanderCreate"
+_commander = _units select 2
+_commander setSkill enemyAISkill
+_commander moveInCommander _veh
+#skipCommanderCreate
+; CWA can defer seat assignment by a scheduler frame, so repeat it.
+~0.3
+_units = units _grp
+? count _units >= 1 : (_units select 0) moveInDriver _veh
+? count _units >= 2 : (_units select 1) moveInGunner _veh
+? count _units >= 3 : (_units select 2) moveInCommander _veh
+~0.2
+_units = units _grp
+? count _units < 1 : goto "spawnFailedDeleteVehicle"
+_driver = _units select 0
+? vehicle _driver != _veh : goto "spawnFailedDeleteCrew"
+? count _units >= 2 && vehicle (_units select 1) != _veh : deleteVehicle (_units select 1)
+? count _units >= 3 && vehicle (_units select 2) != _veh : deleteVehicle (_units select 2)
+_grp setBehaviour "AWARE"
+_grp setCombatMode "RED"
+_grp setSpeedMode "NORMAL"
+_veh setDammage 0
+_veh setFuel 1
+runtimeVehicleSpawned = _veh
+runtimeVehicleSpawnCrewCount = count crew _veh
+runtimeVehicleSpawnComplete = true
+exit
+#spawnFailedDeleteCrew
+{deleteVehicle _x} forEach units _grp
+#spawnFailedDeleteVehicle
+deleteVehicle _veh
+#spawnFailed
+runtimeVehicleSpawned = objNull
+runtimeVehicleSpawnCrewCount = 0
+runtimeVehicleSpawnComplete = true
+exit

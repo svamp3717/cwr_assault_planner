@@ -1,0 +1,93 @@
+; assault_planner_v203. Squad-leader setup with objective types, weather, attack-air probability, patrol density, logistics allowance, and enemy AI skill.
+#openDialog
+mpLaunchRequested = false
+objectiveTypeMenuRequested = false
+missionSettingsMenuRequested = false
+_ok = createDialog "ERA_StartDialog"
+? _ok : goto "setLabels"
+; Avoid a permanent black-screen deadlock if the dialog cannot be created.
+mpLaunchRequested = true
+goto "submitSetup"
+#setLabels
+ctrlSetText [1101, "On Foot"]
+? guiInsertionChoice == -1 : ctrlSetText [1101, "Random"]
+? guiInsertionChoice == 1 : ctrlSetText [1101, "Truck"]
+? guiInsertionChoice == 2 : ctrlSetText [1101, "APC"]
+? guiInsertionChoice == 3 : ctrlSetText [1101, "Paradrop"]
+? guiInsertionChoice == 4 : ctrlSetText [1101, "Helicopter"]
+ctrlSetText [1103, format ["%1 squads", guiFriendlySquads]]
+? guiFriendlySquads == 1 : ctrlSetText [1103, "1 squad"]
+ctrlSetText [1110, format ["%1 AI", guiPlayerAI]]
+ctrlSetText [1104, format ["%1 objectives", guiObjectiveCount]]
+? guiObjectiveCount == 1 : ctrlSetText [1104, "1 objective"]
+? guiObjectiveCount < 1 : ctrlSetText [1104, "Random (1-5)"]
+ctrlSetText [1114, "Types: Custom"]
+? guiObjectiveTypesRandom : ctrlSetText [1114, "Types: Random"]
+ctrlSetText [1105, "Disabled"]
+? guiAirSupportChoice == -1 : ctrlSetText [1105, "Random"]
+? guiAirSupportChoice == 1 : ctrlSetText [1105, "Available"]
+ctrlSetText [1107, "Day 12:00"]
+? guiTimeChoice == -1 : ctrlSetText [1107, "Random"]
+? guiTimeChoice == 0 : ctrlSetText [1107, "Dawn 05:00"]
+? guiTimeChoice == 2 : ctrlSetText [1107, "Dusk 19:00"]
+? guiTimeChoice == 3 : ctrlSetText [1107, "Night 23:00"]
+ctrlSetText [1118, "Clear"]
+? guiWeatherChoice == -1 : ctrlSetText [1118, "Random"]
+? guiWeatherChoice == 1 : ctrlSetText [1118, "Overcast"]
+? guiWeatherChoice == 2 : ctrlSetText [1118, "Storm"]
+? guiWeatherChoice == 3 : ctrlSetText [1118, "Fog"]
+ctrlSetText [1111, "Disabled"]
+? guiFriendlyArmorChoice == 1 : ctrlSetText [1111, "Small"]
+? guiFriendlyArmorChoice == 2 : ctrlSetText [1111, "Medium"]
+? guiFriendlyArmorChoice == 3 : ctrlSetText [1111, "Large"]
+ctrlSetText [1106, "Small"]
+? guiEnemyVehiclesChoice == 0 : ctrlSetText [1106, "Disabled"]
+? guiEnemyVehiclesChoice == 2 : ctrlSetText [1106, "Medium"]
+? guiEnemyVehiclesChoice == 3 : ctrlSetText [1106, "Large"]
+ctrlSetText [1112, "Medium"]
+? guiEnemyInfantryChoice == 1 : ctrlSetText [1112, "Small"]
+? guiEnemyInfantryChoice == 3 : ctrlSetText [1112, "Large"]
+ctrlSetText [1119, "Recruit - 0.35"]
+? guiEnemySkillChoice == 1 : ctrlSetText [1119, "Regular - 0.55"]
+? guiEnemySkillChoice == 2 : ctrlSetText [1119, "Veteran - 0.70"]
+? guiEnemySkillChoice == 3 : ctrlSetText [1119, "Elite - 0.85"]
+ctrlSetText [1116, "Rare"]
+? guiEnemyAircraftChoice == 0 : ctrlSetText [1116, "Disabled"]
+? guiEnemyAircraftChoice == 2 : ctrlSetText [1116, "Normal"]
+? guiEnemyAircraftChoice == 3 : ctrlSetText [1116, "Frequent"]
+? guiEnemyAircraftChoice == 4 : ctrlSetText [1116, "Guaranteed"]
+ctrlSetText [1117, "Normal"]
+? guiPatrolDensityChoice == 0 : ctrlSetText [1117, "Disabled"]
+? guiPatrolDensityChoice == 1 : ctrlSetText [1117, "Low"]
+? guiPatrolDensityChoice == 3 : ctrlSetText [1117, "High"]
+ctrlSetText [1113, format ["%1 bunkers", guiBunkerChoice]]
+? guiBunkerChoice == 0 : ctrlSetText [1113, "Disabled"]
+? guiBunkerChoice == 1 : ctrlSetText [1113, "1 bunker"]
+ctrlSetText [1109, "Disabled"]
+? guiDebugChoice == 1 : ctrlSetText [1109, "Enabled"]
+ctrlSetText [1115, format ["%1 airdrops", guiLogisticsDropCount]]
+? guiLogisticsDropCount == 0 : ctrlSetText [1115, "Disabled"]
+? guiLogisticsDropCount == 1 : ctrlSetText [1115, "1 airdrop"]
+#waitDialog
+~0.1
+? mpLaunchRequested : goto "submitSetup"
+? objectiveTypeMenuRequested : goto "openObjectiveTypeMenu"
+? missionSettingsMenuRequested : goto "openMissionSettingsMenu"
+? dialog : goto "waitDialog"
+goto "openDialog"
+#openObjectiveTypeMenu
+objectiveTypeMenuComplete = false
+[] exec "objectiveTypeMenu.sqs"
+@ objectiveTypeMenuComplete
+goto "openDialog"
+#openMissionSettingsMenu
+missionSettingsMenuComplete = false
+[] exec "missionSettingsMenu.sqs"
+@ missionSettingsMenuComplete
+goto "openDialog"
+#submitSetup
+? dialog : closeDialog 1
+? mpSetupSubmitting : exit
+mpSetupSubmitting = true
+[] exec "mpSubmitSetup.sqs"
+exit

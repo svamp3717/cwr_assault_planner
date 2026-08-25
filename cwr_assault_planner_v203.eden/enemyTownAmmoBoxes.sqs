@@ -1,0 +1,43 @@
+; v146: one enemy ammunition box in each active enemy-held objective town only.
+? !(isServer) : exit
+townAmmoBoxesReady = false
+objectiveTownAmmoBox1 = objNull
+objectiveTownAmmoBox2 = objNull
+objectiveTownAmmoBox3 = objNull
+objectiveTownAmmoBox4 = objNull
+objectiveTownAmmoBox5 = objNull
+_count = 0
+? townCount < 1 : goto "boxesDone"
+enemyTownAmmoBoxCreateReady = false
+[primaryX,primaryY,townLabel] exec "enemyTownAmmoBoxOne.sqs"
+@ enemyTownAmmoBoxCreateReady
+objectiveTownAmmoBox1 = enemyTownAmmoBoxCreated
+_count = _count + 1
+? townCount < 2 : goto "boxesDone"
+enemyTownAmmoBoxCreateReady = false
+[secondaryX,secondaryY,secondaryLabel] exec "enemyTownAmmoBoxOne.sqs"
+@ enemyTownAmmoBoxCreateReady
+objectiveTownAmmoBox2 = enemyTownAmmoBoxCreated
+_count = _count + 1
+? townCount < 3 : goto "boxesDone"
+enemyTownAmmoBoxCreateReady = false
+[thirdX,thirdY,thirdLabel] exec "enemyTownAmmoBoxOne.sqs"
+@ enemyTownAmmoBoxCreateReady
+objectiveTownAmmoBox3 = enemyTownAmmoBoxCreated
+_count = _count + 1
+? townCount < 4 : goto "boxesDone"
+enemyTownAmmoBoxCreateReady = false
+[fourthX,fourthY,fourthLabel] exec "enemyTownAmmoBoxOne.sqs"
+@ enemyTownAmmoBoxCreateReady
+objectiveTownAmmoBox4 = enemyTownAmmoBoxCreated
+_count = _count + 1
+? townCount < 5 : goto "boxesDone"
+enemyTownAmmoBoxCreateReady = false
+[fifthX,fifthY,fifthLabel] exec "enemyTownAmmoBoxOne.sqs"
+@ enemyTownAmmoBoxCreateReady
+objectiveTownAmmoBox5 = enemyTownAmmoBoxCreated
+_count = _count + 1
+#boxesDone
+? debugMode : debugLog format ["ERA DEBUG AMMOBOXES: %1 active objective-town boxes created", _count]
+townAmmoBoxesReady = true
+exit

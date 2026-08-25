@@ -1,0 +1,662 @@
+; Everon one-to-five objective setup. Location centers are read from curated settlement/base markers. Old SQS only.
+randomizeComplete = false
+; Planner time-of-day selection. The mission.sqm base time is 05:00.
+; Random selects one of the same four tested presets instead of an arbitrary dark-grey hour.
+timeOfDayLabel = "Dawn 05:00"
+? guiTimeChoice == 0 : goto "timeDawn"
+? guiTimeChoice == 1 : goto "timeDay"
+? guiTimeChoice == 2 : goto "timeDusk"
+? guiTimeChoice == 3 : goto "timeNight"
+_rtime = random 4
+? _rtime < 1 : goto "timeDawn"
+? _rtime < 2 : goto "timeDay"
+? _rtime < 3 : goto "timeDusk"
+goto "timeNight"
+#timeDawn
+_tod = 0
+timeOfDayLabel = "Dawn 05:00"
+goto "afterTimeChoice"
+#timeDay
+_tod = 7
+timeOfDayLabel = "Day 12:00"
+goto "afterTimeChoice"
+#timeDusk
+_tod = 14
+timeOfDayLabel = "Dusk 19:00"
+goto "afterTimeChoice"
+#timeNight
+_tod = 18
+timeOfDayLabel = "Night 23:00"
+#afterTimeChoice
+; v167 synchronized weather preset. Clear is the setup default.
+weatherLevel = guiWeatherChoice
+? weatherLevel < -1 : weatherLevel = 0
+? weatherLevel > 3 : weatherLevel = 0
+? weatherLevel == -1 : goto "rollWeather"
+goto "afterWeatherRoll"
+#rollWeather
+_rw = random 4
+weatherLevel = 0
+? _rw >= 1 && _rw < 2 : weatherLevel = 1
+? _rw >= 2 && _rw < 3 : weatherLevel = 2
+? _rw >= 3 : weatherLevel = 3
+#afterWeatherRoll
+weatherLabel = "Clear"
+weatherOvercast = 0
+weatherFog = 0
+? weatherLevel == 1 : weatherLabel = "Overcast"
+? weatherLevel == 1 : weatherOvercast = 0.65
+? weatherLevel == 1 : weatherFog = 0.01
+? weatherLevel == 2 : weatherLabel = "Storm"
+? weatherLevel == 2 : weatherOvercast = 1
+? weatherLevel == 2 : weatherFog = 0.025
+? weatherLevel == 3 : weatherLabel = "Fog"
+? weatherLevel == 3 : weatherOvercast = 0.4
+? weatherLevel == 3 : weatherFog = 0.08
+skipTime _tod
+weatherApplyComplete = false
+[] exec "applyWeather.sqs"
+@ weatherApplyComplete
+? !(isNull player) : player addWeapon "Binocular"
+? !(isNull player) : player addWeapon "NVGoggles"
+; Civilian character selection. Parked civilian vehicles are handled separately and remain.
+civilianCharacters = true
+civilianLabel = "civilian characters present"
+? guiCivilianChoice == 0 : civilianCharacters = false
+? !(civilianCharacters) : civilianLabel = "civilian characters removed"
+; Objective count selected in the startup planner. -1 rolls one to five objectives.
+townCount = guiObjectiveCount
+? townCount < 1 : goto "rollObjectiveCount"
+goto "afterObjectiveCountRoll"
+#rollObjectiveCount
+_r = random 5
+? _r < 1 : townCount = 1
+? _r >= 1 && _r < 2 : townCount = 2
+? _r >= 2 && _r < 3 : townCount = 3
+? _r >= 3 && _r < 4 : townCount = 4
+? _r >= 4 : townCount = 5
+#afterObjectiveCountRoll
+? townCount < 1 : townCount = 1
+? townCount > 5 : townCount = 5
+objectiveCountLabel = format ["%1 objectives", townCount]
+? townCount == 1 : objectiveCountLabel = "1 objective"
+objective1Done = false
+objective2Done = false
+objective3Done = false
+objective4Done = false
+objective5Done = false
+missionObjectivesComplete = false
+"1" objStatus "ACTIVE"
+? townCount >= 2 : "2" objStatus "ACTIVE"
+? townCount < 2 : "2" objStatus "HIDDEN"
+? townCount >= 3 : "3" objStatus "ACTIVE"
+? townCount < 3 : "3" objStatus "HIDDEN"
+? townCount >= 4 : "4" objStatus "ACTIVE"
+? townCount < 4 : "4" objStatus "HIDDEN"
+? townCount >= 5 : "5" objStatus "ACTIVE"
+? townCount < 5 : "5" objStatus "HIDDEN"
+? townCount < 2 : objective2Done = true
+? townCount < 3 : objective3Done = true
+? townCount < 4 : objective4Done = true
+? townCount < 5 : objective5Done = true
+#rollPrimary
+; v198 Everon: choose one of 33 manually placed full locations, then use its four nearest locations as the objective cluster.
+_townTotal = missionLocationTotal
+_roll = random _townTotal
+_primaryIndex = _roll - (_roll % 1)
+primaryTownIndex = _primaryIndex
+_primaryMarker = missionLocationMarkers select _primaryIndex
+townLabel = missionLocationLabels select _primaryIndex
+_townPos = getMarkerPos _primaryMarker
+primaryX = _townPos select 0
+primaryY = _townPos select 1
+
+_nearIndex1 = -1
+_nearIndex2 = -1
+_nearIndex3 = -1
+_nearIndex4 = -1
+_nearDist1 = 999999999
+_nearDist2 = 999999999
+_nearDist3 = 999999999
+_nearDist4 = 999999999
+_i = 0
+#clusterScan
+? _i >= _townTotal : goto "clusterScanDone"
+? _i == _primaryIndex : goto "clusterNext"
+_candidatePos = getMarkerPos (missionLocationMarkers select _i)
+_dx = (_candidatePos select 0) - primaryX
+_dy = (_candidatePos select 1) - primaryY
+_distance = (_dx * _dx) + (_dy * _dy)
+? _distance < _nearDist1 : goto "clusterInsert1"
+? _distance < _nearDist2 : goto "clusterInsert2"
+? _distance < _nearDist3 : goto "clusterInsert3"
+? _distance < _nearDist4 : goto "clusterInsert4"
+goto "clusterNext"
+#clusterInsert1
+_nearDist4 = _nearDist3
+_nearIndex4 = _nearIndex3
+_nearDist3 = _nearDist2
+_nearIndex3 = _nearIndex2
+_nearDist2 = _nearDist1
+_nearIndex2 = _nearIndex1
+_nearDist1 = _distance
+_nearIndex1 = _i
+goto "clusterNext"
+#clusterInsert2
+_nearDist4 = _nearDist3
+_nearIndex4 = _nearIndex3
+_nearDist3 = _nearDist2
+_nearIndex3 = _nearIndex2
+_nearDist2 = _distance
+_nearIndex2 = _i
+goto "clusterNext"
+#clusterInsert3
+_nearDist4 = _nearDist3
+_nearIndex4 = _nearIndex3
+_nearDist3 = _distance
+_nearIndex3 = _i
+goto "clusterNext"
+#clusterInsert4
+_nearDist4 = _distance
+_nearIndex4 = _i
+#clusterNext
+_i = _i + 1
+goto "clusterScan"
+#clusterScanDone
+? _nearIndex1 < 0 : _nearIndex1 = (_primaryIndex + 1) % _townTotal
+? _nearIndex2 < 0 : _nearIndex2 = (_primaryIndex + 2) % _townTotal
+? _nearIndex3 < 0 : _nearIndex3 = (_primaryIndex + 3) % _townTotal
+? _nearIndex4 < 0 : _nearIndex4 = (_primaryIndex + 4) % _townTotal
+
+_secondaryMarker = missionLocationMarkers select _nearIndex1
+secondaryLabel = missionLocationLabels select _nearIndex1
+_townPos = getMarkerPos _secondaryMarker
+secondaryX = _townPos select 0
+secondaryY = _townPos select 1
+_thirdMarker = missionLocationMarkers select _nearIndex2
+thirdLabel = missionLocationLabels select _nearIndex2
+_townPos = getMarkerPos _thirdMarker
+thirdX = _townPos select 0
+thirdY = _townPos select 1
+_fourthMarker = missionLocationMarkers select _nearIndex3
+fourthLabel = missionLocationLabels select _nearIndex3
+_townPos = getMarkerPos _fourthMarker
+fourthX = _townPos select 0
+fourthY = _townPos select 1
+_fifthMarker = missionLocationMarkers select _nearIndex4
+fifthLabel = missionLocationLabels select _nearIndex4
+_townPos = getMarkerPos _fifthMarker
+fifthX = _townPos select 0
+fifthY = _townPos select 1
+
+; Pick a non-objective supplied location for the insertion column. Prefer the closest candidate
+; whose center is at least 1.5 km from every active objective; otherwise use the safest candidate.
+_stageBestIndex = -1
+_stageBestPrimaryDistance = 999999999
+_stageFallbackIndex = -1
+_stageFallbackClearance = -1
+_i = 0
+#stageScan
+? _i >= _townTotal : goto "stageScanDone"
+_used = false
+? _i == _primaryIndex : _used = true
+? townCount >= 2 && _i == _nearIndex1 : _used = true
+? townCount >= 3 && _i == _nearIndex2 : _used = true
+? townCount >= 4 && _i == _nearIndex3 : _used = true
+? townCount >= 5 && _i == _nearIndex4 : _used = true
+? _used : goto "stageNext"
+_candidatePos = getMarkerPos (missionLocationMarkers select _i)
+_cx = _candidatePos select 0
+_cy = _candidatePos select 1
+_dx = _cx - primaryX
+_dy = _cy - primaryY
+_primaryDistance = (_dx * _dx) + (_dy * _dy)
+_minClearance = _primaryDistance
+? townCount >= 2 : _dx2 = _cx - secondaryX
+? townCount >= 2 : _dy2 = _cy - secondaryY
+? townCount >= 2 : _d2 = (_dx2 * _dx2) + (_dy2 * _dy2)
+? townCount >= 2 && _d2 < _minClearance : _minClearance = _d2
+? townCount >= 3 : _dx3 = _cx - thirdX
+? townCount >= 3 : _dy3 = _cy - thirdY
+? townCount >= 3 : _d3 = (_dx3 * _dx3) + (_dy3 * _dy3)
+? townCount >= 3 && _d3 < _minClearance : _minClearance = _d3
+? townCount >= 4 : _dx4 = _cx - fourthX
+? townCount >= 4 : _dy4 = _cy - fourthY
+? townCount >= 4 : _d4 = (_dx4 * _dx4) + (_dy4 * _dy4)
+? townCount >= 4 && _d4 < _minClearance : _minClearance = _d4
+? townCount >= 5 : _dx5 = _cx - fifthX
+? townCount >= 5 : _dy5 = _cy - fifthY
+? townCount >= 5 : _d5 = (_dx5 * _dx5) + (_dy5 * _dy5)
+? townCount >= 5 && _d5 < _minClearance : _minClearance = _d5
+? _minClearance > _stageFallbackClearance : _stageFallbackClearance = _minClearance; _stageFallbackIndex = _i
+? _minClearance < 2250000 : goto "stageNext"
+? _primaryDistance >= _stageBestPrimaryDistance : goto "stageNext"
+_stageBestPrimaryDistance = _primaryDistance
+_stageBestIndex = _i
+#stageNext
+_i = _i + 1
+goto "stageScan"
+#stageScanDone
+? _stageBestIndex < 0 : _stageBestIndex = _stageFallbackIndex
+? _stageBestIndex < 0 : _stageBestIndex = (_primaryIndex + 5) % _townTotal
+_stageMarker = missionLocationMarkers select _stageBestIndex
+truckStageTownLabel = missionLocationLabels select _stageBestIndex
+_stagePos = getMarkerPos _stageMarker
+truckStageX = _stagePos select 0
+truckStageY = _stagePos select 1
+_toObjectiveX = primaryX - truckStageX
+_toObjectiveY = primaryY - truckStageY
+truckStageDir = _toObjectiveX atan2 _toObjectiveY
+_awayX = truckStageX - primaryX
+_awayY = truckStageY - primaryY
+_awayDir = _awayX atan2 _awayY
+_forwardX = sin _awayDir
+_forwardY = cos _awayDir
+_rightX = cos _awayDir
+_rightY = 0 - (sin _awayDir)
+
+; Put foot/APC/helicopter staging on the outskirts of the selected non-objective location.
+primaryLzX = truckStageX + (_forwardX * 280)
+primaryLzY = truckStageY + (_forwardY * 280)
+landStageX = primaryLzX + (_forwardX * 220)
+landStageY = primaryLzY + (_forwardY * 220)
+airStageX = primaryLzX + (_forwardX * 1600)
+airStageY = primaryLzY + (_forwardY * 1600)
+
+approachLabel = "base outskirts LZ"
+approachOffsetX = 0
+approachOffsetY = 0
+_r = random 5
+? _r < 1 : goto "approachChosen"
+? _r < 2 : goto "approachLeft"
+? _r < 3 : goto "approachRight"
+? _r < 4 : goto "approachForward"
+goto "approachRear"
+#approachLeft
+approachOffsetX = 0 - (_rightX * 120)
+approachOffsetY = 0 - (_rightY * 120)
+approachLabel = "left outskirts offset"
+goto "approachChosen"
+#approachRight
+approachOffsetX = _rightX * 120
+approachOffsetY = _rightY * 120
+approachLabel = "right outskirts offset"
+goto "approachChosen"
+#approachForward
+approachOffsetX = _forwardX * 120
+approachOffsetY = _forwardY * 120
+approachLabel = "farther outskirts offset"
+goto "approachChosen"
+#approachRear
+approachOffsetX = 0 - (_forwardX * 120)
+approachOffsetY = 0 - (_forwardY * 120)
+approachLabel = "near-town outskirts offset"
+#approachChosen
+primaryLzX = primaryLzX + approachOffsetX
+primaryLzY = primaryLzY + approachOffsetY
+landStageX = landStageX + approachOffsetX
+landStageY = landStageY + approachOffsetY
+airStageX = airStageX + approachOffsetX
+airStageY = airStageY + approachOffsetY
+
+; Keep generated positions inside Everon's 12.8 km world bounds.
+? primaryLzX < 250 : primaryLzX = 250
+? primaryLzX > 12550 : primaryLzX = 12550
+? primaryLzY < 250 : primaryLzY = 250
+? primaryLzY > 12550 : primaryLzY = 12550
+? landStageX < 250 : landStageX = 250
+? landStageX > 12550 : landStageX = 12550
+? landStageY < 250 : landStageY = 250
+? landStageY > 12550 : landStageY = 12550
+? airStageX < 250 : airStageX = 250
+? airStageX > 12550 : airStageX = 12550
+? airStageY < 250 : airStageY = 250
+? airStageY > 12550 : airStageY = 12550
+
+heliLz1X = primaryLzX
+heliLz1Y = primaryLzY
+heliLz2X = primaryLzX + (_rightX * 130) + (_forwardX * 45)
+heliLz2Y = primaryLzY + (_rightY * 130) + (_forwardY * 45)
+heliLz3X = primaryLzX - (_rightX * 130) + (_forwardX * 65)
+heliLz3Y = primaryLzY - (_rightY * 130) + (_forwardY * 65)
+? heliLz2X < 250 : heliLz2X = 250
+? heliLz2X > 12550 : heliLz2X = 12550
+? heliLz2Y < 250 : heliLz2Y = 250
+? heliLz2Y > 12550 : heliLz2Y = 12550
+? heliLz3X < 250 : heliLz3X = 250
+? heliLz3X > 12550 : heliLz3X = 12550
+? heliLz3Y < 250 : heliLz3Y = 250
+? heliLz3Y > 12550 : heliLz3Y = 12550
+lzX = primaryLzX
+lzY = primaryLzY
+"primary_marker" setMarkerPos [primaryX, primaryY, 0]
+"secondary_marker" setMarkerPos [secondaryX, secondaryY, 0]
+"third_marker" setMarkerPos [thirdX, thirdY, 0]
+"fourth_marker" setMarkerPos [fourthX, fourthY, 0]
+"fifth_marker" setMarkerPos [fifthX, fifthY, 0]
+"lz_marker" setMarkerPos [lzX, lzY, 0]
+; Enemy side selection from the startup planner. -1 keeps the original random roll.
+enemyEast = false
+enemyResistance = false
+? guiEnemyChoice == 0 : goto "enemyEastSide"
+? guiEnemyChoice == 1 : goto "enemyResistanceSide"
+_r = random 2
+? _r < 1 : goto "enemyEastSide"
+goto "enemyResistanceSide"
+#enemyEastSide
+enemyEast = true
+enemyLabel = "EAST"
+goto "afterEnemyRoll"
+#enemyResistanceSide
+enemyResistance = true
+enemyLabel = "RESISTANCE"
+#afterEnemyRoll
+ww4FactionReady = false
+[] exec "ww4FactionSelect.sqs"
+@ ww4FactionReady
+? enemyEast : enemyLabel = format ["EAST / %1", ww4EastCategoryLabel]
+? enemyResistance : enemyLabel = format ["RESISTANCE / %1", ww4ResCategoryLabel]
+; Enemy infantry amount. This also selects the existing support/reinforcement intensity tier.
+enemyReinforcements = false
+heavyDefense = false
+enemyInfantryLevel = guiEnemyInfantryChoice
+? enemyInfantryLevel != 1 && enemyInfantryLevel != 2 && enemyInfantryLevel != 3 : enemyInfantryLevel = 2
+defenseMode = enemyInfantryLevel - 1
+enemyInfantryLabel = "medium enemy infantry - 16 defenders per objective"
+? enemyInfantryLevel == 1 : enemyInfantryLabel = "small enemy infantry - 8 defenders per objective"
+? enemyInfantryLevel == 3 : enemyInfantryLabel = "large enemy infantry - 24 defenders per objective"
+? enemyInfantryLevel == 3 : heavyDefense = true
+; v171 enemy combat AI skill. Recruit 0.35 is the default; Regular 0.55 remains selectable.
+enemyAISkillLevel = guiEnemySkillChoice
+? enemyAISkillLevel < 0 : enemyAISkillLevel = 0
+? enemyAISkillLevel > 3 : enemyAISkillLevel = 0
+enemyAISkill = 0.35
+enemyAISkillLabel = "Recruit enemy AI - skill 0.35"
+? enemyAISkillLevel == 1 : enemyAISkill = 0.55
+? enemyAISkillLevel == 1 : enemyAISkillLabel = "Regular enemy AI - skill 0.55"
+? enemyAISkillLevel == 2 : enemyAISkill = 0.70
+? enemyAISkillLevel == 2 : enemyAISkillLabel = "Veteran enemy AI - skill 0.70"
+? enemyAISkillLevel == 3 : enemyAISkill = 0.85
+? enemyAISkillLevel == 3 : enemyAISkillLabel = "Elite enemy AI - skill 0.85"
+; v166 attack-air chance is selected directly, independent of infantry strength.
+enemyAircraftLevel = guiEnemyAircraftChoice
+? enemyAircraftLevel < 0 : enemyAircraftLevel = 1
+? enemyAircraftLevel > 4 : enemyAircraftLevel = 1
+enemyAircraftSettingLabel = "rare enemy aircraft - 20 percent chance"
+? enemyAircraftLevel == 0 : enemyAircraftSettingLabel = "enemy aircraft disabled"
+? enemyAircraftLevel == 2 : enemyAircraftSettingLabel = "normal enemy aircraft - 40 percent chance"
+? enemyAircraftLevel == 3 : enemyAircraftSettingLabel = "frequent enemy aircraft - 70 percent chance"
+? enemyAircraftLevel == 4 : enemyAircraftSettingLabel = "enemy aircraft guaranteed"
+; v166 route-patrol density is selected directly, independent of infantry strength.
+enemyPatrolDensityLevel = guiPatrolDensityChoice
+? enemyPatrolDensityLevel < 0 : enemyPatrolDensityLevel = 2
+? enemyPatrolDensityLevel > 3 : enemyPatrolDensityLevel = 2
+enemyPatrolDensityLabel = "normal enemy patrol density - 2 routes"
+? enemyPatrolDensityLevel == 0 : enemyPatrolDensityLabel = "enemy route patrols disabled"
+? enemyPatrolDensityLevel == 1 : enemyPatrolDensityLabel = "low enemy patrol density - 1 route"
+? enemyPatrolDensityLevel == 3 : enemyPatrolDensityLabel = "high enemy patrol density - 3 routes"
+enemyInfantryExpandReady = false
+[] exec "enemyInfantryExpand.sqs"
+@ enemyInfantryExpandReady
+; Fortified bunker amount is independent from infantry strength.
+bunkerLevel = guiBunkerChoice
+? bunkerLevel < 0 : bunkerLevel = 1
+? bunkerLevel > 3 : bunkerLevel = 1
+bunkerLabel = "1 fortified bunker per objective"
+? bunkerLevel == 0 : bunkerLabel = "fortified bunkers disabled"
+? bunkerLevel == 2 : bunkerLabel = "2 fortified bunkers per objective"
+? bunkerLevel == 3 : bunkerLabel = "3 fortified bunkers per objective"
+defenseLabel = format ["%1 / %2 / %3", objectiveCountLabel, enemyInfantryLabel, bunkerLabel]
+; Enemy objective vehicle amount. Attack aircraft remain controlled separately.
+enemyVehicleLevel = guiEnemyVehiclesChoice
+? enemyVehicleLevel < 0 : enemyVehicleLevel = 1
+? enemyVehicleLevel > 3 : enemyVehicleLevel = 1
+enemyGroundVehicles = true
+enemyVehicleLabel = "small enemy vehicle force - 1 per objective"
+? enemyVehicleLevel == 0 : enemyGroundVehicles = false
+? enemyVehicleLevel == 0 : enemyVehicleLabel = "enemy vehicles disabled"
+? enemyVehicleLevel == 2 : enemyVehicleLabel = "medium enemy vehicle force - 3 per objective"
+? enemyVehicleLevel == 3 : enemyVehicleLabel = "large enemy vehicle force - 5 per objective"
+; v128: civilians and parked civilian vehicles are created later by runtime scripts.
+#afterLayer5Placement
+; Player-controlled squad size. Count excludes the human player.
+playerAICount = guiPlayerAI
+? playerAICount != 0 && playerAICount != 3 && playerAICount != 6 && playerAICount != 9 && playerAICount != 11 : playerAICount = 11
+playerAILabel = format ["%1 player AI", playerAICount]
+; MP v103: playable AI filler cleanup is locality-aware in mpCullLocalPlayerSlots.sqs.
+
+; Optional player squad specialists. Skip roles not present in the selected player squad.
+mgSpecial = false
+sniperSpecial = false
+mgLabel = "MG not in squad"
+? playerAICount < 6 : goto "afterMg"
+_r = random 2
+? _r < 1 : goto "mgNo"
+mgSpecial = true
+mgLabel = "MG active"
+goto "afterMg"
+#mgNo
+removeAllWeapons red7
+red7 addMagazine "WW4_W556_30mag"
+red7 addMagazine "WW4_W556_30mag"
+red7 addMagazine "WW4_W556_30mag"
+red7 addMagazine "WW4_W556_30mag"
+red7 addWeapon "WW4_M16"
+mgLabel = "MG replaced by rifleman"
+#afterMg
+sniperLabel = "sniper not in squad"
+? playerAICount < 7 : goto "afterSniper"
+_r = random 2
+? _r < 1 : goto "sniperNo"
+sniperSpecial = true
+sniperLabel = "sniper active"
+goto "afterSniper"
+#sniperNo
+removeAllWeapons red8
+red8 addMagazine "WW4_W556_30mag"
+red8 addMagazine "WW4_W556_30mag"
+red8 addMagazine "WW4_W556_30mag"
+red8 addMagazine "WW4_W556_30mag"
+red8 addWeapon "WW4_M16"
+sniperLabel = "sniper replaced by rifleman"
+#afterSniper
+; Allied squad count selected in the startup planner: exact value 0 to 4.
+alliedCount = guiFriendlySquads
+? alliedCount < 0 : alliedCount = 0
+? alliedCount > 4 : alliedCount = 4
+? alliedCount == 0 : alliedLabel = "0 allied squads"
+? alliedCount == 1 : alliedLabel = "1 allied squad"
+? alliedCount == 2 : alliedLabel = "2 allied squads"
+? alliedCount == 3 : alliedLabel = "3 allied squads"
+? alliedCount == 4 : alliedLabel = "4 allied squads"
+; Insertion method selected in the startup planner. -1 rolls all five methods.
+insertionFoot = false
+insertionTruck = false
+insertionAPC = false
+insertionPara = false
+insertionHeli = false
+heliSplit = false
+heliTransportTwoActive = false
+? guiInsertionChoice == 0 : goto "useFoot"
+? guiInsertionChoice == 1 : goto "useTruck"
+? guiInsertionChoice == 2 : goto "useAPC"
+? guiInsertionChoice == 3 : goto "usePara"
+? guiInsertionChoice == 4 : goto "useHeli"
+_r = random 5
+? _r < 1 : goto "useFoot"
+? _r < 2 : goto "useTruck"
+? _r < 3 : goto "useAPC"
+? _r < 4 : goto "usePara"
+goto "useHeli"
+#useFoot
+insertionFoot = true
+insertionLabel = "on-foot approach"
+goto "afterInsertionRoll"
+#useTruck
+insertionTruck = true
+insertionLabel = "truck convoy"
+goto "afterInsertionRoll"
+#useAPC
+insertionAPC = true
+insertionLabel = "APC column"
+goto "afterInsertionRoll"
+#usePara
+insertionPara = true
+; v130: no transport aircraft is spawned; each local unit starts in an OFP parachute.
+heliSplit = false
+insertionLabel = "direct airborne parachute drop"
+goto "afterInsertionRoll"
+#useHeli
+insertionHeli = true
+heliSplit = false
+_rh = random 2
+? _rh < 1 : goto "useHeliCh47"
+heliSplit = true
+insertionLabel = "UH-60 split lift"
+goto "afterInsertionRoll"
+#useHeliCh47
+insertionLabel = "CH-47 single lift"
+#afterInsertionRoll
+; Friendly armored support follows the planner selection. Friendly air support retains its own selection.
+friendlyArmorLevel = guiFriendlyArmorChoice
+? friendlyArmorLevel < 0 : friendlyArmorLevel = 1
+? friendlyArmorLevel > 3 : friendlyArmorLevel = 1
+supportGround = false
+? friendlyArmorLevel > 0 : supportGround = true
+supportGroundLabel = "small armored support - 1 Bradley"
+? friendlyArmorLevel == 0 : supportGroundLabel = "no armored support"
+? friendlyArmorLevel == 2 : supportGroundLabel = "medium armored support - Bradley and M60"
+? friendlyArmorLevel == 3 : supportGroundLabel = "large armored support - 5 vehicle group"
+supportAir = false
+? guiAirSupportChoice == 0 : goto "airSupportDisabled"
+? guiAirSupportChoice == 1 : goto "airSupportEnabled"
+_r = random 2
+? _r >= 1 : goto "airSupportEnabled"
+goto "airSupportDisabled"
+#airSupportEnabled
+supportAir = true
+goto "afterAirSupportChoice"
+#airSupportDisabled
+supportAir = false
+#afterAirSupportChoice
+? supportAir : supportAirLabel = "air support available - Radio Alpha"
+? !(supportAir) : supportAirLabel = "no air support"
+; Enemy support/reinforcement roll. Reinforced/heavy targets are more likely to receive help.
+enemyAirSupport = false
+enemyAirReinforcement = false
+enemyReinforcements = false
+enemyAirReinforcementActive = false
+enemyReinforcementLaunched = false
+enemyReinforcementPending = false
+reinfTargetX = secondaryX
+reinfTargetY = secondaryY
+reinfTargetLabel = secondaryLabel
+airReinfClear = true
+_r = random 100
+? enemyAircraftLevel == 1 && _r < 20 : enemyAirSupport = true
+? enemyAircraftLevel == 2 && _r < 40 : enemyAirSupport = true
+? enemyAircraftLevel == 3 && _r < 70 : enemyAirSupport = true
+? enemyAircraftLevel == 4 : enemyAirSupport = true
+; Pick either airlifted infantry OR ground reinforcement infantry, never both, because both use the reserved reinforcement squad.
+_r = random 10
+? defenseMode == 0 && _r >= 8.5 : goto "enemyAirReinfRoll"
+? defenseMode == 1 && _r >= 6 : goto "enemyAirReinfRoll"
+? defenseMode == 2 && _r >= 5 : goto "enemyAirReinfRoll"
+goto "enemyGroundReinfRoll"
+#enemyAirReinfRoll
+enemyAirReinforcement = true
+goto "afterEnemyReinfRoll"
+#enemyGroundReinfRoll
+_r = random 10
+? defenseMode == 0 && _r >= 7.5 : enemyReinforcements = true
+? defenseMode == 1 && _r >= 5.5 : enemyReinforcements = true
+? defenseMode == 2 && _r >= 4.5 : enemyReinforcements = true
+#afterEnemyReinfRoll
+? !(enemyGroundVehicles) : enemyReinforcements = false
+enemyReinforcementPending = false
+; v133: a selected reserve does not block mission completion until 75 percent of the current objective infantry are dead and the wave is actually called.
+enemyAirLabel = "no enemy extra support"
+? enemyAirSupport && !(enemyAirReinforcement) && !(enemyReinforcements) : enemyAirLabel = "enemy attack air possible"
+? !(enemyAirSupport) && enemyAirReinforcement : enemyAirLabel = "enemy air reinforcements possible"
+? enemyAirSupport && enemyAirReinforcement : enemyAirLabel = "enemy attack air and air reinforcements possible"
+? !(enemyAirSupport) && enemyReinforcements : enemyAirLabel = "enemy ground reinforcements possible"
+? enemyAirSupport && enemyReinforcements : enemyAirLabel = "enemy attack air and ground reinforcements possible"
+[] exec "vehiclePools.sqs"
+~0.2
+enemyRuntimeReservesReady = false
+[] exec "enemyRuntimeReserves.sqs"
+@ enemyRuntimeReservesReady
+~0.2
+"primary_marker" setMarkerType "Flag"
+"primary_marker" setMarkerText "1"
+? townCount >= 2 : "secondary_marker" setMarkerType "Flag"
+? townCount >= 2 : "secondary_marker" setMarkerText "2"
+? townCount < 2 : "secondary_marker" setMarkerType "Empty"
+? townCount < 2 : "secondary_marker" setMarkerText ""
+? townCount >= 3 : "third_marker" setMarkerType "Flag"
+? townCount >= 3 : "third_marker" setMarkerText "3"
+? townCount < 3 : "third_marker" setMarkerType "Empty"
+? townCount < 3 : "third_marker" setMarkerText ""
+? townCount >= 4 : "fourth_marker" setMarkerType "Flag"
+? townCount >= 4 : "fourth_marker" setMarkerText "4"
+? townCount < 4 : "fourth_marker" setMarkerType "Empty"
+? townCount < 4 : "fourth_marker" setMarkerText ""
+? townCount >= 5 : "fifth_marker" setMarkerType "Flag"
+? townCount >= 5 : "fifth_marker" setMarkerText "5"
+? townCount < 5 : "fifth_marker" setMarkerType "Empty"
+? townCount < 5 : "fifth_marker" setMarkerText ""
+"lz_marker" setMarkerText format ["LZ: %1 / %2 / %3 / %4 / %5 / %6 / %7", insertionLabel, approachLabel, playerAILabel, alliedLabel, objectiveCountLabel, timeOfDayLabel, weatherLabel]
+? debugMode : debugLog format ["ERA DEBUG SETUP: objectives=%1 towns=%2/%3/%4/%5/%6 enemy=%7 infantry=%8 vehicles=%9 insertion=%10", townCount, townLabel, secondaryLabel, thirdLabel, fourthLabel, fifthLabel, enemyLabel, enemyInfantryLabel, enemyVehicleLabel, insertionLabel]
+? debugMode : debugLog format ["ERA DEBUG SETUP: playerAI=%1 allies=%2 air=%3 armor=%4 time=%5 weather=%6 civilians=%7", playerAILabel, alliedLabel, supportAirLabel, supportGroundLabel, timeOfDayLabel, weatherLabel, civilianLabel]
+? debugMode : debugLog format ["ERA DEBUG SETUP: %1", bunkerLabel]
+? debugMode : debugLog format ["ERA DEBUG SETUP: %1 / %2 / %3", enemyAircraftSettingLabel, enemyPatrolDensityLabel, enemyAISkillLabel]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG SETUP: objectives=%1 enemy=%2 insertion=%3 playerAI=%4 allies=%5", townCount, enemyLabel, insertionLabel, playerAILabel, alliedLabel]
+cleanupForcesComplete = false
+[] exec "cleanupForces.sqs"
+@ cleanupForcesComplete
+; cleanupForces.sqs already removes the inactive faction and unused objective slots.
+; Do not run purgeWrongEnemySide.sqs a second time: v89's duplicate purge could remove the live force pool.
+[] exec "enemyInfantryCull.sqs"
+~0.1
+; v95: create exact infantry and use source-style editor vehicle pools; UI still selects 0/1/3/5 vehicles.
+enemyObjectiveForcesComplete = false
+[] exec "enemyObjectiveForces.sqs"
+@ enemyObjectiveForcesComplete
+; Fortify each active objective with the independently selected number of bunker gun nests.
+staticDefensesReady = false
+[] exec "enemyStaticDefenses.sqs"
+@ staticDefensesReady
+; Place existing defenders in valid town building positions.
+buildingDefensesReady = false
+[] exec "enemyBuildingDefenders.sqs"
+@ buildingDefensesReady
+; Create one ammunition box in each active enemy-held objective town before objectives select possible box targets.
+townAmmoBoxesReady = false
+[] exec "enemyTownAmmoBoxes.sqs"
+@ townAmmoBoxesReady
+; Generate mixed objective types and their strategic target/intel/ammunition-box objects.
+objectiveAssetsReady = false
+[] exec "objectiveAssets.sqs"
+@ objectiveAssetsReady
+; v164: streamed enemy patrol routes between objectives and nearby settlements.
+enemyRoutePatrolsReady = false
+[] exec "enemyRoutePatrols.sqs"
+@ enemyRoutePatrolsReady
+[] exec "updateObjectiveMarkerLabels.sqs"
+friendlyRuntimeAlliedInfantryReady = false
+[] exec "friendlyRuntimeAlliedInfantry.sqs"
+@ friendlyRuntimeAlliedInfantryReady
+friendlyRuntimeSupportReady = false
+[] exec "friendlyRuntimeSupport.sqs"
+@ friendlyRuntimeSupportReady
+civilianPopulationReady = false
+[] exec "civilianPopulationLimit.sqs"
+@ civilianPopulationReady
+civilianTrafficReady = false
+[] exec "civilianTraffic.sqs"
+@ civilianTrafficReady
+[] exec "radioAirControl.sqs"
+[] exec "enemyAir.sqs"
+; Reinforcement dispatcher starts here and waits until 75 percent of the current objective infantry are dead.
+randomizeComplete = true
+exit

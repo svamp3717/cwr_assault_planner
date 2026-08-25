@@ -1,0 +1,1430 @@
+; v127: server-created exact objective infantry plus server-spawned CWA runtime enemy vehicles.
+; No objective defender infantry remains editor placed.
+enemyObjectiveForcesComplete = false
+? enemyEast : goto "spawnEastForces"
+goto "spawnResistanceForces"
+
+#spawnEastForces
+? townCount < 1 : goto "spawnEastForces_after_slot1"
+_spawnX = primaryX
+_spawnY = primaryY
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s1E1=this"]
+w4s1E1 = v93s1E1
+w4s1E1 setSkill enemyAISkill
+w4s1E1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s1E2=this"]
+w4s1E2 = v93s1E2
+w4s1E2 setSkill enemyAISkill
+w4s1E2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s1E3=this"]
+w4s1E3 = v93s1E3
+w4s1E3 setSkill enemyAISkill
+w4s1E3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s1E4=this"]
+w4s1E4 = v93s1E4
+w4s1E4 setSkill enemyAISkill
+w4s1E4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4EastAT createUnit [_p, _grp, "v93s1E5=this"]
+w4s1E5 = v93s1E5
+w4s1E5 setSkill enemyAISkill
+w4s1E5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4EastAA createUnit [_p, _grp, "v93s1E6=this"]
+w4s1E6 = v93s1E6
+w4s1E6 setSkill enemyAISkill
+w4s1E6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s1E7=this"]
+w4s1E7 = v93s1E7
+w4s1E7 setSkill enemyAISkill
+w4s1E7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s1E8=this"]
+w4s1E8 = v93s1E8
+w4s1E8 setSkill enemyAISkill
+w4s1E8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnEastForces_slot1_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s1E9=this"]
+w4s1E9 = v93s1E9
+w4s1E9 setSkill enemyAISkill
+w4s1E9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s1E10=this"]
+w4s1E10 = v93s1E10
+w4s1E10 setSkill enemyAISkill
+w4s1E10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s1E11=this"]
+w4s1E11 = v93s1E11
+w4s1E11 setSkill enemyAISkill
+w4s1E11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s1E12=this"]
+w4s1E12 = v93s1E12
+w4s1E12 setSkill enemyAISkill
+w4s1E12 setDir 180
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s1E13=this"]
+w4s1E13 = v93s1E13
+w4s1E13 setSkill enemyAISkill
+w4s1E13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4EastRocket createUnit [_p, _grp, "v93s1E14=this"]
+w4s1E14 = v93s1E14
+w4s1E14 setSkill enemyAISkill
+w4s1E14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s1E15=this"]
+w4s1E15 = v93s1E15
+w4s1E15 setSkill enemyAISkill
+w4s1E15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s1E16=this"]
+w4s1E16 = v93s1E16
+w4s1E16 setSkill enemyAISkill
+w4s1E16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnEastForces_slot1_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s1E17=this"]
+w4s1E17 = v93s1E17
+w4s1E17 setSkill enemyAISkill
+w4s1E17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s1E18=this"]
+w4s1E18 = v93s1E18
+w4s1E18 setSkill enemyAISkill
+w4s1E18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s1E19=this"]
+w4s1E19 = v93s1E19
+w4s1E19 setSkill enemyAISkill
+w4s1E19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s1E20=this"]
+w4s1E20 = v93s1E20
+w4s1E20 setSkill enemyAISkill
+w4s1E20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4EastAA createUnit [_p, _grp, "v93s1E21=this"]
+w4s1E21 = v93s1E21
+w4s1E21 setSkill enemyAISkill
+w4s1E21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s1E22=this"]
+w4s1E22 = v93s1E22
+w4s1E22 setSkill enemyAISkill
+w4s1E22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s1E23=this"]
+w4s1E23 = v93s1E23
+w4s1E23 setSkill enemyAISkill
+w4s1E23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s1E24=this"]
+w4s1E24 = v93s1E24
+w4s1E24 setSkill enemyAISkill
+w4s1E24 setDir 180
+#spawnEastForces_slot1_infantry_done
+; v98: patrol every active infantry group around objective 1.
+? alive w4s1E1 : [w4s1E1, primaryX, primaryY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s1E13 : [w4s1E13, primaryX, primaryY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnEastForces_after_slot1
+? townCount < 2 : goto "spawnEastForces_after_slot2"
+_spawnX = secondaryX
+_spawnY = secondaryY
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s2E1=this"]
+w4s2E1 = v93s2E1
+w4s2E1 setSkill enemyAISkill
+w4s2E1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s2E2=this"]
+w4s2E2 = v93s2E2
+w4s2E2 setSkill enemyAISkill
+w4s2E2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s2E3=this"]
+w4s2E3 = v93s2E3
+w4s2E3 setSkill enemyAISkill
+w4s2E3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s2E4=this"]
+w4s2E4 = v93s2E4
+w4s2E4 setSkill enemyAISkill
+w4s2E4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4EastAT createUnit [_p, _grp, "v93s2E5=this"]
+w4s2E5 = v93s2E5
+w4s2E5 setSkill enemyAISkill
+w4s2E5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4EastAA createUnit [_p, _grp, "v93s2E6=this"]
+w4s2E6 = v93s2E6
+w4s2E6 setSkill enemyAISkill
+w4s2E6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s2E7=this"]
+w4s2E7 = v93s2E7
+w4s2E7 setSkill enemyAISkill
+w4s2E7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s2E8=this"]
+w4s2E8 = v93s2E8
+w4s2E8 setSkill enemyAISkill
+w4s2E8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnEastForces_slot2_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s2E9=this"]
+w4s2E9 = v93s2E9
+w4s2E9 setSkill enemyAISkill
+w4s2E9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s2E10=this"]
+w4s2E10 = v93s2E10
+w4s2E10 setSkill enemyAISkill
+w4s2E10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s2E11=this"]
+w4s2E11 = v93s2E11
+w4s2E11 setSkill enemyAISkill
+w4s2E11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s2E12=this"]
+w4s2E12 = v93s2E12
+w4s2E12 setSkill enemyAISkill
+w4s2E12 setDir 180
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s2E13=this"]
+w4s2E13 = v93s2E13
+w4s2E13 setSkill enemyAISkill
+w4s2E13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4EastRocket createUnit [_p, _grp, "v93s2E14=this"]
+w4s2E14 = v93s2E14
+w4s2E14 setSkill enemyAISkill
+w4s2E14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s2E15=this"]
+w4s2E15 = v93s2E15
+w4s2E15 setSkill enemyAISkill
+w4s2E15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s2E16=this"]
+w4s2E16 = v93s2E16
+w4s2E16 setSkill enemyAISkill
+w4s2E16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnEastForces_slot2_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s2E17=this"]
+w4s2E17 = v93s2E17
+w4s2E17 setSkill enemyAISkill
+w4s2E17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s2E18=this"]
+w4s2E18 = v93s2E18
+w4s2E18 setSkill enemyAISkill
+w4s2E18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s2E19=this"]
+w4s2E19 = v93s2E19
+w4s2E19 setSkill enemyAISkill
+w4s2E19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s2E20=this"]
+w4s2E20 = v93s2E20
+w4s2E20 setSkill enemyAISkill
+w4s2E20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4EastAA createUnit [_p, _grp, "v93s2E21=this"]
+w4s2E21 = v93s2E21
+w4s2E21 setSkill enemyAISkill
+w4s2E21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s2E22=this"]
+w4s2E22 = v93s2E22
+w4s2E22 setSkill enemyAISkill
+w4s2E22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s2E23=this"]
+w4s2E23 = v93s2E23
+w4s2E23 setSkill enemyAISkill
+w4s2E23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s2E24=this"]
+w4s2E24 = v93s2E24
+w4s2E24 setSkill enemyAISkill
+w4s2E24 setDir 180
+#spawnEastForces_slot2_infantry_done
+; v98: patrol every active infantry group around objective 2.
+? alive w4s2E1 : [w4s2E1, secondaryX, secondaryY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s2E13 : [w4s2E13, secondaryX, secondaryY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnEastForces_after_slot2
+? townCount < 3 : goto "spawnEastForces_after_slot3"
+_spawnX = thirdX
+_spawnY = thirdY
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s3E1=this"]
+w4s3E1 = v93s3E1
+w4s3E1 setSkill enemyAISkill
+w4s3E1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s3E2=this"]
+w4s3E2 = v93s3E2
+w4s3E2 setSkill enemyAISkill
+w4s3E2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s3E3=this"]
+w4s3E3 = v93s3E3
+w4s3E3 setSkill enemyAISkill
+w4s3E3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s3E4=this"]
+w4s3E4 = v93s3E4
+w4s3E4 setSkill enemyAISkill
+w4s3E4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4EastAT createUnit [_p, _grp, "v93s3E5=this"]
+w4s3E5 = v93s3E5
+w4s3E5 setSkill enemyAISkill
+w4s3E5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4EastAA createUnit [_p, _grp, "v93s3E6=this"]
+w4s3E6 = v93s3E6
+w4s3E6 setSkill enemyAISkill
+w4s3E6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s3E7=this"]
+w4s3E7 = v93s3E7
+w4s3E7 setSkill enemyAISkill
+w4s3E7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s3E8=this"]
+w4s3E8 = v93s3E8
+w4s3E8 setSkill enemyAISkill
+w4s3E8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnEastForces_slot3_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s3E9=this"]
+w4s3E9 = v93s3E9
+w4s3E9 setSkill enemyAISkill
+w4s3E9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s3E10=this"]
+w4s3E10 = v93s3E10
+w4s3E10 setSkill enemyAISkill
+w4s3E10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s3E11=this"]
+w4s3E11 = v93s3E11
+w4s3E11 setSkill enemyAISkill
+w4s3E11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s3E12=this"]
+w4s3E12 = v93s3E12
+w4s3E12 setSkill enemyAISkill
+w4s3E12 setDir 180
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s3E13=this"]
+w4s3E13 = v93s3E13
+w4s3E13 setSkill enemyAISkill
+w4s3E13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4EastRocket createUnit [_p, _grp, "v93s3E14=this"]
+w4s3E14 = v93s3E14
+w4s3E14 setSkill enemyAISkill
+w4s3E14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s3E15=this"]
+w4s3E15 = v93s3E15
+w4s3E15 setSkill enemyAISkill
+w4s3E15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s3E16=this"]
+w4s3E16 = v93s3E16
+w4s3E16 setSkill enemyAISkill
+w4s3E16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnEastForces_slot3_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s3E17=this"]
+w4s3E17 = v93s3E17
+w4s3E17 setSkill enemyAISkill
+w4s3E17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s3E18=this"]
+w4s3E18 = v93s3E18
+w4s3E18 setSkill enemyAISkill
+w4s3E18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s3E19=this"]
+w4s3E19 = v93s3E19
+w4s3E19 setSkill enemyAISkill
+w4s3E19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s3E20=this"]
+w4s3E20 = v93s3E20
+w4s3E20 setSkill enemyAISkill
+w4s3E20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4EastAA createUnit [_p, _grp, "v93s3E21=this"]
+w4s3E21 = v93s3E21
+w4s3E21 setSkill enemyAISkill
+w4s3E21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s3E22=this"]
+w4s3E22 = v93s3E22
+w4s3E22 setSkill enemyAISkill
+w4s3E22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s3E23=this"]
+w4s3E23 = v93s3E23
+w4s3E23 setSkill enemyAISkill
+w4s3E23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s3E24=this"]
+w4s3E24 = v93s3E24
+w4s3E24 setSkill enemyAISkill
+w4s3E24 setDir 180
+#spawnEastForces_slot3_infantry_done
+; v98: patrol every active infantry group around objective 3.
+? alive w4s3E1 : [w4s3E1, thirdX, thirdY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s3E13 : [w4s3E13, thirdX, thirdY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnEastForces_after_slot3
+? townCount < 4 : goto "spawnEastForces_after_slot4"
+_spawnX = fourthX
+_spawnY = fourthY
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s4E1=this"]
+w4s4E1 = v93s4E1
+w4s4E1 setSkill enemyAISkill
+w4s4E1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s4E2=this"]
+w4s4E2 = v93s4E2
+w4s4E2 setSkill enemyAISkill
+w4s4E2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s4E3=this"]
+w4s4E3 = v93s4E3
+w4s4E3 setSkill enemyAISkill
+w4s4E3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s4E4=this"]
+w4s4E4 = v93s4E4
+w4s4E4 setSkill enemyAISkill
+w4s4E4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4EastAT createUnit [_p, _grp, "v93s4E5=this"]
+w4s4E5 = v93s4E5
+w4s4E5 setSkill enemyAISkill
+w4s4E5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4EastAA createUnit [_p, _grp, "v93s4E6=this"]
+w4s4E6 = v93s4E6
+w4s4E6 setSkill enemyAISkill
+w4s4E6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s4E7=this"]
+w4s4E7 = v93s4E7
+w4s4E7 setSkill enemyAISkill
+w4s4E7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s4E8=this"]
+w4s4E8 = v93s4E8
+w4s4E8 setSkill enemyAISkill
+w4s4E8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnEastForces_slot4_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s4E9=this"]
+w4s4E9 = v93s4E9
+w4s4E9 setSkill enemyAISkill
+w4s4E9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s4E10=this"]
+w4s4E10 = v93s4E10
+w4s4E10 setSkill enemyAISkill
+w4s4E10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s4E11=this"]
+w4s4E11 = v93s4E11
+w4s4E11 setSkill enemyAISkill
+w4s4E11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s4E12=this"]
+w4s4E12 = v93s4E12
+w4s4E12 setSkill enemyAISkill
+w4s4E12 setDir 180
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s4E13=this"]
+w4s4E13 = v93s4E13
+w4s4E13 setSkill enemyAISkill
+w4s4E13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4EastRocket createUnit [_p, _grp, "v93s4E14=this"]
+w4s4E14 = v93s4E14
+w4s4E14 setSkill enemyAISkill
+w4s4E14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s4E15=this"]
+w4s4E15 = v93s4E15
+w4s4E15 setSkill enemyAISkill
+w4s4E15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s4E16=this"]
+w4s4E16 = v93s4E16
+w4s4E16 setSkill enemyAISkill
+w4s4E16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnEastForces_slot4_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s4E17=this"]
+w4s4E17 = v93s4E17
+w4s4E17 setSkill enemyAISkill
+w4s4E17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s4E18=this"]
+w4s4E18 = v93s4E18
+w4s4E18 setSkill enemyAISkill
+w4s4E18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s4E19=this"]
+w4s4E19 = v93s4E19
+w4s4E19 setSkill enemyAISkill
+w4s4E19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s4E20=this"]
+w4s4E20 = v93s4E20
+w4s4E20 setSkill enemyAISkill
+w4s4E20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4EastAA createUnit [_p, _grp, "v93s4E21=this"]
+w4s4E21 = v93s4E21
+w4s4E21 setSkill enemyAISkill
+w4s4E21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s4E22=this"]
+w4s4E22 = v93s4E22
+w4s4E22 setSkill enemyAISkill
+w4s4E22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s4E23=this"]
+w4s4E23 = v93s4E23
+w4s4E23 setSkill enemyAISkill
+w4s4E23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s4E24=this"]
+w4s4E24 = v93s4E24
+w4s4E24 setSkill enemyAISkill
+w4s4E24 setDir 180
+#spawnEastForces_slot4_infantry_done
+; v98: patrol every active infantry group around objective 4.
+? alive w4s4E1 : [w4s4E1, fourthX, fourthY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s4E13 : [w4s4E13, fourthX, fourthY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnEastForces_after_slot4
+? townCount < 5 : goto "spawnEastForces_after_slot5"
+_spawnX = fifthX
+_spawnY = fifthY
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s5E1=this"]
+w4s5E1 = v93s5E1
+w4s5E1 setSkill enemyAISkill
+w4s5E1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s5E2=this"]
+w4s5E2 = v93s5E2
+w4s5E2 setSkill enemyAISkill
+w4s5E2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s5E3=this"]
+w4s5E3 = v93s5E3
+w4s5E3 setSkill enemyAISkill
+w4s5E3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s5E4=this"]
+w4s5E4 = v93s5E4
+w4s5E4 setSkill enemyAISkill
+w4s5E4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4EastAT createUnit [_p, _grp, "v93s5E5=this"]
+w4s5E5 = v93s5E5
+w4s5E5 setSkill enemyAISkill
+w4s5E5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4EastAA createUnit [_p, _grp, "v93s5E6=this"]
+w4s5E6 = v93s5E6
+w4s5E6 setSkill enemyAISkill
+w4s5E6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s5E7=this"]
+w4s5E7 = v93s5E7
+w4s5E7 setSkill enemyAISkill
+w4s5E7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s5E8=this"]
+w4s5E8 = v93s5E8
+w4s5E8 setSkill enemyAISkill
+w4s5E8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnEastForces_slot5_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s5E9=this"]
+w4s5E9 = v93s5E9
+w4s5E9 setSkill enemyAISkill
+w4s5E9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s5E10=this"]
+w4s5E10 = v93s5E10
+w4s5E10 setSkill enemyAISkill
+w4s5E10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s5E11=this"]
+w4s5E11 = v93s5E11
+w4s5E11 setSkill enemyAISkill
+w4s5E11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s5E12=this"]
+w4s5E12 = v93s5E12
+w4s5E12 setSkill enemyAISkill
+w4s5E12 setDir 180
+_grp = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4EastSquadLeader createUnit [_p, _grp, "v93s5E13=this"]
+w4s5E13 = v93s5E13
+w4s5E13 setSkill enemyAISkill
+w4s5E13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4EastRocket createUnit [_p, _grp, "v93s5E14=this"]
+w4s5E14 = v93s5E14
+w4s5E14 setSkill enemyAISkill
+w4s5E14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4EastMarksman createUnit [_p, _grp, "v93s5E15=this"]
+w4s5E15 = v93s5E15
+w4s5E15 setSkill enemyAISkill
+w4s5E15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4EastMedic createUnit [_p, _grp, "v93s5E16=this"]
+w4s5E16 = v93s5E16
+w4s5E16 setSkill enemyAISkill
+w4s5E16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnEastForces_slot5_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s5E17=this"]
+w4s5E17 = v93s5E17
+w4s5E17 setSkill enemyAISkill
+w4s5E17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s5E18=this"]
+w4s5E18 = v93s5E18
+w4s5E18 setSkill enemyAISkill
+w4s5E18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s5E19=this"]
+w4s5E19 = v93s5E19
+w4s5E19 setSkill enemyAISkill
+w4s5E19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4EastAT createUnit [_p, _grp, "v93s5E20=this"]
+w4s5E20 = v93s5E20
+w4s5E20 setSkill enemyAISkill
+w4s5E20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4EastAA createUnit [_p, _grp, "v93s5E21=this"]
+w4s5E21 = v93s5E21
+w4s5E21 setSkill enemyAISkill
+w4s5E21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4EastRifleman createUnit [_p, _grp, "v93s5E22=this"]
+w4s5E22 = v93s5E22
+w4s5E22 setSkill enemyAISkill
+w4s5E22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4EastGrenadier createUnit [_p, _grp, "v93s5E23=this"]
+w4s5E23 = v93s5E23
+w4s5E23 setSkill enemyAISkill
+w4s5E23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4EastMachinegun createUnit [_p, _grp, "v93s5E24=this"]
+w4s5E24 = v93s5E24
+w4s5E24 setSkill enemyAISkill
+w4s5E24 setDir 180
+#spawnEastForces_slot5_infantry_done
+; v98: patrol every active infantry group around objective 5.
+? alive w4s5E1 : [w4s5E1, fifthX, fifthY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s5E13 : [w4s5E13, fifthX, fifthY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnEastForces_after_slot5
+goto "spawnRuntimeObjectiveVehicles"
+
+#spawnResistanceForces
+? townCount < 1 : goto "spawnResistanceForces_after_slot1"
+_spawnX = primaryX
+_spawnY = primaryY
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s1R1=this"]
+w4s1R1 = v93s1R1
+w4s1R1 setSkill enemyAISkill
+w4s1R1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s1R2=this"]
+w4s1R2 = v93s1R2
+w4s1R2 setSkill enemyAISkill
+w4s1R2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s1R3=this"]
+w4s1R3 = v93s1R3
+w4s1R3 setSkill enemyAISkill
+w4s1R3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s1R4=this"]
+w4s1R4 = v93s1R4
+w4s1R4 setSkill enemyAISkill
+w4s1R4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4ResAT createUnit [_p, _grp, "v93s1R5=this"]
+w4s1R5 = v93s1R5
+w4s1R5 setSkill enemyAISkill
+w4s1R5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4ResAA createUnit [_p, _grp, "v93s1R6=this"]
+w4s1R6 = v93s1R6
+w4s1R6 setSkill enemyAISkill
+w4s1R6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s1R7=this"]
+w4s1R7 = v93s1R7
+w4s1R7 setSkill enemyAISkill
+w4s1R7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s1R8=this"]
+w4s1R8 = v93s1R8
+w4s1R8 setSkill enemyAISkill
+w4s1R8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnResistanceForces_slot1_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s1R9=this"]
+w4s1R9 = v93s1R9
+w4s1R9 setSkill enemyAISkill
+w4s1R9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s1R10=this"]
+w4s1R10 = v93s1R10
+w4s1R10 setSkill enemyAISkill
+w4s1R10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s1R11=this"]
+w4s1R11 = v93s1R11
+w4s1R11 setSkill enemyAISkill
+w4s1R11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s1R12=this"]
+w4s1R12 = v93s1R12
+w4s1R12 setSkill enemyAISkill
+w4s1R12 setDir 180
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s1R13=this"]
+w4s1R13 = v93s1R13
+w4s1R13 setSkill enemyAISkill
+w4s1R13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4ResRocket createUnit [_p, _grp, "v93s1R14=this"]
+w4s1R14 = v93s1R14
+w4s1R14 setSkill enemyAISkill
+w4s1R14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s1R15=this"]
+w4s1R15 = v93s1R15
+w4s1R15 setSkill enemyAISkill
+w4s1R15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s1R16=this"]
+w4s1R16 = v93s1R16
+w4s1R16 setSkill enemyAISkill
+w4s1R16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnResistanceForces_slot1_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s1R17=this"]
+w4s1R17 = v93s1R17
+w4s1R17 setSkill enemyAISkill
+w4s1R17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s1R18=this"]
+w4s1R18 = v93s1R18
+w4s1R18 setSkill enemyAISkill
+w4s1R18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s1R19=this"]
+w4s1R19 = v93s1R19
+w4s1R19 setSkill enemyAISkill
+w4s1R19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s1R20=this"]
+w4s1R20 = v93s1R20
+w4s1R20 setSkill enemyAISkill
+w4s1R20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4ResAA createUnit [_p, _grp, "v93s1R21=this"]
+w4s1R21 = v93s1R21
+w4s1R21 setSkill enemyAISkill
+w4s1R21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s1R22=this"]
+w4s1R22 = v93s1R22
+w4s1R22 setSkill enemyAISkill
+w4s1R22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s1R23=this"]
+w4s1R23 = v93s1R23
+w4s1R23 setSkill enemyAISkill
+w4s1R23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s1R24=this"]
+w4s1R24 = v93s1R24
+w4s1R24 setSkill enemyAISkill
+w4s1R24 setDir 180
+#spawnResistanceForces_slot1_infantry_done
+; v98: patrol every active infantry group around objective 1.
+? alive w4s1R1 : [w4s1R1, primaryX, primaryY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s1R13 : [w4s1R13, primaryX, primaryY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnResistanceForces_after_slot1
+? townCount < 2 : goto "spawnResistanceForces_after_slot2"
+_spawnX = secondaryX
+_spawnY = secondaryY
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s2R1=this"]
+w4s2R1 = v93s2R1
+w4s2R1 setSkill enemyAISkill
+w4s2R1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s2R2=this"]
+w4s2R2 = v93s2R2
+w4s2R2 setSkill enemyAISkill
+w4s2R2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s2R3=this"]
+w4s2R3 = v93s2R3
+w4s2R3 setSkill enemyAISkill
+w4s2R3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s2R4=this"]
+w4s2R4 = v93s2R4
+w4s2R4 setSkill enemyAISkill
+w4s2R4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4ResAT createUnit [_p, _grp, "v93s2R5=this"]
+w4s2R5 = v93s2R5
+w4s2R5 setSkill enemyAISkill
+w4s2R5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4ResAA createUnit [_p, _grp, "v93s2R6=this"]
+w4s2R6 = v93s2R6
+w4s2R6 setSkill enemyAISkill
+w4s2R6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s2R7=this"]
+w4s2R7 = v93s2R7
+w4s2R7 setSkill enemyAISkill
+w4s2R7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s2R8=this"]
+w4s2R8 = v93s2R8
+w4s2R8 setSkill enemyAISkill
+w4s2R8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnResistanceForces_slot2_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s2R9=this"]
+w4s2R9 = v93s2R9
+w4s2R9 setSkill enemyAISkill
+w4s2R9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s2R10=this"]
+w4s2R10 = v93s2R10
+w4s2R10 setSkill enemyAISkill
+w4s2R10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s2R11=this"]
+w4s2R11 = v93s2R11
+w4s2R11 setSkill enemyAISkill
+w4s2R11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s2R12=this"]
+w4s2R12 = v93s2R12
+w4s2R12 setSkill enemyAISkill
+w4s2R12 setDir 180
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s2R13=this"]
+w4s2R13 = v93s2R13
+w4s2R13 setSkill enemyAISkill
+w4s2R13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4ResRocket createUnit [_p, _grp, "v93s2R14=this"]
+w4s2R14 = v93s2R14
+w4s2R14 setSkill enemyAISkill
+w4s2R14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s2R15=this"]
+w4s2R15 = v93s2R15
+w4s2R15 setSkill enemyAISkill
+w4s2R15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s2R16=this"]
+w4s2R16 = v93s2R16
+w4s2R16 setSkill enemyAISkill
+w4s2R16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnResistanceForces_slot2_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s2R17=this"]
+w4s2R17 = v93s2R17
+w4s2R17 setSkill enemyAISkill
+w4s2R17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s2R18=this"]
+w4s2R18 = v93s2R18
+w4s2R18 setSkill enemyAISkill
+w4s2R18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s2R19=this"]
+w4s2R19 = v93s2R19
+w4s2R19 setSkill enemyAISkill
+w4s2R19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s2R20=this"]
+w4s2R20 = v93s2R20
+w4s2R20 setSkill enemyAISkill
+w4s2R20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4ResAA createUnit [_p, _grp, "v93s2R21=this"]
+w4s2R21 = v93s2R21
+w4s2R21 setSkill enemyAISkill
+w4s2R21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s2R22=this"]
+w4s2R22 = v93s2R22
+w4s2R22 setSkill enemyAISkill
+w4s2R22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s2R23=this"]
+w4s2R23 = v93s2R23
+w4s2R23 setSkill enemyAISkill
+w4s2R23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s2R24=this"]
+w4s2R24 = v93s2R24
+w4s2R24 setSkill enemyAISkill
+w4s2R24 setDir 180
+#spawnResistanceForces_slot2_infantry_done
+; v98: patrol every active infantry group around objective 2.
+? alive w4s2R1 : [w4s2R1, secondaryX, secondaryY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s2R13 : [w4s2R13, secondaryX, secondaryY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnResistanceForces_after_slot2
+? townCount < 3 : goto "spawnResistanceForces_after_slot3"
+_spawnX = thirdX
+_spawnY = thirdY
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s3R1=this"]
+w4s3R1 = v93s3R1
+w4s3R1 setSkill enemyAISkill
+w4s3R1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s3R2=this"]
+w4s3R2 = v93s3R2
+w4s3R2 setSkill enemyAISkill
+w4s3R2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s3R3=this"]
+w4s3R3 = v93s3R3
+w4s3R3 setSkill enemyAISkill
+w4s3R3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s3R4=this"]
+w4s3R4 = v93s3R4
+w4s3R4 setSkill enemyAISkill
+w4s3R4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4ResAT createUnit [_p, _grp, "v93s3R5=this"]
+w4s3R5 = v93s3R5
+w4s3R5 setSkill enemyAISkill
+w4s3R5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4ResAA createUnit [_p, _grp, "v93s3R6=this"]
+w4s3R6 = v93s3R6
+w4s3R6 setSkill enemyAISkill
+w4s3R6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s3R7=this"]
+w4s3R7 = v93s3R7
+w4s3R7 setSkill enemyAISkill
+w4s3R7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s3R8=this"]
+w4s3R8 = v93s3R8
+w4s3R8 setSkill enemyAISkill
+w4s3R8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnResistanceForces_slot3_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s3R9=this"]
+w4s3R9 = v93s3R9
+w4s3R9 setSkill enemyAISkill
+w4s3R9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s3R10=this"]
+w4s3R10 = v93s3R10
+w4s3R10 setSkill enemyAISkill
+w4s3R10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s3R11=this"]
+w4s3R11 = v93s3R11
+w4s3R11 setSkill enemyAISkill
+w4s3R11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s3R12=this"]
+w4s3R12 = v93s3R12
+w4s3R12 setSkill enemyAISkill
+w4s3R12 setDir 180
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s3R13=this"]
+w4s3R13 = v93s3R13
+w4s3R13 setSkill enemyAISkill
+w4s3R13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4ResRocket createUnit [_p, _grp, "v93s3R14=this"]
+w4s3R14 = v93s3R14
+w4s3R14 setSkill enemyAISkill
+w4s3R14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s3R15=this"]
+w4s3R15 = v93s3R15
+w4s3R15 setSkill enemyAISkill
+w4s3R15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s3R16=this"]
+w4s3R16 = v93s3R16
+w4s3R16 setSkill enemyAISkill
+w4s3R16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnResistanceForces_slot3_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s3R17=this"]
+w4s3R17 = v93s3R17
+w4s3R17 setSkill enemyAISkill
+w4s3R17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s3R18=this"]
+w4s3R18 = v93s3R18
+w4s3R18 setSkill enemyAISkill
+w4s3R18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s3R19=this"]
+w4s3R19 = v93s3R19
+w4s3R19 setSkill enemyAISkill
+w4s3R19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s3R20=this"]
+w4s3R20 = v93s3R20
+w4s3R20 setSkill enemyAISkill
+w4s3R20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4ResAA createUnit [_p, _grp, "v93s3R21=this"]
+w4s3R21 = v93s3R21
+w4s3R21 setSkill enemyAISkill
+w4s3R21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s3R22=this"]
+w4s3R22 = v93s3R22
+w4s3R22 setSkill enemyAISkill
+w4s3R22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s3R23=this"]
+w4s3R23 = v93s3R23
+w4s3R23 setSkill enemyAISkill
+w4s3R23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s3R24=this"]
+w4s3R24 = v93s3R24
+w4s3R24 setSkill enemyAISkill
+w4s3R24 setDir 180
+#spawnResistanceForces_slot3_infantry_done
+; v98: patrol every active infantry group around objective 3.
+? alive w4s3R1 : [w4s3R1, thirdX, thirdY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s3R13 : [w4s3R13, thirdX, thirdY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnResistanceForces_after_slot3
+? townCount < 4 : goto "spawnResistanceForces_after_slot4"
+_spawnX = fourthX
+_spawnY = fourthY
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s4R1=this"]
+w4s4R1 = v93s4R1
+w4s4R1 setSkill enemyAISkill
+w4s4R1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s4R2=this"]
+w4s4R2 = v93s4R2
+w4s4R2 setSkill enemyAISkill
+w4s4R2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s4R3=this"]
+w4s4R3 = v93s4R3
+w4s4R3 setSkill enemyAISkill
+w4s4R3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s4R4=this"]
+w4s4R4 = v93s4R4
+w4s4R4 setSkill enemyAISkill
+w4s4R4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4ResAT createUnit [_p, _grp, "v93s4R5=this"]
+w4s4R5 = v93s4R5
+w4s4R5 setSkill enemyAISkill
+w4s4R5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4ResAA createUnit [_p, _grp, "v93s4R6=this"]
+w4s4R6 = v93s4R6
+w4s4R6 setSkill enemyAISkill
+w4s4R6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s4R7=this"]
+w4s4R7 = v93s4R7
+w4s4R7 setSkill enemyAISkill
+w4s4R7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s4R8=this"]
+w4s4R8 = v93s4R8
+w4s4R8 setSkill enemyAISkill
+w4s4R8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnResistanceForces_slot4_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s4R9=this"]
+w4s4R9 = v93s4R9
+w4s4R9 setSkill enemyAISkill
+w4s4R9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s4R10=this"]
+w4s4R10 = v93s4R10
+w4s4R10 setSkill enemyAISkill
+w4s4R10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s4R11=this"]
+w4s4R11 = v93s4R11
+w4s4R11 setSkill enemyAISkill
+w4s4R11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s4R12=this"]
+w4s4R12 = v93s4R12
+w4s4R12 setSkill enemyAISkill
+w4s4R12 setDir 180
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s4R13=this"]
+w4s4R13 = v93s4R13
+w4s4R13 setSkill enemyAISkill
+w4s4R13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4ResRocket createUnit [_p, _grp, "v93s4R14=this"]
+w4s4R14 = v93s4R14
+w4s4R14 setSkill enemyAISkill
+w4s4R14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s4R15=this"]
+w4s4R15 = v93s4R15
+w4s4R15 setSkill enemyAISkill
+w4s4R15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s4R16=this"]
+w4s4R16 = v93s4R16
+w4s4R16 setSkill enemyAISkill
+w4s4R16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnResistanceForces_slot4_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s4R17=this"]
+w4s4R17 = v93s4R17
+w4s4R17 setSkill enemyAISkill
+w4s4R17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s4R18=this"]
+w4s4R18 = v93s4R18
+w4s4R18 setSkill enemyAISkill
+w4s4R18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s4R19=this"]
+w4s4R19 = v93s4R19
+w4s4R19 setSkill enemyAISkill
+w4s4R19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s4R20=this"]
+w4s4R20 = v93s4R20
+w4s4R20 setSkill enemyAISkill
+w4s4R20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4ResAA createUnit [_p, _grp, "v93s4R21=this"]
+w4s4R21 = v93s4R21
+w4s4R21 setSkill enemyAISkill
+w4s4R21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s4R22=this"]
+w4s4R22 = v93s4R22
+w4s4R22 setSkill enemyAISkill
+w4s4R22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s4R23=this"]
+w4s4R23 = v93s4R23
+w4s4R23 setSkill enemyAISkill
+w4s4R23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s4R24=this"]
+w4s4R24 = v93s4R24
+w4s4R24 setSkill enemyAISkill
+w4s4R24 setDir 180
+#spawnResistanceForces_slot4_infantry_done
+; v98: patrol every active infantry group around objective 4.
+? alive w4s4R1 : [w4s4R1, fourthX, fourthY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s4R13 : [w4s4R13, fourthX, fourthY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnResistanceForces_after_slot4
+? townCount < 5 : goto "spawnResistanceForces_after_slot5"
+_spawnX = fifthX
+_spawnY = fifthY
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -30, _spawnY + -20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s5R1=this"]
+w4s5R1 = v93s5R1
+w4s5R1 setSkill enemyAISkill
+w4s5R1 setDir 180
+_p = [_spawnX + -10, _spawnY + -25, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s5R2=this"]
+w4s5R2 = v93s5R2
+w4s5R2 setSkill enemyAISkill
+w4s5R2 setDir 180
+_p = [_spawnX + 15, _spawnY + -20, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s5R3=this"]
+w4s5R3 = v93s5R3
+w4s5R3 setSkill enemyAISkill
+w4s5R3 setDir 180
+_p = [_spawnX + 35, _spawnY + -5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s5R4=this"]
+w4s5R4 = v93s5R4
+w4s5R4 setSkill enemyAISkill
+w4s5R4 setDir 180
+_p = [_spawnX + -35, _spawnY + 15, 0]
+ww4ResAT createUnit [_p, _grp, "v93s5R5=this"]
+w4s5R5 = v93s5R5
+w4s5R5 setSkill enemyAISkill
+w4s5R5 setDir 180
+_p = [_spawnX + -5, _spawnY + 20, 0]
+ww4ResAA createUnit [_p, _grp, "v93s5R6=this"]
+w4s5R6 = v93s5R6
+w4s5R6 setSkill enemyAISkill
+w4s5R6 setDir 180
+_p = [_spawnX + 25, _spawnY + 20, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s5R7=this"]
+w4s5R7 = v93s5R7
+w4s5R7 setSkill enemyAISkill
+w4s5R7 setDir 180
+_p = [_spawnX + 45, _spawnY + 35, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s5R8=this"]
+w4s5R8 = v93s5R8
+w4s5R8 setSkill enemyAISkill
+w4s5R8 setDir 180
+? enemyInfantryLevel < 2 : goto "spawnResistanceForces_slot5_infantry_done"
+_p = [_spawnX + -55, _spawnY + -30, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s5R9=this"]
+w4s5R9 = v93s5R9
+w4s5R9 setSkill enemyAISkill
+w4s5R9 setDir 180
+_p = [_spawnX + -30, _spawnY + 45, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s5R10=this"]
+w4s5R10 = v93s5R10
+w4s5R10 setSkill enemyAISkill
+w4s5R10 setDir 180
+_p = [_spawnX + 0, _spawnY + 48, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s5R11=this"]
+w4s5R11 = v93s5R11
+w4s5R11 setSkill enemyAISkill
+w4s5R11 setDir 180
+_p = [_spawnX + 55, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s5R12=this"]
+w4s5R12 = v93s5R12
+w4s5R12 setSkill enemyAISkill
+w4s5R12 setDir 180
+_grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+_p = [_spawnX + -70, _spawnY + 20, 0]
+ww4ResSquadLeader createUnit [_p, _grp, "v93s5R13=this"]
+w4s5R13 = v93s5R13
+w4s5R13 setSkill enemyAISkill
+w4s5R13 setDir 180
+_p = [_spawnX + 70, _spawnY + 35, 0]
+ww4ResRocket createUnit [_p, _grp, "v93s5R14=this"]
+w4s5R14 = v93s5R14
+w4s5R14 setSkill enemyAISkill
+w4s5R14 setDir 180
+_p = [_spawnX + -25, _spawnY + 70, 0]
+ww4ResMarksman createUnit [_p, _grp, "v93s5R15=this"]
+w4s5R15 = v93s5R15
+w4s5R15 setSkill enemyAISkill
+w4s5R15 setDir 180
+_p = [_spawnX + 35, _spawnY + 75, 0]
+ww4ResMedic createUnit [_p, _grp, "v93s5R16=this"]
+w4s5R16 = v93s5R16
+w4s5R16 setSkill enemyAISkill
+w4s5R16 setDir 180
+? enemyInfantryLevel < 3 : goto "spawnResistanceForces_slot5_infantry_done"
+_p = [_spawnX + -90, _spawnY + -55, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s5R17=this"]
+w4s5R17 = v93s5R17
+w4s5R17 setSkill enemyAISkill
+w4s5R17 setDir 180
+_p = [_spawnX + 90, _spawnY + -50, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s5R18=this"]
+w4s5R18 = v93s5R18
+w4s5R18 setSkill enemyAISkill
+w4s5R18 setDir 180
+_p = [_spawnX + -95, _spawnY + 5, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s5R19=this"]
+w4s5R19 = v93s5R19
+w4s5R19 setSkill enemyAISkill
+w4s5R19 setDir 180
+_p = [_spawnX + 95, _spawnY + 10, 0]
+ww4ResAT createUnit [_p, _grp, "v93s5R20=this"]
+w4s5R20 = v93s5R20
+w4s5R20 setSkill enemyAISkill
+w4s5R20 setDir 180
+_p = [_spawnX + -80, _spawnY + 70, 0]
+ww4ResAA createUnit [_p, _grp, "v93s5R21=this"]
+w4s5R21 = v93s5R21
+w4s5R21 setSkill enemyAISkill
+w4s5R21 setDir 180
+_p = [_spawnX + 80, _spawnY + 80, 0]
+ww4ResRifleman createUnit [_p, _grp, "v93s5R22=this"]
+w4s5R22 = v93s5R22
+w4s5R22 setSkill enemyAISkill
+w4s5R22 setDir 180
+_p = [_spawnX + -20, _spawnY + 100, 0]
+ww4ResGrenadier createUnit [_p, _grp, "v93s5R23=this"]
+w4s5R23 = v93s5R23
+w4s5R23 setSkill enemyAISkill
+w4s5R23 setDir 180
+_p = [_spawnX + 30, _spawnY + 105, 0]
+ww4ResMachinegun createUnit [_p, _grp, "v93s5R24=this"]
+w4s5R24 = v93s5R24
+w4s5R24 setSkill enemyAISkill
+w4s5R24 setDir 180
+#spawnResistanceForces_slot5_infantry_done
+; v98: patrol every active infantry group around objective 5.
+? alive w4s5R1 : [w4s5R1, fifthX, fifthY, 85] exec "enemyInfantryPatrol.sqs"
+? enemyInfantryLevel >= 2 && alive w4s5R13 : [w4s5R13, fifthX, fifthY, 135] exec "enemyInfantryPatrol.sqs"
+; v119: enemy vehicles for this objective are spawned after all infantry groups are ready.
+#spawnResistanceForces_after_slot5
+goto "spawnRuntimeObjectiveVehicles"
+
+#spawnRuntimeObjectiveVehicles
+enemyRuntimeVehiclesReady = false
+[] exec "enemyRuntimeVehicles.sqs"
+@ enemyRuntimeVehiclesReady
+aliveObjectiveInfantry = 0
+? enemyEast && alive w4s1E1 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E2 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E3 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E4 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E5 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E6 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E7 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E8 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E9 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E10 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E11 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E12 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E13 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E14 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E15 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E16 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E17 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E18 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E19 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E20 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E21 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E22 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E23 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyEast && alive w4s1E24 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R1 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R2 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R3 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R4 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R5 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R6 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R7 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R8 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R9 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R10 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R11 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R12 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R13 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R14 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R15 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R16 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R17 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R18 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R19 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R20 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R21 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R22 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R23 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+? enemyResistance && alive w4s1R24 : aliveObjectiveInfantry = aliveObjectiveInfantry + 1
+aliveObjectiveVehicles = 0
+? enemyEast && alive s1Eveh1 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyEast && alive s1Eveh2 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyEast && alive s1Eveh3 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyEast && alive s1Eveh4 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyEast && alive s1Eveh5 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyResistance && alive s1Rveh1 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyResistance && alive s1Rveh2 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyResistance && alive s1Rveh3 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyResistance && alive s1Rveh4 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? enemyResistance && alive s1Rveh5 : aliveObjectiveVehicles = aliveObjectiveVehicles + 1
+? debugMode : debugLog format ["ERA DEBUG EXACT FORCES: objective1 infantry=%1 vehicles=%2", aliveObjectiveInfantry, aliveObjectiveVehicles]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG EXACT FORCES: objective1 infantry=%1 vehicles=%2", aliveObjectiveInfantry, aliveObjectiveVehicles]
+enemyObjectiveForcesComplete = true
+exit

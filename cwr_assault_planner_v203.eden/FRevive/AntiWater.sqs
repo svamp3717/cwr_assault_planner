@@ -1,0 +1,62 @@
+; FRevive
+; This script will move body from the water to the shore
+
+~0.1
+_body      = _this select 0
+_sea_level = _this select 1
+_TempPos   = _this select 2
+_i         = _this select 3
+_bodies    = _this select 4
+_sides     = _this select 5
+
+@"_x==0" count velocity _body == 3
+
+_pos          = getPos _body
+_in_the_water = false
+
+	_pos = [_pos select 0, _pos select 1, 0]
+	~.05
+	;****************** Gnats Anti-Water code ***************
+	;-----------------------------------------------
+	_HLimit = 2.4
+	;-----------------------------------------------
+
+	_TempPos setPos [_pos select 0,_pos select 1,_pos select 2] 
+	? (getPosASL _body select 2) < (getPosASL _sea_level select 2) : _in_the_water=true; goto "findland"
+	goto "NoWater"
+
+	#findland
+	_idir = 0
+	_idis = 10
+
+	#FLoop
+	_NextBodyX = (_pos Select 0) + ((Sin _idir) * _idis)
+	_NextBodyY = (_pos Select 1) + ((Cos _idir) * _idis)
+
+	_TempPos SetPos [_NextBodyX, _NextBodyY, 0]; _unit_height_asl=-((getpos _TempPos) select 2) - ((getpos _sea_level) select 2)
+	? _unit_height_asl > _HLimit : _body setPos [(getPos _TempPos)select 0, (getPos _TempPos)select 1, 0]; exit
+	_idir = _idir + 20
+	?_idir > 350: _idis = _idis + 10
+	?_idir > 350: _idir = 0
+	?_idis > 6000: goto "Dend1"
+	goto "FLoop"
+
+	#Dend1
+	~0.1
+
+		_pass      = 0
+		_j         = 0
+		_indexes   = []
+		_distances = []
+		{if (_i!=_j && [_sides select _j,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY) then {_indexes set [count _indexes, _j]; _distances set [count _distances,(_bodies select _j) distance _body]}; _j=_j+1} forEach _sides
+		? count _indexes == 0 : _j=0; {if (_i!=_j) then {_indexes set [count _indexes, _j]; _distances set [count _distances,(_bodies select _j) distance _body]}; _j=_j+1} forEach _sides
+		? count _indexes > 1  : [_distances, _indexes] call quicksortM
+		
+			_j = 0
+			#FindNearestSuitable
+			_unit = _bodies select (_indexes select _j)
+			? vehicle _unit==_unit : _TempPos SetPos getPos _unit; _unit_height_asl=-((getpos _TempPos select 2) - (getpos _sea_level select 2)); if (_unit_height_asl>_HLimit) then {_body setPosASL getPosASL _unit; exit}
+			? _j<count _indexes-1 : _j=_j+1; goto "FindNearestSuitable"
+		
+	goto "Dend1"
+	;********************************************************

@@ -1,0 +1,7 @@
+; Apply the server-selected weather locally. In OFP/CWA overcast may differ per machine.
+weatherApplyComplete = false
+0 setOvercast weatherOvercast
+~0.1
+0 setFog weatherFog
+weatherApplyComplete = true
+exit

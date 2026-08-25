@@ -1,0 +1,165 @@
+; MP v111 server-only mixed objective controller. Final completion launches Chinook extraction.
+; CAS remains area-based and is not given target priority logic.
+#loop
+~6
+? missionEnded : exit
+? !(insertionComplete) : goto "loop"
+[] exec "checkTowns.sqs"
+~0.1
+_objective1Ready = false
+? objectiveType1 == 0 && slot1Clear : _objective1Ready = true
+? objectiveType1 == 1 && !(isNull objectiveTarget1) && !(alive objectiveTarget1) : _objective1Ready = true
+? objectiveType1 == 2 && objectiveIntelCollected1 : _objective1Ready = true
+? objectiveType1 == 3 && !(isNull objectiveTarget1) && !(alive objectiveTarget1) : _objective1Ready = true
+? objectiveType1 == 4 && !(isNull objectiveTarget1) && !(alive objectiveTarget1) : _objective1Ready = true
+? objectiveType1 == 4 && !(isNull objectiveBackupTarget1) && !(alive objectiveBackupTarget1) : _objective1Ready = true
+? objectiveType1 == 5 && !(isNull objectiveTarget1) && !(alive objectiveTarget1) : _objective1Ready = true
+? objectiveType1 == 5 && !(isNull objectiveBackupTarget1) && !(alive objectiveBackupTarget1) : _objective1Ready = true
+? objectiveType1 == 5 && objectiveMortarSilenced1 : _objective1Ready = true
+? objectiveType1 == 6 && !(isNull objectiveTarget1) && !(alive objectiveTarget1) : _objective1Ready = true
+? objectiveType1 == 6 && !(isNull objectiveBackupTarget1) && !(alive objectiveBackupTarget1) : _objective1Ready = true
+? objectiveType1 == 7 && objectiveRescueReady1 : _objective1Ready = true
+? objectiveType1 == 8 && objectiveStealReady1 : _objective1Ready = true
+? objectiveType1 == 9 && objectivePilotReady1 : _objective1Ready = true
+? !(objective1Done) && _objective1Ready : goto "obj1Done"
+#afterObj1Check
+_objective2Ready = false
+? objectiveType2 == 0 && slot2Clear : _objective2Ready = true
+? objectiveType2 == 1 && !(isNull objectiveTarget2) && !(alive objectiveTarget2) : _objective2Ready = true
+? objectiveType2 == 2 && objectiveIntelCollected2 : _objective2Ready = true
+? objectiveType2 == 3 && !(isNull objectiveTarget2) && !(alive objectiveTarget2) : _objective2Ready = true
+? objectiveType2 == 4 && !(isNull objectiveTarget2) && !(alive objectiveTarget2) : _objective2Ready = true
+? objectiveType2 == 4 && !(isNull objectiveBackupTarget2) && !(alive objectiveBackupTarget2) : _objective2Ready = true
+? objectiveType2 == 5 && !(isNull objectiveTarget2) && !(alive objectiveTarget2) : _objective2Ready = true
+? objectiveType2 == 5 && !(isNull objectiveBackupTarget2) && !(alive objectiveBackupTarget2) : _objective2Ready = true
+? objectiveType2 == 5 && objectiveMortarSilenced2 : _objective2Ready = true
+? objectiveType2 == 6 && !(isNull objectiveTarget2) && !(alive objectiveTarget2) : _objective2Ready = true
+? objectiveType2 == 6 && !(isNull objectiveBackupTarget2) && !(alive objectiveBackupTarget2) : _objective2Ready = true
+? objectiveType2 == 7 && objectiveRescueReady2 : _objective2Ready = true
+? objectiveType2 == 8 && objectiveStealReady2 : _objective2Ready = true
+? objectiveType2 == 9 && objectivePilotReady2 : _objective2Ready = true
+? !(objective2Done) && _objective2Ready : goto "obj2Done"
+#afterObj2Check
+_objective3Ready = false
+? objectiveType3 == 0 && slot3Clear : _objective3Ready = true
+? objectiveType3 == 1 && !(isNull objectiveTarget3) && !(alive objectiveTarget3) : _objective3Ready = true
+? objectiveType3 == 2 && objectiveIntelCollected3 : _objective3Ready = true
+? objectiveType3 == 3 && !(isNull objectiveTarget3) && !(alive objectiveTarget3) : _objective3Ready = true
+? objectiveType3 == 4 && !(isNull objectiveTarget3) && !(alive objectiveTarget3) : _objective3Ready = true
+? objectiveType3 == 4 && !(isNull objectiveBackupTarget3) && !(alive objectiveBackupTarget3) : _objective3Ready = true
+? objectiveType3 == 5 && !(isNull objectiveTarget3) && !(alive objectiveTarget3) : _objective3Ready = true
+? objectiveType3 == 5 && !(isNull objectiveBackupTarget3) && !(alive objectiveBackupTarget3) : _objective3Ready = true
+? objectiveType3 == 5 && objectiveMortarSilenced3 : _objective3Ready = true
+? objectiveType3 == 6 && !(isNull objectiveTarget3) && !(alive objectiveTarget3) : _objective3Ready = true
+? objectiveType3 == 6 && !(isNull objectiveBackupTarget3) && !(alive objectiveBackupTarget3) : _objective3Ready = true
+? objectiveType3 == 7 && objectiveRescueReady3 : _objective3Ready = true
+? objectiveType3 == 8 && objectiveStealReady3 : _objective3Ready = true
+? objectiveType3 == 9 && objectivePilotReady3 : _objective3Ready = true
+? !(objective3Done) && _objective3Ready : goto "obj3Done"
+#afterObj3Check
+_objective4Ready = false
+? objectiveType4 == 0 && slot4Clear : _objective4Ready = true
+? objectiveType4 == 1 && !(isNull objectiveTarget4) && !(alive objectiveTarget4) : _objective4Ready = true
+? objectiveType4 == 2 && objectiveIntelCollected4 : _objective4Ready = true
+? objectiveType4 == 3 && !(isNull objectiveTarget4) && !(alive objectiveTarget4) : _objective4Ready = true
+? objectiveType4 == 4 && !(isNull objectiveTarget4) && !(alive objectiveTarget4) : _objective4Ready = true
+? objectiveType4 == 4 && !(isNull objectiveBackupTarget4) && !(alive objectiveBackupTarget4) : _objective4Ready = true
+? objectiveType4 == 5 && !(isNull objectiveTarget4) && !(alive objectiveTarget4) : _objective4Ready = true
+? objectiveType4 == 5 && !(isNull objectiveBackupTarget4) && !(alive objectiveBackupTarget4) : _objective4Ready = true
+? objectiveType4 == 5 && objectiveMortarSilenced4 : _objective4Ready = true
+? objectiveType4 == 6 && !(isNull objectiveTarget4) && !(alive objectiveTarget4) : _objective4Ready = true
+? objectiveType4 == 6 && !(isNull objectiveBackupTarget4) && !(alive objectiveBackupTarget4) : _objective4Ready = true
+? objectiveType4 == 7 && objectiveRescueReady4 : _objective4Ready = true
+? objectiveType4 == 8 && objectiveStealReady4 : _objective4Ready = true
+? objectiveType4 == 9 && objectivePilotReady4 : _objective4Ready = true
+? !(objective4Done) && _objective4Ready : goto "obj4Done"
+#afterObj4Check
+_objective5Ready = false
+? objectiveType5 == 0 && slot5Clear : _objective5Ready = true
+? objectiveType5 == 1 && !(isNull objectiveTarget5) && !(alive objectiveTarget5) : _objective5Ready = true
+? objectiveType5 == 2 && objectiveIntelCollected5 : _objective5Ready = true
+? objectiveType5 == 3 && !(isNull objectiveTarget5) && !(alive objectiveTarget5) : _objective5Ready = true
+? objectiveType5 == 4 && !(isNull objectiveTarget5) && !(alive objectiveTarget5) : _objective5Ready = true
+? objectiveType5 == 4 && !(isNull objectiveBackupTarget5) && !(alive objectiveBackupTarget5) : _objective5Ready = true
+? objectiveType5 == 5 && !(isNull objectiveTarget5) && !(alive objectiveTarget5) : _objective5Ready = true
+? objectiveType5 == 5 && !(isNull objectiveBackupTarget5) && !(alive objectiveBackupTarget5) : _objective5Ready = true
+? objectiveType5 == 5 && objectiveMortarSilenced5 : _objective5Ready = true
+? objectiveType5 == 6 && !(isNull objectiveTarget5) && !(alive objectiveTarget5) : _objective5Ready = true
+? objectiveType5 == 6 && !(isNull objectiveBackupTarget5) && !(alive objectiveBackupTarget5) : _objective5Ready = true
+? objectiveType5 == 7 && objectiveRescueReady5 : _objective5Ready = true
+? objectiveType5 == 8 && objectiveStealReady5 : _objective5Ready = true
+? objectiveType5 == 9 && objectivePilotReady5 : _objective5Ready = true
+? !(objective5Done) && _objective5Ready : goto "obj5Done"
+#afterObj5Check
+? objective1Done && objective2Done && objective3Done && objective4Done && objective5Done && !(enemyReinforcementPending) && airReinfClear : goto "allDoneCheck"
+goto "loop"
+#obj1Done
+objective1Done = true
+mpHQMessage = format ["HQ: Objective 1 complete: %1 at %2.", objectiveTypeLabel1, townLabel]
+? townCount > 1 : mpHQMessage = format ["HQ: Objective 1 complete: %1 at %2. Friendly squads moving to Objective 2.", objectiveTypeLabel1, townLabel]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "objective1Done"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? townCount < 2 : goto "afterObj1Check"
+sentSecond = true
+[] exec "moveSecond.sqs"
+goto "afterObj1Check"
+#obj2Done
+objective2Done = true
+mpHQMessage = format ["HQ: Objective 2 complete: %1 at %2.", objectiveTypeLabel2, secondaryLabel]
+? townCount > 2 : mpHQMessage = format ["HQ: Objective 2 complete: %1 at %2. Friendly squads moving to Objective 3.", objectiveTypeLabel2, secondaryLabel]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "objective2Done"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? townCount < 3 : goto "afterObj2Check"
+sentThird = true
+[] exec "moveThird.sqs"
+goto "afterObj2Check"
+#obj3Done
+objective3Done = true
+mpHQMessage = format ["HQ: Objective 3 complete: %1 at %2.", objectiveTypeLabel3, thirdLabel]
+? townCount > 3 : mpHQMessage = format ["HQ: Objective 3 complete: %1 at %2. Friendly squads moving to Objective 4.", objectiveTypeLabel3, thirdLabel]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "objective3Done"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? townCount < 4 : goto "afterObj3Check"
+sentFourth = true
+[] exec "moveFourth.sqs"
+goto "afterObj3Check"
+#obj4Done
+objective4Done = true
+mpHQMessage = format ["HQ: Objective 4 complete: %1 at %2.", objectiveTypeLabel4, fourthLabel]
+? townCount > 4 : mpHQMessage = format ["HQ: Objective 4 complete: %1 at %2. Friendly squads moving to Objective 5.", objectiveTypeLabel4, fourthLabel]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "objective4Done"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+? townCount < 5 : goto "afterObj4Check"
+sentFifth = true
+[] exec "moveFifth.sqs"
+goto "afterObj4Check"
+#obj5Done
+objective5Done = true
+mpHQMessage = format ["HQ: Objective 5 complete: %1 at %2.", objectiveTypeLabel5, fifthLabel]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "objective5Done"
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+goto "afterObj5Check"
+#allDoneCheck
+; Let the casualty monitor claim a pending reinforcement before the objectives are declared complete.
+~2
+? enemyReinforcementPending || !(airReinfClear) : goto "loop"
+goto "allDone"
+#allDone
+? missionEnded : exit
+missionObjectivesComplete = true
+publicVariable "missionObjectivesComplete"
+mpHQMessage = format ["HQ: All %1 objectives completed. Use the extraction already called, or Radio Bravo if it has not yet been requested.", townCount]
+mpHQMessageId = mpHQMessageId + 1
+publicVariable "mpHQMessage"
+publicVariable "mpHQMessageId"
+exit

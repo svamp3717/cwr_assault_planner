@@ -1,0 +1,99 @@
+; v135 places one civilian in a verified CWA building position.
+; Args: [centerX, centerY, unit, searchOffset]
+civilianBuildingPlacementReady = false
+civilianBuildingPlacementSucceeded = false
+_centerX = _this select 0
+_centerY = _this select 1
+_unit = _this select 2
+_searchOffset = _this select 3
+_anchor = objNull
+_anchorMade = false
+_originalPos = [0,0,0]
+_originalDir = 0
+civilianBuildingAttemptTotal = civilianBuildingAttemptTotal + 1
+? isNull _unit : goto "civilianBuildingFailed"
+? !(alive _unit) : goto "civilianBuildingFailed"
+? !(local _unit) : goto "civilianBuildingFailed"
+_originalPos = getPos _unit
+_originalDir = getDir _unit
+
+_anchor = "camera" camCreate [_centerX, _centerY, 0]
+? isNull _anchor : goto "civilianBuildingFailed"
+_anchorMade = true
+_searchOffsets = [[0,0],[30,0],[-30,0],[0,30],[0,-30],[30,30],[-30,30],[30,-30],[-30,-30],[60,0],[-60,0],[0,60],[0,-60],[60,60],[-60,60],[60,-60],[-60,-60],[90,0],[-90,0],[0,90],[0,-90],[120,0],[-120,0],[0,120],[0,-120]]
+_searchCount = count _searchOffsets
+_searchTry = 0
+_triedBuildings = []
+
+#civilianBuildingSearch
+? _searchTry >= _searchCount : goto "civilianBuildingFailed"
+_searchIndex = (_searchTry + _searchOffset) mod _searchCount
+_searchPoint = _searchOffsets select _searchIndex
+_anchor setPos [_centerX + (_searchPoint select 0), _centerY + (_searchPoint select 1), 0]
+_building = nearestBuilding _anchor
+_searchTry = _searchTry + 1
+? isNull _building : goto "civilianBuildingSearch"
+? !(alive _building) : goto "civilianBuildingSearch"
+_alreadyTried = false
+{if (_x == _building) then {_alreadyTried = true}} forEach _triedBuildings
+? _alreadyTried : goto "civilianBuildingSearch"
+_triedBuildings = _triedBuildings + [_building]
+_buildingPosWorld = getPos _building
+_bdx = (_buildingPosWorld select 0) - _centerX
+_bdy = (_buildingPosWorld select 1) - _centerY
+? ((_bdx * _bdx) + (_bdy * _bdy)) > 32400 : goto "civilianBuildingSearch"
+_positionTry = 0
+
+#civilianPositionLoop
+? _positionTry >= 30 : goto "civilianBuildingSearch"
+_positionIndex = (_positionTry + _searchOffset) mod 30
+_candidate = _building buildingPos _positionIndex
+_candidateX = _candidate select 0
+_candidateY = _candidate select 1
+_candidateZ = _candidate select 2
+? (_candidateX == 0) && (_candidateY == 0) : goto "civilianNextPosition"
+_candidateDX = _candidateX - _centerX
+_candidateDY = _candidateY - _centerY
+? ((_candidateDX * _candidateDX) + (_candidateDY * _candidateDY)) > 32400 : goto "civilianNextPosition"
+_positionUsed = false
+{if ((abs ((_x select 0) - _candidateX) < 1.5) && (abs ((_x select 1) - _candidateY) < 1.5) && (abs ((_x select 2) - _candidateZ) < 1.5)) then {_positionUsed = true}} forEach civilianBuildingUsedPositions
+{if ((abs ((_x select 0) - _candidateX) < 1.5) && (abs ((_x select 1) - _candidateY) < 1.5) && (abs ((_x select 2) - _candidateZ) < 1.5)) then {_positionUsed = true}} forEach buildingDefenseAllUsedPositions
+? _positionUsed : goto "civilianNextPosition"
+
+_unit setPos _candidate
+~0.05
+_actualPos = getPos _unit
+_actualX = _actualPos select 0
+_actualY = _actualPos select 1
+_actualZ = _actualPos select 2
+_verifyDX = _actualX - _candidateX
+_verifyDY = _actualY - _candidateY
+_verifyDZ = abs (_actualZ - _candidateZ)
+? ((_verifyDX * _verifyDX) + (_verifyDY * _verifyDY)) > 16 : goto "civilianPositionRejected"
+? _verifyDZ > 5 : goto "civilianPositionRejected"
+_faceDX = _candidateX - _centerX
+_faceDY = _candidateY - _centerY
+_faceDir = _faceDX atan2 _faceDY
+_unit setDir _faceDir
+doStop _unit
+(group _unit) setBehaviour "CARELESS"
+(group _unit) setCombatMode "BLUE"
+civilianBuildingUsedPositions = civilianBuildingUsedPositions + [_actualPos]
+civilianBuildingPlacedTotal = civilianBuildingPlacedTotal + 1
+civilianBuildingPlacementSucceeded = true
+goto "civilianBuildingDone"
+
+#civilianPositionRejected
+_unit setPos _originalPos
+_unit setDir _originalDir
+#civilianNextPosition
+_positionTry = _positionTry + 1
+goto "civilianPositionLoop"
+
+#civilianBuildingFailed
+civilianBuildingFailedTotal = civilianBuildingFailedTotal + 1
+
+#civilianBuildingDone
+? _anchorMade && !(isNull _anchor) : camDestroy _anchor
+civilianBuildingPlacementReady = true
+exit

@@ -1,0 +1,5 @@
+; v127: all objective defender references are initialized in init.sqs.
+; Exact 8/16/24 forces are created server-side by enemyObjectiveForces.sqs.
+enemyInfantryExpandReady = false
+enemyInfantryExpandReady = true
+exit

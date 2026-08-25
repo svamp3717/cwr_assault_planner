@@ -1,0 +1,14 @@
+; Player-model replacement remains player-only and single-player-only.
+? WW4_ArsenalTarget != player : hint "Player-model changing is available only when the arsenal target is you."; exit
+? mpMode : hint "Player-model changing is disabled in multiplayer."; exit
+
+closeDialog 0
+
+#WaitForClose
+? !dialog : goto "OpenModels"
+~0.05
+goto "WaitForClose"
+
+#OpenModels
+[] exec "ww4_arsenal\open_models.sqs"
+exit

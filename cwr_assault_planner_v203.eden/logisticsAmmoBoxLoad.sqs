@@ -1,0 +1,37 @@
+; Fill a WEST ammunition-support asset with the mission's useful WW4 infantry stock.
+; Deliberately restricted to dedicated reammo trucks and real ammunition crates.
+; Ordinary cars, Jeeps, HMMWVs, APCs and transport trucks exit without modification.
+_box = _this select 0
+? isNull _box : exit
+_class = typeOf _box
+_allowed = false
+? _class == "WW4EXT_5TAm" : _allowed = true
+? _class == "Truck5tReammo" : _allowed = true
+? _class == "UralReammo" : _allowed = true
+? _class == "TruckV3SGReammo" : _allowed = true
+? _class == "ReammoBoxWest" : _allowed = true
+? _class == "AmmoBoxAddW" : _allowed = true
+? _class == "HeavyReammoBoxWest" : _allowed = true
+? _class == "AmmoBoxOUTW" : _allowed = true
+? _class == "AmmoBoxOUTWW" : _allowed = true
+? !(_allowed) : exit
+clearWeaponCargo _box
+clearMagazineCargo _box
+_box addMagazineCargo ["WW4_W556_30mag",48]
+_box addMagazineCargo ["WW4_M433grenade",18]
+_box addMagazineCargo ["WW4_W556M_200mag",10]
+_box addMagazineCargo ["WW4_W762M_200mag",6]
+_box addMagazineCargo ["WW4_W762Sniper_20mag",8]
+_box addMagazineCargo ["WW4_W762Sniper_5mag",8]
+_box addMagazineCargo ["WW4_LAWLauncher",8]
+_box addMagazineCargo ["WW4_CarlGustavLauncher",4]
+; Vanilla weapons and magazines are supplied through the WW4 Arsenal GUI only.
+_box addMagazineCargo ["HandGrenade",24]
+_box addMagazineCargo ["SmokeShell",12]
+_box addMagazineCargo ["SmokeShellGreen",6]
+_box addMagazineCargo ["PipeBomb",6]
+_box addMagazineCargo ["TimeBomb",6]
+_box addMagazineCargo ["Mine",6]
+_box addMagazineCargo ["MineE",6]
+? debugMode : debugLog format ["ERA DEBUG AMMO SOURCE: loaded restricted support asset class %1", _class]
+exit

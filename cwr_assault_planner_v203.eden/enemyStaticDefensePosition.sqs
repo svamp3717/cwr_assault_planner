@@ -1,0 +1,70 @@
+; custom v203: Create one fortified static weapon position and keep its gunner combat-capable.
+; No dynamic group is created or joined, avoiding CWA MP nonnetwork-group references.
+; Parameters:
+; [centerX, centerY, gunClass, gunner, offsetX, offsetY, direction, bunkerClass]
+staticDefensePositionReady = false
+_centerX = _this select 0
+_centerY = _this select 1
+_gunClass = _this select 2
+_gunner = _this select 3
+_offsetX = _this select 4
+_offsetY = _this select 5
+_direction = _this select 6
+_bunkerClass = _this select 7
+
+? isNull _gunner : goto "positionDone"
+? !(alive _gunner) : goto "positionDone"
+
+_gunX = _centerX + _offsetX
+_gunY = _centerY + _offsetY
+_forwardX = sin _direction
+_forwardY = cos _direction
+_sideX = cos _direction
+_sideY = -(sin _direction)
+
+; Build a bunker behind the gun, two wall sections in front, and wire farther out.
+_bunkerX = _gunX - (_forwardX * 10)
+_bunkerY = _gunY - (_forwardY * 10)
+_bunker = _bunkerClass createVehicle [_bunkerX, _bunkerY, 0]
+_bunker setDir _direction
+
+_wallDir = _direction + 90
+_wall1X = _gunX + (_forwardX * 4) + (_sideX * 3.5)
+_wall1Y = _gunY + (_forwardY * 4) + (_sideY * 3.5)
+_wall1 = "FenceWood" createVehicle [_wall1X, _wall1Y, 0]
+_wall1 setDir _wallDir
+_wall2X = _gunX + (_forwardX * 4) - (_sideX * 3.5)
+_wall2Y = _gunY + (_forwardY * 4) - (_sideY * 3.5)
+_wall2 = "Fence" createVehicle [_wall2X, _wall2Y, 0]
+_wall2 setDir _wallDir
+_wireX = _gunX + (_forwardX * 11)
+_wireY = _gunY + (_forwardY * 11)
+_wire = "Wire" createVehicle [_wireX, _wireY, 0]
+_wire setDir _wallDir
+
+_gun = _gunClass createVehicle [_gunX, _gunY, 0]
+? isNull _gun : goto "positionDone"
+_gun setDir _direction
+_gun setDammage 0
+_gun setFuel 1
+
+; Keep the gunner in the original networked infantry group to avoid the CWA MP dynamic-group warning.
+; doStop holds the soldier without the turret/targeting side effects of the legacy hard-stop command. The monitor below
+; renews the hold, counters patrol-group SAFE orders when a target is close, and restores a lost seat.
+_gunner assignAsGunner _gun
+_gunner setPos [_gunX, _gunY, 0]
+_gunner setDir _direction
+_gunner setUnitPos "UP"
+_gunner moveInGunner _gun
+[_gunner] orderGetIn true
+doStop _gunner
+_gunner setSkill enemyAISkill
+(group _gunner) setBehaviour "COMBAT"
+(group _gunner) setCombatMode "RED"
+~0.2
+? vehicle _gunner != _gun : _gunner moveInGunner _gun
+? alive _gunner : [_gun, _gunner, _direction] exec "enemyStaticDefenseEngage.sqs"
+
+#positionDone
+staticDefensePositionReady = true
+exit

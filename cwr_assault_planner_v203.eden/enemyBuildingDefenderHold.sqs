@@ -1,0 +1,7 @@
+; v134 legacy compatibility shim. Building defenders are no longer teleported back.
+_unit = _this select 0
+? isNull _unit : exit
+? !(alive _unit) : exit
+_unit setUnitPos "UP"
+doStop _unit
+exit

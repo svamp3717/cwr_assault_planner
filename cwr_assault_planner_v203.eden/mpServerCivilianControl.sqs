@@ -1,0 +1,139 @@
+; v156 server-authoritative civilian command receiver and doMove-based vehicle-aware escort controller.
+_lastStamp = -1
+#loop
+~0.5
+? missionEnded : exit
+? civilianCommandRequestStamp == _lastStamp : goto "runFollowers"
+_lastStamp = civilianCommandRequestStamp
+_civ = civilianCommandUnit
+_caller = civilianCommandCaller
+_cmd = civilianCommandType
+_valid = false
+? objectiveType1 == 7 && !(objective1Done) && (_civ == s1Civ1 || _civ == s1Civ2 || _civ == s1Civ3 || _civ == s1Civ4) : _valid = true
+? objectiveType2 == 7 && !(objective2Done) && (_civ == s2Civ1 || _civ == s2Civ2 || _civ == s2Civ3 || _civ == s2Civ4) : _valid = true
+? objectiveType3 == 7 && !(objective3Done) && (_civ == s3Civ1 || _civ == s3Civ2 || _civ == s3Civ3 || _civ == s3Civ4) : _valid = true
+? objectiveType4 == 7 && !(objective4Done) && (_civ == s4Civ1 || _civ == s4Civ2 || _civ == s4Civ3 || _civ == s4Civ4) : _valid = true
+? objectiveType5 == 7 && !(objective5Done) && (_civ == s5Civ1 || _civ == s5Civ2 || _civ == s5Civ3 || _civ == s5Civ4) : _valid = true
+? !(_valid) : goto "runFollowers"
+? isNull _civ : goto "runFollowers"
+? !(alive _civ) : goto "runFollowers"
+? _cmd == 1 && !(isNull _caller) && alive _caller : goto "commandFollow"
+? _cmd == 2 : goto "commandStop"
+goto "runFollowers"
+#commandFollow
+; CWA often cannot path from an arbitrary buildingPos. Move only civilians that were actually placed indoors
+; back to their remembered outdoor fallback before starting the escort order.
+_moveOutside = false
+_outsidePos = getPos _civ
+? _civ == s1Civ1 && s1Civ1Indoor : _moveOutside = true; _outsidePos = s1Civ1OutdoorPos; s1Civ1Indoor = false
+? _civ == s1Civ2 && s1Civ2Indoor : _moveOutside = true; _outsidePos = s1Civ2OutdoorPos; s1Civ2Indoor = false
+? _civ == s1Civ3 && s1Civ3Indoor : _moveOutside = true; _outsidePos = s1Civ3OutdoorPos; s1Civ3Indoor = false
+? _civ == s1Civ4 && s1Civ4Indoor : _moveOutside = true; _outsidePos = s1Civ4OutdoorPos; s1Civ4Indoor = false
+? _civ == s2Civ1 && s2Civ1Indoor : _moveOutside = true; _outsidePos = s2Civ1OutdoorPos; s2Civ1Indoor = false
+? _civ == s2Civ2 && s2Civ2Indoor : _moveOutside = true; _outsidePos = s2Civ2OutdoorPos; s2Civ2Indoor = false
+? _civ == s2Civ3 && s2Civ3Indoor : _moveOutside = true; _outsidePos = s2Civ3OutdoorPos; s2Civ3Indoor = false
+? _civ == s2Civ4 && s2Civ4Indoor : _moveOutside = true; _outsidePos = s2Civ4OutdoorPos; s2Civ4Indoor = false
+? _civ == s3Civ1 && s3Civ1Indoor : _moveOutside = true; _outsidePos = s3Civ1OutdoorPos; s3Civ1Indoor = false
+? _civ == s3Civ2 && s3Civ2Indoor : _moveOutside = true; _outsidePos = s3Civ2OutdoorPos; s3Civ2Indoor = false
+? _civ == s3Civ3 && s3Civ3Indoor : _moveOutside = true; _outsidePos = s3Civ3OutdoorPos; s3Civ3Indoor = false
+? _civ == s3Civ4 && s3Civ4Indoor : _moveOutside = true; _outsidePos = s3Civ4OutdoorPos; s3Civ4Indoor = false
+? _civ == s4Civ1 && s4Civ1Indoor : _moveOutside = true; _outsidePos = s4Civ1OutdoorPos; s4Civ1Indoor = false
+? _civ == s4Civ2 && s4Civ2Indoor : _moveOutside = true; _outsidePos = s4Civ2OutdoorPos; s4Civ2Indoor = false
+? _civ == s4Civ3 && s4Civ3Indoor : _moveOutside = true; _outsidePos = s4Civ3OutdoorPos; s4Civ3Indoor = false
+? _civ == s4Civ4 && s4Civ4Indoor : _moveOutside = true; _outsidePos = s4Civ4OutdoorPos; s4Civ4Indoor = false
+? _civ == s5Civ1 && s5Civ1Indoor : _moveOutside = true; _outsidePos = s5Civ1OutdoorPos; s5Civ1Indoor = false
+? _civ == s5Civ2 && s5Civ2Indoor : _moveOutside = true; _outsidePos = s5Civ2OutdoorPos; s5Civ2Indoor = false
+? _civ == s5Civ3 && s5Civ3Indoor : _moveOutside = true; _outsidePos = s5Civ3OutdoorPos; s5Civ3Indoor = false
+? _civ == s5Civ4 && s5Civ4Indoor : _moveOutside = true; _outsidePos = s5Civ4OutdoorPos; s5Civ4Indoor = false
+? _moveOutside : _civ setPos _outsidePos
+? _moveOutside : _civ setVelocity [0,0,0]
+? _civ == s1Civ1 : s1Civ1Following = true; s1Civ1FollowTarget = _caller
+? _civ == s1Civ2 : s1Civ2Following = true; s1Civ2FollowTarget = _caller
+? _civ == s1Civ3 : s1Civ3Following = true; s1Civ3FollowTarget = _caller
+? _civ == s1Civ4 : s1Civ4Following = true; s1Civ4FollowTarget = _caller
+? _civ == s2Civ1 : s2Civ1Following = true; s2Civ1FollowTarget = _caller
+? _civ == s2Civ2 : s2Civ2Following = true; s2Civ2FollowTarget = _caller
+? _civ == s2Civ3 : s2Civ3Following = true; s2Civ3FollowTarget = _caller
+? _civ == s2Civ4 : s2Civ4Following = true; s2Civ4FollowTarget = _caller
+? _civ == s3Civ1 : s3Civ1Following = true; s3Civ1FollowTarget = _caller
+? _civ == s3Civ2 : s3Civ2Following = true; s3Civ2FollowTarget = _caller
+? _civ == s3Civ3 : s3Civ3Following = true; s3Civ3FollowTarget = _caller
+? _civ == s3Civ4 : s3Civ4Following = true; s3Civ4FollowTarget = _caller
+? _civ == s4Civ1 : s4Civ1Following = true; s4Civ1FollowTarget = _caller
+? _civ == s4Civ2 : s4Civ2Following = true; s4Civ2FollowTarget = _caller
+? _civ == s4Civ3 : s4Civ3Following = true; s4Civ3FollowTarget = _caller
+? _civ == s4Civ4 : s4Civ4Following = true; s4Civ4FollowTarget = _caller
+? _civ == s5Civ1 : s5Civ1Following = true; s5Civ1FollowTarget = _caller
+? _civ == s5Civ2 : s5Civ2Following = true; s5Civ2FollowTarget = _caller
+? _civ == s5Civ3 : s5Civ3Following = true; s5Civ3FollowTarget = _caller
+? _civ == s5Civ4 : s5Civ4Following = true; s5Civ4FollowTarget = _caller
+_civ stop false
+_civGroup = group _civ
+_civGroup setSpeedMode "FULL"
+_callerPos = getPos _caller
+_civ doMove _callerPos
+goto "runFollowers"
+#commandStop
+? _civ == s1Civ1 : s1Civ1Following = false; s1Civ1FollowTarget = objNull
+? _civ == s1Civ2 : s1Civ2Following = false; s1Civ2FollowTarget = objNull
+? _civ == s1Civ3 : s1Civ3Following = false; s1Civ3FollowTarget = objNull
+? _civ == s1Civ4 : s1Civ4Following = false; s1Civ4FollowTarget = objNull
+? _civ == s2Civ1 : s2Civ1Following = false; s2Civ1FollowTarget = objNull
+? _civ == s2Civ2 : s2Civ2Following = false; s2Civ2FollowTarget = objNull
+? _civ == s2Civ3 : s2Civ3Following = false; s2Civ3FollowTarget = objNull
+? _civ == s2Civ4 : s2Civ4Following = false; s2Civ4FollowTarget = objNull
+? _civ == s3Civ1 : s3Civ1Following = false; s3Civ1FollowTarget = objNull
+? _civ == s3Civ2 : s3Civ2Following = false; s3Civ2FollowTarget = objNull
+? _civ == s3Civ3 : s3Civ3Following = false; s3Civ3FollowTarget = objNull
+? _civ == s3Civ4 : s3Civ4Following = false; s3Civ4FollowTarget = objNull
+? _civ == s4Civ1 : s4Civ1Following = false; s4Civ1FollowTarget = objNull
+? _civ == s4Civ2 : s4Civ2Following = false; s4Civ2FollowTarget = objNull
+? _civ == s4Civ3 : s4Civ3Following = false; s4Civ3FollowTarget = objNull
+? _civ == s4Civ4 : s4Civ4Following = false; s4Civ4FollowTarget = objNull
+? _civ == s5Civ1 : s5Civ1Following = false; s5Civ1FollowTarget = objNull
+? _civ == s5Civ2 : s5Civ2Following = false; s5Civ2FollowTarget = objNull
+? _civ == s5Civ3 : s5Civ3Following = false; s5Civ3FollowTarget = objNull
+? _civ == s5Civ4 : s5Civ4Following = false; s5Civ4FollowTarget = objNull
+doStop _civ
+#runFollowers
+? s1Civ1Following && (isNull s1Civ1 || !(alive s1Civ1) || isNull s1Civ1FollowTarget || !(alive s1Civ1FollowTarget)) : s1Civ1Following = false
+? s1Civ1Following : [s1Civ1,s1Civ1FollowTarget] exec "civilianEscortStep.sqs"
+? s1Civ2Following && (isNull s1Civ2 || !(alive s1Civ2) || isNull s1Civ2FollowTarget || !(alive s1Civ2FollowTarget)) : s1Civ2Following = false
+? s1Civ2Following : [s1Civ2,s1Civ2FollowTarget] exec "civilianEscortStep.sqs"
+? s1Civ3Following && (isNull s1Civ3 || !(alive s1Civ3) || isNull s1Civ3FollowTarget || !(alive s1Civ3FollowTarget)) : s1Civ3Following = false
+? s1Civ3Following : [s1Civ3,s1Civ3FollowTarget] exec "civilianEscortStep.sqs"
+? s1Civ4Following && (isNull s1Civ4 || !(alive s1Civ4) || isNull s1Civ4FollowTarget || !(alive s1Civ4FollowTarget)) : s1Civ4Following = false
+? s1Civ4Following : [s1Civ4,s1Civ4FollowTarget] exec "civilianEscortStep.sqs"
+? s2Civ1Following && (isNull s2Civ1 || !(alive s2Civ1) || isNull s2Civ1FollowTarget || !(alive s2Civ1FollowTarget)) : s2Civ1Following = false
+? s2Civ1Following : [s2Civ1,s2Civ1FollowTarget] exec "civilianEscortStep.sqs"
+? s2Civ2Following && (isNull s2Civ2 || !(alive s2Civ2) || isNull s2Civ2FollowTarget || !(alive s2Civ2FollowTarget)) : s2Civ2Following = false
+? s2Civ2Following : [s2Civ2,s2Civ2FollowTarget] exec "civilianEscortStep.sqs"
+? s2Civ3Following && (isNull s2Civ3 || !(alive s2Civ3) || isNull s2Civ3FollowTarget || !(alive s2Civ3FollowTarget)) : s2Civ3Following = false
+? s2Civ3Following : [s2Civ3,s2Civ3FollowTarget] exec "civilianEscortStep.sqs"
+? s2Civ4Following && (isNull s2Civ4 || !(alive s2Civ4) || isNull s2Civ4FollowTarget || !(alive s2Civ4FollowTarget)) : s2Civ4Following = false
+? s2Civ4Following : [s2Civ4,s2Civ4FollowTarget] exec "civilianEscortStep.sqs"
+? s3Civ1Following && (isNull s3Civ1 || !(alive s3Civ1) || isNull s3Civ1FollowTarget || !(alive s3Civ1FollowTarget)) : s3Civ1Following = false
+? s3Civ1Following : [s3Civ1,s3Civ1FollowTarget] exec "civilianEscortStep.sqs"
+? s3Civ2Following && (isNull s3Civ2 || !(alive s3Civ2) || isNull s3Civ2FollowTarget || !(alive s3Civ2FollowTarget)) : s3Civ2Following = false
+? s3Civ2Following : [s3Civ2,s3Civ2FollowTarget] exec "civilianEscortStep.sqs"
+? s3Civ3Following && (isNull s3Civ3 || !(alive s3Civ3) || isNull s3Civ3FollowTarget || !(alive s3Civ3FollowTarget)) : s3Civ3Following = false
+? s3Civ3Following : [s3Civ3,s3Civ3FollowTarget] exec "civilianEscortStep.sqs"
+? s3Civ4Following && (isNull s3Civ4 || !(alive s3Civ4) || isNull s3Civ4FollowTarget || !(alive s3Civ4FollowTarget)) : s3Civ4Following = false
+? s3Civ4Following : [s3Civ4,s3Civ4FollowTarget] exec "civilianEscortStep.sqs"
+? s4Civ1Following && (isNull s4Civ1 || !(alive s4Civ1) || isNull s4Civ1FollowTarget || !(alive s4Civ1FollowTarget)) : s4Civ1Following = false
+? s4Civ1Following : [s4Civ1,s4Civ1FollowTarget] exec "civilianEscortStep.sqs"
+? s4Civ2Following && (isNull s4Civ2 || !(alive s4Civ2) || isNull s4Civ2FollowTarget || !(alive s4Civ2FollowTarget)) : s4Civ2Following = false
+? s4Civ2Following : [s4Civ2,s4Civ2FollowTarget] exec "civilianEscortStep.sqs"
+? s4Civ3Following && (isNull s4Civ3 || !(alive s4Civ3) || isNull s4Civ3FollowTarget || !(alive s4Civ3FollowTarget)) : s4Civ3Following = false
+? s4Civ3Following : [s4Civ3,s4Civ3FollowTarget] exec "civilianEscortStep.sqs"
+? s4Civ4Following && (isNull s4Civ4 || !(alive s4Civ4) || isNull s4Civ4FollowTarget || !(alive s4Civ4FollowTarget)) : s4Civ4Following = false
+? s4Civ4Following : [s4Civ4,s4Civ4FollowTarget] exec "civilianEscortStep.sqs"
+? s5Civ1Following && (isNull s5Civ1 || !(alive s5Civ1) || isNull s5Civ1FollowTarget || !(alive s5Civ1FollowTarget)) : s5Civ1Following = false
+? s5Civ1Following : [s5Civ1,s5Civ1FollowTarget] exec "civilianEscortStep.sqs"
+? s5Civ2Following && (isNull s5Civ2 || !(alive s5Civ2) || isNull s5Civ2FollowTarget || !(alive s5Civ2FollowTarget)) : s5Civ2Following = false
+? s5Civ2Following : [s5Civ2,s5Civ2FollowTarget] exec "civilianEscortStep.sqs"
+? s5Civ3Following && (isNull s5Civ3 || !(alive s5Civ3) || isNull s5Civ3FollowTarget || !(alive s5Civ3FollowTarget)) : s5Civ3Following = false
+? s5Civ3Following : [s5Civ3,s5Civ3FollowTarget] exec "civilianEscortStep.sqs"
+? s5Civ4Following && (isNull s5Civ4 || !(alive s5Civ4) || isNull s5Civ4FollowTarget || !(alive s5Civ4FollowTarget)) : s5Civ4Following = false
+? s5Civ4Following : [s5Civ4,s5Civ4FollowTarget] exec "civilianEscortStep.sqs"
+goto "loop"

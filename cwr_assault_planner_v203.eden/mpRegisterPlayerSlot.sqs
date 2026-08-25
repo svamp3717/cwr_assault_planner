@@ -1,0 +1,27 @@
+; v134 client-owned player-slot registration for extraction fallback.
+? isNull player : exit
+? player == plr : mpHumanPlr = true
+? player == plr : publicVariable "mpHumanPlr"
+? player == red2 : mpHumanRed2 = true
+? player == red2 : publicVariable "mpHumanRed2"
+? player == red3 : mpHumanRed3 = true
+? player == red3 : publicVariable "mpHumanRed3"
+? player == medic1 : mpHumanMedic1 = true
+? player == medic1 : publicVariable "mpHumanMedic1"
+? player == medic2 : mpHumanMedic2 = true
+? player == medic2 : publicVariable "mpHumanMedic2"
+? player == red6 : mpHumanRed6 = true
+? player == red6 : publicVariable "mpHumanRed6"
+? player == red7 : mpHumanRed7 = true
+? player == red7 : publicVariable "mpHumanRed7"
+? player == red8 : mpHumanRed8 = true
+? player == red8 : publicVariable "mpHumanRed8"
+? player == red9 : mpHumanRed9 = true
+? player == red9 : publicVariable "mpHumanRed9"
+? player == red10 : mpHumanRed10 = true
+? player == red10 : publicVariable "mpHumanRed10"
+? player == red11 : mpHumanRed11 = true
+? player == red11 : publicVariable "mpHumanRed11"
+? player == red12 : mpHumanRed12 = true
+? player == red12 : publicVariable "mpHumanRed12"
+exit

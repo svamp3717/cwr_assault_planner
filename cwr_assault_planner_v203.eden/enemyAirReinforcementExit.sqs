@@ -1,0 +1,56 @@
+; custom v203: make the enemy reinforcement Mi-17 leave immediately after its paradrop and despawn off-map.
+; Arguments: [helicopter, dropX, dropY, exitX, exitY]
+_heli = _this select 0
+_dropX = _this select 1
+_dropY = _this select 2
+_exitX = _this select 3
+_exitY = _this select 4
+? isNull _heli : exit
+? !(alive _heli) : goto "destroyed"
+_pilot = driver _heli
+? !(isNull _pilot) : (group _pilot) setBehaviour "CARELESS"
+? !(isNull _pilot) : (group _pilot) setCombatMode "BLUE"
+? !(isNull _pilot) : (group _pilot) setSpeedMode "FULL"
+_heli setFuel 1
+_heli flyInHeight 180
+_heli setVelocity [38,30,8]
+? !(isNull _pilot) : _pilot doMove [_exitX, _exitY, 0]
+? !(isNull _pilot) : (group _pilot) move [_exitX, _exitY, 0]
+_heli doMove [_exitX, _exitY, 0]
+_deadline = time + 90
+? debugMode : debugLog "ERA DEBUG ENEMY AIR: reinforcement helicopter departing after paradrop"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: reinforcement helicopter departing after paradrop"
+#leaveLoop
+~5
+? isNull _heli : goto "done"
+? !(alive _heli) : goto "destroyed"
+? (_heli distance [_dropX, _dropY, 0]) > 1600 : goto "cleanup"
+? time > _deadline : goto "forcedCleanup"
+_pilot = driver _heli
+_heli setFuel 1
+_heli flyInHeight 180
+? !(isNull _pilot) : _pilot doMove [_exitX, _exitY, 0]
+? !(isNull _pilot) : (group _pilot) move [_exitX, _exitY, 0]
+_heli doMove [_exitX, _exitY, 0]
+goto "leaveLoop"
+#forcedCleanup
+; Last-resort pathfinding escape: move the aircraft to its distant exit before deletion.
+? alive _heli : _heli setPos [_exitX, _exitY, 180]
+~0.5
+#cleanup
+? isNull _heli : goto "done"
+_pilot = driver _heli
+_gunner = gunner _heli
+? !(isNull _pilot) : deleteVehicle _pilot
+? !(isNull _gunner) : deleteVehicle _gunner
+deleteVehicle _heli
+? enemyTransportHeli == _heli : enemyTransportHeli = objNull
+enemyAirReinfMarkerActive = false
+? debugMode : debugLog "ERA DEBUG ENEMY AIR: reinforcement helicopter departed and was cleaned up"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: reinforcement helicopter departed and despawned"
+exit
+#destroyed
+enemyAirReinfMarkerActive = false
+? enemyTransportHeli == _heli : enemyTransportHeli = objNull
+#done
+exit

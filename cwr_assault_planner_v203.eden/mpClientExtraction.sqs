@@ -1,0 +1,33 @@
+; v144 per-client extraction helper. One aircraft, no crash fallback.
+@ extractionActive
+@ extractionLZReady
+"extraction_marker" setMarkerPos [extractionX, extractionY, 0]
+"extraction_marker" setMarkerType "Flag"
+"extraction_marker" setMarkerColor "ColorGreen"
+"extraction_marker" setMarkerText "FINAL EXTRACTION"
+
+#loop
+~2
+"extraction_marker" setMarkerPos [extractionX, extractionY, 0]
+"extraction_marker" setMarkerType "Flag"
+? extractionFailed : goto "failed"
+? extractionComplete : goto "complete"
+? missionEnded : exit
+"extraction_marker" setMarkerColor "ColorGreen"
+"extraction_marker" setMarkerText "FINAL EXTRACTION"
+? !(alive player) : goto "loop"
+? (getPos player select 2) >= 7000 : goto "loop"
+? vehicle player == extractHeli : goto "loop"
+? isNull extractHeli : goto "loop"
+player assignAsCargo extractHeli
+goto "loop"
+
+#failed
+"extraction_marker" setMarkerColor "ColorRed"
+"extraction_marker" setMarkerText "EXTRACTION AIRCRAFT LOST"
+exit
+
+#complete
+"extraction_marker" setMarkerColor "ColorGreen"
+"extraction_marker" setMarkerText "EXTRACTION COMPLETE"
+exit

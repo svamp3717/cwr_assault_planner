@@ -1,0 +1,51 @@
+; v164 server-authoritative downed-pilot command receiver and escort loop.
+_lastStamp = -1
+#loop
+~0.5
+? missionEnded : exit
+? pilotCommandRequestStamp == _lastStamp : goto "runFollowers"
+_lastStamp = pilotCommandRequestStamp
+_pilot = pilotCommandUnit
+_caller = pilotCommandCaller
+_cmd = pilotCommandType
+_valid = false
+? objectiveType1 == 9 && !(objective1Done) && _pilot == objectivePilotUnit1 : _valid = true
+? objectiveType2 == 9 && !(objective2Done) && _pilot == objectivePilotUnit2 : _valid = true
+? objectiveType3 == 9 && !(objective3Done) && _pilot == objectivePilotUnit3 : _valid = true
+? objectiveType4 == 9 && !(objective4Done) && _pilot == objectivePilotUnit4 : _valid = true
+? objectiveType5 == 9 && !(objective5Done) && _pilot == objectivePilotUnit5 : _valid = true
+? !(_valid) : goto "runFollowers"
+? isNull _pilot : goto "runFollowers"
+? !(alive _pilot) : goto "runFollowers"
+? _cmd == 1 && !(isNull _caller) && alive _caller : goto "commandFollow"
+? _cmd == 2 : goto "commandStop"
+goto "runFollowers"
+#commandFollow
+_pilot setCaptive false
+_pilot stop false
+? _pilot == objectivePilotUnit1 : objectivePilotFollowing1 = true; objectivePilotFollowTarget1 = _caller
+? _pilot == objectivePilotUnit2 : objectivePilotFollowing2 = true; objectivePilotFollowTarget2 = _caller
+? _pilot == objectivePilotUnit3 : objectivePilotFollowing3 = true; objectivePilotFollowTarget3 = _caller
+? _pilot == objectivePilotUnit4 : objectivePilotFollowing4 = true; objectivePilotFollowTarget4 = _caller
+? _pilot == objectivePilotUnit5 : objectivePilotFollowing5 = true; objectivePilotFollowTarget5 = _caller
+_pilot doMove (getPos _caller)
+goto "runFollowers"
+#commandStop
+? _pilot == objectivePilotUnit1 : objectivePilotFollowing1 = false; objectivePilotFollowTarget1 = objNull
+? _pilot == objectivePilotUnit2 : objectivePilotFollowing2 = false; objectivePilotFollowTarget2 = objNull
+? _pilot == objectivePilotUnit3 : objectivePilotFollowing3 = false; objectivePilotFollowTarget3 = objNull
+? _pilot == objectivePilotUnit4 : objectivePilotFollowing4 = false; objectivePilotFollowTarget4 = objNull
+? _pilot == objectivePilotUnit5 : objectivePilotFollowing5 = false; objectivePilotFollowTarget5 = objNull
+doStop _pilot
+#runFollowers
+? objectivePilotFollowing1 && (isNull objectivePilotUnit1 || !(alive objectivePilotUnit1) || isNull objectivePilotFollowTarget1 || !(alive objectivePilotFollowTarget1)) : objectivePilotFollowing1 = false
+? objectivePilotFollowing1 : [objectivePilotUnit1,objectivePilotFollowTarget1] exec "pilotEscortStep.sqs"
+? objectivePilotFollowing2 && (isNull objectivePilotUnit2 || !(alive objectivePilotUnit2) || isNull objectivePilotFollowTarget2 || !(alive objectivePilotFollowTarget2)) : objectivePilotFollowing2 = false
+? objectivePilotFollowing2 : [objectivePilotUnit2,objectivePilotFollowTarget2] exec "pilotEscortStep.sqs"
+? objectivePilotFollowing3 && (isNull objectivePilotUnit3 || !(alive objectivePilotUnit3) || isNull objectivePilotFollowTarget3 || !(alive objectivePilotFollowTarget3)) : objectivePilotFollowing3 = false
+? objectivePilotFollowing3 : [objectivePilotUnit3,objectivePilotFollowTarget3] exec "pilotEscortStep.sqs"
+? objectivePilotFollowing4 && (isNull objectivePilotUnit4 || !(alive objectivePilotUnit4) || isNull objectivePilotFollowTarget4 || !(alive objectivePilotFollowTarget4)) : objectivePilotFollowing4 = false
+? objectivePilotFollowing4 : [objectivePilotUnit4,objectivePilotFollowTarget4] exec "pilotEscortStep.sqs"
+? objectivePilotFollowing5 && (isNull objectivePilotUnit5 || !(alive objectivePilotUnit5) || isNull objectivePilotFollowTarget5 || !(alive objectivePilotFollowTarget5)) : objectivePilotFollowing5 = false
+? objectivePilotFollowing5 : [objectivePilotUnit5,objectivePilotFollowTarget5] exec "pilotEscortStep.sqs"
+goto "loop"

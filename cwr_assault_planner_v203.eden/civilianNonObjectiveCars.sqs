@@ -1,0 +1,41 @@
+; Custom patch: remembered proximity-streamed civilian-car profiles.
+; Every imported marker independently rolls a 25 percent chance.
+; Active objective locations are still skipped by civilianNonObjectiveCarProfile.sqs.
+civilianNonObjectiveCarsReady = false
+civilianNonObjectiveCarProfileCount = 0
+civilianNamedCarProfileCount = 0
+civilianUnnamedCarProfileCount = 0
+_i = 0
+#namedProfileLoop
+? _i >= missionTrafficTotal : goto "unnamedProfiles"
+_roll = random 4
+? _roll >= 1 : goto "namedNext"
+_beforeCount = civilianNonObjectiveCarProfileCount
+civilianNonObjectiveCarProfileReady = false
+[missionTrafficMarkers select _i, missionTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
+@ civilianNonObjectiveCarProfileReady
+? civilianNonObjectiveCarProfileCount > _beforeCount : civilianNamedCarProfileCount = civilianNamedCarProfileCount + 1
+#namedNext
+_i = _i + 1
+goto "namedProfileLoop"
+
+#unnamedProfiles
+; v197 leaves the legacy unnamed list empty because all imported markers are in missionTrafficMarkers.
+_i = 0
+#unnamedProfileLoop
+? _i >= missionUnnamedTrafficTotal : goto "profilesDone"
+_roll = random 4
+? _roll >= 1 : goto "unnamedNext"
+_beforeCount = civilianNonObjectiveCarProfileCount
+civilianNonObjectiveCarProfileReady = false
+[missionUnnamedTrafficMarkers select _i, missionUnnamedTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
+@ civilianNonObjectiveCarProfileReady
+? civilianNonObjectiveCarProfileCount > _beforeCount : civilianUnnamedCarProfileCount = civilianUnnamedCarProfileCount + 1
+#unnamedNext
+_i = _i + 1
+goto "unnamedProfileLoop"
+
+#profilesDone
+? debugMode : debugLog format ["ERA DEBUG CIVSTREAM PROFILES: imported25pct=%1 legacyUnnamed25pct=%2 total=%3", civilianNamedCarProfileCount, civilianUnnamedCarProfileCount, civilianNonObjectiveCarProfileCount]
+civilianNonObjectiveCarsReady = true
+exit

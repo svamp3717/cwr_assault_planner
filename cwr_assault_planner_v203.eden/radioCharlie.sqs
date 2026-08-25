@@ -1,0 +1,42 @@
+; v169 Radio Charlie: squad-leader logistics selector. Charlie is radio slot 3 in CWA.
+_radioLeader = leader (group player)
+? mpMode && player != _radioLeader : exit
+? missionEnded : exit
+? !(logisticsDropAvailable) : exit
+? logisticsDropsRemaining < 1 : exit
+? logisticsDropInProgress : exit
+3 setRadioMsg "NULL"
+logisticsDropLocalPending = true
+logisticsDropMenuChoice = 0
+logisticsDropMenuDone = false
+logisticsDropMenuCancelled = false
+_ok = createDialog "ERA_LogisticsDropDialog"
+? _ok : goto "menuOpened"
+logisticsDropLocalPending = false
+player sideChat "Actual: Logistics request menu could not be opened."
+exit
+
+#menuOpened
+ctrlSetText [4210, format ["%1 logistics request(s) remaining. Delivery will land near your current position.", logisticsDropsRemaining]]
+@ logisticsDropMenuDone || logisticsDropMenuCancelled || !(dialog)
+? logisticsDropMenuCancelled : goto "cancelled"
+? logisticsDropMenuChoice < 1 : goto "cancelled"
+logisticsDropRequestType = logisticsDropMenuChoice
+logisticsDropRequestLabel = "Jeep"
+? logisticsDropRequestType == 2 : logisticsDropRequestLabel = "HMMWV"
+? logisticsDropRequestType == 3 : logisticsDropRequestLabel = "ammunition box"
+logisticsDropRequester = player
+mpLogisticsDropRequest = true
+publicVariable "logisticsDropRequestType"
+publicVariable "logisticsDropRequestLabel"
+publicVariable "logisticsDropRequester"
+publicVariable "mpLogisticsDropRequest"
+player sideChat format ["Actual: Requesting %1 helidrop at our current position.", logisticsDropRequestLabel]
+titleText ["LOGISTICS HELIDROP REQUEST TRANSMITTED", "PLAIN"]
+? debugMode : debugLog format ["ERA DEBUG LOGISTICS: Radio Charlie requested %1 by %2", logisticsDropRequestLabel, player]
+? debugMode && debugConsole : player globalChat format ["ERA DEBUG LOGISTICS: requested %1", logisticsDropRequestLabel]
+exit
+
+#cancelled
+logisticsDropLocalPending = false
+exit

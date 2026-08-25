@@ -1,0 +1,22 @@
+; v164 start local action monitors for Recover Downed Pilot objectives.
+? objectiveType1 != 9 : goto "after1"
+@ !(isNull objectivePilotUnit1)
+[objectivePilotUnit1,1] exec "pilotActionProximity.sqs"
+#after1
+? objectiveType2 != 9 : goto "after2"
+@ !(isNull objectivePilotUnit2)
+[objectivePilotUnit2,2] exec "pilotActionProximity.sqs"
+#after2
+? objectiveType3 != 9 : goto "after3"
+@ !(isNull objectivePilotUnit3)
+[objectivePilotUnit3,3] exec "pilotActionProximity.sqs"
+#after3
+? objectiveType4 != 9 : goto "after4"
+@ !(isNull objectivePilotUnit4)
+[objectivePilotUnit4,4] exec "pilotActionProximity.sqs"
+#after4
+? objectiveType5 != 9 : goto "after5"
+@ !(isNull objectivePilotUnit5)
+[objectivePilotUnit5,5] exec "pilotActionProximity.sqs"
+#after5
+exit

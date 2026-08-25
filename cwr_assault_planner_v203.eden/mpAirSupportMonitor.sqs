@@ -1,0 +1,14 @@
+; Server waits for the squad leader's public air-support request.
+#loop
+~0.25
+? missionEnded : exit
+? airSupportUsed : exit
+? mpAirSupportRequest : goto "dispatch"
+goto "loop"
+#dispatch
+mpAirSupportRequest = false
+publicVariable "mpAirSupportRequest"
+airSupportTarget = mpAirSupportTarget
+publicVariable "airSupportTarget"
+[] exec "callAirSupport.sqs"
+exit

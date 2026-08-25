@@ -1,0 +1,39 @@
+; v187 track one downed pilot until secured, killed or objective completion.
+_marker = _this select 0
+_slot = _this select 1
+_destX = _this select 2
+_destY = _this select 3
+_pilot = objNull
+_marker setMarkerType "Empty"
+#waitPilot
+~1
+? missionEnded : exit
+? _slot == 1 : _pilot = objectivePilotUnit1
+? _slot == 2 : _pilot = objectivePilotUnit2
+? _slot == 3 : _pilot = objectivePilotUnit3
+? _slot == 4 : _pilot = objectivePilotUnit4
+? _slot == 5 : _pilot = objectivePilotUnit5
+? isNull _pilot : goto "waitPilot"
+#loop
+~2
+_done = false
+_failed = false
+? _slot == 1 : _done = objective1Done; _failed = objectivePilotFailed1
+? _slot == 2 : _done = objective2Done; _failed = objectivePilotFailed2
+? _slot == 3 : _done = objective3Done; _failed = objectivePilotFailed3
+? _slot == 4 : _done = objective4Done; _failed = objectivePilotFailed4
+? _slot == 5 : _done = objective5Done; _failed = objectivePilotFailed5
+? missionEnded || _done || _failed : goto "hide"
+? !(alive _pilot) : goto "hide"
+_p = getPos _pilot
+_dx = (_p select 0) - _destX
+_dy = (_p select 1) - _destY
+? ((_dx * _dx) + (_dy * _dy)) <= 14400 : goto "hide"
+_marker setMarkerPos [_p select 0,_p select 1]
+_marker setMarkerType "Flag"
+_marker setMarkerColor "ColorBlue"
+_marker setMarkerText format ["DOWNED PILOT %1",_slot]
+goto "loop"
+#hide
+_marker setMarkerType "Empty"
+exit

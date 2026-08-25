@@ -1,0 +1,95 @@
+; Enemy runtime attack-air support. Does not block mission completion. Old SQS only.
+#waitInsertion
+~5
+? !(insertionComplete) : goto "waitInsertion"
+_delay = random 60
+~_delay
+? missionEnded : exit
+? !(alive enemyAttackVehicle) : exit
+? debugMode : debugLog "ERA DEBUG ENEMY AIR: attack aircraft entering the battle"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: attack aircraft entering the battle"
+enemyAttackVehicle setDammage 0
+enemyAttackVehicle setFuel 1
+? enemyEast : goto "eastCrew"
+? alive w4rAirAtkPilot : w4rAirAtkPilot moveInDriver enemyAttackVehicle
+? alive w4rAirAtkGunner : w4rAirAtkGunner moveInGunner enemyAttackVehicle
+goto "afterCrew"
+#eastCrew
+? alive w4eAirAtkPilot : w4eAirAtkPilot moveInDriver enemyAttackVehicle
+? alive w4eAirAtkGunner : w4eAirAtkGunner moveInGunner enemyAttackVehicle
+#afterCrew
+? alive (driver enemyAttackVehicle) : (group (driver enemyAttackVehicle)) setBehaviour "COMBAT"
+? alive (driver enemyAttackVehicle) : (group (driver enemyAttackVehicle)) setCombatMode "RED"
+? alive (driver enemyAttackVehicle) : (group (driver enemyAttackVehicle)) setSpeedMode "FULL"
+; Runtime aircraft have no editor special="FLY" state. Spin up fully loaded, then launch with forward velocity.
+enemyAttackVehicle action ["ENGINEON", enemyAttackVehicle]
+? alive (driver enemyAttackVehicle) : driver enemyAttackVehicle action ["ENGINE ON", enemyAttackVehicle]
+~8
+enemyAttackVehicle setDir 315
+enemyAttackVehicle flyInHeight 120
+enemyAttackVehicle setPos [primaryX + 1250, primaryY - 1250, 150]
+? enemyAttackClass == "WW4EXT_Su25_CW" : enemyAttackVehicle setVelocity [-45,45,0]
+? enemyAttackClass != "WW4EXT_Su25_CW" : enemyAttackVehicle setVelocity [-30,30,6]
+driver enemyAttackVehicle doMove [primaryX, primaryY, 0]
+~20
+#attackLoop
+? missionEnded : exit
+? !(alive enemyAttackVehicle) : exit
+? alive supportAirVehicle && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget supportAirVehicle
+? alive supportAirVehicle && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget supportAirVehicle
+? alive supportAirVehicle && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire supportAirVehicle
+? alive supportAirVehicle && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire supportAirVehicle
+? alive supportTank && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget supportTank
+? alive supportTank && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget supportTank
+? alive supportTank && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire supportTank
+? alive supportTank && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire supportTank
+? alive supportM113 && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget supportM113
+? alive supportM113 && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget supportM113
+? alive supportM113 && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire supportM113
+? alive supportM113 && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire supportM113
+? alive supportAA && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget supportAA
+? alive supportAA && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget supportAA
+? alive supportAA && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire supportAA
+? alive supportAA && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire supportAA
+? alive supportJeep && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget supportJeep
+? alive supportJeep && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget supportJeep
+? alive supportJeep && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire supportJeep
+? alive supportJeep && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire supportJeep
+? alive supportHMMWV && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget supportHMMWV
+? alive supportHMMWV && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget supportHMMWV
+? alive supportHMMWV && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire supportHMMWV
+? alive supportHMMWV && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire supportHMMWV
+? alive apcP1 && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget apcP1
+? alive apcP1 && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget apcP1
+? alive apcP1 && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire apcP1
+? alive apcP1 && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire apcP1
+? alive apcP2 && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget apcP2
+? alive apcP2 && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget apcP2
+? alive apcP2 && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire apcP2
+? alive apcP2 && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire apcP2
+mpEnemyAirTarget = plr
+? !(alive mpEnemyAirTarget) && alive red2 : mpEnemyAirTarget = red2
+? !(alive mpEnemyAirTarget) && alive red3 : mpEnemyAirTarget = red3
+? !(alive mpEnemyAirTarget) && alive medic1 : mpEnemyAirTarget = medic1
+? !(alive mpEnemyAirTarget) && alive medic2 : mpEnemyAirTarget = medic2
+? !(alive mpEnemyAirTarget) && alive red6 : mpEnemyAirTarget = red6
+? !(alive mpEnemyAirTarget) && alive red7 : mpEnemyAirTarget = red7
+? !(alive mpEnemyAirTarget) && alive red8 : mpEnemyAirTarget = red8
+? !(alive mpEnemyAirTarget) && alive red9 : mpEnemyAirTarget = red9
+? !(alive mpEnemyAirTarget) && alive red10 : mpEnemyAirTarget = red10
+? !(alive mpEnemyAirTarget) && alive red11 : mpEnemyAirTarget = red11
+? !(alive mpEnemyAirTarget) && alive red12 : mpEnemyAirTarget = red12
+? alive mpEnemyAirTarget && alive (driver enemyAttackVehicle) : (group (driver enemyAttackVehicle)) reveal mpEnemyAirTarget
+? alive mpEnemyAirTarget && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doTarget mpEnemyAirTarget
+? alive mpEnemyAirTarget && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget mpEnemyAirTarget
+? alive mpEnemyAirTarget && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire mpEnemyAirTarget
+? alive mpEnemyAirTarget && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire mpEnemyAirTarget
+driver enemyAttackVehicle doMove [primaryX + 350, primaryY + 50, 0]
+~25
+? missionEnded : exit
+driver enemyAttackVehicle doMove [primaryX - 350, primaryY - 50, 0]
+~25
+? missionEnded : exit
+driver enemyAttackVehicle doMove [lzX, lzY, 0]
+~25
+goto "attackLoop"

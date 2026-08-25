@@ -1,0 +1,12 @@
+; FRevive
+; This script will show name of the player being revived
+
+_reviving = _this select 0
+_player   = _this select 1
+_message  = _this select 2
+
+@"_x==_player" count _reviving > 0
+titleText [_message,"PLAIN DOWN",0.5]
+
+@"_x==_player" count _reviving == 0
+titleText ["", "PLAIN DOWN"]

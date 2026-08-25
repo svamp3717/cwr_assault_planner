@@ -1,0 +1,81 @@
+; MP v110: show objective number plus concise task on map markers.
+_task1 = "Clear Area"
+? objectiveType1 == 1 : _task1 = format ["Destroy %1", objectiveTargetLabel1]
+? objectiveType1 == 2 : _task1 = "Find Intel"
+? objectiveType1 == 3 : _task1 = "Destroy Ammo Box"
+? objectiveType1 == 4 : _task1 = "Destroy Communications"
+? objectiveType1 == 5 : _task1 = "Neutralize Artillery"
+? objectiveType1 == 6 : _task1 = "Destroy Fuel Depot"
+? objectiveType1 == 7 : _task1 = "Save Civilians"
+? objectiveType1 == 8 : _task1 = format ["Steal %1", objectiveStealVehicleLabel1]
+? objectiveType1 == 9 : _task1 = "Recover Downed Pilot"
+"primary_marker" setMarkerText format ["1 - %1 at %2", _task1, townLabel]
+
+? townCount < 2 : goto "marker2Inactive"
+_task2 = "Clear Area"
+? objectiveType2 == 1 : _task2 = format ["Destroy %1", objectiveTargetLabel2]
+? objectiveType2 == 2 : _task2 = "Find Intel"
+? objectiveType2 == 3 : _task2 = "Destroy Ammo Box"
+? objectiveType2 == 4 : _task2 = "Destroy Communications"
+? objectiveType2 == 5 : _task2 = "Neutralize Artillery"
+? objectiveType2 == 6 : _task2 = "Destroy Fuel Depot"
+? objectiveType2 == 7 : _task2 = "Save Civilians"
+? objectiveType2 == 8 : _task2 = format ["Steal %1", objectiveStealVehicleLabel2]
+? objectiveType2 == 9 : _task2 = "Recover Downed Pilot"
+"secondary_marker" setMarkerText format ["2 - %1 at %2", _task2, secondaryLabel]
+goto "marker2Done"
+#marker2Inactive
+"secondary_marker" setMarkerText ""
+#marker2Done
+
+? townCount < 3 : goto "marker3Inactive"
+_task3 = "Clear Area"
+? objectiveType3 == 1 : _task3 = format ["Destroy %1", objectiveTargetLabel3]
+? objectiveType3 == 2 : _task3 = "Find Intel"
+? objectiveType3 == 3 : _task3 = "Destroy Ammo Box"
+? objectiveType3 == 4 : _task3 = "Destroy Communications"
+? objectiveType3 == 5 : _task3 = "Neutralize Artillery"
+? objectiveType3 == 6 : _task3 = "Destroy Fuel Depot"
+? objectiveType3 == 7 : _task3 = "Save Civilians"
+? objectiveType3 == 8 : _task3 = format ["Steal %1", objectiveStealVehicleLabel3]
+? objectiveType3 == 9 : _task3 = "Recover Downed Pilot"
+"third_marker" setMarkerText format ["3 - %1 at %2", _task3, thirdLabel]
+goto "marker3Done"
+#marker3Inactive
+"third_marker" setMarkerText ""
+#marker3Done
+
+? townCount < 4 : goto "marker4Inactive"
+_task4 = "Clear Area"
+? objectiveType4 == 1 : _task4 = format ["Destroy %1", objectiveTargetLabel4]
+? objectiveType4 == 2 : _task4 = "Find Intel"
+? objectiveType4 == 3 : _task4 = "Destroy Ammo Box"
+? objectiveType4 == 4 : _task4 = "Destroy Communications"
+? objectiveType4 == 5 : _task4 = "Neutralize Artillery"
+? objectiveType4 == 6 : _task4 = "Destroy Fuel Depot"
+? objectiveType4 == 7 : _task4 = "Save Civilians"
+? objectiveType4 == 8 : _task4 = format ["Steal %1", objectiveStealVehicleLabel4]
+? objectiveType4 == 9 : _task4 = "Recover Downed Pilot"
+"fourth_marker" setMarkerText format ["4 - %1 at %2", _task4, fourthLabel]
+goto "marker4Done"
+#marker4Inactive
+"fourth_marker" setMarkerText ""
+#marker4Done
+
+? townCount < 5 : goto "marker5Inactive"
+_task5 = "Clear Area"
+? objectiveType5 == 1 : _task5 = format ["Destroy %1", objectiveTargetLabel5]
+? objectiveType5 == 2 : _task5 = "Find Intel"
+? objectiveType5 == 3 : _task5 = "Destroy Ammo Box"
+? objectiveType5 == 4 : _task5 = "Destroy Communications"
+? objectiveType5 == 5 : _task5 = "Neutralize Artillery"
+? objectiveType5 == 6 : _task5 = "Destroy Fuel Depot"
+? objectiveType5 == 7 : _task5 = "Save Civilians"
+? objectiveType5 == 8 : _task5 = format ["Steal %1", objectiveStealVehicleLabel5]
+? objectiveType5 == 9 : _task5 = "Recover Downed Pilot"
+"fifth_marker" setMarkerText format ["5 - %1 at %2", _task5, fifthLabel]
+goto "marker5Done"
+#marker5Inactive
+"fifth_marker" setMarkerText ""
+#marker5Done
+exit

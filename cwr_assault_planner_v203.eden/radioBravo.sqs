@@ -1,0 +1,28 @@
+; v140 Radio Bravo entry point. Correct CWA slot index: Bravo is 2. Old SQS only.
+_radioLeader = leader (group player)
+? mpMode && player != _radioLeader : exit
+? missionEnded : exit
+? extractionActive : exit
+? !(extractionCallAvailable) : exit
+2 setRadioMsg "NULL"
+_requestPos = getPos player
+mpExtractionRequestX = _requestPos select 0
+mpExtractionRequestY = _requestPos select 1
+mpExtractionRequest = true
+? mpMode : publicVariable "mpExtractionRequestX"
+? mpMode : publicVariable "mpExtractionRequestY"
+? mpMode : publicVariable "mpExtractionRequest"
+? !(mpMode) : goto "singlePlayerExtraction"
+player sideChat "Actual: Final extraction request transmitted. The aircraft will hold until objectives are complete."
+titleText ["FINAL EXTRACTION REQUEST TRANSMITTED", "PLAIN"]
+? debugMode : debugLog "ERA DEBUG RADIO: Radio Bravo requested final extraction"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG RADIO: Radio Bravo requested final extraction"
+exit
+
+#singlePlayerExtraction
+extractionCallAvailable = false
+extractionActive = true
+player sideChat "Actual: Final extraction request transmitted. The aircraft will hold until objectives are complete."
+titleText ["FINAL EXTRACTION REQUEST TRANSMITTED", "PLAIN"]
+[] exec "mpServerExtraction.sqs"
+exit

@@ -1,0 +1,21 @@
+; FRevive
+; This script will order AI to move to the dead body
+
+_nearest_body = _this select 0
+_body         = _this select 1
+
+? _nearest_body distance _body > 5 : if (_nearest_body in units player) then {_nearest_body domove getPos _body} else {_nearest_body move getPos _body}; exit
+
+_source = getPos _nearest_body;
+_target = getPos _body;
+_diffX  = (_target select 0) - (_source select 0);
+_diffY  = (_target select 1) - (_source select 1);
+_dir    = if (_diffX==0 && _diffY==0) then {0} else {_diffX atan2 _diffY};
+if (_dir < 0) then {_dir=_dir+360};
+
+_pos = [(_target select 0)+5*sin _dir, (_target select 1)+5*cos _dir, _target select 2]
+if (_nearest_body in units player) then {_nearest_body domove _pos} else {_nearest_body move _pos}
+ 
+@_nearest_body distance _body <= FREVIVE_PICKUP_RANGE || !alive _nearest_body
+? alive _nearest_body : if (_nearest_body in units player) then {_nearest_body domove getPos _nearest_body} else {_nearest_body move getPos _nearest_body}
+exit

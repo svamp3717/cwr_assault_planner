@@ -1,0 +1,39 @@
+; Add selected weapon or utility equipment to the active arsenal target.
+
+_target = WW4_ArsenalTarget
+? isNull _target : hint "Arsenal target unavailable."; exit
+? !(alive _target) : hint "Arsenal target is not alive."; exit
+? _target == player : goto "TargetValid"
+? group _target == group player : goto "TargetValid"
+hint "The selected unit is no longer in your squad."
+exit
+
+#TargetValid
+_vi = lbCurSel 1501
+? _vi >= 0 : goto "HaveWeapon"
+hint "Select a weapon or equipment item first."
+exit
+
+#HaveWeapon
+_weapon = lbData [1501,_vi]
+? _weapon == "LaserDesignator" : _target addMagazine "LaserDesignator"
+? _weapon == "ww4_radio" : _target addMagazine "ww4_radiobat"
+_target addWeapon _weapon
+? _weapon in weapons _target : goto "Success"
+hint format ["Could not add %1 to %2. Its equipment slot may already be occupied.",_weapon,name _target]
+exit
+
+#Success
+? _weapon == "Binocular" : goto "UtilitySuccess"
+? _weapon == "NVGoggles" : goto "UtilitySuccess"
+? _weapon == "LaserDesignator" : goto "UtilitySuccess"
+? _weapon == "WW4EXT_SOFLAM" : goto "UtilitySuccess"
+? _weapon == "ww4_radio" : goto "UtilitySuccess"
+? _weapon == "MAP_Rucksack" : goto "UtilitySuccess"
+_target selectWeapon _weapon
+hint format ["Added weapon to %1: %2",name _target,_weapon]
+exit
+
+#UtilitySuccess
+hint format ["Added equipment to %1: %2",name _target,_weapon]
+exit

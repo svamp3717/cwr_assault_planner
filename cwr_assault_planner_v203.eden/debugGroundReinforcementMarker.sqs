@@ -1,0 +1,18 @@
+; custom v203: map-track the enemy ground reinforcement transport while Debug Messages are enabled.
+? !(debugMode) : exit
+#loop
+~1
+? missionEnded : goto "hide"
+? !(debugMode) : goto "hide"
+? isNull enemyGroundReinfVeh : goto "hide"
+? !(alive enemyGroundReinfVeh) : goto "hide"
+_p = getPos enemyGroundReinfVeh
+"enemy_ground_reinf_marker" setMarkerPos [_p select 0,_p select 1]
+"enemy_ground_reinf_marker" setMarkerType "Flag"
+"enemy_ground_reinf_marker" setMarkerColor "ColorRed"
+"enemy_ground_reinf_marker" setMarkerText "DEBUG: ENEMY REINFORCEMENT VEHICLE"
+goto "loop"
+#hide
+"enemy_ground_reinf_marker" setMarkerType "Empty"
+"enemy_ground_reinf_marker" setMarkerText ""
+exit

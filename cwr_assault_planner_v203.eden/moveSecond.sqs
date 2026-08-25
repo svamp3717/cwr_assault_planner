@@ -1,0 +1,15 @@
+; Move friendly forces to Objective 2.
+? alliedCount < 1 : goto "afterA1"
+a1ldr doMove [secondaryX, secondaryY, 0]
+#afterA1
+? alliedCount < 2 : goto "afterA2"
+a2ldr doMove [secondaryX, secondaryY, 0]
+#afterA2
+? alliedCount < 3 : goto "afterA3"
+a3ldr doMove [secondaryX, secondaryY, 0]
+#afterA3
+? alliedCount < 4 : goto "afterA4"
+a4ldr doMove [secondaryX, secondaryY, 0]
+#afterA4
+? supportGround : [] exec "sendGroundSupportSecond.sqs"
+exit

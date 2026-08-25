@@ -1,0 +1,15 @@
+class FREVIVE_RscActiveMenu
+	{
+	type=11;
+	style=0;
+	soundEnter[]={"ui\ui_over",0.2,1};
+	soundPush[]={"",0.2,1};
+	soundEscape[]={"ui\ui_cc",0.2,1};	
+	access=3;
+	color[]={1,1,1,1};
+	colorActive[]={1,0,0,1};
+	font="SteelfishB64";
+	sizeEx=0.05;
+	default=0;
+	soundClick[]={"ui\ui_ok",0.2,1};
+	};

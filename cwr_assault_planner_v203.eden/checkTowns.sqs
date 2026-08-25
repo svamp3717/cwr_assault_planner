@@ -1,0 +1,2170 @@
+; v83 radius-based clearance check for up to five objectives.
+slot1Clear = false
+slot2Clear = true
+slot3Clear = true
+slot4Clear = true
+slot5Clear = true
+airReinfClear = true
+townClearRadius = 500
+townClearRadiusSq = 250000
+? townCount < 1 : goto "afterSlot1"
+slot1Clear = false
+? enemyEast : goto "slot1East"
+goto "slot1Res"
+#slot1East
+? !(alive w4s1E1) : goto "slot1_w4s1E1_next"
+_p = getPos w4s1E1
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E1_next
+? !(alive w4s1E2) : goto "slot1_w4s1E2_next"
+_p = getPos w4s1E2
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E2_next
+? !(alive w4s1E3) : goto "slot1_w4s1E3_next"
+_p = getPos w4s1E3
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E3_next
+? !(alive w4s1E4) : goto "slot1_w4s1E4_next"
+_p = getPos w4s1E4
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E4_next
+? !(alive w4s1E5) : goto "slot1_w4s1E5_next"
+_p = getPos w4s1E5
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E5_next
+? !(alive w4s1E6) : goto "slot1_w4s1E6_next"
+_p = getPos w4s1E6
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E6_next
+? !(alive w4s1E7) : goto "slot1_w4s1E7_next"
+_p = getPos w4s1E7
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E7_next
+? !(alive w4s1E8) : goto "slot1_w4s1E8_next"
+_p = getPos w4s1E8
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E8_next
+? !(alive w4s1E9) : goto "slot1_w4s1E9_next"
+_p = getPos w4s1E9
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E9_next
+? !(alive w4s1E10) : goto "slot1_w4s1E10_next"
+_p = getPos w4s1E10
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E10_next
+? !(alive w4s1E11) : goto "slot1_w4s1E11_next"
+_p = getPos w4s1E11
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E11_next
+? !(alive w4s1E12) : goto "slot1_w4s1E12_next"
+_p = getPos w4s1E12
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E12_next
+? !(alive w4s1E13) : goto "slot1_w4s1E13_next"
+_p = getPos w4s1E13
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E13_next
+? !(alive w4s1E14) : goto "slot1_w4s1E14_next"
+_p = getPos w4s1E14
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E14_next
+? !(alive w4s1E15) : goto "slot1_w4s1E15_next"
+_p = getPos w4s1E15
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E15_next
+? !(alive w4s1E16) : goto "slot1_w4s1E16_next"
+_p = getPos w4s1E16
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E16_next
+? !(alive w4s1E17) : goto "slot1_w4s1E17_next"
+_p = getPos w4s1E17
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E17_next
+? !(alive w4s1E18) : goto "slot1_w4s1E18_next"
+_p = getPos w4s1E18
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E18_next
+? !(alive w4s1E19) : goto "slot1_w4s1E19_next"
+_p = getPos w4s1E19
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E19_next
+? !(alive w4s1E20) : goto "slot1_w4s1E20_next"
+_p = getPos w4s1E20
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E20_next
+? !(alive w4s1E21) : goto "slot1_w4s1E21_next"
+_p = getPos w4s1E21
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E21_next
+? !(alive w4s1E22) : goto "slot1_w4s1E22_next"
+_p = getPos w4s1E22
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E22_next
+? !(alive w4s1E23) : goto "slot1_w4s1E23_next"
+_p = getPos w4s1E23
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E23_next
+? !(alive w4s1E24) : goto "slot1_w4s1E24_next"
+_p = getPos w4s1E24
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_w4s1E24_next
+? !(alive s1Eveh1) : goto "slot1_s1Eveh1_next"
+_p = getPos s1Eveh1
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_s1Eveh1_next
+? !(alive s1Eveh3) : goto "slot1_s1Eveh3_next"
+_p = getPos s1Eveh3
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_s1Eveh3_next
+? !(alive s1Eveh5) : goto "slot1_s1Eveh5_next"
+_p = getPos s1Eveh5
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1EastBlocked"
+#slot1_s1Eveh5_next
+slot1Clear = true
+goto "afterSlot1"
+#slot1EastBlocked
+slot1Clear = false
+goto "afterSlot1"
+#slot1Res
+? !(alive w4s1R1) : goto "slot1_w4s1R1_next"
+_p = getPos w4s1R1
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R1_next
+? !(alive w4s1R2) : goto "slot1_w4s1R2_next"
+_p = getPos w4s1R2
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R2_next
+? !(alive w4s1R3) : goto "slot1_w4s1R3_next"
+_p = getPos w4s1R3
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R3_next
+? !(alive w4s1R4) : goto "slot1_w4s1R4_next"
+_p = getPos w4s1R4
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R4_next
+? !(alive w4s1R5) : goto "slot1_w4s1R5_next"
+_p = getPos w4s1R5
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R5_next
+? !(alive w4s1R6) : goto "slot1_w4s1R6_next"
+_p = getPos w4s1R6
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R6_next
+? !(alive w4s1R7) : goto "slot1_w4s1R7_next"
+_p = getPos w4s1R7
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R7_next
+? !(alive w4s1R8) : goto "slot1_w4s1R8_next"
+_p = getPos w4s1R8
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R8_next
+? !(alive w4s1R9) : goto "slot1_w4s1R9_next"
+_p = getPos w4s1R9
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R9_next
+? !(alive w4s1R10) : goto "slot1_w4s1R10_next"
+_p = getPos w4s1R10
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R10_next
+? !(alive w4s1R11) : goto "slot1_w4s1R11_next"
+_p = getPos w4s1R11
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R11_next
+? !(alive w4s1R12) : goto "slot1_w4s1R12_next"
+_p = getPos w4s1R12
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R12_next
+? !(alive w4s1R13) : goto "slot1_w4s1R13_next"
+_p = getPos w4s1R13
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R13_next
+? !(alive w4s1R14) : goto "slot1_w4s1R14_next"
+_p = getPos w4s1R14
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R14_next
+? !(alive w4s1R15) : goto "slot1_w4s1R15_next"
+_p = getPos w4s1R15
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R15_next
+? !(alive w4s1R16) : goto "slot1_w4s1R16_next"
+_p = getPos w4s1R16
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R16_next
+? !(alive w4s1R17) : goto "slot1_w4s1R17_next"
+_p = getPos w4s1R17
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R17_next
+? !(alive w4s1R18) : goto "slot1_w4s1R18_next"
+_p = getPos w4s1R18
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R18_next
+? !(alive w4s1R19) : goto "slot1_w4s1R19_next"
+_p = getPos w4s1R19
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R19_next
+? !(alive w4s1R20) : goto "slot1_w4s1R20_next"
+_p = getPos w4s1R20
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R20_next
+? !(alive w4s1R21) : goto "slot1_w4s1R21_next"
+_p = getPos w4s1R21
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R21_next
+? !(alive w4s1R22) : goto "slot1_w4s1R22_next"
+_p = getPos w4s1R22
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R22_next
+? !(alive w4s1R23) : goto "slot1_w4s1R23_next"
+_p = getPos w4s1R23
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R23_next
+? !(alive w4s1R24) : goto "slot1_w4s1R24_next"
+_p = getPos w4s1R24
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_w4s1R24_next
+? !(alive s1Rveh1) : goto "slot1_s1Rveh1_next"
+_p = getPos s1Rveh1
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_s1Rveh1_next
+? !(alive s1Rveh3) : goto "slot1_s1Rveh3_next"
+_p = getPos s1Rveh3
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_s1Rveh3_next
+? !(alive s1Rveh5) : goto "slot1_s1Rveh5_next"
+_p = getPos s1Rveh5
+_dx = (_p select 0) - primaryX
+_dy = (_p select 1) - primaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot1ResBlocked"
+#slot1_s1Rveh5_next
+slot1Clear = true
+goto "afterSlot1"
+#slot1ResBlocked
+slot1Clear = false
+goto "afterSlot1"
+#afterSlot1
+? townCount < 2 : goto "afterSlot2"
+slot2Clear = false
+? enemyEast : goto "slot2East"
+goto "slot2Res"
+#slot2East
+? !(alive w4s2E1) : goto "slot2_w4s2E1_next"
+_p = getPos w4s2E1
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E1_next
+? !(alive w4s2E2) : goto "slot2_w4s2E2_next"
+_p = getPos w4s2E2
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E2_next
+? !(alive w4s2E3) : goto "slot2_w4s2E3_next"
+_p = getPos w4s2E3
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E3_next
+? !(alive w4s2E4) : goto "slot2_w4s2E4_next"
+_p = getPos w4s2E4
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E4_next
+? !(alive w4s2E5) : goto "slot2_w4s2E5_next"
+_p = getPos w4s2E5
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E5_next
+? !(alive w4s2E6) : goto "slot2_w4s2E6_next"
+_p = getPos w4s2E6
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E6_next
+? !(alive w4s2E7) : goto "slot2_w4s2E7_next"
+_p = getPos w4s2E7
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E7_next
+? !(alive w4s2E8) : goto "slot2_w4s2E8_next"
+_p = getPos w4s2E8
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E8_next
+? !(alive w4s2E9) : goto "slot2_w4s2E9_next"
+_p = getPos w4s2E9
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E9_next
+? !(alive w4s2E10) : goto "slot2_w4s2E10_next"
+_p = getPos w4s2E10
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E10_next
+? !(alive w4s2E11) : goto "slot2_w4s2E11_next"
+_p = getPos w4s2E11
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E11_next
+? !(alive w4s2E12) : goto "slot2_w4s2E12_next"
+_p = getPos w4s2E12
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E12_next
+? !(alive w4s2E13) : goto "slot2_w4s2E13_next"
+_p = getPos w4s2E13
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E13_next
+? !(alive w4s2E14) : goto "slot2_w4s2E14_next"
+_p = getPos w4s2E14
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E14_next
+? !(alive w4s2E15) : goto "slot2_w4s2E15_next"
+_p = getPos w4s2E15
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E15_next
+? !(alive w4s2E16) : goto "slot2_w4s2E16_next"
+_p = getPos w4s2E16
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E16_next
+? !(alive w4s2E17) : goto "slot2_w4s2E17_next"
+_p = getPos w4s2E17
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E17_next
+? !(alive w4s2E18) : goto "slot2_w4s2E18_next"
+_p = getPos w4s2E18
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E18_next
+? !(alive w4s2E19) : goto "slot2_w4s2E19_next"
+_p = getPos w4s2E19
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E19_next
+? !(alive w4s2E20) : goto "slot2_w4s2E20_next"
+_p = getPos w4s2E20
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E20_next
+? !(alive w4s2E21) : goto "slot2_w4s2E21_next"
+_p = getPos w4s2E21
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E21_next
+? !(alive w4s2E22) : goto "slot2_w4s2E22_next"
+_p = getPos w4s2E22
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E22_next
+? !(alive w4s2E23) : goto "slot2_w4s2E23_next"
+_p = getPos w4s2E23
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E23_next
+? !(alive w4s2E24) : goto "slot2_w4s2E24_next"
+_p = getPos w4s2E24
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_w4s2E24_next
+? !(alive s2Eveh1) : goto "slot2_s2Eveh1_next"
+_p = getPos s2Eveh1
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_s2Eveh1_next
+? !(alive s2Eveh3) : goto "slot2_s2Eveh3_next"
+_p = getPos s2Eveh3
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_s2Eveh3_next
+? !(alive s2Eveh5) : goto "slot2_s2Eveh5_next"
+_p = getPos s2Eveh5
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2EastBlocked"
+#slot2_s2Eveh5_next
+slot2Clear = true
+goto "afterSlot2"
+#slot2EastBlocked
+slot2Clear = false
+goto "afterSlot2"
+#slot2Res
+? !(alive w4s2R1) : goto "slot2_w4s2R1_next"
+_p = getPos w4s2R1
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R1_next
+? !(alive w4s2R2) : goto "slot2_w4s2R2_next"
+_p = getPos w4s2R2
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R2_next
+? !(alive w4s2R3) : goto "slot2_w4s2R3_next"
+_p = getPos w4s2R3
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R3_next
+? !(alive w4s2R4) : goto "slot2_w4s2R4_next"
+_p = getPos w4s2R4
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R4_next
+? !(alive w4s2R5) : goto "slot2_w4s2R5_next"
+_p = getPos w4s2R5
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R5_next
+? !(alive w4s2R6) : goto "slot2_w4s2R6_next"
+_p = getPos w4s2R6
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R6_next
+? !(alive w4s2R7) : goto "slot2_w4s2R7_next"
+_p = getPos w4s2R7
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R7_next
+? !(alive w4s2R8) : goto "slot2_w4s2R8_next"
+_p = getPos w4s2R8
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R8_next
+? !(alive w4s2R9) : goto "slot2_w4s2R9_next"
+_p = getPos w4s2R9
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R9_next
+? !(alive w4s2R10) : goto "slot2_w4s2R10_next"
+_p = getPos w4s2R10
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R10_next
+? !(alive w4s2R11) : goto "slot2_w4s2R11_next"
+_p = getPos w4s2R11
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R11_next
+? !(alive w4s2R12) : goto "slot2_w4s2R12_next"
+_p = getPos w4s2R12
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R12_next
+? !(alive w4s2R13) : goto "slot2_w4s2R13_next"
+_p = getPos w4s2R13
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R13_next
+? !(alive w4s2R14) : goto "slot2_w4s2R14_next"
+_p = getPos w4s2R14
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R14_next
+? !(alive w4s2R15) : goto "slot2_w4s2R15_next"
+_p = getPos w4s2R15
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R15_next
+? !(alive w4s2R16) : goto "slot2_w4s2R16_next"
+_p = getPos w4s2R16
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R16_next
+? !(alive w4s2R17) : goto "slot2_w4s2R17_next"
+_p = getPos w4s2R17
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R17_next
+? !(alive w4s2R18) : goto "slot2_w4s2R18_next"
+_p = getPos w4s2R18
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R18_next
+? !(alive w4s2R19) : goto "slot2_w4s2R19_next"
+_p = getPos w4s2R19
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R19_next
+? !(alive w4s2R20) : goto "slot2_w4s2R20_next"
+_p = getPos w4s2R20
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R20_next
+? !(alive w4s2R21) : goto "slot2_w4s2R21_next"
+_p = getPos w4s2R21
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R21_next
+? !(alive w4s2R22) : goto "slot2_w4s2R22_next"
+_p = getPos w4s2R22
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R22_next
+? !(alive w4s2R23) : goto "slot2_w4s2R23_next"
+_p = getPos w4s2R23
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R23_next
+? !(alive w4s2R24) : goto "slot2_w4s2R24_next"
+_p = getPos w4s2R24
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_w4s2R24_next
+? !(alive s2Rveh1) : goto "slot2_s2Rveh1_next"
+_p = getPos s2Rveh1
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_s2Rveh1_next
+? !(alive s2Rveh3) : goto "slot2_s2Rveh3_next"
+_p = getPos s2Rveh3
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_s2Rveh3_next
+? !(alive s2Rveh5) : goto "slot2_s2Rveh5_next"
+_p = getPos s2Rveh5
+_dx = (_p select 0) - secondaryX
+_dy = (_p select 1) - secondaryY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot2ResBlocked"
+#slot2_s2Rveh5_next
+slot2Clear = true
+goto "afterSlot2"
+#slot2ResBlocked
+slot2Clear = false
+goto "afterSlot2"
+#afterSlot2
+? townCount < 3 : goto "afterSlot3"
+slot3Clear = false
+? enemyEast : goto "slot3East"
+goto "slot3Res"
+#slot3East
+? !(alive w4s3E1) : goto "slot3_w4s3E1_next"
+_p = getPos w4s3E1
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E1_next
+? !(alive w4s3E2) : goto "slot3_w4s3E2_next"
+_p = getPos w4s3E2
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E2_next
+? !(alive w4s3E3) : goto "slot3_w4s3E3_next"
+_p = getPos w4s3E3
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E3_next
+? !(alive w4s3E4) : goto "slot3_w4s3E4_next"
+_p = getPos w4s3E4
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E4_next
+? !(alive w4s3E5) : goto "slot3_w4s3E5_next"
+_p = getPos w4s3E5
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E5_next
+? !(alive w4s3E6) : goto "slot3_w4s3E6_next"
+_p = getPos w4s3E6
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E6_next
+? !(alive w4s3E7) : goto "slot3_w4s3E7_next"
+_p = getPos w4s3E7
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E7_next
+? !(alive w4s3E8) : goto "slot3_w4s3E8_next"
+_p = getPos w4s3E8
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E8_next
+? !(alive w4s3E9) : goto "slot3_w4s3E9_next"
+_p = getPos w4s3E9
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E9_next
+? !(alive w4s3E10) : goto "slot3_w4s3E10_next"
+_p = getPos w4s3E10
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E10_next
+? !(alive w4s3E11) : goto "slot3_w4s3E11_next"
+_p = getPos w4s3E11
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E11_next
+? !(alive w4s3E12) : goto "slot3_w4s3E12_next"
+_p = getPos w4s3E12
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E12_next
+? !(alive w4s3E13) : goto "slot3_w4s3E13_next"
+_p = getPos w4s3E13
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E13_next
+? !(alive w4s3E14) : goto "slot3_w4s3E14_next"
+_p = getPos w4s3E14
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E14_next
+? !(alive w4s3E15) : goto "slot3_w4s3E15_next"
+_p = getPos w4s3E15
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E15_next
+? !(alive w4s3E16) : goto "slot3_w4s3E16_next"
+_p = getPos w4s3E16
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E16_next
+? !(alive w4s3E17) : goto "slot3_w4s3E17_next"
+_p = getPos w4s3E17
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E17_next
+? !(alive w4s3E18) : goto "slot3_w4s3E18_next"
+_p = getPos w4s3E18
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E18_next
+? !(alive w4s3E19) : goto "slot3_w4s3E19_next"
+_p = getPos w4s3E19
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E19_next
+? !(alive w4s3E20) : goto "slot3_w4s3E20_next"
+_p = getPos w4s3E20
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E20_next
+? !(alive w4s3E21) : goto "slot3_w4s3E21_next"
+_p = getPos w4s3E21
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E21_next
+? !(alive w4s3E22) : goto "slot3_w4s3E22_next"
+_p = getPos w4s3E22
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E22_next
+? !(alive w4s3E23) : goto "slot3_w4s3E23_next"
+_p = getPos w4s3E23
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E23_next
+? !(alive w4s3E24) : goto "slot3_w4s3E24_next"
+_p = getPos w4s3E24
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_w4s3E24_next
+? !(alive s3Eveh1) : goto "slot3_s3Eveh1_next"
+_p = getPos s3Eveh1
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_s3Eveh1_next
+? !(alive s3Eveh3) : goto "slot3_s3Eveh3_next"
+_p = getPos s3Eveh3
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_s3Eveh3_next
+? !(alive s3Eveh5) : goto "slot3_s3Eveh5_next"
+_p = getPos s3Eveh5
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3EastBlocked"
+#slot3_s3Eveh5_next
+slot3Clear = true
+goto "afterSlot3"
+#slot3EastBlocked
+slot3Clear = false
+goto "afterSlot3"
+#slot3Res
+? !(alive w4s3R1) : goto "slot3_w4s3R1_next"
+_p = getPos w4s3R1
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R1_next
+? !(alive w4s3R2) : goto "slot3_w4s3R2_next"
+_p = getPos w4s3R2
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R2_next
+? !(alive w4s3R3) : goto "slot3_w4s3R3_next"
+_p = getPos w4s3R3
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R3_next
+? !(alive w4s3R4) : goto "slot3_w4s3R4_next"
+_p = getPos w4s3R4
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R4_next
+? !(alive w4s3R5) : goto "slot3_w4s3R5_next"
+_p = getPos w4s3R5
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R5_next
+? !(alive w4s3R6) : goto "slot3_w4s3R6_next"
+_p = getPos w4s3R6
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R6_next
+? !(alive w4s3R7) : goto "slot3_w4s3R7_next"
+_p = getPos w4s3R7
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R7_next
+? !(alive w4s3R8) : goto "slot3_w4s3R8_next"
+_p = getPos w4s3R8
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R8_next
+? !(alive w4s3R9) : goto "slot3_w4s3R9_next"
+_p = getPos w4s3R9
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R9_next
+? !(alive w4s3R10) : goto "slot3_w4s3R10_next"
+_p = getPos w4s3R10
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R10_next
+? !(alive w4s3R11) : goto "slot3_w4s3R11_next"
+_p = getPos w4s3R11
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R11_next
+? !(alive w4s3R12) : goto "slot3_w4s3R12_next"
+_p = getPos w4s3R12
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R12_next
+? !(alive w4s3R13) : goto "slot3_w4s3R13_next"
+_p = getPos w4s3R13
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R13_next
+? !(alive w4s3R14) : goto "slot3_w4s3R14_next"
+_p = getPos w4s3R14
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R14_next
+? !(alive w4s3R15) : goto "slot3_w4s3R15_next"
+_p = getPos w4s3R15
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R15_next
+? !(alive w4s3R16) : goto "slot3_w4s3R16_next"
+_p = getPos w4s3R16
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R16_next
+? !(alive w4s3R17) : goto "slot3_w4s3R17_next"
+_p = getPos w4s3R17
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R17_next
+? !(alive w4s3R18) : goto "slot3_w4s3R18_next"
+_p = getPos w4s3R18
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R18_next
+? !(alive w4s3R19) : goto "slot3_w4s3R19_next"
+_p = getPos w4s3R19
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R19_next
+? !(alive w4s3R20) : goto "slot3_w4s3R20_next"
+_p = getPos w4s3R20
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R20_next
+? !(alive w4s3R21) : goto "slot3_w4s3R21_next"
+_p = getPos w4s3R21
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R21_next
+? !(alive w4s3R22) : goto "slot3_w4s3R22_next"
+_p = getPos w4s3R22
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R22_next
+? !(alive w4s3R23) : goto "slot3_w4s3R23_next"
+_p = getPos w4s3R23
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R23_next
+? !(alive w4s3R24) : goto "slot3_w4s3R24_next"
+_p = getPos w4s3R24
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_w4s3R24_next
+? !(alive s3Rveh1) : goto "slot3_s3Rveh1_next"
+_p = getPos s3Rveh1
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_s3Rveh1_next
+? !(alive s3Rveh3) : goto "slot3_s3Rveh3_next"
+_p = getPos s3Rveh3
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_s3Rveh3_next
+? !(alive s3Rveh5) : goto "slot3_s3Rveh5_next"
+_p = getPos s3Rveh5
+_dx = (_p select 0) - thirdX
+_dy = (_p select 1) - thirdY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot3ResBlocked"
+#slot3_s3Rveh5_next
+slot3Clear = true
+goto "afterSlot3"
+#slot3ResBlocked
+slot3Clear = false
+goto "afterSlot3"
+#afterSlot3
+? townCount < 4 : goto "afterSlot4"
+slot4Clear = false
+? enemyEast : goto "slot4East"
+goto "slot4Res"
+#slot4East
+? !(alive w4s4E1) : goto "slot4_w4s4E1_next"
+_p = getPos w4s4E1
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E1_next
+? !(alive w4s4E2) : goto "slot4_w4s4E2_next"
+_p = getPos w4s4E2
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E2_next
+? !(alive w4s4E3) : goto "slot4_w4s4E3_next"
+_p = getPos w4s4E3
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E3_next
+? !(alive w4s4E4) : goto "slot4_w4s4E4_next"
+_p = getPos w4s4E4
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E4_next
+? !(alive w4s4E5) : goto "slot4_w4s4E5_next"
+_p = getPos w4s4E5
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E5_next
+? !(alive w4s4E6) : goto "slot4_w4s4E6_next"
+_p = getPos w4s4E6
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E6_next
+? !(alive w4s4E7) : goto "slot4_w4s4E7_next"
+_p = getPos w4s4E7
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E7_next
+? !(alive w4s4E8) : goto "slot4_w4s4E8_next"
+_p = getPos w4s4E8
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E8_next
+? !(alive w4s4E9) : goto "slot4_w4s4E9_next"
+_p = getPos w4s4E9
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E9_next
+? !(alive w4s4E10) : goto "slot4_w4s4E10_next"
+_p = getPos w4s4E10
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E10_next
+? !(alive w4s4E11) : goto "slot4_w4s4E11_next"
+_p = getPos w4s4E11
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E11_next
+? !(alive w4s4E12) : goto "slot4_w4s4E12_next"
+_p = getPos w4s4E12
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E12_next
+? !(alive w4s4E13) : goto "slot4_w4s4E13_next"
+_p = getPos w4s4E13
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E13_next
+? !(alive w4s4E14) : goto "slot4_w4s4E14_next"
+_p = getPos w4s4E14
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E14_next
+? !(alive w4s4E15) : goto "slot4_w4s4E15_next"
+_p = getPos w4s4E15
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E15_next
+? !(alive w4s4E16) : goto "slot4_w4s4E16_next"
+_p = getPos w4s4E16
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E16_next
+? !(alive w4s4E17) : goto "slot4_w4s4E17_next"
+_p = getPos w4s4E17
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E17_next
+? !(alive w4s4E18) : goto "slot4_w4s4E18_next"
+_p = getPos w4s4E18
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E18_next
+? !(alive w4s4E19) : goto "slot4_w4s4E19_next"
+_p = getPos w4s4E19
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E19_next
+? !(alive w4s4E20) : goto "slot4_w4s4E20_next"
+_p = getPos w4s4E20
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E20_next
+? !(alive w4s4E21) : goto "slot4_w4s4E21_next"
+_p = getPos w4s4E21
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E21_next
+? !(alive w4s4E22) : goto "slot4_w4s4E22_next"
+_p = getPos w4s4E22
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E22_next
+? !(alive w4s4E23) : goto "slot4_w4s4E23_next"
+_p = getPos w4s4E23
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E23_next
+? !(alive w4s4E24) : goto "slot4_w4s4E24_next"
+_p = getPos w4s4E24
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_w4s4E24_next
+? !(alive s4Eveh1) : goto "slot4_s4Eveh1_next"
+_p = getPos s4Eveh1
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_s4Eveh1_next
+? !(alive s4Eveh3) : goto "slot4_s4Eveh3_next"
+_p = getPos s4Eveh3
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_s4Eveh3_next
+? !(alive s4Eveh5) : goto "slot4_s4Eveh5_next"
+_p = getPos s4Eveh5
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4EastBlocked"
+#slot4_s4Eveh5_next
+slot4Clear = true
+goto "afterSlot4"
+#slot4EastBlocked
+slot4Clear = false
+goto "afterSlot4"
+#slot4Res
+? !(alive w4s4R1) : goto "slot4_w4s4R1_next"
+_p = getPos w4s4R1
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R1_next
+? !(alive w4s4R2) : goto "slot4_w4s4R2_next"
+_p = getPos w4s4R2
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R2_next
+? !(alive w4s4R3) : goto "slot4_w4s4R3_next"
+_p = getPos w4s4R3
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R3_next
+? !(alive w4s4R4) : goto "slot4_w4s4R4_next"
+_p = getPos w4s4R4
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R4_next
+? !(alive w4s4R5) : goto "slot4_w4s4R5_next"
+_p = getPos w4s4R5
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R5_next
+? !(alive w4s4R6) : goto "slot4_w4s4R6_next"
+_p = getPos w4s4R6
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R6_next
+? !(alive w4s4R7) : goto "slot4_w4s4R7_next"
+_p = getPos w4s4R7
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R7_next
+? !(alive w4s4R8) : goto "slot4_w4s4R8_next"
+_p = getPos w4s4R8
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R8_next
+? !(alive w4s4R9) : goto "slot4_w4s4R9_next"
+_p = getPos w4s4R9
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R9_next
+? !(alive w4s4R10) : goto "slot4_w4s4R10_next"
+_p = getPos w4s4R10
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R10_next
+? !(alive w4s4R11) : goto "slot4_w4s4R11_next"
+_p = getPos w4s4R11
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R11_next
+? !(alive w4s4R12) : goto "slot4_w4s4R12_next"
+_p = getPos w4s4R12
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R12_next
+? !(alive w4s4R13) : goto "slot4_w4s4R13_next"
+_p = getPos w4s4R13
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R13_next
+? !(alive w4s4R14) : goto "slot4_w4s4R14_next"
+_p = getPos w4s4R14
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R14_next
+? !(alive w4s4R15) : goto "slot4_w4s4R15_next"
+_p = getPos w4s4R15
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R15_next
+? !(alive w4s4R16) : goto "slot4_w4s4R16_next"
+_p = getPos w4s4R16
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R16_next
+? !(alive w4s4R17) : goto "slot4_w4s4R17_next"
+_p = getPos w4s4R17
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R17_next
+? !(alive w4s4R18) : goto "slot4_w4s4R18_next"
+_p = getPos w4s4R18
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R18_next
+? !(alive w4s4R19) : goto "slot4_w4s4R19_next"
+_p = getPos w4s4R19
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R19_next
+? !(alive w4s4R20) : goto "slot4_w4s4R20_next"
+_p = getPos w4s4R20
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R20_next
+? !(alive w4s4R21) : goto "slot4_w4s4R21_next"
+_p = getPos w4s4R21
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R21_next
+? !(alive w4s4R22) : goto "slot4_w4s4R22_next"
+_p = getPos w4s4R22
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R22_next
+? !(alive w4s4R23) : goto "slot4_w4s4R23_next"
+_p = getPos w4s4R23
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R23_next
+? !(alive w4s4R24) : goto "slot4_w4s4R24_next"
+_p = getPos w4s4R24
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_w4s4R24_next
+? !(alive s4Rveh1) : goto "slot4_s4Rveh1_next"
+_p = getPos s4Rveh1
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_s4Rveh1_next
+? !(alive s4Rveh3) : goto "slot4_s4Rveh3_next"
+_p = getPos s4Rveh3
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_s4Rveh3_next
+? !(alive s4Rveh5) : goto "slot4_s4Rveh5_next"
+_p = getPos s4Rveh5
+_dx = (_p select 0) - fourthX
+_dy = (_p select 1) - fourthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot4ResBlocked"
+#slot4_s4Rveh5_next
+slot4Clear = true
+goto "afterSlot4"
+#slot4ResBlocked
+slot4Clear = false
+goto "afterSlot4"
+#afterSlot4
+? townCount < 5 : goto "afterSlot5"
+slot5Clear = false
+? enemyEast : goto "slot5East"
+goto "slot5Res"
+#slot5East
+? !(alive w4s5E1) : goto "slot5_w4s5E1_next"
+_p = getPos w4s5E1
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E1_next
+? !(alive w4s5E2) : goto "slot5_w4s5E2_next"
+_p = getPos w4s5E2
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E2_next
+? !(alive w4s5E3) : goto "slot5_w4s5E3_next"
+_p = getPos w4s5E3
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E3_next
+? !(alive w4s5E4) : goto "slot5_w4s5E4_next"
+_p = getPos w4s5E4
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E4_next
+? !(alive w4s5E5) : goto "slot5_w4s5E5_next"
+_p = getPos w4s5E5
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E5_next
+? !(alive w4s5E6) : goto "slot5_w4s5E6_next"
+_p = getPos w4s5E6
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E6_next
+? !(alive w4s5E7) : goto "slot5_w4s5E7_next"
+_p = getPos w4s5E7
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E7_next
+? !(alive w4s5E8) : goto "slot5_w4s5E8_next"
+_p = getPos w4s5E8
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E8_next
+? !(alive w4s5E9) : goto "slot5_w4s5E9_next"
+_p = getPos w4s5E9
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E9_next
+? !(alive w4s5E10) : goto "slot5_w4s5E10_next"
+_p = getPos w4s5E10
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E10_next
+? !(alive w4s5E11) : goto "slot5_w4s5E11_next"
+_p = getPos w4s5E11
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E11_next
+? !(alive w4s5E12) : goto "slot5_w4s5E12_next"
+_p = getPos w4s5E12
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E12_next
+? !(alive w4s5E13) : goto "slot5_w4s5E13_next"
+_p = getPos w4s5E13
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E13_next
+? !(alive w4s5E14) : goto "slot5_w4s5E14_next"
+_p = getPos w4s5E14
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E14_next
+? !(alive w4s5E15) : goto "slot5_w4s5E15_next"
+_p = getPos w4s5E15
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E15_next
+? !(alive w4s5E16) : goto "slot5_w4s5E16_next"
+_p = getPos w4s5E16
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E16_next
+? !(alive w4s5E17) : goto "slot5_w4s5E17_next"
+_p = getPos w4s5E17
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E17_next
+? !(alive w4s5E18) : goto "slot5_w4s5E18_next"
+_p = getPos w4s5E18
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E18_next
+? !(alive w4s5E19) : goto "slot5_w4s5E19_next"
+_p = getPos w4s5E19
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E19_next
+? !(alive w4s5E20) : goto "slot5_w4s5E20_next"
+_p = getPos w4s5E20
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E20_next
+? !(alive w4s5E21) : goto "slot5_w4s5E21_next"
+_p = getPos w4s5E21
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E21_next
+? !(alive w4s5E22) : goto "slot5_w4s5E22_next"
+_p = getPos w4s5E22
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E22_next
+? !(alive w4s5E23) : goto "slot5_w4s5E23_next"
+_p = getPos w4s5E23
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E23_next
+? !(alive w4s5E24) : goto "slot5_w4s5E24_next"
+_p = getPos w4s5E24
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_w4s5E24_next
+? !(alive s5Eveh1) : goto "slot5_s5Eveh1_next"
+_p = getPos s5Eveh1
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_s5Eveh1_next
+? !(alive s5Eveh3) : goto "slot5_s5Eveh3_next"
+_p = getPos s5Eveh3
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_s5Eveh3_next
+? !(alive s5Eveh5) : goto "slot5_s5Eveh5_next"
+_p = getPos s5Eveh5
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5EastBlocked"
+#slot5_s5Eveh5_next
+slot5Clear = true
+goto "afterSlot5"
+#slot5EastBlocked
+slot5Clear = false
+goto "afterSlot5"
+#slot5Res
+? !(alive w4s5R1) : goto "slot5_w4s5R1_next"
+_p = getPos w4s5R1
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R1_next
+? !(alive w4s5R2) : goto "slot5_w4s5R2_next"
+_p = getPos w4s5R2
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R2_next
+? !(alive w4s5R3) : goto "slot5_w4s5R3_next"
+_p = getPos w4s5R3
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R3_next
+? !(alive w4s5R4) : goto "slot5_w4s5R4_next"
+_p = getPos w4s5R4
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R4_next
+? !(alive w4s5R5) : goto "slot5_w4s5R5_next"
+_p = getPos w4s5R5
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R5_next
+? !(alive w4s5R6) : goto "slot5_w4s5R6_next"
+_p = getPos w4s5R6
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R6_next
+? !(alive w4s5R7) : goto "slot5_w4s5R7_next"
+_p = getPos w4s5R7
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R7_next
+? !(alive w4s5R8) : goto "slot5_w4s5R8_next"
+_p = getPos w4s5R8
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R8_next
+? !(alive w4s5R9) : goto "slot5_w4s5R9_next"
+_p = getPos w4s5R9
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R9_next
+? !(alive w4s5R10) : goto "slot5_w4s5R10_next"
+_p = getPos w4s5R10
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R10_next
+? !(alive w4s5R11) : goto "slot5_w4s5R11_next"
+_p = getPos w4s5R11
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R11_next
+? !(alive w4s5R12) : goto "slot5_w4s5R12_next"
+_p = getPos w4s5R12
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R12_next
+? !(alive w4s5R13) : goto "slot5_w4s5R13_next"
+_p = getPos w4s5R13
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R13_next
+? !(alive w4s5R14) : goto "slot5_w4s5R14_next"
+_p = getPos w4s5R14
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R14_next
+? !(alive w4s5R15) : goto "slot5_w4s5R15_next"
+_p = getPos w4s5R15
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R15_next
+? !(alive w4s5R16) : goto "slot5_w4s5R16_next"
+_p = getPos w4s5R16
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R16_next
+? !(alive w4s5R17) : goto "slot5_w4s5R17_next"
+_p = getPos w4s5R17
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R17_next
+? !(alive w4s5R18) : goto "slot5_w4s5R18_next"
+_p = getPos w4s5R18
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R18_next
+? !(alive w4s5R19) : goto "slot5_w4s5R19_next"
+_p = getPos w4s5R19
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R19_next
+? !(alive w4s5R20) : goto "slot5_w4s5R20_next"
+_p = getPos w4s5R20
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R20_next
+? !(alive w4s5R21) : goto "slot5_w4s5R21_next"
+_p = getPos w4s5R21
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R21_next
+? !(alive w4s5R22) : goto "slot5_w4s5R22_next"
+_p = getPos w4s5R22
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R22_next
+? !(alive w4s5R23) : goto "slot5_w4s5R23_next"
+_p = getPos w4s5R23
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R23_next
+? !(alive w4s5R24) : goto "slot5_w4s5R24_next"
+_p = getPos w4s5R24
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_w4s5R24_next
+? !(alive s5Rveh1) : goto "slot5_s5Rveh1_next"
+_p = getPos s5Rveh1
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_s5Rveh1_next
+? !(alive s5Rveh3) : goto "slot5_s5Rveh3_next"
+_p = getPos s5Rveh3
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_s5Rveh3_next
+? !(alive s5Rveh5) : goto "slot5_s5Rveh5_next"
+_p = getPos s5Rveh5
+_dx = (_p select 0) - fifthX
+_dy = (_p select 1) - fifthY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "slot5ResBlocked"
+#slot5_s5Rveh5_next
+slot5Clear = true
+goto "afterSlot5"
+#slot5ResBlocked
+slot5Clear = false
+goto "afterSlot5"
+#afterSlot5
+; Reinforcement infantry blocks only its selected target while nearby.
+airReinfClear = true
+? !(enemyAirReinforcementActive) : exit
+airReinfClear = false
+? enemyEast : goto "airReinfEastCheck"
+goto "airReinfResCheck"
+#airReinfEastCheck
+? !(alive w4eAirR1) : goto "air_eAirR1_next"
+_p = getPos w4eAirR1
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR1_next
+? !(alive w4eAirR2) : goto "air_eAirR2_next"
+_p = getPos w4eAirR2
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR2_next
+? !(alive w4eAirR3) : goto "air_eAirR3_next"
+_p = getPos w4eAirR3
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR3_next
+? !(alive w4eAirR4) : goto "air_eAirR4_next"
+_p = getPos w4eAirR4
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR4_next
+? !(alive w4eAirR5) : goto "air_eAirR5_next"
+_p = getPos w4eAirR5
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR5_next
+? !(alive w4eAirR6) : goto "air_eAirR6_next"
+_p = getPos w4eAirR6
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR6_next
+? !(alive w4eAirR7) : goto "air_eAirR7_next"
+_p = getPos w4eAirR7
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR7_next
+? !(alive w4eAirR8) : goto "air_eAirR8_next"
+_p = getPos w4eAirR8
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR8_next
+? !(alive w4eAirR9) : goto "air_eAirR9_next"
+_p = getPos w4eAirR9
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR9_next
+? !(alive w4eAirR10) : goto "air_eAirR10_next"
+_p = getPos w4eAirR10
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR10_next
+? !(alive w4eAirR11) : goto "air_eAirR11_next"
+_p = getPos w4eAirR11
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR11_next
+? !(alive w4eAirR12) : goto "air_eAirR12_next"
+_p = getPos w4eAirR12
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfEastBlocked"
+#air_eAirR12_next
+airReinfClear = true
+exit
+#airReinfEastBlocked
+airReinfClear = false
+exit
+#airReinfResCheck
+? !(alive w4rAirR1) : goto "air_rAirR1_next"
+_p = getPos w4rAirR1
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR1_next
+? !(alive w4rAirR2) : goto "air_rAirR2_next"
+_p = getPos w4rAirR2
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR2_next
+? !(alive w4rAirR3) : goto "air_rAirR3_next"
+_p = getPos w4rAirR3
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR3_next
+? !(alive w4rAirR4) : goto "air_rAirR4_next"
+_p = getPos w4rAirR4
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR4_next
+? !(alive w4rAirR5) : goto "air_rAirR5_next"
+_p = getPos w4rAirR5
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR5_next
+? !(alive w4rAirR6) : goto "air_rAirR6_next"
+_p = getPos w4rAirR6
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR6_next
+? !(alive w4rAirR7) : goto "air_rAirR7_next"
+_p = getPos w4rAirR7
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR7_next
+? !(alive w4rAirR8) : goto "air_rAirR8_next"
+_p = getPos w4rAirR8
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR8_next
+? !(alive w4rAirR9) : goto "air_rAirR9_next"
+_p = getPos w4rAirR9
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR9_next
+? !(alive w4rAirR10) : goto "air_rAirR10_next"
+_p = getPos w4rAirR10
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR10_next
+? !(alive w4rAirR11) : goto "air_rAirR11_next"
+_p = getPos w4rAirR11
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR11_next
+? !(alive w4rAirR12) : goto "air_rAirR12_next"
+_p = getPos w4rAirR12
+_dx = (_p select 0) - reinfTargetX
+_dy = (_p select 1) - reinfTargetY
+_d2 = (_dx * _dx) + (_dy * _dy)
+? _d2 < townClearRadiusSq : goto "airReinfResBlocked"
+#air_rAirR12_next
+airReinfClear = true
+exit
+#airReinfResBlocked
+airReinfClear = false
+exit

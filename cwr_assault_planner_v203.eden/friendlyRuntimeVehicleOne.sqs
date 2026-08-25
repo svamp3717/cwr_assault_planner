@@ -1,0 +1,103 @@
+; v199: CWA/OFP runtime WEST vehicle and crew helper.
+; Arguments: [vehicle class, x, y, z, direction, aircraft flag].
+; Aircraft with z > 0 receive an airborne bootstrap. Existing ground aircraft calls still use the original spin-up behavior.
+friendlyRuntimeVehicleSpawnComplete = false
+friendlyRuntimeVehicleSpawned = objNull
+friendlyRuntimeVehicleSpawnCrewCount = 0
+_class = _this select 0
+_x = _this select 1
+_y = _this select 2
+_z = _this select 3
+_dir = _this select 4
+_aircraft = _this select 5
+_crewClass = "WW4_WARCrew"
+? _aircraft : _crewClass = "WW4_WARPilot"
+_veh = _class createVehicle [_x, _y, 0]
+? isNull _veh : goto "spawnFailed"
+_veh setDir _dir
+_veh setDammage 0
+? _aircraft && _z > 0 : goto "airborneSpawn"
+_veh setFuel 0
+_veh setVelocity [0,0,0]
+goto "spawnPositioned"
+#airborneSpawn
+_veh setFuel 1
+_veh setPos [_x, _y, _z]
+_veh setVelocity [0,0,25]
+#spawnPositioned
+~0.2
+_grp = createGroup west
+_crewPos = [_x + 6, _y + 6, 0]
+_crewClass createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 1 : goto "spawnFailedDeleteVehicle"
+_driver = _units select 0
+_driver setSkill 0.60
+_driver moveInDriver _veh
+_crewClass createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 2 : goto "skipGunnerCreate"
+_gunner = _units select 1
+_gunner setSkill 0.60
+_gunner moveInGunner _veh
+#skipGunnerCreate
+_crewClass createUnit [_crewPos, _grp, ""]
+~0.1
+_units = units _grp
+? count _units < 3 : goto "skipCommanderCreate"
+_commander = _units select 2
+_commander setSkill 0.60
+_commander moveInCommander _veh
+#skipCommanderCreate
+; CWA can defer seat assignment by a scheduler frame, so repeat the known-working pattern.
+~0.3
+_units = units _grp
+? count _units >= 1 : (_units select 0) moveInDriver _veh
+? count _units >= 2 : (_units select 1) moveInGunner _veh
+? count _units >= 3 : (_units select 2) moveInCommander _veh
+~0.2
+_units = units _grp
+? count _units < 1 : goto "spawnFailedDeleteVehicle"
+_driver = _units select 0
+? vehicle _driver != _veh : goto "spawnFailedDeleteCrew"
+? count _units >= 2 && vehicle (_units select 1) != _veh : deleteVehicle (_units select 1)
+? count _units >= 3 && vehicle (_units select 2) != _veh : deleteVehicle (_units select 2)
+_grp setBehaviour "AWARE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "NORMAL"
+_veh setDammage 0
+? !(_aircraft) : goto "groundReady"
+? _z > 0 : goto "airborneReady"
+; Ground aircraft remain stopped while insertion cargo boards.
+_veh setFuel 1
+_veh engineOn true
+_driver action ["ENGINE ON", _veh]
+_driver stop true
+goto "vehicleReady"
+#airborneReady
+_veh setFuel 1
+_veh setDammage 0
+_veh engineOn true
+_driver action ["ENGINE ON", _veh]
+_driver stop false
+_veh flyInHeight 150
+_veh setVelocity [0,0,25]
+goto "vehicleReady"
+#groundReady
+_veh setFuel 1
+#vehicleReady
+friendlyRuntimeVehicleSpawned = _veh
+friendlyRuntimeVehicleSpawnCrewCount = count crew _veh
+friendlyRuntimeVehicleSpawnComplete = true
+exit
+#spawnFailedDeleteCrew
+{deleteVehicle _x} forEach units _grp
+#spawnFailedDeleteVehicle
+deleteVehicle _veh
+#spawnFailed
+friendlyRuntimeVehicleSpawned = objNull
+friendlyRuntimeVehicleSpawnCrewCount = 0
+friendlyRuntimeVehicleSpawnComplete = true
+exit

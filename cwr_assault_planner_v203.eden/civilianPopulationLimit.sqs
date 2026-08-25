@@ -1,0 +1,48 @@
+; v135 objective-town civilian population controller.
+; Keeps four civilians per active objective. Three of the four attempt verified indoor positions.
+civilianPopulationReady = false
+civUnitCount = 0
+civilianBuildingAttemptTotal = 0
+civilianBuildingPlacedTotal = 0
+civilianBuildingFailedTotal = 0
+civilianBuildingUsedPositions = []
+? townCount < 1 : goto "civAfter1"
+? !(civilianCharacters) && objectiveType1 != 7 : goto "civAfter1"
+civilianPopulationTownReady = false
+[primaryX, primaryY, 1, 0] exec "civilianPopulationTown.sqs"
+@ civilianPopulationTownReady
+? objectiveType1 == 7 : [1] exec "civilianRescueMonitor.sqs"
+#civAfter1
+? townCount < 2 : goto "civAfter2"
+? !(civilianCharacters) && objectiveType2 != 7 : goto "civAfter2"
+civilianPopulationTownReady = false
+[secondaryX, secondaryY, 2, 7] exec "civilianPopulationTown.sqs"
+@ civilianPopulationTownReady
+? objectiveType2 == 7 : [2] exec "civilianRescueMonitor.sqs"
+#civAfter2
+? townCount < 3 : goto "civAfter3"
+? !(civilianCharacters) && objectiveType3 != 7 : goto "civAfter3"
+civilianPopulationTownReady = false
+[thirdX, thirdY, 3, 14] exec "civilianPopulationTown.sqs"
+@ civilianPopulationTownReady
+? objectiveType3 == 7 : [3] exec "civilianRescueMonitor.sqs"
+#civAfter3
+? townCount < 4 : goto "civAfter4"
+? !(civilianCharacters) && objectiveType4 != 7 : goto "civAfter4"
+civilianPopulationTownReady = false
+[fourthX, fourthY, 4, 21] exec "civilianPopulationTown.sqs"
+@ civilianPopulationTownReady
+? objectiveType4 == 7 : [4] exec "civilianRescueMonitor.sqs"
+#civAfter4
+? townCount < 5 : goto "civAfter5"
+? !(civilianCharacters) && objectiveType5 != 7 : goto "civAfter5"
+civilianPopulationTownReady = false
+[fifthX, fifthY, 5, 28] exec "civilianPopulationTown.sqs"
+@ civilianPopulationTownReady
+? objectiveType5 == 7 : [5] exec "civilianRescueMonitor.sqs"
+#civAfter5
+
+#civilianPopulationDone
+? debugMode : debugLog format ["ERA DEBUG CIVS: objective civilians=%1 indoor attempts=%2 placed=%3 failed=%4", civUnitCount, civilianBuildingAttemptTotal, civilianBuildingPlacedTotal, civilianBuildingFailedTotal]
+civilianPopulationReady = true
+exit

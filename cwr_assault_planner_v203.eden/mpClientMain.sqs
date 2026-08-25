@@ -1,0 +1,53 @@
+; Per-client UI, local player insertion, arsenal and status.
+@ !(isNull player)
+@ time > 0
+
+[] exec "mpRegisterPlayerSlot.sqs"
+grpPlr = group player
+arsenalPlayer = player
+WW4_ArsenalBoxAction = -1
+WW4_LogisticsBoxAction = -1
+player addWeapon "Binocular"
+player addWeapon "NVGoggles"
+1 setRadioMsg "NULL"
+2 setRadioMsg "NULL"
+3 setRadioMsg "NULL"
+titleCut ["", "BLACK FADED", 999]
+
+? player == plr : goto "leaderClient"
+titleText ["Waiting for the squad leader to configure the operation...", "PLAIN"]
+goto "waitSetup"
+#leaderClient
+titleText ["Squad leader: configure and launch the operation.", "PLAIN"]
+[] exec "startMenu.sqs"
+#waitSetup
+@ mpSetupReady
+? !(guiArsenalEnabled) : goto "skipArsenalInit"
+[] exec "ww4_arsenal\init.sqs"
+#skipArsenalInit
+@ mpAISlotsCulled
+@ mpFReviveStarted
+titleText ["Settings received. Server is generating the operation...", "PLAIN"]
+@ mpRandomizeComplete
+weatherApplyComplete = false
+[] exec "applyWeather.sqs"
+@ weatherApplyComplete
+[] exec "mpApplyClientState.sqs"
+[] exec "mpShowRuntimeVehicleLog.sqs"
+[] exec "mpClientObjectiveActions.sqs"
+[] exec "mpClientCivilianActions.sqs"
+[] exec "mpClientRescueMarkers.sqs"
+[] exec "mpClientStealMarkers.sqs"
+[] exec "mpClientPilotMarkers.sqs"
+[] exec "mpClientRescueTargetMarkers.sqs"
+[] exec "mpClientPilotActions.sqs"
+[] exec "mpPlayerInsertion.sqs"
+[] exec "mpClientStatus.sqs"
+? guiArsenalEnabled : [] exec "mpClientArsenalAction.sqs"
+? guiArsenalEnabled : [] exec "mpClientLogisticsDrop.sqs"
+[] exec "mpClientLogisticsDropMarker.sqs"
+[] exec "mpClientExtraction.sqs"
+? guiMusicEnabled : [] exec "randomMusic.sqs"
+~0.2
+titleCut ["", "BLACK IN", 1]
+exit

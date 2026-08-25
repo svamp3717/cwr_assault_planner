@@ -1,0 +1,309 @@
+; v125: spawn only the friendly transports required by the selected insertion.
+; Runs on the server after randomization/cleanup and before AI or player boarding.
+friendlyRuntimeInsertionVehiclesReady = false
+friendlyRuntimeInsertionVehicleRequestedTotal = 0
+friendlyRuntimeInsertionVehicleCreatedTotal = 0
+friendlyRuntimeInsertionVehicleCrewedTotal = 0
+friendlyRuntimeInsertionVehicleCrewSeatTotal = 0
+friendlyRuntimeInsertionVehicleFailedTotal = 0
+? insertionFoot : goto "friendlyRuntimeFinish"
+? insertionTruck : goto "spawnTruckInsertion"
+? insertionAPC : goto "spawnAPCInsertion"
+? insertionPara : goto "friendlyRuntimeFinish"
+? insertionHeli : goto "spawnHeliInsertion"
+goto "friendlyRuntimeFinish"
+
+#spawnTruckInsertion
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_5TBIS", 10930, 11280, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+truckP1 = friendlyRuntimeVehicleSpawned
+? alive truckP1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive truckP1 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "truckP1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_5T2BIS", 10960, 11280, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+truckP2 = friendlyRuntimeVehicleSpawned
+? alive truckP2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive truckP2 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "truckP2"
+? alliedCount < 1 : goto "truckAfterA1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_5TBIS", 11030, 11285, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a1truck = friendlyRuntimeVehicleSpawned
+? alive a1truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a1truck && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a1truck"
+#truckAfterA1
+? alliedCount < 2 : goto "truckAfterA2"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_5T2BIS", 11030, 11325, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a2truck = friendlyRuntimeVehicleSpawned
+? alive a2truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a2truck && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a2truck"
+#truckAfterA2
+? alliedCount < 3 : goto "truckAfterA3"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_5TBIS", 11030, 11365, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a3truck = friendlyRuntimeVehicleSpawned
+? alive a3truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a3truck && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a3truck"
+#truckAfterA3
+? alliedCount < 4 : goto "truckAfterA4"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_5T2BIS", 11030, 11405, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a4truck = friendlyRuntimeVehicleSpawned
+? alive a4truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a4truck && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a4truck"
+#truckAfterA4
+goto "friendlyRuntimeFinish"
+
+#spawnAPCInsertion
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M113", 10930, 11320, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+apcP1 = friendlyRuntimeVehicleSpawned
+? alive apcP1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive apcP1 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "apcP1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M113", 10965, 11320, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+apcP2 = friendlyRuntimeVehicleSpawned
+? alive apcP2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive apcP2 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "apcP2"
+? alliedCount < 1 : goto "apcAfterA1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M113", 11065, 11285, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a1apc = friendlyRuntimeVehicleSpawned
+? alive a1apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a1apc && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a1apc"
+#apcAfterA1
+? alliedCount < 2 : goto "apcAfterA2"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M2A2BIS", 11065, 11325, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a2apc = friendlyRuntimeVehicleSpawned
+? alive a2apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a2apc && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a2apc"
+#apcAfterA2
+? alliedCount < 3 : goto "apcAfterA3"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M113", 11065, 11365, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a3apc = friendlyRuntimeVehicleSpawned
+? alive a3apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a3apc && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a3apc"
+#apcAfterA3
+? alliedCount < 4 : goto "apcAfterA4"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M2A2BIS", 11065, 11405, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a4apc = friendlyRuntimeVehicleSpawned
+? alive a4apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a4apc && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a4apc"
+#apcAfterA4
+goto "friendlyRuntimeFinish"
+
+#spawnMixedInsertion
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M113", 10930, 11320, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+apcP1 = friendlyRuntimeVehicleSpawned
+? alive apcP1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive apcP1 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "apcP1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M113", 10965, 11320, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+apcP2 = friendlyRuntimeVehicleSpawned
+? alive apcP2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive apcP2 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "apcP2"
+? alliedCount < 1 : goto "mixedAfterA1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M113", 11065, 11285, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a1apc = friendlyRuntimeVehicleSpawned
+? alive a1apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a1apc && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a1apc"
+#mixedAfterA1
+? alliedCount < 2 : goto "mixedAfterA2"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_5T2BIS", 11030, 11325, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a2truck = friendlyRuntimeVehicleSpawned
+? alive a2truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a2truck && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a2truck"
+#mixedAfterA2
+? alliedCount < 3 : goto "mixedAfterA3"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_M113", 11065, 11365, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a3apc = friendlyRuntimeVehicleSpawned
+? alive a3apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a3apc && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a3apc"
+#mixedAfterA3
+? alliedCount < 4 : goto "mixedAfterA4"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["WW4EXT_5T2BIS", 11030, 11405, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a4truck = friendlyRuntimeVehicleSpawned
+? alive a4truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a4truck && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a4truck"
+#mixedAfterA4
+goto "friendlyRuntimeFinish"
+
+#spawnHeliInsertion
+? heliSplit : goto "spawnSplitHelis"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["Ch47D", 10900, 11400, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+heliP1 = friendlyRuntimeVehicleSpawned
+? alive heliP1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive heliP1 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "heliP1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["UH60", 10965, 11400, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+heliP2 = friendlyRuntimeVehicleSpawned
+? alive heliP2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive heliP2 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "heliP2"
+goto "spawnAlliedHelis"
+#spawnSplitHelis
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["UH60", 11000, 11400, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+heliU1 = friendlyRuntimeVehicleSpawned
+? alive heliU1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive heliU1 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "heliU1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["UH60", 11035, 11400, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+heliU2 = friendlyRuntimeVehicleSpawned
+? alive heliU2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive heliU2 && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "heliU2"
+#spawnAlliedHelis
+? alliedCount < 1 : goto "heliAfterA1"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["UH60MG", 11100, 11285, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a1heli = friendlyRuntimeVehicleSpawned
+? alive a1heli : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a1heli && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a1heli"
+#heliAfterA1
+? alliedCount < 2 : goto "heliAfterA2"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["UH60", 11100, 11325, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a2heli = friendlyRuntimeVehicleSpawned
+? alive a2heli : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a2heli && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a2heli"
+#heliAfterA2
+? alliedCount < 3 : goto "heliAfterA3"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["Ch47D", 11100, 11365, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a3heli = friendlyRuntimeVehicleSpawned
+? alive a3heli : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a3heli && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a3heli"
+#heliAfterA3
+? alliedCount < 4 : goto "heliAfterA4"
+friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
+friendlyRuntimeVehicleSpawnComplete = false
+["UH60MG", 11100, 11405, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+@ friendlyRuntimeVehicleSpawnComplete
+a4heli = friendlyRuntimeVehicleSpawned
+? alive a4heli : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
+? alive a4heli && friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewedTotal = friendlyRuntimeInsertionVehicleCrewedTotal + 1
+? friendlyRuntimeVehicleSpawnCrewCount > 0 : friendlyRuntimeInsertionVehicleCrewSeatTotal = friendlyRuntimeInsertionVehicleCrewSeatTotal + friendlyRuntimeVehicleSpawnCrewCount
+publicVariable "a4heli"
+#heliAfterA4
+#friendlyRuntimeFinish
+friendlyRuntimeInsertionVehicleFailedTotal = friendlyRuntimeInsertionVehicleRequestedTotal - friendlyRuntimeInsertionVehicleCreatedTotal
+friendlyRuntimeInsertionVehicleSummary = format ["ERA RUNTIME FRIENDLY INSERTION VEHICLES: requested=%1 created=%2 crewed=%3 crewSeats=%4 failed=%5", friendlyRuntimeInsertionVehicleRequestedTotal, friendlyRuntimeInsertionVehicleCreatedTotal, friendlyRuntimeInsertionVehicleCrewedTotal, friendlyRuntimeInsertionVehicleCrewSeatTotal, friendlyRuntimeInsertionVehicleFailedTotal]
+? !(debugMode) : goto "skipFriendlyRuntimeDebugPublish"
+publicVariable "friendlyRuntimeInsertionVehicleRequestedTotal"
+publicVariable "friendlyRuntimeInsertionVehicleCreatedTotal"
+publicVariable "friendlyRuntimeInsertionVehicleCrewedTotal"
+publicVariable "friendlyRuntimeInsertionVehicleCrewSeatTotal"
+publicVariable "friendlyRuntimeInsertionVehicleFailedTotal"
+publicVariable "friendlyRuntimeInsertionVehicleSummary"
+#skipFriendlyRuntimeDebugPublish
+friendlyRuntimeInsertionVehiclesReady = true
+publicVariable "friendlyRuntimeInsertionVehiclesReady"
+exit

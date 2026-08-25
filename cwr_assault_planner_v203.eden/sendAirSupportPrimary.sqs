@@ -1,0 +1,6 @@
+; Compatibility wrapper: attack objective 1.
+? missionEnded : exit
+? airSupportUsed : exit
+airSupportTarget = 1
+[] exec "callAirSupport.sqs"
+exit

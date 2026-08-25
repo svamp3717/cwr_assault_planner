@@ -1,0 +1,458 @@
+enemyVehicleCullComplete = false
+; v87: scale objective vehicles to disabled/small/medium/large.
+? enemyVehicleLevel == 0 : goto "removeAllGroundVehicles"
+? enemyVehicleLevel == 1 : goto "smallVehicleForce"
+? enemyVehicleLevel == 2 : goto "mediumVehicleForce"
+goto "vehicleCullDone"
+#smallVehicleForce
+; Small keeps armed vehicle 1 only.
+deleteVehicle (driver s1Eveh2)
+deleteVehicle (gunner s1Eveh2)
+deleteVehicle (commander s1Eveh2)
+deleteVehicle s1Eveh2
+deleteVehicle (driver s1Eveh3)
+deleteVehicle (gunner s1Eveh3)
+deleteVehicle (commander s1Eveh3)
+deleteVehicle s1Eveh3
+deleteVehicle (driver s1Eveh4)
+deleteVehicle (gunner s1Eveh4)
+deleteVehicle (commander s1Eveh4)
+deleteVehicle s1Eveh4
+deleteVehicle (driver s1Eveh5)
+deleteVehicle (gunner s1Eveh5)
+deleteVehicle (commander s1Eveh5)
+deleteVehicle s1Eveh5
+deleteVehicle (driver s1Rveh2)
+deleteVehicle (gunner s1Rveh2)
+deleteVehicle (commander s1Rveh2)
+deleteVehicle s1Rveh2
+deleteVehicle (driver s1Rveh3)
+deleteVehicle (gunner s1Rveh3)
+deleteVehicle (commander s1Rveh3)
+deleteVehicle s1Rveh3
+deleteVehicle (driver s1Rveh4)
+deleteVehicle (gunner s1Rveh4)
+deleteVehicle (commander s1Rveh4)
+deleteVehicle s1Rveh4
+deleteVehicle (driver s1Rveh5)
+deleteVehicle (gunner s1Rveh5)
+deleteVehicle (commander s1Rveh5)
+deleteVehicle s1Rveh5
+deleteVehicle (driver s2Eveh2)
+deleteVehicle (gunner s2Eveh2)
+deleteVehicle (commander s2Eveh2)
+deleteVehicle s2Eveh2
+deleteVehicle (driver s2Eveh3)
+deleteVehicle (gunner s2Eveh3)
+deleteVehicle (commander s2Eveh3)
+deleteVehicle s2Eveh3
+deleteVehicle (driver s2Eveh4)
+deleteVehicle (gunner s2Eveh4)
+deleteVehicle (commander s2Eveh4)
+deleteVehicle s2Eveh4
+deleteVehicle (driver s2Eveh5)
+deleteVehicle (gunner s2Eveh5)
+deleteVehicle (commander s2Eveh5)
+deleteVehicle s2Eveh5
+deleteVehicle (driver s2Rveh2)
+deleteVehicle (gunner s2Rveh2)
+deleteVehicle (commander s2Rveh2)
+deleteVehicle s2Rveh2
+deleteVehicle (driver s2Rveh3)
+deleteVehicle (gunner s2Rveh3)
+deleteVehicle (commander s2Rveh3)
+deleteVehicle s2Rveh3
+deleteVehicle (driver s2Rveh4)
+deleteVehicle (gunner s2Rveh4)
+deleteVehicle (commander s2Rveh4)
+deleteVehicle s2Rveh4
+deleteVehicle (driver s2Rveh5)
+deleteVehicle (gunner s2Rveh5)
+deleteVehicle (commander s2Rveh5)
+deleteVehicle s2Rveh5
+deleteVehicle (driver s3Eveh2)
+deleteVehicle (gunner s3Eveh2)
+deleteVehicle (commander s3Eveh2)
+deleteVehicle s3Eveh2
+deleteVehicle (driver s3Eveh3)
+deleteVehicle (gunner s3Eveh3)
+deleteVehicle (commander s3Eveh3)
+deleteVehicle s3Eveh3
+deleteVehicle (driver s3Eveh4)
+deleteVehicle (gunner s3Eveh4)
+deleteVehicle (commander s3Eveh4)
+deleteVehicle s3Eveh4
+deleteVehicle (driver s3Eveh5)
+deleteVehicle (gunner s3Eveh5)
+deleteVehicle (commander s3Eveh5)
+deleteVehicle s3Eveh5
+deleteVehicle (driver s3Rveh2)
+deleteVehicle (gunner s3Rveh2)
+deleteVehicle (commander s3Rveh2)
+deleteVehicle s3Rveh2
+deleteVehicle (driver s3Rveh3)
+deleteVehicle (gunner s3Rveh3)
+deleteVehicle (commander s3Rveh3)
+deleteVehicle s3Rveh3
+deleteVehicle (driver s3Rveh4)
+deleteVehicle (gunner s3Rveh4)
+deleteVehicle (commander s3Rveh4)
+deleteVehicle s3Rveh4
+deleteVehicle (driver s3Rveh5)
+deleteVehicle (gunner s3Rveh5)
+deleteVehicle (commander s3Rveh5)
+deleteVehicle s3Rveh5
+deleteVehicle (driver s4Eveh2)
+deleteVehicle (gunner s4Eveh2)
+deleteVehicle (commander s4Eveh2)
+deleteVehicle s4Eveh2
+deleteVehicle (driver s4Eveh3)
+deleteVehicle (gunner s4Eveh3)
+deleteVehicle (commander s4Eveh3)
+deleteVehicle s4Eveh3
+deleteVehicle (driver s4Eveh4)
+deleteVehicle (gunner s4Eveh4)
+deleteVehicle (commander s4Eveh4)
+deleteVehicle s4Eveh4
+deleteVehicle (driver s4Eveh5)
+deleteVehicle (gunner s4Eveh5)
+deleteVehicle (commander s4Eveh5)
+deleteVehicle s4Eveh5
+deleteVehicle (driver s4Rveh2)
+deleteVehicle (gunner s4Rveh2)
+deleteVehicle (commander s4Rveh2)
+deleteVehicle s4Rveh2
+deleteVehicle (driver s4Rveh3)
+deleteVehicle (gunner s4Rveh3)
+deleteVehicle (commander s4Rveh3)
+deleteVehicle s4Rveh3
+deleteVehicle (driver s4Rveh4)
+deleteVehicle (gunner s4Rveh4)
+deleteVehicle (commander s4Rveh4)
+deleteVehicle s4Rveh4
+deleteVehicle (driver s4Rveh5)
+deleteVehicle (gunner s4Rveh5)
+deleteVehicle (commander s4Rveh5)
+deleteVehicle s4Rveh5
+deleteVehicle (driver s5Eveh2)
+deleteVehicle (gunner s5Eveh2)
+deleteVehicle (commander s5Eveh2)
+deleteVehicle s5Eveh2
+deleteVehicle (driver s5Eveh3)
+deleteVehicle (gunner s5Eveh3)
+deleteVehicle (commander s5Eveh3)
+deleteVehicle s5Eveh3
+deleteVehicle (driver s5Eveh4)
+deleteVehicle (gunner s5Eveh4)
+deleteVehicle (commander s5Eveh4)
+deleteVehicle s5Eveh4
+deleteVehicle (driver s5Eveh5)
+deleteVehicle (gunner s5Eveh5)
+deleteVehicle (commander s5Eveh5)
+deleteVehicle s5Eveh5
+deleteVehicle (driver s5Rveh2)
+deleteVehicle (gunner s5Rveh2)
+deleteVehicle (commander s5Rveh2)
+deleteVehicle s5Rveh2
+deleteVehicle (driver s5Rveh3)
+deleteVehicle (gunner s5Rveh3)
+deleteVehicle (commander s5Rveh3)
+deleteVehicle s5Rveh3
+deleteVehicle (driver s5Rveh4)
+deleteVehicle (gunner s5Rveh4)
+deleteVehicle (commander s5Rveh4)
+deleteVehicle s5Rveh4
+deleteVehicle (driver s5Rveh5)
+deleteVehicle (gunner s5Rveh5)
+deleteVehicle (commander s5Rveh5)
+deleteVehicle s5Rveh5
+goto "vehicleCullDone"
+#mediumVehicleForce
+; Medium keeps armed vehicles 1 and 3 plus one empty light vehicle created from slot 2.
+deleteVehicle (driver s1Eveh4)
+deleteVehicle (gunner s1Eveh4)
+deleteVehicle (commander s1Eveh4)
+deleteVehicle s1Eveh4
+deleteVehicle (driver s1Eveh5)
+deleteVehicle (gunner s1Eveh5)
+deleteVehicle (commander s1Eveh5)
+deleteVehicle s1Eveh5
+deleteVehicle (driver s1Rveh4)
+deleteVehicle (gunner s1Rveh4)
+deleteVehicle (commander s1Rveh4)
+deleteVehicle s1Rveh4
+deleteVehicle (driver s1Rveh5)
+deleteVehicle (gunner s1Rveh5)
+deleteVehicle (commander s1Rveh5)
+deleteVehicle s1Rveh5
+deleteVehicle (driver s2Eveh4)
+deleteVehicle (gunner s2Eveh4)
+deleteVehicle (commander s2Eveh4)
+deleteVehicle s2Eveh4
+deleteVehicle (driver s2Eveh5)
+deleteVehicle (gunner s2Eveh5)
+deleteVehicle (commander s2Eveh5)
+deleteVehicle s2Eveh5
+deleteVehicle (driver s2Rveh4)
+deleteVehicle (gunner s2Rveh4)
+deleteVehicle (commander s2Rveh4)
+deleteVehicle s2Rveh4
+deleteVehicle (driver s2Rveh5)
+deleteVehicle (gunner s2Rveh5)
+deleteVehicle (commander s2Rveh5)
+deleteVehicle s2Rveh5
+deleteVehicle (driver s3Eveh4)
+deleteVehicle (gunner s3Eveh4)
+deleteVehicle (commander s3Eveh4)
+deleteVehicle s3Eveh4
+deleteVehicle (driver s3Eveh5)
+deleteVehicle (gunner s3Eveh5)
+deleteVehicle (commander s3Eveh5)
+deleteVehicle s3Eveh5
+deleteVehicle (driver s3Rveh4)
+deleteVehicle (gunner s3Rveh4)
+deleteVehicle (commander s3Rveh4)
+deleteVehicle s3Rveh4
+deleteVehicle (driver s3Rveh5)
+deleteVehicle (gunner s3Rveh5)
+deleteVehicle (commander s3Rveh5)
+deleteVehicle s3Rveh5
+deleteVehicle (driver s4Eveh4)
+deleteVehicle (gunner s4Eveh4)
+deleteVehicle (commander s4Eveh4)
+deleteVehicle s4Eveh4
+deleteVehicle (driver s4Eveh5)
+deleteVehicle (gunner s4Eveh5)
+deleteVehicle (commander s4Eveh5)
+deleteVehicle s4Eveh5
+deleteVehicle (driver s4Rveh4)
+deleteVehicle (gunner s4Rveh4)
+deleteVehicle (commander s4Rveh4)
+deleteVehicle s4Rveh4
+deleteVehicle (driver s4Rveh5)
+deleteVehicle (gunner s4Rveh5)
+deleteVehicle (commander s4Rveh5)
+deleteVehicle s4Rveh5
+deleteVehicle (driver s5Eveh4)
+deleteVehicle (gunner s5Eveh4)
+deleteVehicle (commander s5Eveh4)
+deleteVehicle s5Eveh4
+deleteVehicle (driver s5Eveh5)
+deleteVehicle (gunner s5Eveh5)
+deleteVehicle (commander s5Eveh5)
+deleteVehicle s5Eveh5
+deleteVehicle (driver s5Rveh4)
+deleteVehicle (gunner s5Rveh4)
+deleteVehicle (commander s5Rveh4)
+deleteVehicle s5Rveh4
+deleteVehicle (driver s5Rveh5)
+deleteVehicle (gunner s5Rveh5)
+deleteVehicle (commander s5Rveh5)
+deleteVehicle s5Rveh5
+goto "vehicleCullDone"
+#removeAllGroundVehicles
+deleteVehicle (driver s1Eveh1)
+deleteVehicle (gunner s1Eveh1)
+deleteVehicle (commander s1Eveh1)
+deleteVehicle s1Eveh1
+deleteVehicle (driver s1Eveh2)
+deleteVehicle (gunner s1Eveh2)
+deleteVehicle (commander s1Eveh2)
+deleteVehicle s1Eveh2
+deleteVehicle (driver s1Eveh3)
+deleteVehicle (gunner s1Eveh3)
+deleteVehicle (commander s1Eveh3)
+deleteVehicle s1Eveh3
+deleteVehicle (driver s1Eveh4)
+deleteVehicle (gunner s1Eveh4)
+deleteVehicle (commander s1Eveh4)
+deleteVehicle s1Eveh4
+deleteVehicle (driver s1Eveh5)
+deleteVehicle (gunner s1Eveh5)
+deleteVehicle (commander s1Eveh5)
+deleteVehicle s1Eveh5
+deleteVehicle (driver s1Rveh1)
+deleteVehicle (gunner s1Rveh1)
+deleteVehicle (commander s1Rveh1)
+deleteVehicle s1Rveh1
+deleteVehicle (driver s1Rveh2)
+deleteVehicle (gunner s1Rveh2)
+deleteVehicle (commander s1Rveh2)
+deleteVehicle s1Rveh2
+deleteVehicle (driver s1Rveh3)
+deleteVehicle (gunner s1Rveh3)
+deleteVehicle (commander s1Rveh3)
+deleteVehicle s1Rveh3
+deleteVehicle (driver s1Rveh4)
+deleteVehicle (gunner s1Rveh4)
+deleteVehicle (commander s1Rveh4)
+deleteVehicle s1Rveh4
+deleteVehicle (driver s1Rveh5)
+deleteVehicle (gunner s1Rveh5)
+deleteVehicle (commander s1Rveh5)
+deleteVehicle s1Rveh5
+deleteVehicle (driver s2Eveh1)
+deleteVehicle (gunner s2Eveh1)
+deleteVehicle (commander s2Eveh1)
+deleteVehicle s2Eveh1
+deleteVehicle (driver s2Eveh2)
+deleteVehicle (gunner s2Eveh2)
+deleteVehicle (commander s2Eveh2)
+deleteVehicle s2Eveh2
+deleteVehicle (driver s2Eveh3)
+deleteVehicle (gunner s2Eveh3)
+deleteVehicle (commander s2Eveh3)
+deleteVehicle s2Eveh3
+deleteVehicle (driver s2Eveh4)
+deleteVehicle (gunner s2Eveh4)
+deleteVehicle (commander s2Eveh4)
+deleteVehicle s2Eveh4
+deleteVehicle (driver s2Eveh5)
+deleteVehicle (gunner s2Eveh5)
+deleteVehicle (commander s2Eveh5)
+deleteVehicle s2Eveh5
+deleteVehicle (driver s2Rveh1)
+deleteVehicle (gunner s2Rveh1)
+deleteVehicle (commander s2Rveh1)
+deleteVehicle s2Rveh1
+deleteVehicle (driver s2Rveh2)
+deleteVehicle (gunner s2Rveh2)
+deleteVehicle (commander s2Rveh2)
+deleteVehicle s2Rveh2
+deleteVehicle (driver s2Rveh3)
+deleteVehicle (gunner s2Rveh3)
+deleteVehicle (commander s2Rveh3)
+deleteVehicle s2Rveh3
+deleteVehicle (driver s2Rveh4)
+deleteVehicle (gunner s2Rveh4)
+deleteVehicle (commander s2Rveh4)
+deleteVehicle s2Rveh4
+deleteVehicle (driver s2Rveh5)
+deleteVehicle (gunner s2Rveh5)
+deleteVehicle (commander s2Rveh5)
+deleteVehicle s2Rveh5
+deleteVehicle (driver s3Eveh1)
+deleteVehicle (gunner s3Eveh1)
+deleteVehicle (commander s3Eveh1)
+deleteVehicle s3Eveh1
+deleteVehicle (driver s3Eveh2)
+deleteVehicle (gunner s3Eveh2)
+deleteVehicle (commander s3Eveh2)
+deleteVehicle s3Eveh2
+deleteVehicle (driver s3Eveh3)
+deleteVehicle (gunner s3Eveh3)
+deleteVehicle (commander s3Eveh3)
+deleteVehicle s3Eveh3
+deleteVehicle (driver s3Eveh4)
+deleteVehicle (gunner s3Eveh4)
+deleteVehicle (commander s3Eveh4)
+deleteVehicle s3Eveh4
+deleteVehicle (driver s3Eveh5)
+deleteVehicle (gunner s3Eveh5)
+deleteVehicle (commander s3Eveh5)
+deleteVehicle s3Eveh5
+deleteVehicle (driver s3Rveh1)
+deleteVehicle (gunner s3Rveh1)
+deleteVehicle (commander s3Rveh1)
+deleteVehicle s3Rveh1
+deleteVehicle (driver s3Rveh2)
+deleteVehicle (gunner s3Rveh2)
+deleteVehicle (commander s3Rveh2)
+deleteVehicle s3Rveh2
+deleteVehicle (driver s3Rveh3)
+deleteVehicle (gunner s3Rveh3)
+deleteVehicle (commander s3Rveh3)
+deleteVehicle s3Rveh3
+deleteVehicle (driver s3Rveh4)
+deleteVehicle (gunner s3Rveh4)
+deleteVehicle (commander s3Rveh4)
+deleteVehicle s3Rveh4
+deleteVehicle (driver s3Rveh5)
+deleteVehicle (gunner s3Rveh5)
+deleteVehicle (commander s3Rveh5)
+deleteVehicle s3Rveh5
+deleteVehicle (driver s4Eveh1)
+deleteVehicle (gunner s4Eveh1)
+deleteVehicle (commander s4Eveh1)
+deleteVehicle s4Eveh1
+deleteVehicle (driver s4Eveh2)
+deleteVehicle (gunner s4Eveh2)
+deleteVehicle (commander s4Eveh2)
+deleteVehicle s4Eveh2
+deleteVehicle (driver s4Eveh3)
+deleteVehicle (gunner s4Eveh3)
+deleteVehicle (commander s4Eveh3)
+deleteVehicle s4Eveh3
+deleteVehicle (driver s4Eveh4)
+deleteVehicle (gunner s4Eveh4)
+deleteVehicle (commander s4Eveh4)
+deleteVehicle s4Eveh4
+deleteVehicle (driver s4Eveh5)
+deleteVehicle (gunner s4Eveh5)
+deleteVehicle (commander s4Eveh5)
+deleteVehicle s4Eveh5
+deleteVehicle (driver s4Rveh1)
+deleteVehicle (gunner s4Rveh1)
+deleteVehicle (commander s4Rveh1)
+deleteVehicle s4Rveh1
+deleteVehicle (driver s4Rveh2)
+deleteVehicle (gunner s4Rveh2)
+deleteVehicle (commander s4Rveh2)
+deleteVehicle s4Rveh2
+deleteVehicle (driver s4Rveh3)
+deleteVehicle (gunner s4Rveh3)
+deleteVehicle (commander s4Rveh3)
+deleteVehicle s4Rveh3
+deleteVehicle (driver s4Rveh4)
+deleteVehicle (gunner s4Rveh4)
+deleteVehicle (commander s4Rveh4)
+deleteVehicle s4Rveh4
+deleteVehicle (driver s4Rveh5)
+deleteVehicle (gunner s4Rveh5)
+deleteVehicle (commander s4Rveh5)
+deleteVehicle s4Rveh5
+deleteVehicle (driver s5Eveh1)
+deleteVehicle (gunner s5Eveh1)
+deleteVehicle (commander s5Eveh1)
+deleteVehicle s5Eveh1
+deleteVehicle (driver s5Eveh2)
+deleteVehicle (gunner s5Eveh2)
+deleteVehicle (commander s5Eveh2)
+deleteVehicle s5Eveh2
+deleteVehicle (driver s5Eveh3)
+deleteVehicle (gunner s5Eveh3)
+deleteVehicle (commander s5Eveh3)
+deleteVehicle s5Eveh3
+deleteVehicle (driver s5Eveh4)
+deleteVehicle (gunner s5Eveh4)
+deleteVehicle (commander s5Eveh4)
+deleteVehicle s5Eveh4
+deleteVehicle (driver s5Eveh5)
+deleteVehicle (gunner s5Eveh5)
+deleteVehicle (commander s5Eveh5)
+deleteVehicle s5Eveh5
+deleteVehicle (driver s5Rveh1)
+deleteVehicle (gunner s5Rveh1)
+deleteVehicle (commander s5Rveh1)
+deleteVehicle s5Rveh1
+deleteVehicle (driver s5Rveh2)
+deleteVehicle (gunner s5Rveh2)
+deleteVehicle (commander s5Rveh2)
+deleteVehicle s5Rveh2
+deleteVehicle (driver s5Rveh3)
+deleteVehicle (gunner s5Rveh3)
+deleteVehicle (commander s5Rveh3)
+deleteVehicle s5Rveh3
+deleteVehicle (driver s5Rveh4)
+deleteVehicle (gunner s5Rveh4)
+deleteVehicle (commander s5Rveh4)
+deleteVehicle s5Rveh4
+deleteVehicle (driver s5Rveh5)
+deleteVehicle (gunner s5Rveh5)
+deleteVehicle (commander s5Rveh5)
+deleteVehicle s5Rveh5
+#vehicleCullDone
+enemyVehicleCullComplete = true
+? debugMode : debugLog format ["ERA DEBUG ENEMY VEHICLES: %1", enemyVehicleLabel]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG ENEMY VEHICLES: %1", enemyVehicleLabel]
+exit

@@ -1,0 +1,177 @@
+; v129: create only the selected enemy air support and reserve personnel. Old SQS only.
+; v173: airborne and ground reinforcement squads both use 6/9/12 troops.
+enemyRuntimeReservesReady = false
+enemyAttackVehicle = objNull
+enemyAttackHeli = objNull
+enemyTransportHeli = objNull
+enemySu25 = objNull
+enemyV80 = objNull
+enemyGroundReinfVeh = objNull
+w4eAirAtkPilot = objNull
+w4eAirAtkGunner = objNull
+w4eAirTransPilot = objNull
+w4eAirTransGunner = objNull
+w4eAirR1 = objNull
+w4eAirR2 = objNull
+w4eAirR3 = objNull
+w4eAirR4 = objNull
+w4eAirR5 = objNull
+w4eAirR6 = objNull
+w4eAirR7 = objNull
+w4eAirR8 = objNull
+w4eAirR9 = objNull
+w4eAirR10 = objNull
+w4eAirR11 = objNull
+w4eAirR12 = objNull
+w4rAirAtkPilot = objNull
+w4rAirAtkGunner = objNull
+w4rAirTransPilot = objNull
+w4rAirTransGunner = objNull
+w4rAirR1 = objNull
+w4rAirR2 = objNull
+w4rAirR3 = objNull
+w4rAirR4 = objNull
+w4rAirR5 = objNull
+w4rAirR6 = objNull
+w4rAirR7 = objNull
+w4rAirR8 = objNull
+w4rAirR9 = objNull
+w4rAirR10 = objNull
+w4rAirR11 = objNull
+w4rAirR12 = objNull
+? enemyEast : goto "spawnEastRuntimeReserves"
+goto "spawnResistanceRuntimeReserves"
+
+#spawnEastRuntimeReserves
+? !(enemyAirSupport) : goto "eastAfterAttack"
+enemyAttackVehicle = enemyAttackClass createVehicle [11120, 10920, 0]
+enemyAttackHeli = enemyAttackVehicle
+enemyAttackVehicle setDir 180
+enemyAttackVehicle setDammage 0
+enemyAttackVehicle setFuel 0
+_grpAttack = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grpAttack]
+ww4EastPilot createUnit [[11120, 10950, 0], _grpAttack, "w4eAirAtkPilot=this"]
+ww4EastCrew createUnit [[11128, 10950, 0], _grpAttack, "w4eAirAtkGunner=this"]
+w4eAirAtkPilot setSkill enemyAISkill
+w4eAirAtkGunner setSkill enemyAISkill
+w4eAirAtkPilot moveInDriver enemyAttackVehicle
+w4eAirAtkGunner moveInGunner enemyAttackVehicle
+_grpAttack setBehaviour "COMBAT"
+_grpAttack setCombatMode "RED"
+_grpAttack setSpeedMode "FULL"
+~0.2
+_gunnerVehicle = vehicle w4eAirAtkGunner
+? _gunnerVehicle != enemyAttackVehicle : deleteVehicle w4eAirAtkGunner
+#eastAfterAttack
+? !(enemyAirReinforcement) : goto "eastAfterTransportCrew"
+_grpTrans = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grpTrans]
+ww4EastPilot createUnit [[11136, 10950, 0], _grpTrans, "w4eAirTransPilot=this"]
+ww4EastCrew createUnit [[11144, 10950, 0], _grpTrans, "w4eAirTransGunner=this"]
+w4eAirTransPilot setSkill enemyAISkill
+w4eAirTransGunner setSkill enemyAISkill
+_grpTrans setBehaviour "AWARE"
+_grpTrans setCombatMode "RED"
+_grpTrans setSpeedMode "FULL"
+#eastAfterTransportCrew
+? !((enemyAirReinforcement) || (enemyReinforcements)) : goto "runtimeReservesFinish"
+_grpReinf = createGroup east
+enemyDetectionGroups = enemyDetectionGroups + [_grpReinf]
+ww4EastRifleman createUnit [[11120, 10970, 0], _grpReinf, "w4eAirR1=this"]
+ww4EastGrenadier createUnit [[11128, 10970, 0], _grpReinf, "w4eAirR2=this"]
+ww4EastMachinegun createUnit [[11136, 10970, 0], _grpReinf, "w4eAirR3=this"]
+ww4EastAT createUnit [[11144, 10970, 0], _grpReinf, "w4eAirR4=this"]
+ww4EastAA createUnit [[11152, 10970, 0], _grpReinf, "w4eAirR5=this"]
+ww4EastRifleman createUnit [[11160, 10970, 0], _grpReinf, "w4eAirR6=this"]
+ww4EastRocket createUnit [[11168, 10970, 0], _grpReinf, "w4eAirR7=this"]
+ww4EastSniper createUnit [[11176, 10970, 0], _grpReinf, "w4eAirR8=this"]
+ww4EastRifleman createUnit [[11184, 10970, 0], _grpReinf, "w4eAirR9=this"]
+ww4EastGrenadier createUnit [[11192, 10970, 0], _grpReinf, "w4eAirR10=this"]
+ww4EastMachinegun createUnit [[11200, 10970, 0], _grpReinf, "w4eAirR11=this"]
+ww4EastMedic createUnit [[11208, 10970, 0], _grpReinf, "w4eAirR12=this"]
+w4eAirR1 setSkill enemyAISkill
+w4eAirR2 setSkill enemyAISkill
+w4eAirR3 setSkill enemyAISkill
+w4eAirR4 setSkill enemyAISkill
+w4eAirR5 setSkill enemyAISkill
+w4eAirR6 setSkill enemyAISkill
+w4eAirR7 setSkill enemyAISkill
+w4eAirR8 setSkill enemyAISkill
+? alive w4eAirR9 : w4eAirR9 setSkill enemyAISkill
+? alive w4eAirR10 : w4eAirR10 setSkill enemyAISkill
+? alive w4eAirR11 : w4eAirR11 setSkill enemyAISkill
+? alive w4eAirR12 : w4eAirR12 setSkill enemyAISkill
+_grpReinf setBehaviour "COMBAT"
+_grpReinf setCombatMode "RED"
+_grpReinf setSpeedMode "NORMAL"
+goto "runtimeReservesFinish"
+
+#spawnResistanceRuntimeReserves
+? !(enemyAirSupport) : goto "resAfterAttack"
+enemyAttackVehicle = enemyAttackClass createVehicle [11120, 10920, 0]
+enemyAttackHeli = enemyAttackVehicle
+enemyAttackVehicle setDir 180
+enemyAttackVehicle setDammage 0
+enemyAttackVehicle setFuel 0
+_grpAttack = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grpAttack]
+ww4ResPilot createUnit [[11120, 10990, 0], _grpAttack, "w4rAirAtkPilot=this"]
+ww4ResCrew createUnit [[11128, 10990, 0], _grpAttack, "w4rAirAtkGunner=this"]
+w4rAirAtkPilot setSkill enemyAISkill
+w4rAirAtkGunner setSkill enemyAISkill
+w4rAirAtkPilot moveInDriver enemyAttackVehicle
+w4rAirAtkGunner moveInGunner enemyAttackVehicle
+_grpAttack setBehaviour "COMBAT"
+_grpAttack setCombatMode "RED"
+_grpAttack setSpeedMode "FULL"
+~0.2
+_gunnerVehicle = vehicle w4rAirAtkGunner
+? _gunnerVehicle != enemyAttackVehicle : deleteVehicle w4rAirAtkGunner
+#resAfterAttack
+? !(enemyAirReinforcement) : goto "resAfterTransportCrew"
+_grpTrans = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grpTrans]
+ww4ResPilot createUnit [[11136, 10990, 0], _grpTrans, "w4rAirTransPilot=this"]
+ww4ResCrew createUnit [[11144, 10990, 0], _grpTrans, "w4rAirTransGunner=this"]
+w4rAirTransPilot setSkill enemyAISkill
+w4rAirTransGunner setSkill enemyAISkill
+_grpTrans setBehaviour "AWARE"
+_grpTrans setCombatMode "RED"
+_grpTrans setSpeedMode "FULL"
+#resAfterTransportCrew
+? !((enemyAirReinforcement) || (enemyReinforcements)) : goto "runtimeReservesFinish"
+_grpReinf = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grpReinf]
+ww4ResRifleman createUnit [[11120, 11010, 0], _grpReinf, "w4rAirR1=this"]
+ww4ResGrenadier createUnit [[11128, 11010, 0], _grpReinf, "w4rAirR2=this"]
+ww4ResMachinegun createUnit [[11136, 11010, 0], _grpReinf, "w4rAirR3=this"]
+ww4ResAT createUnit [[11144, 11010, 0], _grpReinf, "w4rAirR4=this"]
+ww4ResAA createUnit [[11152, 11010, 0], _grpReinf, "w4rAirR5=this"]
+ww4ResRifleman createUnit [[11160, 11010, 0], _grpReinf, "w4rAirR6=this"]
+ww4ResRocket createUnit [[11168, 11010, 0], _grpReinf, "w4rAirR7=this"]
+ww4ResSniper createUnit [[11176, 11010, 0], _grpReinf, "w4rAirR8=this"]
+ww4ResRifleman createUnit [[11184, 11010, 0], _grpReinf, "w4rAirR9=this"]
+ww4ResGrenadier createUnit [[11192, 11010, 0], _grpReinf, "w4rAirR10=this"]
+ww4ResMachinegun createUnit [[11200, 11010, 0], _grpReinf, "w4rAirR11=this"]
+ww4ResMedic createUnit [[11208, 11010, 0], _grpReinf, "w4rAirR12=this"]
+w4rAirR1 setSkill enemyAISkill
+w4rAirR2 setSkill enemyAISkill
+w4rAirR3 setSkill enemyAISkill
+w4rAirR4 setSkill enemyAISkill
+w4rAirR5 setSkill enemyAISkill
+w4rAirR6 setSkill enemyAISkill
+w4rAirR7 setSkill enemyAISkill
+w4rAirR8 setSkill enemyAISkill
+? alive w4rAirR9 : w4rAirR9 setSkill enemyAISkill
+? alive w4rAirR10 : w4rAirR10 setSkill enemyAISkill
+? alive w4rAirR11 : w4rAirR11 setSkill enemyAISkill
+? alive w4rAirR12 : w4rAirR12 setSkill enemyAISkill
+_grpReinf setBehaviour "COMBAT"
+_grpReinf setCombatMode "RED"
+_grpReinf setSpeedMode "NORMAL"
+
+#runtimeReservesFinish
+enemyRuntimeReservesReady = true
+? debugMode : debugLog format ["ERA DEBUG ENEMY RESERVES: attackAir=%1 airReinf=%2 groundReinf=%3", enemyAirSupport, enemyAirReinforcement, enemyReinforcements]
+exit

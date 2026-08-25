@@ -1,0 +1,26 @@
+; Random vanilla OFP/CWA music at mission start. v188 setting-aware.
+; Uses exact OFP CfgMusic classnames: Track1..Track9 and Seventh tracks.
+; Delayed so music starts after init variables exist and after the mission has settled.
+~3
+? !(guiMusicEnabled) : exit
+? musicStarted : exit
+musicStarted = true
+_r = random 12
+? _r < 1 : musicTrack = "Track1"; goto "play"
+? _r < 2 : musicTrack = "Track2"; goto "play"
+? _r < 3 : musicTrack = "Track3"; goto "play"
+? _r < 4 : musicTrack = "Track4"; goto "play"
+? _r < 5 : musicTrack = "Track5"; goto "play"
+? _r < 6 : musicTrack = "Track6"; goto "play"
+? _r < 7 : musicTrack = "Track7"; goto "play"
+? _r < 8 : musicTrack = "Track8"; goto "play"
+? _r < 9 : musicTrack = "Track9"; goto "play"
+? _r < 10 : musicTrack = "7thLifeless"; goto "play"
+? _r < 11 : musicTrack = "7thDecide"; goto "play"
+musicTrack = "7thIAmGonaFly"
+goto "play"
+#play
+? debugMode : debugLog format ["ERA DEBUG music: playing %1", musicTrack]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG music: playing %1", musicTrack]
+playMusic musicTrack
+exit

@@ -1,0 +1,89 @@
+; v48 modular vehicle pool selector.
+; v120: Runtime ground combat pools from all_ww4_vehs.txt.
+; Side-specific E/R variants are used where available. West, desert, civilian,
+; aircraft, boat, ambulance, repair/fuel/ammo and static-weapon classes are excluded.
+enemyGroundVehiclePoolsReady = false
+enemyEastAPCVehiclePool = ["WW4EXT_M113E","WW4EXT_BMP","WW4EXT_BMP2","WW4EXT_BMP2_CW","WW4EXT_BMP3","WW4EXT_BMD3","WW4EXT_BTR80","WW4EXT_BTR80_CW","WW4EXT_BMPExportE","WW4EXT_BMP2ExportE","WW4EXT_BMP3ExportE","WW4EXT_BTR80ExportE"]
+enemyEastLightVehiclePool = ["WW4EXT_JeepMGE","WW4EXT_BRDM","WW4EXT_BRDM_MG","WW4EXT_BRDM2","WW4EXT_BRDM2M","WW4EXT_BRDM2ExportE","WW4EXT_Zil157MGE","WW4EXT_ToyotaDshk1E","WW4EXT_ToyotaDshk2E","WW4EXT_ToyotaDshk3E","WW4EXT_ToyotaDshk4E"]
+enemyEastTankVehiclePool = ["WW4EXT_T55","WW4EXT_T55ME","WW4EXT_T72","WW4EXT_T72_CW","WW4EXT_T72ME","WW4EXT_T80","WW4EXT_T80_CW","WW4EXT_T90","WW4EXT_T90SE","WW4EXT_M60ME","WW4EXT_M1A1ME"]
+enemyEastSupportVehiclePool = ["WW4EXT_ZSU","WW4EXT_ZSU_CW","WW4EXT_ZSUE","WW4EXT_Zil157MGE","WW4EXT_ToyotaDshk1E","WW4EXT_ToyotaDshk2E","WW4EXT_ToyotaDshk3E","WW4EXT_ToyotaDshk4E"]
+enemyEastHeavyVehiclePool = ["WW4EXT_M113E","WW4EXT_BMP","WW4EXT_BMP2","WW4EXT_BMP2_CW","WW4EXT_BMP3","WW4EXT_BMD3","WW4EXT_BTR80","WW4EXT_BTR80_CW","WW4EXT_BMPExportE","WW4EXT_BMP2ExportE","WW4EXT_BMP3ExportE","WW4EXT_BTR80ExportE","WW4EXT_T55","WW4EXT_T55ME","WW4EXT_T72","WW4EXT_T72_CW","WW4EXT_T72ME","WW4EXT_T80","WW4EXT_T80_CW","WW4EXT_T90","WW4EXT_T90SE","WW4EXT_M60ME","WW4EXT_M1A1ME","WW4EXT_ZSU","WW4EXT_ZSU_CW","WW4EXT_ZSUE"]
+enemyResistanceAPCVehiclePool = ["WW4EXT_M113R","WW4EXT_BMPRes","WW4EXT_BMPExportR","WW4EXT_BMP2ExportR","WW4EXT_BMP3ExportR","WW4EXT_BTR80ExportR"]
+enemyResistanceLightVehiclePool = ["WW4EXT_JeepMGR","WW4EXT_BRDM2ExportR","WW4EXT_Zil157MGR","WW4EXT_Zil157MG","WW4EXT_ToyotaDshk1R","WW4EXT_ToyotaDshk2R","WW4EXT_ToyotaDshk3R","WW4EXT_ToyotaDshk4R"]
+enemyResistanceTankVehiclePool = ["WW4EXT_T55Res","WW4EXT_T55MR","WW4EXT_T72Res","WW4EXT_T72MR","WW4EXT_T80Res","WW4EXT_T90SR","WW4EXT_M60MR","WW4EXT_M1A1MR"]
+enemyResistanceSupportVehiclePool = ["WW4EXT_ZSUR","WW4EXT_Zil157MGR","WW4EXT_Zil157MG","WW4EXT_ToyotaDshk1R","WW4EXT_ToyotaDshk2R","WW4EXT_ToyotaDshk3R","WW4EXT_ToyotaDshk4R"]
+enemyResistanceHeavyVehiclePool = ["WW4EXT_M113R","WW4EXT_BMPRes","WW4EXT_BMPExportR","WW4EXT_BMP2ExportR","WW4EXT_BMP3ExportR","WW4EXT_BTR80ExportR","WW4EXT_T55Res","WW4EXT_T55MR","WW4EXT_T72Res","WW4EXT_T72MR","WW4EXT_T80Res","WW4EXT_T90SR","WW4EXT_M60MR","WW4EXT_M1A1MR","WW4EXT_ZSUR"]
+; v133: randomized ground reinforcement transports. Armed APCs and unarmed trucks share the same cargo-wave role.
+enemyEastReinforcementTransportPool = ["WW4EXT_BTR80","WW4EXT_BTR80_CW","WW4EXT_BTR80ExportE","WW4EXT_BMP","WW4EXT_BMP2","WW4EXT_BMP2_CW","WW4EXT_BMPExportE","WW4EXT_BMP2ExportE","WW4EXT_UralE","WW4EXT_PV3SE"]
+enemyResistanceReinforcementTransportPool = ["WW4EXT_BTR80ExportR","WW4EXT_BMPRes","WW4EXT_BMPExportR","WW4EXT_BMP2ExportR","WW4EXT_BMP3ExportR","WW4EXT_UralR","WW4EXT_PV3SR","WW4EXT_Zil157"]
+enemyGroundVehiclePoolsReady = true
+
+; WEST air support class selection. The selected aircraft is created later by friendlyRuntimeSupport.sqs.
+supportAirClass = "AH1"
+supportAirSelection = 0
+supportAirName = "AH-1 Cobra"
+enemyAttackClass = "Mi24"
+enemyAttackVehicle = objNull
+enemyAttackName = "Mi-24"
+? !(supportAir) : goto "westAirDisabled"
+_r = random 5
+? _r < 1 : goto "westAH1Runtime"
+? _r < 2 : goto "westAH64Runtime"
+? _r < 3 : goto "westA10Runtime"
+? _r < 4 : goto "westA10LGBRuntime"
+goto "westOH58Runtime"
+#westAH1Runtime
+supportAirClass = "AH1"
+supportAirSelection = 0
+supportAirName = "AH-1 Cobra"
+goto "westAirRuntimeChosen"
+#westAH64Runtime
+supportAirClass = "AH64"
+supportAirSelection = 1
+supportAirName = "AH-64 Apache"
+goto "westAirRuntimeChosen"
+#westA10Runtime
+supportAirClass = "WW4EXT_A10BIS"
+supportAirSelection = 2
+supportAirName = "A-10"
+goto "westAirRuntimeChosen"
+#westA10LGBRuntime
+supportAirClass = "WW4EXT_A10LGBBIS"
+supportAirSelection = 3
+supportAirName = "A-10 LGB"
+goto "westAirRuntimeChosen"
+#westOH58Runtime
+supportAirClass = "OH58"
+supportAirSelection = 4
+supportAirName = "OH-58 Kiowa"
+#westAirRuntimeChosen
+supportAirLabel = format ["%1 available - Radio Alpha", supportAirName]
+? debugMode : debugLog format ["ERA DEBUG VEHICLE POOL: WEST runtime air support selected %1", supportAirName]
+goto "enemyAirPool"
+#westAirDisabled
+supportAirLabel = "no air support"
+
+#enemyAirPool
+; v129: select a class only. enemyRuntimeReserves.sqs creates the chosen aircraft and crew.
+enemyAttackClass = "Mi24"
+enemyAttackName = "Mi-24"
+? !(enemyAirSupport) : exit
+_r = random 3
+? _r < 1 : goto "enemyMi24Runtime"
+? _r < 2 : goto "enemySu25Runtime"
+goto "enemyV80Runtime"
+#enemyMi24Runtime
+enemyAttackClass = "Mi24"
+enemyAttackName = "Mi-24"
+goto "enemyAirChosenRuntime"
+#enemySu25Runtime
+enemyAttackClass = "WW4EXT_Su25_CW"
+enemyAttackName = "Su-25"
+goto "enemyAirChosenRuntime"
+#enemyV80Runtime
+enemyAttackClass = "Kamov"
+enemyAttackName = "V-80 / Kamov"
+#enemyAirChosenRuntime
+? debugMode : debugLog format ["ERA DEBUG VEHICLE POOL: runtime enemy attack air selected %1", enemyAttackName]
+? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG VEHICLE POOL: runtime enemy attack air selected %1", enemyAttackName]
+exit

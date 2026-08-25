@@ -1,0 +1,66 @@
+; v44: Keeps Radio Alpha hidden unless Air support is available.
+; v128: operate the selected runtime-created support aircraft and its own crew.
+~0.5
+? !(supportAir) : goto "noSupport"
+
+#stageAirSupport
+supportAirVehicleReady = false
+cobraProxyX = airStageX
+cobraProxyY = airStageY
+; v44: keep existing Air support crew alive. Previous named-crew approach could delete/lose the pilot.
+supportAirVehicle setDammage 0
+supportAirVehicle setFuel 1
+supportAirVehicle setPos [airStageX, airStageY, 260]
+supportAirVehicle setDir 45
+supportAirVehicle flyInHeight 200
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+? !(isNull (driver supportAirVehicle)) : (driver supportAirVehicle) stop false
+supportAirVehicle doMove [airStageX + 450, airStageY + 450, 0]
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airStageX + 450, airStageY + 450, 0]
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airStageX + 450, airStageY + 450, 0]
+~3
+_pos = getPos supportAirVehicle
+_z = _pos select 2
+? _z < 90 : supportAirVehicle setPos [airStageX, airStageY, 260]
+supportAirVehicle flyInHeight 200
+supportAirVehicle setFuel 1
+supportAirVehicle action ["ENGINEON", supportAirVehicle]
+? !(isNull (driver supportAirVehicle)) : (driver supportAirVehicle) stop false
+supportAirVehicle doMove [airStageX + 450, airStageY + 450, 0]
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airStageX + 450, airStageY + 450, 0]
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airStageX + 450, airStageY + 450, 0]
+supportAirVehicleReady = true
+"cobra_marker" setMarkerPos (getPos supportAirVehicle)
+"cobra_marker" setMarkerType "Flag"
+"cobra_marker" setMarkerColor "ColorGreen"
+"cobra_marker" setMarkerText "AIR SUPPORT STANDBY"
+"cobra_marker" setMarkerPos [cobraProxyX, cobraProxyY, 0]
+[] exec "cobraMarker.sqs"
+? debugMode : debugLog "ERA DEBUG AIR: runtime Air support pre-staged airborne"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG AIR: Air support pre-staged airborne"
+
+#loop
+? missionEnded : goto "hideAirEnd"
+? airSupportUsed : goto "hideAirEnd"
+1 setRadioMsg "Request Air Support"
+~5
+goto "loop"
+
+#hideAirEnd
+1 setRadioMsg "NULL"
+exit
+
+#noSupport
+1 setRadioMsg "Request Air Support"
+"cobra_marker" setMarkerPos [10875.000000, 11700.000000, 0]
+"cobra_marker" setMarkerType "Flag"
+"cobra_marker" setMarkerColor "ColorGreen"
+"cobra_marker" setMarkerText ""
+; Delete unused Air support so it cannot crash or interfere when support did not roll.
+deleteVehicle (driver supportAirVehicle)
+deleteVehicle (gunner supportAirVehicle)
+deleteVehicle (commander supportAirVehicle)
+deleteVehicle supportAirVehicle
+? debugMode : debugLog "ERA DEBUG AIR: no Air support rolled; support Air support removed"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG AIR: no Air support rolled"
+exit

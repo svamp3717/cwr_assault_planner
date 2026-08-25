@@ -1,0 +1,67 @@
+; v129: drop the empty WW4 Arsenal access box beside the playable squad's actual disembark/landing point.
+; The box supplies common allied magazines and also opens the WW4 Arsenal interface.
+_dropUnit = plr
+? !(alive _dropUnit) && alive red2 : _dropUnit = red2
+? !(alive _dropUnit) && alive red3 : _dropUnit = red3
+? !(alive _dropUnit) && alive medic1 : _dropUnit = medic1
+? !(alive _dropUnit) && alive medic2 : _dropUnit = medic2
+? !(alive _dropUnit) && alive red6 : _dropUnit = red6
+? !(alive _dropUnit) && alive red7 : _dropUnit = red7
+? !(alive _dropUnit) && alive red8 : _dropUnit = red8
+? !(alive _dropUnit) && alive red9 : _dropUnit = red9
+? !(alive _dropUnit) && alive red10 : _dropUnit = red10
+? !(alive _dropUnit) && alive red11 : _dropUnit = red11
+? !(alive _dropUnit) && alive red12 : _dropUnit = red12
+_wait = 0
+#waitForActualDropPoint
+? !(alive _dropUnit) : goto "fallbackBoxPoint"
+_dropPos = getPos _dropUnit
+_dropAlt = _dropPos select 2
+? (vehicle _dropUnit == _dropUnit) && _dropAlt <= 3 : goto "usePlayerDropPoint"
+? _wait >= 100 : goto "fallbackBoxPoint"
+~1
+_wait = _wait + 1
+goto "waitForActualDropPoint"
+#usePlayerDropPoint
+boxX = (_dropPos select 0) + 7
+boxY = (_dropPos select 1) - 4
+goto "createOrMoveBox"
+#fallbackBoxPoint
+boxX = lzX + 10
+boxY = lzY - 8
+#createOrMoveBox
+? supplyBoxMade : goto "moveSupplyBox"
+westSupplyBox = "ReammoBoxWest" createVehicle [boxX, boxY, 0]
+supplyBoxMade = true
+goto "placeSupplyBox"
+#moveSupplyBox
+westSupplyBox setPos [boxX, boxY, 0]
+#placeSupplyBox
+clearWeaponCargo westSupplyBox
+clearMagazineCargo westSupplyBox
+westSupplyBox addMagazineCargo ["WW4_W556_30mag",48]
+westSupplyBox addMagazineCargo ["WW4_M433grenade",18]
+westSupplyBox addMagazineCargo ["WW4_W556M_200mag",10]
+westSupplyBox addMagazineCargo ["WW4_W762M_200mag",6]
+westSupplyBox addMagazineCargo ["WW4_W762Sniper_20mag",8]
+westSupplyBox addMagazineCargo ["WW4_W762Sniper_5mag",8]
+westSupplyBox addMagazineCargo ["WW4_LAWLauncher",8]
+westSupplyBox addMagazineCargo ["WW4_CarlGustavLauncher",4]
+; Vanilla weapons and magazines are supplied through the WW4 Arsenal GUI only.
+westSupplyBox addMagazineCargo ["HandGrenade",24]
+westSupplyBox addMagazineCargo ["SmokeShell",12]
+westSupplyBox addMagazineCargo ["SmokeShellGreen",6]
+westSupplyBox addMagazineCargo ["PipeBomb",6]
+westSupplyBox addMagazineCargo ["TimeBomb",6]
+westSupplyBox addMagazineCargo ["Mine",6]
+westSupplyBox addMagazineCargo ["MineE",6]
+"box_marker" setMarkerPos [boxX, boxY, 0]
+"box_marker" setMarkerText "WW4 Arsenal"
+arsenalBox = westSupplyBox
+mpSupplyBoxReady = true
+publicVariable "westSupplyBox"
+publicVariable "mpSupplyBoxReady"
+? !(mpMode) : WW4_ArsenalBoxAction = westSupplyBox addAction ["Open WW4 Arsenal","ww4_arsenal\open.sqs"]
+? debugMode : debugLog format ["ERA DEBUG SUPPLY: WW4 Arsenal box delivered at %1,%2 after disembark", boxX, boxY]
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG SUPPLY: WW4 Arsenal box delivered at squad disembark point"
+exit

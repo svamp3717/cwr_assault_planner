@@ -1,0 +1,19 @@
+; custom v203: map-track the enemy reinforcement helicopter while Debug Messages are enabled.
+? !(debugMode) : exit
+#loop
+~1
+? missionEnded : goto "hide"
+? !(debugMode) : goto "hide"
+? !(enemyAirReinfMarkerActive) : goto "hide"
+? isNull enemyTransportHeli : goto "hide"
+? !(alive enemyTransportHeli) : goto "hide"
+_p = getPos enemyTransportHeli
+"enemy_air_reinf_marker" setMarkerPos [_p select 0,_p select 1]
+"enemy_air_reinf_marker" setMarkerType "Flag"
+"enemy_air_reinf_marker" setMarkerColor "ColorRed"
+"enemy_air_reinf_marker" setMarkerText "DEBUG: ENEMY REINFORCEMENT HELI"
+goto "loop"
+#hide
+"enemy_air_reinf_marker" setMarkerType "Empty"
+"enemy_air_reinf_marker" setMarkerText ""
+exit

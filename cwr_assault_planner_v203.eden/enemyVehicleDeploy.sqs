@@ -1,0 +1,441 @@
+; v90: move surviving editor-placed enemy vehicles to safe objective outskirts.
+; No destroy-and-recreate replacement is used. This preserves class, crew and mission object identity.
+enemyVehicleDeployComplete = false
+? !(enemyGroundVehicles) : goto "deployFinished"
+? enemyEast : goto "deployEast"
+goto "deployResistance"
+#deployEast
+? townCount < 1 : goto "eastAfter1"
+? !(alive s1Eveh1) : goto "eastSkip1_1"
+s1Eveh1 setFuel 0
+s1Eveh1 setPos [primaryX + 180, primaryY + -140, 0]
+s1Eveh1 setDir 315
+s1Eveh1 setDammage 0
+#eastSkip1_1
+? !(alive s1Eveh2) : goto "eastSkip1_2"
+s1Eveh2 setFuel 0
+s1Eveh2 setPos [primaryX + -190, primaryY + 130, 0]
+s1Eveh2 setDir 135
+s1Eveh2 setDammage 0
+#eastSkip1_2
+? !(alive s1Eveh3) : goto "eastSkip1_3"
+s1Eveh3 setFuel 0
+s1Eveh3 setPos [primaryX + 220, primaryY + 60, 0]
+s1Eveh3 setDir 270
+s1Eveh3 setDammage 0
+#eastSkip1_3
+? !(alive s1Eveh4) : goto "eastSkip1_4"
+s1Eveh4 setFuel 0
+s1Eveh4 setPos [primaryX + -230, primaryY + -120, 0]
+s1Eveh4 setDir 45
+s1Eveh4 setDammage 0
+#eastSkip1_4
+? !(alive s1Eveh5) : goto "eastSkip1_5"
+s1Eveh5 setFuel 0
+s1Eveh5 setPos [primaryX + 80, primaryY + 230, 0]
+s1Eveh5 setDir 180
+s1Eveh5 setDammage 0
+#eastSkip1_5
+#eastAfter1
+? townCount < 2 : goto "eastAfter2"
+? !(alive s2Eveh1) : goto "eastSkip2_1"
+s2Eveh1 setFuel 0
+s2Eveh1 setPos [secondaryX + 180, secondaryY + -140, 0]
+s2Eveh1 setDir 315
+s2Eveh1 setDammage 0
+#eastSkip2_1
+? !(alive s2Eveh2) : goto "eastSkip2_2"
+s2Eveh2 setFuel 0
+s2Eveh2 setPos [secondaryX + -190, secondaryY + 130, 0]
+s2Eveh2 setDir 135
+s2Eveh2 setDammage 0
+#eastSkip2_2
+? !(alive s2Eveh3) : goto "eastSkip2_3"
+s2Eveh3 setFuel 0
+s2Eveh3 setPos [secondaryX + 220, secondaryY + 60, 0]
+s2Eveh3 setDir 270
+s2Eveh3 setDammage 0
+#eastSkip2_3
+? !(alive s2Eveh4) : goto "eastSkip2_4"
+s2Eveh4 setFuel 0
+s2Eveh4 setPos [secondaryX + -230, secondaryY + -120, 0]
+s2Eveh4 setDir 45
+s2Eveh4 setDammage 0
+#eastSkip2_4
+? !(alive s2Eveh5) : goto "eastSkip2_5"
+s2Eveh5 setFuel 0
+s2Eveh5 setPos [secondaryX + 80, secondaryY + 230, 0]
+s2Eveh5 setDir 180
+s2Eveh5 setDammage 0
+#eastSkip2_5
+#eastAfter2
+? townCount < 3 : goto "eastAfter3"
+? !(alive s3Eveh1) : goto "eastSkip3_1"
+s3Eveh1 setFuel 0
+s3Eveh1 setPos [thirdX + 180, thirdY + -140, 0]
+s3Eveh1 setDir 315
+s3Eveh1 setDammage 0
+#eastSkip3_1
+? !(alive s3Eveh2) : goto "eastSkip3_2"
+s3Eveh2 setFuel 0
+s3Eveh2 setPos [thirdX + -190, thirdY + 130, 0]
+s3Eveh2 setDir 135
+s3Eveh2 setDammage 0
+#eastSkip3_2
+? !(alive s3Eveh3) : goto "eastSkip3_3"
+s3Eveh3 setFuel 0
+s3Eveh3 setPos [thirdX + 220, thirdY + 60, 0]
+s3Eveh3 setDir 270
+s3Eveh3 setDammage 0
+#eastSkip3_3
+? !(alive s3Eveh4) : goto "eastSkip3_4"
+s3Eveh4 setFuel 0
+s3Eveh4 setPos [thirdX + -230, thirdY + -120, 0]
+s3Eveh4 setDir 45
+s3Eveh4 setDammage 0
+#eastSkip3_4
+? !(alive s3Eveh5) : goto "eastSkip3_5"
+s3Eveh5 setFuel 0
+s3Eveh5 setPos [thirdX + 80, thirdY + 230, 0]
+s3Eveh5 setDir 180
+s3Eveh5 setDammage 0
+#eastSkip3_5
+#eastAfter3
+? townCount < 4 : goto "eastAfter4"
+? !(alive s4Eveh1) : goto "eastSkip4_1"
+s4Eveh1 setFuel 0
+s4Eveh1 setPos [fourthX + 180, fourthY + -140, 0]
+s4Eveh1 setDir 315
+s4Eveh1 setDammage 0
+#eastSkip4_1
+? !(alive s4Eveh2) : goto "eastSkip4_2"
+s4Eveh2 setFuel 0
+s4Eveh2 setPos [fourthX + -190, fourthY + 130, 0]
+s4Eveh2 setDir 135
+s4Eveh2 setDammage 0
+#eastSkip4_2
+? !(alive s4Eveh3) : goto "eastSkip4_3"
+s4Eveh3 setFuel 0
+s4Eveh3 setPos [fourthX + 220, fourthY + 60, 0]
+s4Eveh3 setDir 270
+s4Eveh3 setDammage 0
+#eastSkip4_3
+? !(alive s4Eveh4) : goto "eastSkip4_4"
+s4Eveh4 setFuel 0
+s4Eveh4 setPos [fourthX + -230, fourthY + -120, 0]
+s4Eveh4 setDir 45
+s4Eveh4 setDammage 0
+#eastSkip4_4
+? !(alive s4Eveh5) : goto "eastSkip4_5"
+s4Eveh5 setFuel 0
+s4Eveh5 setPos [fourthX + 80, fourthY + 230, 0]
+s4Eveh5 setDir 180
+s4Eveh5 setDammage 0
+#eastSkip4_5
+#eastAfter4
+? townCount < 5 : goto "eastAfter5"
+? !(alive s5Eveh1) : goto "eastSkip5_1"
+s5Eveh1 setFuel 0
+s5Eveh1 setPos [fifthX + 180, fifthY + -140, 0]
+s5Eveh1 setDir 315
+s5Eveh1 setDammage 0
+#eastSkip5_1
+? !(alive s5Eveh2) : goto "eastSkip5_2"
+s5Eveh2 setFuel 0
+s5Eveh2 setPos [fifthX + -190, fifthY + 130, 0]
+s5Eveh2 setDir 135
+s5Eveh2 setDammage 0
+#eastSkip5_2
+? !(alive s5Eveh3) : goto "eastSkip5_3"
+s5Eveh3 setFuel 0
+s5Eveh3 setPos [fifthX + 220, fifthY + 60, 0]
+s5Eveh3 setDir 270
+s5Eveh3 setDammage 0
+#eastSkip5_3
+? !(alive s5Eveh4) : goto "eastSkip5_4"
+s5Eveh4 setFuel 0
+s5Eveh4 setPos [fifthX + -230, fifthY + -120, 0]
+s5Eveh4 setDir 45
+s5Eveh4 setDammage 0
+#eastSkip5_4
+? !(alive s5Eveh5) : goto "eastSkip5_5"
+s5Eveh5 setFuel 0
+s5Eveh5 setPos [fifthX + 80, fifthY + 230, 0]
+s5Eveh5 setDir 180
+s5Eveh5 setDammage 0
+#eastSkip5_5
+#eastAfter5
+goto "settleVehicles"
+#deployResistance
+? townCount < 1 : goto "resAfter1"
+? !(alive s1Rveh1) : goto "resSkip1_1"
+s1Rveh1 setFuel 0
+s1Rveh1 setPos [primaryX + 180, primaryY + -140, 0]
+s1Rveh1 setDir 315
+s1Rveh1 setDammage 0
+#resSkip1_1
+? !(alive s1Rveh2) : goto "resSkip1_2"
+s1Rveh2 setFuel 0
+s1Rveh2 setPos [primaryX + -190, primaryY + 130, 0]
+s1Rveh2 setDir 135
+s1Rveh2 setDammage 0
+#resSkip1_2
+? !(alive s1Rveh3) : goto "resSkip1_3"
+s1Rveh3 setFuel 0
+s1Rveh3 setPos [primaryX + 220, primaryY + 60, 0]
+s1Rveh3 setDir 270
+s1Rveh3 setDammage 0
+#resSkip1_3
+? !(alive s1Rveh4) : goto "resSkip1_4"
+s1Rveh4 setFuel 0
+s1Rveh4 setPos [primaryX + -230, primaryY + -120, 0]
+s1Rveh4 setDir 45
+s1Rveh4 setDammage 0
+#resSkip1_4
+? !(alive s1Rveh5) : goto "resSkip1_5"
+s1Rveh5 setFuel 0
+s1Rveh5 setPos [primaryX + 80, primaryY + 230, 0]
+s1Rveh5 setDir 180
+s1Rveh5 setDammage 0
+#resSkip1_5
+#resAfter1
+? townCount < 2 : goto "resAfter2"
+? !(alive s2Rveh1) : goto "resSkip2_1"
+s2Rveh1 setFuel 0
+s2Rveh1 setPos [secondaryX + 180, secondaryY + -140, 0]
+s2Rveh1 setDir 315
+s2Rveh1 setDammage 0
+#resSkip2_1
+? !(alive s2Rveh2) : goto "resSkip2_2"
+s2Rveh2 setFuel 0
+s2Rveh2 setPos [secondaryX + -190, secondaryY + 130, 0]
+s2Rveh2 setDir 135
+s2Rveh2 setDammage 0
+#resSkip2_2
+? !(alive s2Rveh3) : goto "resSkip2_3"
+s2Rveh3 setFuel 0
+s2Rveh3 setPos [secondaryX + 220, secondaryY + 60, 0]
+s2Rveh3 setDir 270
+s2Rveh3 setDammage 0
+#resSkip2_3
+? !(alive s2Rveh4) : goto "resSkip2_4"
+s2Rveh4 setFuel 0
+s2Rveh4 setPos [secondaryX + -230, secondaryY + -120, 0]
+s2Rveh4 setDir 45
+s2Rveh4 setDammage 0
+#resSkip2_4
+? !(alive s2Rveh5) : goto "resSkip2_5"
+s2Rveh5 setFuel 0
+s2Rveh5 setPos [secondaryX + 80, secondaryY + 230, 0]
+s2Rveh5 setDir 180
+s2Rveh5 setDammage 0
+#resSkip2_5
+#resAfter2
+? townCount < 3 : goto "resAfter3"
+? !(alive s3Rveh1) : goto "resSkip3_1"
+s3Rveh1 setFuel 0
+s3Rveh1 setPos [thirdX + 180, thirdY + -140, 0]
+s3Rveh1 setDir 315
+s3Rveh1 setDammage 0
+#resSkip3_1
+? !(alive s3Rveh2) : goto "resSkip3_2"
+s3Rveh2 setFuel 0
+s3Rveh2 setPos [thirdX + -190, thirdY + 130, 0]
+s3Rveh2 setDir 135
+s3Rveh2 setDammage 0
+#resSkip3_2
+? !(alive s3Rveh3) : goto "resSkip3_3"
+s3Rveh3 setFuel 0
+s3Rveh3 setPos [thirdX + 220, thirdY + 60, 0]
+s3Rveh3 setDir 270
+s3Rveh3 setDammage 0
+#resSkip3_3
+? !(alive s3Rveh4) : goto "resSkip3_4"
+s3Rveh4 setFuel 0
+s3Rveh4 setPos [thirdX + -230, thirdY + -120, 0]
+s3Rveh4 setDir 45
+s3Rveh4 setDammage 0
+#resSkip3_4
+? !(alive s3Rveh5) : goto "resSkip3_5"
+s3Rveh5 setFuel 0
+s3Rveh5 setPos [thirdX + 80, thirdY + 230, 0]
+s3Rveh5 setDir 180
+s3Rveh5 setDammage 0
+#resSkip3_5
+#resAfter3
+? townCount < 4 : goto "resAfter4"
+? !(alive s4Rveh1) : goto "resSkip4_1"
+s4Rveh1 setFuel 0
+s4Rveh1 setPos [fourthX + 180, fourthY + -140, 0]
+s4Rveh1 setDir 315
+s4Rveh1 setDammage 0
+#resSkip4_1
+? !(alive s4Rveh2) : goto "resSkip4_2"
+s4Rveh2 setFuel 0
+s4Rveh2 setPos [fourthX + -190, fourthY + 130, 0]
+s4Rveh2 setDir 135
+s4Rveh2 setDammage 0
+#resSkip4_2
+? !(alive s4Rveh3) : goto "resSkip4_3"
+s4Rveh3 setFuel 0
+s4Rveh3 setPos [fourthX + 220, fourthY + 60, 0]
+s4Rveh3 setDir 270
+s4Rveh3 setDammage 0
+#resSkip4_3
+? !(alive s4Rveh4) : goto "resSkip4_4"
+s4Rveh4 setFuel 0
+s4Rveh4 setPos [fourthX + -230, fourthY + -120, 0]
+s4Rveh4 setDir 45
+s4Rveh4 setDammage 0
+#resSkip4_4
+? !(alive s4Rveh5) : goto "resSkip4_5"
+s4Rveh5 setFuel 0
+s4Rveh5 setPos [fourthX + 80, fourthY + 230, 0]
+s4Rveh5 setDir 180
+s4Rveh5 setDammage 0
+#resSkip4_5
+#resAfter4
+? townCount < 5 : goto "resAfter5"
+? !(alive s5Rveh1) : goto "resSkip5_1"
+s5Rveh1 setFuel 0
+s5Rveh1 setPos [fifthX + 180, fifthY + -140, 0]
+s5Rveh1 setDir 315
+s5Rveh1 setDammage 0
+#resSkip5_1
+? !(alive s5Rveh2) : goto "resSkip5_2"
+s5Rveh2 setFuel 0
+s5Rveh2 setPos [fifthX + -190, fifthY + 130, 0]
+s5Rveh2 setDir 135
+s5Rveh2 setDammage 0
+#resSkip5_2
+? !(alive s5Rveh3) : goto "resSkip5_3"
+s5Rveh3 setFuel 0
+s5Rveh3 setPos [fifthX + 220, fifthY + 60, 0]
+s5Rveh3 setDir 270
+s5Rveh3 setDammage 0
+#resSkip5_3
+? !(alive s5Rveh4) : goto "resSkip5_4"
+s5Rveh4 setFuel 0
+s5Rveh4 setPos [fifthX + -230, fifthY + -120, 0]
+s5Rveh4 setDir 45
+s5Rveh4 setDammage 0
+#resSkip5_4
+? !(alive s5Rveh5) : goto "resSkip5_5"
+s5Rveh5 setFuel 0
+s5Rveh5 setPos [fifthX + 80, fifthY + 230, 0]
+s5Rveh5 setDir 180
+s5Rveh5 setDammage 0
+#resSkip5_5
+#resAfter5
+#settleVehicles
+~1
+? enemyEast : goto "repairEast"
+goto "repairResistance"
+#repairEast
+? townCount >= 1 && alive s1Eveh1 : s1Eveh1 setDammage 0
+? townCount >= 1 && alive s1Eveh1 : s1Eveh1 setFuel 1
+? townCount >= 1 && alive s1Eveh2 : s1Eveh2 setDammage 0
+? townCount >= 1 && alive s1Eveh2 : s1Eveh2 setFuel 1
+? townCount >= 1 && alive s1Eveh3 : s1Eveh3 setDammage 0
+? townCount >= 1 && alive s1Eveh3 : s1Eveh3 setFuel 1
+? townCount >= 1 && alive s1Eveh4 : s1Eveh4 setDammage 0
+? townCount >= 1 && alive s1Eveh4 : s1Eveh4 setFuel 1
+? townCount >= 1 && alive s1Eveh5 : s1Eveh5 setDammage 0
+? townCount >= 1 && alive s1Eveh5 : s1Eveh5 setFuel 1
+? townCount >= 2 && alive s2Eveh1 : s2Eveh1 setDammage 0
+? townCount >= 2 && alive s2Eveh1 : s2Eveh1 setFuel 1
+? townCount >= 2 && alive s2Eveh2 : s2Eveh2 setDammage 0
+? townCount >= 2 && alive s2Eveh2 : s2Eveh2 setFuel 1
+? townCount >= 2 && alive s2Eveh3 : s2Eveh3 setDammage 0
+? townCount >= 2 && alive s2Eveh3 : s2Eveh3 setFuel 1
+? townCount >= 2 && alive s2Eveh4 : s2Eveh4 setDammage 0
+? townCount >= 2 && alive s2Eveh4 : s2Eveh4 setFuel 1
+? townCount >= 2 && alive s2Eveh5 : s2Eveh5 setDammage 0
+? townCount >= 2 && alive s2Eveh5 : s2Eveh5 setFuel 1
+? townCount >= 3 && alive s3Eveh1 : s3Eveh1 setDammage 0
+? townCount >= 3 && alive s3Eveh1 : s3Eveh1 setFuel 1
+? townCount >= 3 && alive s3Eveh2 : s3Eveh2 setDammage 0
+? townCount >= 3 && alive s3Eveh2 : s3Eveh2 setFuel 1
+? townCount >= 3 && alive s3Eveh3 : s3Eveh3 setDammage 0
+? townCount >= 3 && alive s3Eveh3 : s3Eveh3 setFuel 1
+? townCount >= 3 && alive s3Eveh4 : s3Eveh4 setDammage 0
+? townCount >= 3 && alive s3Eveh4 : s3Eveh4 setFuel 1
+? townCount >= 3 && alive s3Eveh5 : s3Eveh5 setDammage 0
+? townCount >= 3 && alive s3Eveh5 : s3Eveh5 setFuel 1
+? townCount >= 4 && alive s4Eveh1 : s4Eveh1 setDammage 0
+? townCount >= 4 && alive s4Eveh1 : s4Eveh1 setFuel 1
+? townCount >= 4 && alive s4Eveh2 : s4Eveh2 setDammage 0
+? townCount >= 4 && alive s4Eveh2 : s4Eveh2 setFuel 1
+? townCount >= 4 && alive s4Eveh3 : s4Eveh3 setDammage 0
+? townCount >= 4 && alive s4Eveh3 : s4Eveh3 setFuel 1
+? townCount >= 4 && alive s4Eveh4 : s4Eveh4 setDammage 0
+? townCount >= 4 && alive s4Eveh4 : s4Eveh4 setFuel 1
+? townCount >= 4 && alive s4Eveh5 : s4Eveh5 setDammage 0
+? townCount >= 4 && alive s4Eveh5 : s4Eveh5 setFuel 1
+? townCount >= 5 && alive s5Eveh1 : s5Eveh1 setDammage 0
+? townCount >= 5 && alive s5Eveh1 : s5Eveh1 setFuel 1
+? townCount >= 5 && alive s5Eveh2 : s5Eveh2 setDammage 0
+? townCount >= 5 && alive s5Eveh2 : s5Eveh2 setFuel 1
+? townCount >= 5 && alive s5Eveh3 : s5Eveh3 setDammage 0
+? townCount >= 5 && alive s5Eveh3 : s5Eveh3 setFuel 1
+? townCount >= 5 && alive s5Eveh4 : s5Eveh4 setDammage 0
+? townCount >= 5 && alive s5Eveh4 : s5Eveh4 setFuel 1
+? townCount >= 5 && alive s5Eveh5 : s5Eveh5 setDammage 0
+? townCount >= 5 && alive s5Eveh5 : s5Eveh5 setFuel 1
+goto "deployFinished"
+#repairResistance
+? townCount >= 1 && alive s1Rveh1 : s1Rveh1 setDammage 0
+? townCount >= 1 && alive s1Rveh1 : s1Rveh1 setFuel 1
+? townCount >= 1 && alive s1Rveh2 : s1Rveh2 setDammage 0
+? townCount >= 1 && alive s1Rveh2 : s1Rveh2 setFuel 1
+? townCount >= 1 && alive s1Rveh3 : s1Rveh3 setDammage 0
+? townCount >= 1 && alive s1Rveh3 : s1Rveh3 setFuel 1
+? townCount >= 1 && alive s1Rveh4 : s1Rveh4 setDammage 0
+? townCount >= 1 && alive s1Rveh4 : s1Rveh4 setFuel 1
+? townCount >= 1 && alive s1Rveh5 : s1Rveh5 setDammage 0
+? townCount >= 1 && alive s1Rveh5 : s1Rveh5 setFuel 1
+? townCount >= 2 && alive s2Rveh1 : s2Rveh1 setDammage 0
+? townCount >= 2 && alive s2Rveh1 : s2Rveh1 setFuel 1
+? townCount >= 2 && alive s2Rveh2 : s2Rveh2 setDammage 0
+? townCount >= 2 && alive s2Rveh2 : s2Rveh2 setFuel 1
+? townCount >= 2 && alive s2Rveh3 : s2Rveh3 setDammage 0
+? townCount >= 2 && alive s2Rveh3 : s2Rveh3 setFuel 1
+? townCount >= 2 && alive s2Rveh4 : s2Rveh4 setDammage 0
+? townCount >= 2 && alive s2Rveh4 : s2Rveh4 setFuel 1
+? townCount >= 2 && alive s2Rveh5 : s2Rveh5 setDammage 0
+? townCount >= 2 && alive s2Rveh5 : s2Rveh5 setFuel 1
+? townCount >= 3 && alive s3Rveh1 : s3Rveh1 setDammage 0
+? townCount >= 3 && alive s3Rveh1 : s3Rveh1 setFuel 1
+? townCount >= 3 && alive s3Rveh2 : s3Rveh2 setDammage 0
+? townCount >= 3 && alive s3Rveh2 : s3Rveh2 setFuel 1
+? townCount >= 3 && alive s3Rveh3 : s3Rveh3 setDammage 0
+? townCount >= 3 && alive s3Rveh3 : s3Rveh3 setFuel 1
+? townCount >= 3 && alive s3Rveh4 : s3Rveh4 setDammage 0
+? townCount >= 3 && alive s3Rveh4 : s3Rveh4 setFuel 1
+? townCount >= 3 && alive s3Rveh5 : s3Rveh5 setDammage 0
+? townCount >= 3 && alive s3Rveh5 : s3Rveh5 setFuel 1
+? townCount >= 4 && alive s4Rveh1 : s4Rveh1 setDammage 0
+? townCount >= 4 && alive s4Rveh1 : s4Rveh1 setFuel 1
+? townCount >= 4 && alive s4Rveh2 : s4Rveh2 setDammage 0
+? townCount >= 4 && alive s4Rveh2 : s4Rveh2 setFuel 1
+? townCount >= 4 && alive s4Rveh3 : s4Rveh3 setDammage 0
+? townCount >= 4 && alive s4Rveh3 : s4Rveh3 setFuel 1
+? townCount >= 4 && alive s4Rveh4 : s4Rveh4 setDammage 0
+? townCount >= 4 && alive s4Rveh4 : s4Rveh4 setFuel 1
+? townCount >= 4 && alive s4Rveh5 : s4Rveh5 setDammage 0
+? townCount >= 4 && alive s4Rveh5 : s4Rveh5 setFuel 1
+? townCount >= 5 && alive s5Rveh1 : s5Rveh1 setDammage 0
+? townCount >= 5 && alive s5Rveh1 : s5Rveh1 setFuel 1
+? townCount >= 5 && alive s5Rveh2 : s5Rveh2 setDammage 0
+? townCount >= 5 && alive s5Rveh2 : s5Rveh2 setFuel 1
+? townCount >= 5 && alive s5Rveh3 : s5Rveh3 setDammage 0
+? townCount >= 5 && alive s5Rveh3 : s5Rveh3 setFuel 1
+? townCount >= 5 && alive s5Rveh4 : s5Rveh4 setDammage 0
+? townCount >= 5 && alive s5Rveh4 : s5Rveh4 setFuel 1
+? townCount >= 5 && alive s5Rveh5 : s5Rveh5 setDammage 0
+? townCount >= 5 && alive s5Rveh5 : s5Rveh5 setFuel 1
+#deployFinished
+enemyVehicleDeployComplete = true
+? debugMode : debugLog "ERA DEBUG ENEMY VEHICLES: v90 safe move-and-repair deployment complete"
+? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY VEHICLES: deployment complete"
+exit

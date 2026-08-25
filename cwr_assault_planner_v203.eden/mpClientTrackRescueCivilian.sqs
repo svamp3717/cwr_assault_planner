@@ -1,0 +1,55 @@
+; v187 track one civilian who still needs rescue. Marker disappears when safe, dead, failed or completed.
+_marker = _this select 0
+_slot = _this select 1
+_number = _this select 2
+_destX = _this select 3
+_destY = _this select 4
+_unit = objNull
+_marker setMarkerType "Empty"
+#waitUnit
+~1
+? missionEnded : exit
+? _slot == 1 && _number == 1 : _unit = s1Civ1
+? _slot == 1 && _number == 2 : _unit = s1Civ2
+? _slot == 1 && _number == 3 : _unit = s1Civ3
+? _slot == 1 && _number == 4 : _unit = s1Civ4
+? _slot == 2 && _number == 1 : _unit = s2Civ1
+? _slot == 2 && _number == 2 : _unit = s2Civ2
+? _slot == 2 && _number == 3 : _unit = s2Civ3
+? _slot == 2 && _number == 4 : _unit = s2Civ4
+? _slot == 3 && _number == 1 : _unit = s3Civ1
+? _slot == 3 && _number == 2 : _unit = s3Civ2
+? _slot == 3 && _number == 3 : _unit = s3Civ3
+? _slot == 3 && _number == 4 : _unit = s3Civ4
+? _slot == 4 && _number == 1 : _unit = s4Civ1
+? _slot == 4 && _number == 2 : _unit = s4Civ2
+? _slot == 4 && _number == 3 : _unit = s4Civ3
+? _slot == 4 && _number == 4 : _unit = s4Civ4
+? _slot == 5 && _number == 1 : _unit = s5Civ1
+? _slot == 5 && _number == 2 : _unit = s5Civ2
+? _slot == 5 && _number == 3 : _unit = s5Civ3
+? _slot == 5 && _number == 4 : _unit = s5Civ4
+? isNull _unit : goto "waitUnit"
+#loop
+~2
+_done = false
+_failed = false
+? _slot == 1 : _done = objective1Done; _failed = objectiveRescueFailed1
+? _slot == 2 : _done = objective2Done; _failed = objectiveRescueFailed2
+? _slot == 3 : _done = objective3Done; _failed = objectiveRescueFailed3
+? _slot == 4 : _done = objective4Done; _failed = objectiveRescueFailed4
+? _slot == 5 : _done = objective5Done; _failed = objectiveRescueFailed5
+? missionEnded || _done || _failed : goto "hide"
+? !(alive _unit) : goto "hide"
+_p = getPos _unit
+_dx = (_p select 0) - _destX
+_dy = (_p select 1) - _destY
+? ((_dx * _dx) + (_dy * _dy)) <= 19600 : goto "hide"
+_marker setMarkerPos [_p select 0,_p select 1]
+_marker setMarkerType "Flag"
+_marker setMarkerColor "ColorGreen"
+_marker setMarkerText format ["CIVILIAN %1-%2",_slot,_number]
+goto "loop"
+#hide
+_marker setMarkerType "Empty"
+exit

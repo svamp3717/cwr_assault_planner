@@ -1,0 +1,113 @@
+; v164 create one Recover Downed Pilot objective and nearby enemy search party.
+; Args: [slot, sourceX, sourceY, sourceLabel]
+downedPilotObjectiveReady = false
+_slot = _this select 0
+_sourceX = _this select 1
+_sourceY = _this select 2
+_sourceLabel = _this select 3
+_markers = missionTownMarkers
+_labels = missionTownLabels
+_count = count _markers
+_index = 0
+_requireDistance = true
+_bestDistance = 999999999
+_bestLabel = ""
+_bestPos = [_sourceX,_sourceY,0]
+#scan
+? _index >= _count : goto "scanDone"
+_marker = _markers select _index
+_label = _labels select _index
+_blocked = false
+? _label == townLabel : _blocked = true
+? townCount >= 2 && _label == secondaryLabel : _blocked = true
+? townCount >= 3 && _label == thirdLabel : _blocked = true
+? townCount >= 4 && _label == fourthLabel : _blocked = true
+? townCount >= 5 && _label == fifthLabel : _blocked = true
+_pos = getMarkerPos _marker
+_dx = (_pos select 0) - _sourceX
+_dy = (_pos select 1) - _sourceY
+_distance = (_dx * _dx) + (_dy * _dy)
+_farEnough = _distance >= 250000
+? _blocked : goto "nextTown"
+? _requireDistance && !(_farEnough) : goto "nextTown"
+? _distance >= _bestDistance : goto "nextTown"
+_bestDistance = _distance
+_bestLabel = _label
+_bestPos = _pos
+#nextTown
+_index = _index + 1
+goto "scan"
+#scanDone
+? _bestLabel != "" : goto "destinationFound"
+? !(_requireDistance) : goto "fallback"
+_requireDistance = false
+_index = 0
+_bestDistance = 999999999
+goto "scan"
+#fallback
+_bestLabel = missionTownLabels select 0
+_bestPos = getMarkerPos (missionTownMarkers select 0)
+#destinationFound
+_destX = _bestPos select 0
+_destY = _bestPos select 1
+? _slot == 1 : objectivePilotDestinationX1 = _destX; objectivePilotDestinationY1 = _destY; objectivePilotDestinationLabel1 = _bestLabel
+? _slot == 2 : objectivePilotDestinationX2 = _destX; objectivePilotDestinationY2 = _destY; objectivePilotDestinationLabel2 = _bestLabel
+? _slot == 3 : objectivePilotDestinationX3 = _destX; objectivePilotDestinationY3 = _destY; objectivePilotDestinationLabel3 = _bestLabel
+? _slot == 4 : objectivePilotDestinationX4 = _destX; objectivePilotDestinationY4 = _destY; objectivePilotDestinationLabel4 = _bestLabel
+? _slot == 5 : objectivePilotDestinationX5 = _destX; objectivePilotDestinationY5 = _destY; objectivePilotDestinationLabel5 = _bestLabel
+_markerName = "pilot_marker_1"
+? _slot == 2 : _markerName = "pilot_marker_2"
+? _slot == 3 : _markerName = "pilot_marker_3"
+? _slot == 4 : _markerName = "pilot_marker_4"
+? _slot == 5 : _markerName = "pilot_marker_5"
+_markerName setMarkerPos [_destX,_destY]
+_markerName setMarkerType "Flag"
+_markerName setMarkerColor "ColorGreen"
+_markerName setMarkerText format ["PILOT SAFE SETTLEMENT: %1",_bestLabel]
+; The pilot is captive until a player accepts responsibility for moving him. This prevents the search party from executing him before players arrive.
+_pilotGroup = createGroup west
+_pilotPos = [_sourceX + 45,_sourceY + 30,0]
+"WW4_WARPilot" createUnit [_pilotPos,_pilotGroup,""]
+_pilotUnits = units _pilotGroup
+_pilot = _pilotUnits select ((count _pilotUnits) - 1)
+_pilot setSkill 0.45
+_pilot setDammage 0.25
+_pilot setCaptive true
+removeAllWeapons _pilot
+doStop _pilot
+? _slot == 1 : objectivePilotUnit1 = _pilot
+? _slot == 2 : objectivePilotUnit2 = _pilot
+? _slot == 3 : objectivePilotUnit3 = _pilot
+? _slot == 4 : objectivePilotUnit4 = _pilot
+? _slot == 5 : objectivePilotUnit5 = _pilot
+; Three-man enemy search party, separate from the normal objective defenders.
+? enemyEast : _searchGroup = createGroup east
+? enemyResistance : _searchGroup = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_searchGroup]
+? enemyEast : _searchClasses = [ww4EastSquadLeader,ww4EastRifleman,ww4EastMarksman]
+? enemyResistance : _searchClasses = [ww4ResSquadLeader,ww4ResRifleman,ww4ResMarksman]
+_j = 0
+#searchSpawn
+? _j >= 3 : goto "searchReady"
+_angle = 80 + (_j * 110)
+_radius = 80 + random 35
+_spawnX = _sourceX + ((sin _angle) * _radius)
+_spawnY = _sourceY + ((cos _angle) * _radius)
+_class = _searchClasses select _j
+_class createUnit [[_spawnX,_spawnY,0],_searchGroup,""]
+_searchUnits = units _searchGroup
+_searchUnit = _searchUnits select ((count _searchUnits) - 1)
+_searchUnit setSkill enemyAISkill
+_j = _j + 1
+goto "searchSpawn"
+#searchReady
+_searchGroup setBehaviour "SAFE"
+_searchGroup setCombatMode "YELLOW"
+_searchGroup setSpeedMode "LIMITED"
+_searchGroup setFormation "WEDGE"
+_searchLeader = leader _searchGroup
+[_searchLeader,_sourceX,_sourceY,120] exec "enemyInfantryPatrol.sqs"
+[_slot] exec "downedPilotMonitor.sqs"
+? debugMode : debugLog format ["ERA DEBUG PILOT: objective=%1 source=%2 destination=%3",_slot,_sourceLabel,_bestLabel]
+downedPilotObjectiveReady = true
+exit

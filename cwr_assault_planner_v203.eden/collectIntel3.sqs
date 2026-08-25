@@ -1,0 +1,7 @@
+; MP v109 local action for Objective 3 intel.
+? objectiveIntelCollected3 : exit
+? !(alive player) : exit
+objectiveIntelCollected3 = true
+publicVariable "objectiveIntelCollected3"
+player sideChat "Intel file secured. Transmitting to HQ."
+exit

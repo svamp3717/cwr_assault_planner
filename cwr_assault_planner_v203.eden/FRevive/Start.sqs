@@ -1,0 +1,213 @@
+; FRevive 0.51 script by Faguss (ofp-faguss.com)
+
+? _this in [_this] : exit
+? Format ["%1", count _this] == "scalar" : exit
+? count _this == 0 : exit
+
+? Format ["%1",FREVIVE_PLAYER_RAISED] != "scalar bool array string 0xfcffffef" : exit
+FREVIVE_PLAYER_RAISED = false
+
+? !isNull player : player addEventHandler ["killed", "FREVIVE_PLAYER=_this select 0; FREVIVE_KILLER=_this select 1"]
+
+_var_name_list = []
+{("FREVIVE_"+_x) setMarkerPos [0,0]; if (Format ["%1",call _x] != "scalar bool array string 0xfcffffef") then {_var_name_list set [count _var_name_list,_x]}} forEach _this
+
+call preProcessFile "FRevive\Functions.sqf"
+
+_i          = 0
+_bodies     = []
+_status     = []
+_timing     = []
+_last_dir   = []
+_reviving   = []
+_sides      = []
+_location   = []
+_lastMSG    = []
+_name_list  = []
+_weapons    = []
+_magazines  = []
+_remind     = []
+_flags      = []
+_limit      = []
+_timeout    = []
+_sound      = []
+_sound_plr  = []
+_player_id  = -1
+_logic      = "logic" camCreate [0,0,0]
+_sea_level  = "emptyDetector" camCreate [0,0,0]
+_measure    = "PipeBomb" CamCreate [0,0,0]
+
+; Status description:
+; >0 - busy reviving smb else
+; -1 - alive
+; -2 - dead
+; -3 - dead respawned
+
+; Default options
+? Format ["%1",FREVIVE_SIDE_RESISTANCE] == "scalar bool array string 0xfcffffef"  : FREVIVE_SIDE_RESISTANCE=[west]
+? Format ["%1",FREVIVE_PICKUP_RANGE] == "scalar bool array string 0xfcffffef"     : FREVIVE_PICKUP_RANGE=2.5
+? Format ["%1",FREVIVE_PICKUP_TIME] == "scalar bool array string 0xfcffffef"      : FREVIVE_PICKUP_TIME=12
+? Format ["%1",FREVIVE_AI_MOVE_RANGE] == "scalar bool array string 0xfcffffef"    : FREVIVE_AI_MOVE_RANGE=200
+? Format ["%1",FREVIVE_USE_FLAGS] == "scalar bool array string 0xfcffffef"        : FREVIVE_USE_FLAGS=false
+? Format ["%1",FREVIVE_TAKE_GUNS_BEFORE] == "scalar bool array string 0xfcffffef" : FREVIVE_TAKE_GUNS_BEFORE=false
+? Format ["%1",FREVIVE_DROP_PARTICLE] == "scalar bool array string 0xfcffffef"    : FREVIVE_DROP_PARTICLE=false
+? Format ["%1",FREVIVE_ONLY_MEDIC] == "scalar bool array string 0xfcffffef"       : FREVIVE_ONLY_MEDIC=false
+? Format ["%1",FREVIVE_INTERVAL] == "scalar bool array string 0xfcffffef"         : FREVIVE_INTERVAL=0.1
+? Format ["%1",FREVIVE_MSG_STYLE] == "scalar bool array string 0xfcffffef"        : FREVIVE_MSG_STYLE=0
+? Format ["%1",FREVIVE_LIMIT] == "scalar bool array string 0xfcffffef"            : FREVIVE_LIMIT=-1
+? Format ["%1",FREVIVE_TIMEOUT] == "scalar bool array string 0xfcffffef"          : FREVIVE_TIMEOUT=-1
+? Format ["%1",FREVIVE_SOUND] == "scalar bool array string 0xfcffffef"            : FREVIVE_SOUND=false
+? Format ["%1",FREVIVE_PARTICLE_LF] == "scalar bool array string 0xfcffffef"      : FREVIVE_PARTICLE_LF=1
+? Format ["%1",FREVIVE_PARTICLE_SIZE] == "scalar bool array string 0xfcffffef"    : FREVIVE_PARTICLE_SIZE=[1]
+? Format ["%1",FREVIVE_KILL_CAM] == "scalar bool array string 0xfcffffef"         : FREVIVE_KILL_CAM=true
+
+; Build table with info for each unit
+{_unit=call _x; if (_unit==player) then {_player_id=_i}; if (FREVIVE_USE_FLAGS) then {call Format ["FREVIVE_FLAG%1 setFlagOwner %2",_i,_x]}; if (FREVIVE_SOUND) then {_sound_plr set [count _sound_plr, "logic" camCreate [0,0,0]]}; _sound set [count _sound, 0]; _timeout set [count _timeout, -1]; _limit set [count _limit, FREVIVE_LIMIT]; _remind set [count _remind, 0]; _last_dir set [count _last_dir, 0]; _magazines set [count _magazines, []]; _weapons set [count _weapons, []]; _name_list set [count _name_list, name _unit]; _lastMSG set [count _lastMSG, objNull]; _location set [count _location,[0,0,0]]; _sides set [count _sides, side _unit]; _reviving set [count _reviving, -1]; _timing set [count _timing,0]; _status set [count _status,-1]; _bodies set [count _bodies, _unit]; _i=_i+1} forEach _var_name_list
+
+; Dedicated servers have no local player. Use the first tracked unit for side/friendly calculations.
+? _player_id < 0 : _player_id = 0
+
+
+
+
+; Check the status of each unit
+#Start
+~FREVIVE_INTERVAL
+_i = 0
+
+#ForEachUnit
+_name     = _var_name_list select _i
+_body     = _bodies select _i
+_stat     = _status select _i
+_new_body = call _name
+
+; When unit doesn't exist anymore
+? _stat>=-1 && isNull _body : goto "NextUnit"
+
+; When unit respawned
+? _new_body != _body : if ((_limit select _i) == 0) then {goto "NextUnit"} else {if (_stat==-2) then {goto "Set_Ready_For_Revive"} else {if (_stat==-3) then {goto "Check_If_Revive"}}}
+
+; When unit died
+? !alive _body && _stat>=-1 : if (vehicle _body != _body) then {_body action ["eject",vehicle _body]}; _status set [_i, -2]; _location set [_i, getPosASL _body]; if (FREVIVE_SOUND) then {(_sound_plr select _i) setPosASL (getPosASL _body)}; _last_dir set [_i, getDir _body]; _weapons set [_i,weapons _body]; _magazines set [_i,magazines _body]; if (local _body) then {if (_player_id==_i) then {[_bodies, _body, _name_list select _player_id, _sides select _player_id, _var_name_list, _name_list, _sides, _limit, _timeout, _player_id, _weapons, _magazines] exec "FRevive\Spectator.sqs"}}
+
+#NextUnit
+? _i < count _bodies-1 : _i=_i+1; goto "ForEachUnit"
+goto "Start"
+
+
+
+
+; When unit died and respawned
+#Set_Ready_For_Revive
+_status  set [_i, -3]
+_timeout set [_i, time]
+
+? [_sides select _player_id,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY : if (FREVIVE_DROP_PARTICLE) then {[_bodies, _i, _limit] exec "FRevive\Particle.sqs"}; ("FREVIVE_"+_name) setMarkerPos (getPos _body); if (_new_body != player) then {[0, _i] call FREVIVE_FNC_CHAT}
+
+? !local _new_body    : goto "NextUnit"
+? _new_body != player : doStop _new_body; _new_body stop true
+
+removeAllWeapons _new_body
+_new_body setCaptive true
+_new_body playMove "Lying"
+? FREVIVE_TAKE_GUNS_BEFORE : [_body, _new_body, _weapons select _i, _magazines select _i] exec "FRevive\TakeWeapons.sqs"
+[_body, _sea_level, _measure, _i, _bodies, _sides] exec "FRevive\AntiWater.sqs"
+goto "NextUnit"
+
+
+
+
+; Find who is closest to the unit
+#Check_If_Revive
+; if respawned unit died
+? !alive _new_body : goto "NextUnit"
+
+; If already revived
+? !local _new_body && (getPos _new_body select 2)<7000 : goto "Revived"
+
+; Keep unit suspended in air
+if (local _new_body) then {_new_body call FREVIVE_SUSPEND} else {_reviving set [_i, _new_body call FREVIVE_HEIGHT_TO_ID]}
+
+; If original body was removed then create new object
+? isNull _body : _body="body" camCreate [0,0,0]; _bodies set [_i, _body]; _body setDir ((_last_dir select _i)+93.6); _body setPosASL (_location select _i); _fixX=(getpos _body select 0) - ((_location select _i) select 0); _fixY=(getpos _body select 1) - ((_location select _i) select 1); _body setPosASL [(((_location select _i) select 0) - _fixX), (((_location select _i) select 1) - _fixY), 0.15+((_location select _i) select 2)+0.15]; if ((getPos _body select 2) < -0.1) then {_body setPos [(((_location select _i) select 0) - _fixX), (((_location select _i) select 1) - _fixY), 0]}
+
+; If original body was moved
+? !isNull _body && [getPosASL _body,_location select _i] call MATH_DIST3D > 1 : _k=-1; while {_k=_k+1; _k<count _status} do {if ((_status select _k) == _i) then {_status set [_k,-1]}}; _timing set [_i, 0]; _reviving set [_i, -1]; _new_body call FREVIVE_SUSPEND; if (local _new_body) then {_new_body setDammage 0}; if ([_sides select _player_id,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY) then {("FREVIVE_"+_name) setMarkerPos (getPos _body)}; _last_dir set [_i, getDir _body]; _location set [_i, getPosASL _body]; if (FREVIVE_SOUND) then {(_sound_plr select _i) setPosASL (getPosASL _body)}; if ((getPosASL _body select 2) < (getPosASL _sea_level select 2)) then {[_body, _sea_level, _measure, _i, _bodies, _sides] exec "FRevive\AntiWater.sqs"}; goto "NextUnit"
+
+; If wasn't revived in time
+? FREVIVE_TIMEOUT >= 0 : if (time>(_timeout select _i)+FREVIVE_TIMEOUT && (_new_body call FREVIVE_HEIGHT_TO_ID)==-1) then {_limit set [_i, 0]; ("FREVIVE_"+_name) setMarkerPos [0,0]; goto "NextUnit"}
+
+; Play sound
+? (_new_body call FREVIVE_HEIGHT_TO_ID) == -1 : if (FREVIVE_SOUND && _time>(_sound select _i)+12+(random 10)) then {_sound set [_i,_time]; if ((_sides select _i) == east) then {(_sound_plr select _i) say "Rus13"} else {_voices=["Eng22","Eng23","Eng32","Eng33","Eng34"]; _rand=random count _voices; _rand=_rand-_rand mod 1; (_sound_plr select _i) say (_voices select _rand)}};
+
+; Make a list of units who can revive
+_j         = 0
+_distances = []
+_indexes   = []
+_logic setPosASL (_location select _i)
+{if (!isNull _x) then {if (typeOf _x!="body" && alive _x && vehicle _x==_x && [_sides select _j,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY && _x call FREVIVE_FNC_IS_MEDIC && (!(_j in _reviving) || (_reviving select _i)==_j)) then {_indexes set [count _indexes, _j]; _distances set [count _distances,_x distance _body]}}; _j=_j+1} forEach _bodies
+
+? count _indexes == 0 : _timing set [_i, 0]; _reviving set [_i, -1]; _new_body call FREVIVE_SUSPEND; if (local _new_body) then {_new_body setDammage 0}; goto "NextUnit"
+? count _indexes > 1  : [_distances, _indexes] call quicksortM
+
+; Reset variables if player that was reviving moved away
+_which = 0
+? (_reviving select _i) != -1 : _which=_indexes find (_reviving select _i); if (_which==-1) then {_which=0; _timing set [_i, 0]; _reviving set [_i, -1]; _new_body call FREVIVE_SUSPEND; if (local _new_body) then {_new_body setDammage 0}}
+
+; If nearest unit is within range then start revive
+_nearest_unit = _bodies select (_indexes select _which)
+_distance     = _distances select _which
+
+? _distance <= FREVIVE_PICKUP_RANGE && (local _new_body || getDammage _new_body!=0) : if ((_timing select _i)==0) then {if (_nearest_unit==player || _new_body==player) then {[_reviving,_indexes select _which,Format ["%1",if (_nearest_unit==player) then {_name_list select _i} else {_name_list select (_indexes select _which)}]] exec "FRevive\Message.sqs"}; _reviving set [_i,(_indexes select _which)]; _new_body call FREVIVE_SUSPEND; _timing set [_i, _time+FREVIVE_PICKUP_TIME]}; [_nearest_unit,_new_body] call FREVIVE_FNC_SHOW_PROGRESS; if (local _new_body) then {_dmg=(((_time-((_timing select _i)-FREVIVE_PICKUP_TIME)) / FREVIVE_PICKUP_TIME)/2); if (_dmg>0.5) then {_dmg=0.5}; _new_body setDammage _dmg}; if (_time>(_timing select _i)) then {goto "Revived"}
+? _distance <= FREVIVE_PICKUP_RANGE : goto "NextUnit"
+? (_timing select _i) != 0          : _k=-1; while {_k=_k+1; _k<count _status} do {if ((_status select _k) == _i) then {_status set [_k,-1]}}; _timing set [_i, 0]; _reviving set [_i, -1]; _new_body call FREVIVE_SUSPEND; if (local _new_body) then {_new_body setDammage 0}; 
+
+
+; Order nearest AI to move to the body
+? _distance > FREVIVE_AI_MOVE_RANGE : goto "NextUnit"
+? "_x==_i" count _status > 0        : if (_time>(_remind select _i)) then {_which=_status find _i; [_bodies select _which,_body] exec "FRevive\MoveAI.sqs"; _remind set [_i, _time+10]}; goto "NextUnit"
+
+	_k = 0
+	#FindNearestAI
+	_nearest_unit = _bodies select (_indexes select _k)
+	_my_group     = if (player==leader _nearest_unit && _new_body!=player) then {units player} else {[]}
+	? (_status select (_indexes select _k))==-1 : if (_nearest_unit!=player && local _nearest_unit && !(_nearest_unit in _my_group)) then {if ([_sides select _player_id,_sides select (_indexes select _k), _sides select _i] call FREVIVE_FNC_IS_FRIENDLY_TO_PLR && (_lastMSG select _i)!=_nearest_unit) then {[1, _i, _indexes select _k] call FREVIVE_FNC_CHAT; _lastMSG set [_i,_nearest_unit]}; [_nearest_unit,_body] exec "FRevive\MoveAI.sqs"; _remind set [_i, _time+10]; _status set [(_indexes select _k), _i]}; goto "NextUnit"
+	? _k < count _indexes-1 : _k=_k+1; goto "FindNearestAI"
+goto "NextUnit"
+
+
+
+
+
+; Bring unit back and remove the old body
+#Revived
+? (_limit select _i) > 0 : _limit set [_i, (_limit select _i)-1]
+
+_savior = if ((_reviving select _i) != -1) then {_bodies select (_reviving select _i)} else {objNull}
+
+? !isNull _savior : if (local _savior && _savior!=player) then {_savior doFollow leader _savior}; if ([_sides select _player_id,_sides select (_reviving select _i),_sides select _i] call FREVIVE_FNC_IS_FRIENDLY_TO_PLR) then {[2, _i, _reviving select _i] call FREVIVE_FNC_CHAT}
+? _new_body == player : FREVIVE_PLAYER_RAISED=true; player addEventHandler ["killed", "FREVIVE_PLAYER=_this select 0; FREVIVE_KILLER=_this select 1"]
+
+("FREVIVE_"+_name) setMarkerPos [0,0]
+
+_k = -1
+while {_k=_k+1; _k<count _status} do {if ((_status select _k) == _i) then {_status set [_k,-1]}}
+_reviving set [_i, -1]
+_status   set [_i, -1]
+_timing   set [_i, 0]
+_bodies   set [_i, _new_body]
+_lastMSG  set [_i, objNull]
+
+? FREVIVE_USE_FLAGS : call Format ["FREVIVE_FLAG%1 setFlagOwner _new_body",_i]
+
+? typeOf _body == "body" : deleteVehicle _body
+? !local _new_body : goto "NextUnit"
+
+_new_body setDammage 0
+_new_body setVelocity [0,0,0]
+_new_body setDir (_last_dir select _i)
+if (!isNull _body && typeOf _body!="body") then {_new_body setPosASL (getPosASL _body)} else {_new_body setPosASL (_location select _i)}
+
+? FREVIVE_TAKE_GUNS_BEFORE : if (count weapons _body==0 && count magazines _body==0) then {_new_body setCaptive false; _new_body playMove "Lying"; if (_new_body != player) then {_new_body stop false; _new_body doFollow leader _new_body}; deleteVehicle _body}
+? !FREVIVE_TAKE_GUNS_BEFORE : [_body, _new_body, (_weapons select _i), (_magazines select _i)] exec "FRevive\TakeWeapons.sqs"
+goto "NextUnit"

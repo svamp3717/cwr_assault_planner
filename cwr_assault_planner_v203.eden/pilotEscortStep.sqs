@@ -1,0 +1,37 @@
+; v164 server-local vehicle-aware movement for one downed pilot.
+_pilot = _this select 0
+_leader = _this select 1
+? isNull _pilot : exit
+? !(alive _pilot) : exit
+? isNull _leader : exit
+? !(alive _leader) : exit
+_leaderVehicle = vehicle _leader
+_pilotVehicle = vehicle _pilot
+? _leaderVehicle == _leader : goto "leaderOnFoot"
+? _pilotVehicle == _leaderVehicle : exit
+? _pilotVehicle != _pilot : exit
+_pp = getPos _pilot
+_vp = getPos _leaderVehicle
+_dx = (_pp select 0) - (_vp select 0)
+_dy = (_pp select 1) - (_vp select 1)
+? ((_dx * _dx) + (_dy * _dy)) <= 1600 : _pilot moveInCargo _leaderVehicle
+? vehicle _pilot == _leaderVehicle : exit
+_pilot stop false
+_pilot doMove _vp
+exit
+#leaderOnFoot
+? _pilotVehicle == _pilot : goto "followFoot"
+_pilot action ["EJECT",_pilotVehicle]
+exit
+#followFoot
+_lp = getPos _leader
+_dir = getDir _leader
+_targetX = (_lp select 0) - ((sin _dir) * 5)
+_targetY = (_lp select 1) - ((cos _dir) * 5)
+_pp = getPos _pilot
+_dx = (_pp select 0) - _targetX
+_dy = (_pp select 1) - _targetY
+? ((_dx * _dx) + (_dy * _dy)) <= 9 : exit
+_pilot stop false
+_pilot doMove [_targetX,_targetY,0]
+exit

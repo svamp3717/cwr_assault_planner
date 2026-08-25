@@ -1,0 +1,50 @@
+; Poll player-model category and class selections.
+
+#Loop
+? !dialog : exit
+
+_categorySelection = lbCurSel 1510
+? _categorySelection != WW4_ModelLastCategory : goto "CategoryChanged"
+goto "CheckClass"
+
+#CategoryChanged
+WW4_ModelLastCategory = _categorySelection
+WW4_ModelLastClass = -1
+lbClear 1511
+? _categorySelection < 0 : goto "Sleep"
+
+_groupEntry = WW4_PlayerModelGroups select _categorySelection
+_classes = _groupEntry select 1
+_i = 0
+
+#ClassLoop
+? _i >= count _classes : goto "ClassDone"
+_classname = _classes select _i
+_row = lbAdd [1511,_classname]
+lbSetData [1511,_row,_classname]
+_i = _i + 1
+goto "ClassLoop"
+
+#ClassDone
+? count _classes > 0 : lbSetCurSel [1511,0]
+
+#CheckClass
+_classSelection = lbCurSel 1511
+? _classSelection != WW4_ModelLastClass : goto "ClassChanged"
+goto "Sleep"
+
+#ClassChanged
+WW4_ModelLastClass = _classSelection
+? _classSelection < 0 : goto "Sleep"
+? WW4_ModelLastCategory < 0 : goto "Sleep"
+
+_statusGroup = WW4_PlayerModelGroups select WW4_ModelLastCategory
+_statusClasses = _statusGroup select 1
+? _classSelection >= count _statusClasses : goto "Sleep"
+
+_selectedClass = _statusClasses select _classSelection
+ctrlSetText [1010,format ["Selected model: %1   Apply = change player; Preview = visual check.",_selectedClass]]
+
+#Sleep
+~0.10
+goto "Loop"

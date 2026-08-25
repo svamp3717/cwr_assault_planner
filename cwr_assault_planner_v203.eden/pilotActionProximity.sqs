@@ -1,0 +1,39 @@
+; v164 local CWA proximity actions for one downed pilot.
+_pilot = _this select 0
+_slot = _this select 1
+_followAction = -1
+_stopAction = -1
+#monitor
+~0.4
+_active = false
+? _slot == 1 && objectiveType1 == 9 && !(objective1Done) && !(missionEnded) : _active = true
+? _slot == 2 && objectiveType2 == 9 && !(objective2Done) && !(missionEnded) : _active = true
+? _slot == 3 && objectiveType3 == 9 && !(objective3Done) && !(missionEnded) : _active = true
+? _slot == 4 && objectiveType4 == 9 && !(objective4Done) && !(missionEnded) : _active = true
+? _slot == 5 && objectiveType5 == 9 && !(objective5Done) && !(missionEnded) : _active = true
+_near = false
+? !(_active) : goto "removeActions"
+? isNull _pilot : goto "removeActions"
+? !(alive _pilot) : goto "removeActions"
+? isNull player : goto "removeActions"
+? !(alive player) : goto "removeActions"
+_pp = getPos _pilot
+_cp = getPos player
+_dx = (_pp select 0) - (_cp select 0)
+_dy = (_pp select 1) - (_cp select 1)
+_distanceSq = (_dx * _dx) + (_dy * _dy)
+? _distanceSq <= 16 : _near = true
+? _near : goto "addActions"
+? _distanceSq <= 25 && _followAction >= 0 : goto "continue"
+#removeActions
+? !(isNull _pilot) && _followAction >= 0 : _pilot removeAction _followAction
+? !(isNull _pilot) && _stopAction >= 0 : _pilot removeAction _stopAction
+_followAction = -1
+_stopAction = -1
+goto "continue"
+#addActions
+? _followAction < 0 : _followAction = _pilot addAction ["Pilot Follow Me","pilotFollowMe.sqs"]
+? _stopAction < 0 : _stopAction = _pilot addAction ["Pilot Stop","pilotStop.sqs"]
+#continue
+? _active : goto "monitor"
+exit

@@ -1,0 +1,45 @@
+; MP v109 local intel actions. addAction is local, so every player receives one.
+mpIntelAction1 = -1
+mpIntelAction2 = -1
+mpIntelAction3 = -1
+mpIntelAction4 = -1
+mpIntelAction5 = -1
+? townCount < 1 : goto "afterIntelAction1"
+? objectiveType1 != 2 : goto "afterIntelAction1"
+@ !(isNull objectiveTarget1)
+mpIntelAction1 = objectiveTarget1 addAction ["Collect Intel File","collectIntel1.sqs"]
+#afterIntelAction1
+? townCount < 2 : goto "afterIntelAction2"
+? objectiveType2 != 2 : goto "afterIntelAction2"
+@ !(isNull objectiveTarget2)
+mpIntelAction2 = objectiveTarget2 addAction ["Collect Intel File","collectIntel2.sqs"]
+#afterIntelAction2
+? townCount < 3 : goto "afterIntelAction3"
+? objectiveType3 != 2 : goto "afterIntelAction3"
+@ !(isNull objectiveTarget3)
+mpIntelAction3 = objectiveTarget3 addAction ["Collect Intel File","collectIntel3.sqs"]
+#afterIntelAction3
+? townCount < 4 : goto "afterIntelAction4"
+? objectiveType4 != 2 : goto "afterIntelAction4"
+@ !(isNull objectiveTarget4)
+mpIntelAction4 = objectiveTarget4 addAction ["Collect Intel File","collectIntel4.sqs"]
+#afterIntelAction4
+? townCount < 5 : goto "afterIntelAction5"
+? objectiveType5 != 2 : goto "afterIntelAction5"
+@ !(isNull objectiveTarget5)
+mpIntelAction5 = objectiveTarget5 addAction ["Collect Intel File","collectIntel5.sqs"]
+#afterIntelAction5
+#monitor
+~0.5
+? objectiveIntelCollected1 && mpIntelAction1 >= 0 : objectiveTarget1 removeAction mpIntelAction1
+? objectiveIntelCollected1 && mpIntelAction1 >= 0 : mpIntelAction1 = -1
+? objectiveIntelCollected2 && mpIntelAction2 >= 0 : objectiveTarget2 removeAction mpIntelAction2
+? objectiveIntelCollected2 && mpIntelAction2 >= 0 : mpIntelAction2 = -1
+? objectiveIntelCollected3 && mpIntelAction3 >= 0 : objectiveTarget3 removeAction mpIntelAction3
+? objectiveIntelCollected3 && mpIntelAction3 >= 0 : mpIntelAction3 = -1
+? objectiveIntelCollected4 && mpIntelAction4 >= 0 : objectiveTarget4 removeAction mpIntelAction4
+? objectiveIntelCollected4 && mpIntelAction4 >= 0 : mpIntelAction4 = -1
+? objectiveIntelCollected5 && mpIntelAction5 >= 0 : objectiveTarget5 removeAction mpIntelAction5
+? objectiveIntelCollected5 && mpIntelAction5 >= 0 : mpIntelAction5 = -1
+? missionEnded : exit
+goto "monitor"

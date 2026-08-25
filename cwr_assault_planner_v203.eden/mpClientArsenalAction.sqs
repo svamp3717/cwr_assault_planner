@@ -1,0 +1,7 @@
+; Attach the WW4 Arsenal action locally after the server creates and publishes the box.
+@ mpSupplyBoxReady
+@ !(isNull westSupplyBox)
+arsenalBox = westSupplyBox
+? WW4_ArsenalBoxAction >= 0 : westSupplyBox removeAction WW4_ArsenalBoxAction
+WW4_ArsenalBoxAction = westSupplyBox addAction ["Open WW4 Arsenal","ww4_arsenal\open.sqs"]
+exit

@@ -1,0 +1,41 @@
+; v83 mission win/fail controller for one to five objectives.
+#loop
+~2
+? missionEnded : exit
+? objective1Done && objective2Done && objective3Done && objective4Done && objective5Done : goto "win"
+? allTownsClear : goto "win"
+? !(alive player) : goto "fail"
+goto "loop"
+#win
+? missionEnded : exit
+missionLose = false
+missionWin = true
+missionEnded = true
+allTownsClear = true
+? townCount < 1 : objective1Done = true
+? townCount >= 1 : "1" objStatus "DONE"
+? townCount < 2 : objective2Done = true
+? townCount >= 2 : "2" objStatus "DONE"
+? townCount < 3 : objective3Done = true
+? townCount >= 3 : "3" objStatus "DONE"
+? townCount < 4 : objective4Done = true
+? townCount >= 4 : "4" objStatus "DONE"
+? townCount < 5 : objective5Done = true
+? townCount >= 5 : "5" objStatus "DONE"
+? debugMode : debugLog format ["ERA DEBUG END: %1-objective win trigger armed", townCount]
+exit
+#fail
+? missionEnded : exit
+? missionWin : exit
+? objective1Done && objective2Done && objective3Done && objective4Done && objective5Done : goto "win"
+? allTownsClear : goto "win"
+missionWin = false
+missionLose = true
+missionEnded = true
+? townCount >= 1 && !(objective1Done) : "1" objStatus "FAILED"
+? townCount >= 2 && !(objective2Done) : "2" objStatus "FAILED"
+? townCount >= 3 && !(objective3Done) : "3" objStatus "FAILED"
+? townCount >= 4 && !(objective4Done) : "4" objStatus "FAILED"
+? townCount >= 5 && !(objective5Done) : "5" objStatus "FAILED"
+? debugMode : debugLog format ["ERA DEBUG END: player dead before %1 objectives clear", townCount]
+exit

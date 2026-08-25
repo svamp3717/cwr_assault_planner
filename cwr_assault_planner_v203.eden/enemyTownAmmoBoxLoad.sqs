@@ -1,0 +1,43 @@
+; v144: load one server-local town ammunition box with side-appropriate WW4 weapons and magazines.
+_box = _this select 0
+? isNull _box : exit
+clearWeaponCargo _box
+clearMagazineCargo _box
+? enemyEast : goto "eastCargo"
+goto "resCargo"
+
+#eastCargo
+_box addWeaponCargo ["WW4_AK74M",4]
+_box addWeaponCargo ["WW4_AK74MGP25",1]
+_box addWeaponCargo ["WW4_PKM",1]
+_box addWeaponCargo ["WW4_RPK74",1]
+_box addWeaponCargo ["WW4_SVD",1]
+_box addWeaponCargo ["WW4_RPGLauncher",2]
+_box addMagazineCargo ["WW4_E545_30mag",32]
+_box addMagazineCargo ["WW4_VOG25grenade",8]
+_box addMagazineCargo ["WW4_E762M_200mag",5]
+_box addMagazineCargo ["WW4_E545M_75mag",8]
+_box addMagazineCargo ["WW4_E762_10mag",10]
+_box addMagazineCargo ["WW4_RPGLauncher",6]
+_box addMagazineCargo ["HandGrenade",12]
+_box addMagazineCargo ["SmokeShell",6]
+goto "done"
+
+#resCargo
+_box addWeaponCargo ["WW4_AK47",4]
+_box addWeaponCargo ["WW4_AK47GP25",1]
+_box addWeaponCargo ["WW4_RPK47",1]
+_box addWeaponCargo ["WW4_FAL",2]
+_box addWeaponCargo ["WW4_SVD",1]
+_box addWeaponCargo ["WW4_RPGLauncher",2]
+_box addMagazineCargo ["WW4_E762_30mag",32]
+_box addMagazineCargo ["WW4_VOG25grenade",8]
+_box addMagazineCargo ["WW4_E762M_40mag",8]
+_box addMagazineCargo ["WW4_W762_20mag",16]
+_box addMagazineCargo ["WW4_E762_10mag",10]
+_box addMagazineCargo ["WW4_RPGLauncher",6]
+_box addMagazineCargo ["HandGrenade",12]
+_box addMagazineCargo ["SmokeShell",6]
+
+#done
+exit

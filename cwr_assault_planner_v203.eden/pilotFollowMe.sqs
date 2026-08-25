@@ -1,0 +1,24 @@
+; v164 CWA-safe short-range command for a downed pilot.
+_pilot = _this select 0
+_caller = _this select 1
+? isNull _pilot : exit
+? !(alive _pilot) : exit
+? isNull _caller : exit
+_pp = getPos _pilot
+_cp = getPos _caller
+_dx = (_pp select 0) - (_cp select 0)
+_dy = (_pp select 1) - (_cp select 1)
+? ((_dx * _dx) + (_dy * _dy)) > 25 : goto "tooFar"
+pilotCommandUnit = _pilot
+pilotCommandCaller = _caller
+pilotCommandType = 1
+pilotCommandRequestStamp = time + random 100000
+publicVariable "pilotCommandUnit"
+publicVariable "pilotCommandCaller"
+publicVariable "pilotCommandType"
+publicVariable "pilotCommandRequestStamp"
+titleText ["Downed pilot ordered to follow.","PLAIN DOWN"]
+exit
+#tooFar
+titleText ["Move closer to the downed pilot.","PLAIN DOWN"]
+exit

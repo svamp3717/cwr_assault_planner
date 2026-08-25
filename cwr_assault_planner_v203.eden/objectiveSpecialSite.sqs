@@ -1,0 +1,169 @@
+; v150: build communications, AAA80Z artillery, and fuel-depot objective sites.
+; Arguments: [slot, type, x, y, direction, town label]
+_slot = _this select 0
+_type = _this select 1
+_x = _this select 2
+_y = _this select 3
+_dir = _this select 4
+_town = _this select 5
+_target = objNull
+_backup = objNull
+_crew1 = objNull
+_crew2 = objNull
+? _slot == 1 : objectiveSpecialSiteReady1 = false
+? _slot == 2 : objectiveSpecialSiteReady2 = false
+? _slot == 3 : objectiveSpecialSiteReady3 = false
+? _slot == 4 : objectiveSpecialSiteReady4 = false
+? _slot == 5 : objectiveSpecialSiteReady5 = false
+? _type == 4 : goto "communicationsSite"
+? _type == 5 : goto "mortarSite"
+? _type == 6 : goto "fuelSite"
+goto "assignSite"
+
+#communicationsSite
+_target = "Dum08" createVehicle [_x, _y, 0]
+_target setPos [_x, _y, 0]
+_target setDir _dir
+_target setDammage 0
+_backup = "ReammoBoxEast" createVehicle [_x + 13, _y + -7, 0]
+_backup setDir (_dir + 20)
+_backup setDammage 0
+clearWeaponCargo _backup
+clearMagazineCargo _backup
+_radio = "Radio" createVehicle [_x + 11, _y + -5, 0]
+_radio setDir (_dir + 20)
+_radio allowDammage false
+_table = "TableMap" createVehicle [_x + 10, _y + -8, 0]
+_table setDir (_dir + 20)
+_table allowDammage false
+_tent = "CampEast" createVehicle [_x + 18, _y + -12, 0]
+_tent setDir (_dir + 25)
+_wall1 = "FenceWood" createVehicle [_x + 7, _y + 8, 0]
+_wall1 setDir _dir
+_wall2 = "Fence" createVehicle [_x + 19, _y + 5, 0]
+_wall2 setDir (_dir + 90)
+goto "assignSite"
+
+#mortarSite
+; v150: AAA80Z static artillery model taken from the supplied editorupdate102 SQM.
+? enemyEast : _boxClass = "HeavyReammoBoxEast"
+? enemyResistance : _boxClass = "HeavyReammoBoxRes"
+_target = "AAA80Z" createVehicle [_x, _y, 0]
+_target setPos [_x, _y, 0]
+_target setDir _dir
+_target setFuel 0
+_target lock true
+_target setDammage 0
+_backup = _boxClass createVehicle [_x + 10, _y + -8, 0]
+_backup setDir (_dir + 20)
+_backup setDammage 0
+clearWeaponCargo _backup
+clearMagazineCargo _backup
+_backup addMagazineCargo ["Mortar",18]
+_backup addMagazineCargo ["SmokeShell",6]
+_tent = "CampEast" createVehicle [_x + 17, _y + -14, 0]
+_tent setDir (_dir + 15)
+_wall1 = "FenceWood" createVehicle [_x + -9, _y + 5, 0]
+_wall1 setDir (_dir + 20)
+_wall2 = "FenceWood" createVehicle [_x + 9, _y + 5, 0]
+_wall2 setDir (_dir - 20)
+_wall3 = "Fence" createVehicle [_x, _y + -11, 0]
+_wall3 setDir (_dir + 90)
+? enemyEast : _grp = createGroup east
+? enemyResistance : _grp = createGroup resistance
+enemyDetectionGroups = enemyDetectionGroups + [_grp]
+? _slot == 1 : goto "mortarCrew1"
+? _slot == 2 : goto "mortarCrew2"
+? _slot == 3 : goto "mortarCrew3"
+? _slot == 4 : goto "mortarCrew4"
+goto "mortarCrew5"
+#mortarCrew1
+? enemyEast : ww4EastRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew1A=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew1A=this"]
+? enemyEast : ww4EastRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew1B=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew1B=this"]
+_crew1 = mortarCrew1A
+_crew2 = mortarCrew1B
+goto "mortarCrewReady"
+#mortarCrew2
+? enemyEast : ww4EastRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew2A=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew2A=this"]
+? enemyEast : ww4EastRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew2B=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew2B=this"]
+_crew1 = mortarCrew2A
+_crew2 = mortarCrew2B
+goto "mortarCrewReady"
+#mortarCrew3
+? enemyEast : ww4EastRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew3A=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew3A=this"]
+? enemyEast : ww4EastRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew3B=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew3B=this"]
+_crew1 = mortarCrew3A
+_crew2 = mortarCrew3B
+goto "mortarCrewReady"
+#mortarCrew4
+? enemyEast : ww4EastRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew4A=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew4A=this"]
+? enemyEast : ww4EastRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew4B=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew4B=this"]
+_crew1 = mortarCrew4A
+_crew2 = mortarCrew4B
+goto "mortarCrewReady"
+#mortarCrew5
+? enemyEast : ww4EastRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew5A=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + -5, _y + -5, 0], _grp, "mortarCrew5A=this"]
+? enemyEast : ww4EastRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew5B=this"]
+? enemyResistance : ww4ResRifleman createUnit [[_x + 5, _y + -5, 0], _grp, "mortarCrew5B=this"]
+_crew1 = mortarCrew5A
+_crew2 = mortarCrew5B
+#mortarCrewReady
+_crew1 setSkill enemyAISkill
+_crew2 setSkill enemyAISkill
+_grp setBehaviour "AWARE"
+_grp setCombatMode "YELLOW"
+_grp setSpeedMode "LIMITED"
+[_slot, _target, _backup, _crew1, _crew2] exec "enemyMortarBattery.sqs"
+goto "assignSite"
+
+#fuelSite
+_target = "FuelStationNew2" createVehicle [_x, _y, 0]
+_target setPos [_x, _y, 0]
+_target setDir _dir
+_target setDammage 0
+? enemyEast : _fuelClass = "UralRefuel"
+? enemyResistance : _fuelClass = "TruckV3SGRefuel"
+_backup = _fuelClass createVehicle [_x + 18, _y + -10, 0]
+_backup setDir (_dir + 35)
+_backup setFuel 0
+_backup lock true
+_backup setDammage 0
+_b1 = "Barrel1" createVehicle [_x + -10, _y + 8, 0]
+_b2 = "Barrel2" createVehicle [_x + -6, _y + 10, 0]
+_b3 = "Barrel3" createVehicle [_x + -2, _y + 9, 0]
+_b4 = "Barrel4" createVehicle [_x + 2, _y + 11, 0]
+_b5 = "Barrels" createVehicle [_x + 7, _y + 9, 0]
+_shed = "ShedSmall" createVehicle [_x + -18, _y + -9, 0]
+_shed setDir (_dir + 90)
+_wall1 = "FenceWood" createVehicle [_x + -14, _y + 15, 0]
+_wall1 setDir _dir
+_wall2 = "Fence" createVehicle [_x + 16, _y + 13, 0]
+_wall2 setDir (_dir + 90)
+
+#assignSite
+? _slot == 1 : objectiveTarget1 = _target
+? _slot == 1 : objectiveBackupTarget1 = _backup
+? _slot == 1 : objectiveSpecialSiteReady1 = true
+? _slot == 2 : objectiveTarget2 = _target
+? _slot == 2 : objectiveBackupTarget2 = _backup
+? _slot == 2 : objectiveSpecialSiteReady2 = true
+? _slot == 3 : objectiveTarget3 = _target
+? _slot == 3 : objectiveBackupTarget3 = _backup
+? _slot == 3 : objectiveSpecialSiteReady3 = true
+? _slot == 4 : objectiveTarget4 = _target
+? _slot == 4 : objectiveBackupTarget4 = _backup
+? _slot == 4 : objectiveSpecialSiteReady4 = true
+? _slot == 5 : objectiveTarget5 = _target
+? _slot == 5 : objectiveBackupTarget5 = _backup
+? _slot == 5 : objectiveSpecialSiteReady5 = true
+? debugMode : debugLog format ["ERA DEBUG OBJECTIVE SITE: slot=%1 type=%2 town=%3 target=%4", _slot, _type, _town, _target]
+exit
