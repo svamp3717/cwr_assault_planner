@@ -2,7 +2,7 @@
 
 Randomized cooperative mission for **ArmA: Cold War Assault / Operation Flashpoint** on **Everon**, built around WW4 units and vehicles.
 
-This repository contains the `assault_planner_v203_no_intro_outro_test.eden` mission build. The mission uses the classic OFP/CWA SQS mission format and generates the operation after mission start from a configurable assault-planning screen.
+This repository contains the `cwr_assault_planner_v203.eden` mission build. The mission generates the operation after mission start from a configurable assault-planning screen.
 
 ## Required mods
 
@@ -20,7 +20,7 @@ WW4_EXT;WW4_EXT_VEH;WW4EXT_CW
 
 ### Add-on compatibility note
 
-`mission.sqm` also references the add-on class `editorupdate102`, used by the mission's static artillery objective. Make sure that add-on is available in your installation if it is not already supplied by your existing WW4/CWA setup.
+ `editorupdate102`, is used by the mission's static artillery objective. Make sure that add-on is available in your installation if it is not already supplied by your existing WW4/CWA setup.
 
 ## Mission features
 
@@ -45,18 +45,11 @@ WW4_EXT;WW4_EXT_VEH;WW4EXT_CW
 - **Environment controls:** selectable start time and weather presets.
 - **Debug option:** optional diagnostics and reinforcement transport markers for testing.
 - **Everon location pool:** imported settlement, military, landmark, harbour, industrial, and unnamed-area markers are used by the objective, patrol, rescue, traffic, and recovery systems as appropriate.
-- **CWA-era scripting:** the mission intentionally stays with OFP/CWA-compatible SQS/SQF behavior rather than relying on later ArmA commands.
 
 ## Installing the mission
 
 1. Download or clone the repository.
-2. Extract `assault_planner_v203_no_intro_outro_test.eden.zip`.
-3. Copy the extracted `assault_planner_v203_no_intro_outro_test.eden` folder into your CWA/OFP user `missions` folder for editor/single-player use, or into the appropriate `MPMissions` workflow for multiplayer use.
+2. Extract `cwr_assault_planner_v203.eden.zip`.
+3. Copy the extracted `cwr_assault_planner_v203.eden` folder into your CWA/OFP user `missions` folder for editor/single-player use, or into the appropriate `MPMissions` workflow for multiplayer use.
 4. Start the game with the required mods enabled.
 5. Load the mission on Everon.
-
-## Notes
-
-This is the **v203 no-intro/outro test build** from the supplied archive. The project contains extensive changelog and validation files documenting the mission's development history and compatibility work.
-
-The mission has been structured around Cold War Assault / OFP-era scripting constraints. As with any mission from this engine generation, final behavior should be verified in the actual game, because the CWA AI occasionally interprets a waypoint as a philosophical suggestion.
