@@ -1,5 +1,5 @@
 ; Custom patch: remembered proximity-streamed civilian-car profiles.
-; Every imported marker independently rolls a 25 percent chance.
+; Every imported location independently rolls a 25 percent chance.
 ; Active objective locations are still skipped by civilianNonObjectiveCarProfile.sqs.
 civilianNonObjectiveCarsReady = false
 civilianNonObjectiveCarProfileCount = 0
@@ -11,8 +11,14 @@ _i = 0
 _roll = random 4
 ? _roll >= 1 : goto "namedNext"
 _beforeCount = civilianNonObjectiveCarProfileCount
+_x = missionTrafficXs select _i
+_y = missionTrafficYs select _i
+? worldUseEditorLocationMarkers : _marker = missionTrafficMarkers select _i
+? worldUseEditorLocationMarkers : _pos = getMarkerPos _marker
+? worldUseEditorLocationMarkers : _x = _pos select 0
+? worldUseEditorLocationMarkers : _y = _pos select 1
 civilianNonObjectiveCarProfileReady = false
-[missionTrafficMarkers select _i, missionTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
+[_x, _y, missionTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
 @ civilianNonObjectiveCarProfileReady
 ? civilianNonObjectiveCarProfileCount > _beforeCount : civilianNamedCarProfileCount = civilianNamedCarProfileCount + 1
 #namedNext
@@ -20,15 +26,21 @@ _i = _i + 1
 goto "namedProfileLoop"
 
 #unnamedProfiles
-; v197 leaves the legacy unnamed list empty because all imported markers are in missionTrafficMarkers.
+; Legacy unnamed traffic locations remain supported if a world config supplies them.
 _i = 0
 #unnamedProfileLoop
 ? _i >= missionUnnamedTrafficTotal : goto "profilesDone"
 _roll = random 4
 ? _roll >= 1 : goto "unnamedNext"
 _beforeCount = civilianNonObjectiveCarProfileCount
+_x = missionUnnamedTrafficXs select _i
+_y = missionUnnamedTrafficYs select _i
+? worldUseEditorLocationMarkers : _marker = missionUnnamedTrafficMarkers select _i
+? worldUseEditorLocationMarkers : _pos = getMarkerPos _marker
+? worldUseEditorLocationMarkers : _x = _pos select 0
+? worldUseEditorLocationMarkers : _y = _pos select 1
 civilianNonObjectiveCarProfileReady = false
-[missionUnnamedTrafficMarkers select _i, missionUnnamedTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
+[_x, _y, missionUnnamedTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
 @ civilianNonObjectiveCarProfileReady
 ? civilianNonObjectiveCarProfileCount > _beforeCount : civilianUnnamedCarProfileCount = civilianUnnamedCarProfileCount + 1
 #unnamedNext
