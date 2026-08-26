@@ -1,4 +1,4 @@
-; Everon one-to-five objective setup. Location centers are read from curated settlement/base markers. Old SQS only.
+; World-portable one-to-five objective setup. Location centers are read from worldConfig.sqs or optional editor site markers. Old SQS only.
 randomizeComplete = false
 ; Planner time-of-day selection. The mission.sqm base time is 05:00.
 ; Random selects one of the same four tested presets instead of an arbitrary dark-grey hour.
@@ -100,16 +100,18 @@ missionObjectivesComplete = false
 ? townCount < 4 : objective4Done = true
 ? townCount < 5 : objective5Done = true
 #rollPrimary
-; v198 Everon: choose one of 33 manually placed full locations, then use its four nearest locations as the objective cluster.
+; Choose one configured location, then use its four nearest configured locations as the objective cluster.
 _townTotal = missionLocationTotal
 _roll = random _townTotal
 _primaryIndex = _roll - (_roll % 1)
 primaryTownIndex = _primaryIndex
 _primaryMarker = missionLocationMarkers select _primaryIndex
 townLabel = missionLocationLabels select _primaryIndex
-_townPos = getMarkerPos _primaryMarker
-primaryX = _townPos select 0
-primaryY = _townPos select 1
+primaryX = missionLocationXs select _primaryIndex
+primaryY = missionLocationYs select _primaryIndex
+? worldUseEditorLocationMarkers : _townPos = getMarkerPos _primaryMarker
+? worldUseEditorLocationMarkers : primaryX = _townPos select 0
+? worldUseEditorLocationMarkers : primaryY = _townPos select 1
 
 _nearIndex1 = -1
 _nearIndex2 = -1
@@ -123,9 +125,13 @@ _i = 0
 #clusterScan
 ? _i >= _townTotal : goto "clusterScanDone"
 ? _i == _primaryIndex : goto "clusterNext"
-_candidatePos = getMarkerPos (missionLocationMarkers select _i)
-_dx = (_candidatePos select 0) - primaryX
-_dy = (_candidatePos select 1) - primaryY
+_candidateX = missionLocationXs select _i
+_candidateY = missionLocationYs select _i
+? worldUseEditorLocationMarkers : _candidatePos = getMarkerPos (missionLocationMarkers select _i)
+? worldUseEditorLocationMarkers : _candidateX = _candidatePos select 0
+? worldUseEditorLocationMarkers : _candidateY = _candidatePos select 1
+_dx = _candidateX - primaryX
+_dy = _candidateY - primaryY
 _distance = (_dx * _dx) + (_dy * _dy)
 ? _distance < _nearDist1 : goto "clusterInsert1"
 ? _distance < _nearDist2 : goto "clusterInsert2"
@@ -170,24 +176,32 @@ goto "clusterScan"
 
 _secondaryMarker = missionLocationMarkers select _nearIndex1
 secondaryLabel = missionLocationLabels select _nearIndex1
-_townPos = getMarkerPos _secondaryMarker
-secondaryX = _townPos select 0
-secondaryY = _townPos select 1
+secondaryX = missionLocationXs select _nearIndex1
+secondaryY = missionLocationYs select _nearIndex1
+? worldUseEditorLocationMarkers : _townPos = getMarkerPos _secondaryMarker
+? worldUseEditorLocationMarkers : secondaryX = _townPos select 0
+? worldUseEditorLocationMarkers : secondaryY = _townPos select 1
 _thirdMarker = missionLocationMarkers select _nearIndex2
 thirdLabel = missionLocationLabels select _nearIndex2
-_townPos = getMarkerPos _thirdMarker
-thirdX = _townPos select 0
-thirdY = _townPos select 1
+thirdX = missionLocationXs select _nearIndex2
+thirdY = missionLocationYs select _nearIndex2
+? worldUseEditorLocationMarkers : _townPos = getMarkerPos _thirdMarker
+? worldUseEditorLocationMarkers : thirdX = _townPos select 0
+? worldUseEditorLocationMarkers : thirdY = _townPos select 1
 _fourthMarker = missionLocationMarkers select _nearIndex3
 fourthLabel = missionLocationLabels select _nearIndex3
-_townPos = getMarkerPos _fourthMarker
-fourthX = _townPos select 0
-fourthY = _townPos select 1
+fourthX = missionLocationXs select _nearIndex3
+fourthY = missionLocationYs select _nearIndex3
+? worldUseEditorLocationMarkers : _townPos = getMarkerPos _fourthMarker
+? worldUseEditorLocationMarkers : fourthX = _townPos select 0
+? worldUseEditorLocationMarkers : fourthY = _townPos select 1
 _fifthMarker = missionLocationMarkers select _nearIndex4
 fifthLabel = missionLocationLabels select _nearIndex4
-_townPos = getMarkerPos _fifthMarker
-fifthX = _townPos select 0
-fifthY = _townPos select 1
+fifthX = missionLocationXs select _nearIndex4
+fifthY = missionLocationYs select _nearIndex4
+? worldUseEditorLocationMarkers : _townPos = getMarkerPos _fifthMarker
+? worldUseEditorLocationMarkers : fifthX = _townPos select 0
+? worldUseEditorLocationMarkers : fifthY = _townPos select 1
 
 ; Pick a non-objective supplied location for the insertion column. Prefer the closest candidate
 ; whose center is at least 1.5 km from every active objective; otherwise use the safest candidate.
@@ -205,9 +219,11 @@ _used = false
 ? townCount >= 4 && _i == _nearIndex3 : _used = true
 ? townCount >= 5 && _i == _nearIndex4 : _used = true
 ? _used : goto "stageNext"
-_candidatePos = getMarkerPos (missionLocationMarkers select _i)
-_cx = _candidatePos select 0
-_cy = _candidatePos select 1
+_cx = missionLocationXs select _i
+_cy = missionLocationYs select _i
+? worldUseEditorLocationMarkers : _candidatePos = getMarkerPos (missionLocationMarkers select _i)
+? worldUseEditorLocationMarkers : _cx = _candidatePos select 0
+? worldUseEditorLocationMarkers : _cy = _candidatePos select 1
 _dx = _cx - primaryX
 _dy = _cy - primaryY
 _primaryDistance = (_dx * _dx) + (_dy * _dy)
@@ -241,9 +257,11 @@ goto "stageScan"
 ? _stageBestIndex < 0 : _stageBestIndex = (_primaryIndex + 5) % _townTotal
 _stageMarker = missionLocationMarkers select _stageBestIndex
 truckStageTownLabel = missionLocationLabels select _stageBestIndex
-_stagePos = getMarkerPos _stageMarker
-truckStageX = _stagePos select 0
-truckStageY = _stagePos select 1
+truckStageX = missionLocationXs select _stageBestIndex
+truckStageY = missionLocationYs select _stageBestIndex
+? worldUseEditorLocationMarkers : _stagePos = getMarkerPos _stageMarker
+? worldUseEditorLocationMarkers : truckStageX = _stagePos select 0
+? worldUseEditorLocationMarkers : truckStageY = _stagePos select 1
 _toObjectiveX = primaryX - truckStageX
 _toObjectiveY = primaryY - truckStageY
 truckStageDir = _toObjectiveX atan2 _toObjectiveY
@@ -299,19 +317,19 @@ landStageY = landStageY + approachOffsetY
 airStageX = airStageX + approachOffsetX
 airStageY = airStageY + approachOffsetY
 
-; Keep generated positions inside Everon's 12.8 km world bounds.
-? primaryLzX < 250 : primaryLzX = 250
-? primaryLzX > 12550 : primaryLzX = 12550
-? primaryLzY < 250 : primaryLzY = 250
-? primaryLzY > 12550 : primaryLzY = 12550
-? landStageX < 250 : landStageX = 250
-? landStageX > 12550 : landStageX = 12550
-? landStageY < 250 : landStageY = 250
-? landStageY > 12550 : landStageY = 12550
-? airStageX < 250 : airStageX = 250
-? airStageX > 12550 : airStageX = 12550
-? airStageY < 250 : airStageY = 250
-? airStageY > 12550 : airStageY = 12550
+; Keep generated positions inside the configured world bounds.
+? primaryLzX < worldMinX : primaryLzX = worldMinX
+? primaryLzX > worldMaxX : primaryLzX = worldMaxX
+? primaryLzY < worldMinY : primaryLzY = worldMinY
+? primaryLzY > worldMaxY : primaryLzY = worldMaxY
+? landStageX < worldMinX : landStageX = worldMinX
+? landStageX > worldMaxX : landStageX = worldMaxX
+? landStageY < worldMinY : landStageY = worldMinY
+? landStageY > worldMaxY : landStageY = worldMaxY
+? airStageX < worldMinX : airStageX = worldMinX
+? airStageX > worldMaxX : airStageX = worldMaxX
+? airStageY < worldMinY : airStageY = worldMinY
+? airStageY > worldMaxY : airStageY = worldMaxY
 
 heliLz1X = primaryLzX
 heliLz1Y = primaryLzY
@@ -319,14 +337,14 @@ heliLz2X = primaryLzX + (_rightX * 130) + (_forwardX * 45)
 heliLz2Y = primaryLzY + (_rightY * 130) + (_forwardY * 45)
 heliLz3X = primaryLzX - (_rightX * 130) + (_forwardX * 65)
 heliLz3Y = primaryLzY - (_rightY * 130) + (_forwardY * 65)
-? heliLz2X < 250 : heliLz2X = 250
-? heliLz2X > 12550 : heliLz2X = 12550
-? heliLz2Y < 250 : heliLz2Y = 250
-? heliLz2Y > 12550 : heliLz2Y = 12550
-? heliLz3X < 250 : heliLz3X = 250
-? heliLz3X > 12550 : heliLz3X = 12550
-? heliLz3Y < 250 : heliLz3Y = 250
-? heliLz3Y > 12550 : heliLz3Y = 12550
+? heliLz2X < worldMinX : heliLz2X = worldMinX
+? heliLz2X > worldMaxX : heliLz2X = worldMaxX
+? heliLz2Y < worldMinY : heliLz2Y = worldMinY
+? heliLz2Y > worldMaxY : heliLz2Y = worldMaxY
+? heliLz3X < worldMinX : heliLz3X = worldMinX
+? heliLz3X > worldMaxX : heliLz3X = worldMaxX
+? heliLz3Y < worldMinY : heliLz3Y = worldMinY
+? heliLz3Y > worldMaxY : heliLz3Y = worldMaxY
 lzX = primaryLzX
 lzY = primaryLzY
 "primary_marker" setMarkerPos [primaryX, primaryY, 0]
@@ -387,7 +405,7 @@ enemyAircraftSettingLabel = "rare enemy aircraft - 20 percent chance"
 ? enemyAircraftLevel == 2 : enemyAircraftSettingLabel = "normal enemy aircraft - 40 percent chance"
 ? enemyAircraftLevel == 3 : enemyAircraftSettingLabel = "frequent enemy aircraft - 70 percent chance"
 ? enemyAircraftLevel == 4 : enemyAircraftSettingLabel = "enemy aircraft guaranteed"
-; v166 route-patrol density is selected directly, independent of infantry strength.
+; v166 route-patrol density is selected directly, independent from infantry strength.
 enemyPatrolDensityLevel = guiPatrolDensityChoice
 ? enemyPatrolDensityLevel < 0 : enemyPatrolDensityLevel = 2
 ? enemyPatrolDensityLevel > 3 : enemyPatrolDensityLevel = 2
