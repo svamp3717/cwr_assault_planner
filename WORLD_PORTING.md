@@ -1,8 +1,32 @@
 # Moving Assault Planner to another world
 
-World-specific objective/traffic locations now live in `cwr_assault_planner_v203.eden/worldConfig.sqs`.
+World-specific objective/traffic locations live in `cwr_assault_planner_v203.eden/worldConfig.sqs`.
 
-## Recommended workflow
+## Generate it from config.cpp
+
+The easiest route is the included Python helper:
+
+```bash
+python tools/generate_world_config.py /path/to/config.cpp -o cwr_assault_planner_v203.eden/worldConfig.sqs
+```
+
+The script finds the `class Names` block, extracts each location `name` and `position[]`, and writes the CWA-safe one-line `missionLocationLabels`, `missionLocationXs`, and `missionLocationYs` arrays.
+
+It also tries to detect the world class containing `class Names`, uses `centerPosition[]` as the default `missionBaseX/Y` when available, and derives usable bounds from `mapSize`/`worldSize` or the world center. Review the generated base point and bounds before shipping a port.
+
+Useful overrides:
+
+```bash
+python tools/generate_world_config.py config.cpp -o worldConfig.sqs --world-name Malden
+python tools/generate_world_config.py config.cpp -o worldConfig.sqs --base-location "Airport"
+python tools/generate_world_config.py config.cpp -o worldConfig.sqs --base-x 5000 --base-y 5000
+python tools/generate_world_config.py config.cpp -o worldConfig.sqs --world-size 12800
+python tools/generate_world_config.py config.cpp -o worldConfig.sqs --min-x 250 --min-y 250 --max-x 12550 --max-y 12550
+```
+
+The generator uses only the Python standard library.
+
+## Manual workflow
 
 1. Copy/rename the mission folder for the target world as usual.
 2. Open that world's `config.cpp` and find its `class Names` entries.
