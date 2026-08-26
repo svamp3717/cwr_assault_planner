@@ -8,20 +8,23 @@ World-specific objective/traffic locations now live in `cwr_assault_planner_v203
 2. Open that world's `config.cpp` and find its `class Names` entries.
 3. Replace `worldLocations` in `worldConfig.sqs` with entries in this form:
 
-   `["Location name",[x,y]]`
+   `["Location name",x,y]`
 
    Keep at least six locations so the objective cluster and non-objective insertion staging logic always has candidates.
 4. Set `worldName`, `missionBaseX`, and `missionBaseY` to a safe setup/staging point on the target world.
-5. Leave `worldUseEditorLocationMarkers = false` for the normal portable setup.
+5. Set `worldMinX`, `worldMinY`, `worldMaxX`, and `worldMaxY` to safe usable map bounds for generated insertion positions.
+6. Leave `worldUseEditorLocationMarkers = false` for the normal portable setup.
 
 ## What changed with markers
 
 Only the editor-placed `site_*` location markers were removed from `mission.sqm`. All functional mission markers are kept, including objective, LZ, extraction, logistics, rescue, steal, pilot, reinforcement, and support markers.
 
-With `worldUseEditorLocationMarkers = false`, `worldConfig.sqs` creates hidden `site_0`, `site_1`, etc. compatibility markers at runtime from `worldLocations`. Existing legacy CWA-safe scripts can therefore keep using `getMarkerPos` without requiring the mission porter to place dozens of location markers manually.
+With `worldUseEditorLocationMarkers = false`, mission scripts read the X/Y coordinates directly from `worldConfig.sqs`. No `site_*` markers are required.
 
-If you deliberately want the old editor-marker workflow, set `worldUseEditorLocationMarkers = true` and add `site_0`, `site_1`, etc. back to the mission in the same order as `worldLocations`.
+This direct-coordinate path is necessary for Operation Flashpoint / Cold War Assault because that engine cannot create map markers at runtime. The later `createMarker` command used by ArmA therefore cannot be used as a compatibility layer here.
 
-## Why runtime compatibility markers remain
+If you deliberately want the old editor-marker workflow, set `worldUseEditorLocationMarkers = true` and add `site_0`, `site_1`, etc. back to the mission in the same order as `worldLocations`. In that mode the existing marker positions override the configured X/Y values where location positions are read.
 
-Several legacy scripts still consume marker names. Replacing every marker-based call site would turn a world-portability change into a much larger gameplay rewrite. Runtime compatibility markers keep that old interface while making `worldConfig.sqs` the location source of truth.
+## One world data file
+
+The values normally changed while porting are kept in `worldConfig.sqs`: location names and coordinates, the setup/base point, and the usable world bounds. The rest of the mission keeps its functional editor markers and gameplay scripts unchanged wherever possible.
