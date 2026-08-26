@@ -1,5 +1,5 @@
 ; World-specific mission data. This is the file to edit when porting the mission.
-; Each entry is [location name, [x, y]]. Names and positions can be copied from the target world's config.cpp class Names entries.
+; Each entry is [location name, x, y], copied from the target world's config.cpp class Names entries.
 worldConfigReady = false
 worldUseEditorLocationMarkers = false
 worldName = "Everon"
@@ -8,77 +8,81 @@ worldName = "Everon"
 missionBaseX = 10875.000000
 missionBaseY = 11700.000000
 
+; Clamp generated insertion positions to the usable world area.
+worldMinX = 250
+worldMinY = 250
+worldMaxX = 12550
+worldMaxY = 12550
+
 worldLocations = [
-["Saint Phillipe",[4682.183105,10726.460938]],
-["Meaux",[4517.515625,9474.873047]],
-["Tyrone",[4937.587891,9052.875000]],
-["Gravette",[4179.453125,7810.764160]],
-["Entre Deux",[5708.762207,7085.689941]],
-["Montignac",[4913.112793,6958.953125]],
-["Lamentin",[1286.012695,5952.956543]],
-["Le Moule",[2611.707031,5410.354004]],
-["Provins",[5492.664551,6089.755371]],
-["Figari",[5301.566406,5383.737305]],
-["Chotain",[7095.247559,6014.785645]],
-["Laruns",[7556.217773,5574.715332]],
-["Morton",[5023.082031,3962.836426]],
-["Levie",[7547.413086,4731.172852]],
-["Levie Base",[7508.561523,4172.744141]],
-["Durras",[8824.353516,2710.789551]],
-["Vernon",[9119.220703,2181.746582]],
-["Saint Pierre",[9623.721680,1592.533081]],
-["Regina",[7186.205078,2344.993652]],
-["Area 01",[2335.919922,6851.415039]],
-["Area 02",[2843.642334,6422.577148]],
-["Area 03",[3420.656250,4391.833984]],
-["Area 04",[2109.545166,4714.759766]],
-["Area 05",[7258.341797,6740.263672]],
-["Area 06",[6493.989746,8422.560547]],
-["Orion Base",[4899.532227,11995.522461]],
-["Area 07",[11002.472656,1573.534180]],
-["Area 08",[8758.515625,3885.390137]],
-["Area 09",[8873.225586,4436.742188]],
-["Buffalo Base",[4067.632324,6716.370605]],
-["Area 10",[3888.371094,8320.095703]],
-["Saint Phillipe Camp",[5500.154297,10215.820312]],
-["Castle Ruins",[9383.858398,1059.791016]]
+["Saint Phillipe",4682.183105,10726.460938],
+["Meaux",4517.515625,9474.873047],
+["Tyrone",4937.587891,9052.875000],
+["Gravette",4179.453125,7810.764160],
+["Entre Deux",5708.762207,7085.689941],
+["Montignac",4913.112793,6958.953125],
+["Lamentin",1286.012695,5952.956543],
+["Le Moule",2611.707031,5410.354004],
+["Provins",5492.664551,6089.755371],
+["Figari",5301.566406,5383.737305],
+["Chotain",7095.247559,6014.785645],
+["Laruns",7556.217773,5574.715332],
+["Morton",5023.082031,3962.836426],
+["Levie",7547.413086,4731.172852],
+["Levie Base",7508.561523,4172.744141],
+["Durras",8824.353516,2710.789551],
+["Vernon",9119.220703,2181.746582],
+["Saint Pierre",9623.721680,1592.533081],
+["Regina",7186.205078,2344.993652],
+["Area 01",2335.919922,6851.415039],
+["Area 02",2843.642334,6422.577148],
+["Area 03",3420.656250,4391.833984],
+["Area 04",2109.545166,4714.759766],
+["Area 05",7258.341797,6740.263672],
+["Area 06",6493.989746,8422.560547],
+["Orion Base",4899.532227,11995.522461],
+["Area 07",11002.472656,1573.534180],
+["Area 08",8758.515625,3885.390137],
+["Area 09",8873.225586,4436.742188],
+["Buffalo Base",4067.632324,6716.370605],
+["Area 10",3888.371094,8320.095703],
+["Saint Phillipe Camp",5500.154297,10215.820312],
+["Castle Ruins",9383.858398,1059.791016]
 ]
 
-; Legacy mission logic still consumes marker names through getMarkerPos. Build those hidden
-; compatibility markers here so site_* markers no longer need to exist in mission.sqm.
+; OFP/CWA cannot create map markers at runtime. Keep direct X/Y arrays as the normal path.
+; missionLocationMarkers only provides the optional old editor-marker fallback when site_* markers exist.
 missionLocationMarkers = []
 missionLocationLabels = []
+missionLocationXs = []
+missionLocationYs = []
 _i = 0
 #worldLocationLoop
 ? _i >= count worldLocations : goto "worldLocationDone"
 _entry = worldLocations select _i
-_label = _entry select 0
-_pos2 = _entry select 1
-; CWA marker creation expects a full 3-element position even though config.cpp class Names uses x/y.
-_pos = [_pos2 select 0, _pos2 select 1, 0]
-_marker = format ["site_%1", _i]
-missionLocationMarkers = missionLocationMarkers + [_marker]
-missionLocationLabels = missionLocationLabels + [_label]
-? worldUseEditorLocationMarkers : goto "worldLocationNext"
-createMarker [_marker, _pos]
-_marker setMarkerPos _pos
-_marker setMarkerType "Empty"
-_marker setMarkerText ""
-_marker setMarkerColor "ColorBlack"
-#worldLocationNext
+missionLocationMarkers = missionLocationMarkers + [format ["site_%1", _i]]
+missionLocationLabels = missionLocationLabels + [_entry select 0]
+missionLocationXs = missionLocationXs + [_entry select 1]
+missionLocationYs = missionLocationYs + [_entry select 2]
 _i = _i + 1
 goto "worldLocationLoop"
 
 #worldLocationDone
-missionLocationTotal = count missionLocationMarkers
+missionLocationTotal = count missionLocationLabels
 missionTownMarkers = missionLocationMarkers
 missionTownLabels = missionLocationLabels
+missionTownXs = missionLocationXs
+missionTownYs = missionLocationYs
 missionTownTotal = missionLocationTotal
 missionTrafficMarkers = missionLocationMarkers
 missionTrafficLabels = missionLocationLabels
+missionTrafficXs = missionLocationXs
+missionTrafficYs = missionLocationYs
 missionTrafficTotal = missionLocationTotal
 missionUnnamedTrafficMarkers = []
 missionUnnamedTrafficLabels = []
+missionUnnamedTrafficXs = []
+missionUnnamedTrafficYs = []
 missionUnnamedTrafficTotal = 0
 worldConfigReady = true
 exit
