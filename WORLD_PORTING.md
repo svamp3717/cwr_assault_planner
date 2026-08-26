@@ -11,15 +11,17 @@ World-specific objective/traffic locations now live in `cwr_assault_planner_v203
    `["Location name",[x,y]]`
 
    Keep at least six locations so the objective cluster and non-objective insertion staging logic always has candidates.
-4. Set `worldName`, `missionBaseX`, and `missionBaseY` for the target world.
-5. Leave `worldUseEditorLocationMarkers = false` to have the mission create/reposition hidden `site_*` compatibility markers automatically.
+4. Set `worldName`, `missionBaseX`, and `missionBaseY` to a safe setup/staging point on the target world.
+5. Leave `worldUseEditorLocationMarkers = false` for the normal portable setup.
 
-## Optional editor markers
+## What changed with markers
 
-The old `site_0`, `site_1`, ... editor markers are no longer the location source of truth. With `worldUseEditorLocationMarkers = false`, the values in `worldConfig.sqs` drive their positions at runtime, so those editor markers may be omitted when building a port.
+Only the editor-placed `site_*` location markers were removed from `mission.sqm`. All functional mission markers are kept, including objective, LZ, extraction, logistics, rescue, steal, pilot, reinforcement, and support markers.
 
-Set `worldUseEditorLocationMarkers = true` only if you deliberately want the previous workflow where manually placed `site_*` markers provide the positions. In that mode, keep the marker count and order aligned with `worldLocations`.
+With `worldUseEditorLocationMarkers = false`, `worldConfig.sqs` creates hidden `site_0`, `site_1`, etc. compatibility markers at runtime from `worldLocations`. Existing legacy CWA-safe scripts can therefore keep using `getMarkerPos` without requiring the mission porter to place dozens of location markers manually.
 
-## Why compatibility markers still exist at runtime
+If you deliberately want the old editor-marker workflow, set `worldUseEditorLocationMarkers = true` and add `site_0`, `site_1`, etc. back to the mission in the same order as `worldLocations`.
 
-Several legacy CWA-safe scripts use `getMarkerPos` and marker names. Replacing every one of those call sites would make a simple world-porting change much larger and riskier. The bootstrap therefore generates hidden compatibility markers from the single world config instead. Mission logic keeps behaving the same while ports stop requiring marker-by-marker editor work.
+## Why runtime compatibility markers remain
+
+Several legacy scripts still consume marker names. Replacing every marker-based call site would turn a world-portability change into a much larger gameplay rewrite. Runtime compatibility markers keep that old interface while making `worldConfig.sqs` the location source of truth.
