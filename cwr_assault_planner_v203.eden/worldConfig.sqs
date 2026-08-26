@@ -1,0 +1,51 @@
+; World-specific mission data. This is the file to edit when porting the mission.
+; Keep the three location arrays in the same order. Old OFP/CWA SQS is happiest with simple one-line arrays.
+worldConfigReady = false
+worldUseEditorLocationMarkers = false
+worldName = "Everon"
+
+; Safe setup/staging point for the player group and placeholder markers.
+missionBaseX = 10875.000000
+missionBaseY = 11700.000000
+
+; Clamp generated insertion positions to the usable world area.
+worldMinX = 250
+worldMinY = 250
+worldMaxX = 12550
+worldMaxY = 12550
+
+; Copy names/x/y values from the target world's config.cpp class Names entries.
+; IMPORTANT: each array must contain the same number of entries in the same order.
+missionLocationLabels = ["Saint Phillipe","Meaux","Tyrone","Gravette","Entre Deux","Montignac","Lamentin","Le Moule","Provins","Figari","Chotain","Laruns","Morton","Levie","Levie Base","Durras","Vernon","Saint Pierre","Regina","Area 01","Area 02","Area 03","Area 04","Area 05","Area 06","Orion Base","Area 07","Area 08","Area 09","Buffalo Base","Area 10","Saint Phillipe Camp","Castle Ruins"]
+missionLocationXs = [4682.183105,4517.515625,4937.587891,4179.453125,5708.762207,4913.112793,1286.012695,2611.707031,5492.664551,5301.566406,7095.247559,7556.217773,5023.082031,7547.413086,7508.561523,8824.353516,9119.220703,9623.721680,7186.205078,2335.919922,2843.642334,3420.656250,2109.545166,7258.341797,6493.989746,4899.532227,11002.472656,8758.515625,8873.225586,4067.632324,3888.371094,5500.154297,9383.858398]
+missionLocationYs = [10726.460938,9474.873047,9052.875000,7810.764160,7085.689941,6958.953125,5952.956543,5410.354004,6089.755371,5383.737305,6014.785645,5574.715332,3962.836426,4731.172852,4172.744141,2710.789551,2181.746582,1592.533081,2344.993652,6851.415039,6422.577148,4391.833984,4714.759766,6740.263672,8422.560547,11995.522461,1573.534180,3885.390137,4436.742188,6716.370605,8320.095703,10215.820312,1059.791016]
+
+; OFP/CWA cannot create map markers at runtime. Direct numeric arrays are the normal path.
+; Marker names are only built for the optional editor-marker fallback when site_* markers exist.
+missionLocationMarkers = []
+_i = 0
+#worldMarkerLoop
+? _i >= count missionLocationLabels : goto "worldMarkerDone"
+missionLocationMarkers = missionLocationMarkers + [format ["site_%1", _i]]
+_i = _i + 1
+goto "worldMarkerLoop"
+
+#worldMarkerDone
+missionLocationTotal = count missionLocationLabels
+missionTownMarkers = missionLocationMarkers
+missionTownLabels = missionLocationLabels
+missionTownXs = missionLocationXs
+missionTownYs = missionLocationYs
+missionTownTotal = missionLocationTotal
+missionTrafficMarkers = missionLocationMarkers
+missionTrafficLabels = missionLocationLabels
+missionTrafficXs = missionLocationXs
+missionTrafficYs = missionLocationYs
+missionTrafficTotal = missionLocationTotal
+missionUnnamedTrafficMarkers = []
+missionUnnamedTrafficLabels = []
+missionUnnamedTrafficXs = []
+missionUnnamedTrafficYs = []
+missionUnnamedTrafficTotal = 0
+worldConfigReady = true
+exit

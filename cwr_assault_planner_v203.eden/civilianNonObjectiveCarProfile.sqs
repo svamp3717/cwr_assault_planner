@@ -1,8 +1,9 @@
-; v158 chooses and remembers one car type, location and heading for one eligible non-objective marker.
-; Args: [location marker, location label]
+; v158 chooses and remembers one car type, location and heading for one eligible non-objective location.
+; Args: [location x, location y, location label]
 civilianNonObjectiveCarProfileReady = false
-_marker = _this select 0
-_label = _this select 1
+_townX = _this select 0
+_townY = _this select 1
+_label = _this select 2
 _isObjective = false
 ? townLabel == _label : _isObjective = true
 ? townCount >= 2 && secondaryLabel == _label : _isObjective = true
@@ -25,8 +26,7 @@ _carClass = _classes select _classIndex
 _randomOffset = random (count _offsets)
 _offsetIndex = _randomOffset - (_randomOffset % 1)
 _offset = _offsets select _offsetIndex
-_townPos = getMarkerPos _marker
-_carPos = [(_townPos select 0) + (_offset select 0), (_townPos select 1) + (_offset select 1), 0]
+_carPos = [_townX + (_offset select 0), _townY + (_offset select 1), 0]
 _carDir = random 360
 [_carClass, _carPos, _carDir, _label] exec "civilianNonObjectiveCarTown.sqs"
 civilianNonObjectiveCarProfileCount = civilianNonObjectiveCarProfileCount + 1

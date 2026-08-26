@@ -16,10 +16,12 @@ _sourceY = _objYs select _slotIndex
 _sourceLabel = _objLabels select _slotIndex
 _i = 0
 _bestDistance = 999999999
-_bestPos = [_sourceX + 900,_sourceY,0]
+_bestX = _sourceX + 900
+_bestY = _sourceY
 _bestLabel = "patrol settlement"
 _fallbackDistance = 999999999
-_fallbackPos = _bestPos
+_fallbackX = _bestX
+_fallbackY = _bestY
 _fallbackLabel = _bestLabel
 #routeScan
 ? _i >= missionTownTotal : goto "routeScanDone"
@@ -32,28 +34,33 @@ _blocked = false
 ? townCount >= 4 && _label == fourthLabel : _blocked = true
 ? townCount >= 5 && _label == fifthLabel : _blocked = true
 ? _blocked : goto "routeNext"
-_pos = getMarkerPos _marker
-_dx = (_pos select 0) - _sourceX
-_dy = (_pos select 1) - _sourceY
+_x = missionTownXs select _i
+_y = missionTownYs select _i
+? worldUseEditorLocationMarkers : _pos = getMarkerPos _marker
+? worldUseEditorLocationMarkers : _x = _pos select 0
+? worldUseEditorLocationMarkers : _y = _pos select 1
+_dx = _x - _sourceX
+_dy = _y - _sourceY
 _distance = (_dx * _dx) + (_dy * _dy)
-? _distance < _fallbackDistance : _fallbackDistance = _distance; _fallbackPos = _pos; _fallbackLabel = _label
+? _distance < _fallbackDistance : _fallbackDistance = _distance; _fallbackX = _x; _fallbackY = _y; _fallbackLabel = _label
 ? _distance < 360000 : goto "routeNext"
 ? _distance > 6250000 : goto "routeNext"
 ? _distance >= _bestDistance : goto "routeNext"
 _bestDistance = _distance
-_bestPos = _pos
+_bestX = _x
+_bestY = _y
 _bestLabel = _label
 #routeNext
 _i = _i + 1
 goto "routeScan"
 #routeScanDone
-? _bestDistance >= 999999999 : _bestPos = _fallbackPos; _bestLabel = _fallbackLabel
+? _bestDistance >= 999999999 : _bestX = _fallbackX; _bestY = _fallbackY; _bestLabel = _fallbackLabel
 _extraRoll = random 5
 _extra = _extraRoll - (_extraRoll % 1)
 _unitCount = 2 + _extra
 _vehiclePatrol = false
 ? enemyGroundVehicles && (random 100) < 30 : _vehiclePatrol = true
-[_route + 1,_sourceX,_sourceY,(_bestPos select 0),(_bestPos select 1),_sourceLabel,_bestLabel,_unitCount,_vehiclePatrol] exec "enemyRoutePatrolProfile.sqs"
+[_route + 1,_sourceX,_sourceY,_bestX,_bestY,_sourceLabel,_bestLabel,_unitCount,_vehiclePatrol] exec "enemyRoutePatrolProfile.sqs"
 _route = _route + 1
 goto "routeBuild"
 #done

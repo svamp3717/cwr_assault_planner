@@ -1,11 +1,11 @@
-; v129 MP server-safe marker initialization. All non-player assets are scripted.
-"box_marker" setMarkerPos [10875.000000, 11700.000000, 0]
+; MP server-safe marker initialization using the world config setup point.
+"box_marker" setMarkerPos [missionBaseX, missionBaseY, 0]
 "box_marker" setMarkerText ""
-"cobra_marker" setMarkerPos [10875.000000, 11700.000000, 0]
+"cobra_marker" setMarkerPos [missionBaseX, missionBaseY, 0]
 "cobra_marker" setMarkerType "Flag"
 "cobra_marker" setMarkerColor "ColorGreen"
 "cobra_marker" setMarkerText ""
-"logistics_drop_marker" setMarkerPos [10875.000000, 11700.000000, 0]
+"logistics_drop_marker" setMarkerPos [missionBaseX, missionBaseY, 0]
 "logistics_drop_marker" setMarkerType "Empty"
 "logistics_drop_marker" setMarkerText ""
 exit
