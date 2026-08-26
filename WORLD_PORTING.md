@@ -2,9 +2,32 @@
 
 World-specific objective/traffic locations live in `cwr_assault_planner_v203.eden/worldConfig.sqs`.
 
-## Generate it from config.cpp
+## GUI generator
 
-The easiest route is the included Python helper:
+For a desktop interface with folder pickers, run:
+
+```bash
+python tools/generate_world_config_gui.py
+```
+
+The GUI uses only Python's standard library (`tkinter`) and shares the same parser/generator code as the command-line tool.
+
+Workflow:
+
+1. Click **Browse folder...** under **Source world** and choose the terrain/world folder containing `config.cpp`.
+2. The GUI loads `config.cpp`, finds `class Names`, and previews the parsed locations with their X/Y coordinates.
+3. Review or edit the inferred world name, base point, and usable world bounds.
+4. Optionally select a location in the preview and click **Use selected location as base**.
+5. Click the **Output folder** picker and choose where `worldConfig.sqs` should be written, normally the target mission folder.
+6. Click **Generate worldConfig.sqs**.
+
+The source picker first checks `<selected folder>/config.cpp`. If it is not there, it searches below the selected folder and prefers the shallowest unambiguous `config.cpp`. If several equally likely files exist, choose the more specific world folder instead of letting the tool guess which addon config humanity intended this time.
+
+The generated location arrays remain single-line CWA-safe arrays. The **Use editor site_* markers** checkbox is off by default and should normally stay off.
+
+## Generate it from config.cpp on the command line
+
+The command-line helper remains useful for scripts and batch conversions:
 
 ```bash
 python tools/generate_world_config.py /path/to/config.cpp -o cwr_assault_planner_v203.eden/worldConfig.sqs
@@ -24,7 +47,7 @@ python tools/generate_world_config.py config.cpp -o worldConfig.sqs --world-size
 python tools/generate_world_config.py config.cpp -o worldConfig.sqs --min-x 250 --min-y 250 --max-x 12550 --max-y 12550
 ```
 
-The generator uses only the Python standard library.
+Both generators use only the Python standard library.
 
 ## Manual workflow
 
