@@ -446,7 +446,11 @@ class WorldConfigGui(tk.Tk):
         if not output_text:
             raise ValueError("Choose an output folder.")
         output_dir = Path(output_text).expanduser()
-        output_dir.mkdir(parents=True, exist_ok=True)
+        if self.full_mission.get():
+            if not output_dir.is_dir():
+                raise ValueError("Choose an existing destination folder for the new mission.")
+        else:
+            output_dir.mkdir(parents=True, exist_ok=True)
 
         locations = self.ordered_locations()
         if len(locations) < 6:
