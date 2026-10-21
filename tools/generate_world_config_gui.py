@@ -18,10 +18,12 @@ from tkinter import filedialog, messagebox, ttk
 
 try:
     import generate_world_config as gen
+    import mission_package as pack
 except ImportError:
     # Helpful when launched in unusual ways from another working directory.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import generate_world_config as gen
+    import mission_package as pack
 
 
 APP_TITLE = "CWA World Config Generator"
@@ -31,13 +33,18 @@ class WorldConfigGui(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.title(APP_TITLE)
-        self.minsize(880, 640)
+        self.minsize(880, 770)
 
         self.locations = []
         self.config_path: Path | None = None
 
         self.source_dir = tk.StringVar()
         self.output_dir = tk.StringVar()
+        default_template = Path(__file__).resolve().parent.parent / "cwr_assault_planner_v203.eden"
+        self.mission_template = tk.StringVar(value=str(default_template) if default_template.is_dir() else "")
+        self.mission_name = tk.StringVar(value="cwr_assault_planner_v203")
+        self.full_mission = tk.BooleanVar(value=False)
+        self.output_hint = tk.StringVar(value="Only worldConfig.sqs will be written to the output folder.")
         self.world_name = tk.StringVar()
 
         self.base_x = tk.StringVar()
@@ -172,18 +179,40 @@ class WorldConfigGui(tk.Tk):
         output.grid(row=5, column=0, columnspan=3, sticky="ew", pady=(10, 0))
         output.columnconfigure(1, weight=1)
 
-        ttk.Label(output, text="Output folder:").grid(row=0, column=0, sticky="w", padx=(0, 8))
+        ttk.Label(output, text="Destination folder:").grid(row=0, column=0, sticky="w", padx=(0, 8))
         ttk.Entry(output, textvariable=self.output_dir).grid(row=0, column=1, sticky="ew")
         ttk.Button(output, text="Browse folder...", command=self.pick_output_folder).grid(
             row=0, column=2, padx=(8, 0)
         )
-        ttk.Label(output, text="File name: worldConfig.sqs").grid(
-            row=1, column=0, columnspan=2, sticky="w", pady=(8, 0)
+        ttk.Checkbutton(
+            output,
+            text="Create a complete new mission folder (copy all mission files)",
+            variable=self.full_mission,
+            command=self.update_output_mode,
+        ).grid(row=1, column=0, columnspan=3, sticky="w", pady=(8, 0))
+
+        ttk.Label(output, text="Mission template:").grid(row=2, column=0, sticky="w", pady=(8, 0))
+        ttk.Entry(output, textvariable=self.mission_template).grid(
+            row=2, column=1, sticky="ew", pady=(8, 0)
+        )
+        ttk.Button(output, text="Browse mission...", command=self.pick_mission_template_folder).grid(
+            row=2, column=2, padx=(8, 0), pady=(8, 0)
+        )
+        ttk.Label(output, text="New mission name:").grid(row=3, column=0, sticky="w", pady=(8, 0))
+        ttk.Entry(output, textvariable=self.mission_name).grid(
+            row=3, column=1, sticky="ew", pady=(8, 0)
+        )
+        ttk.Label(
+            output,
+            text="Full mission mode creates <mission name>.<world class> inside the destination folder.",
+        ).grid(row=4, column=0, columnspan=3, sticky="w", pady=(8, 0))
+        ttk.Label(output, textvariable=self.output_hint).grid(
+            row=5, column=0, columnspan=2, sticky="w", pady=(8, 0)
         )
         self.generate_button = ttk.Button(
             output, text="Generate worldConfig.sqs", command=self.generate
         )
-        self.generate_button.grid(row=1, column=2, padx=(8, 0), pady=(8, 0))
+        self.generate_button.grid(row=5, column=2, padx=(8, 0), pady=(8, 0))
 
         status = ttk.Label(root, textvariable=self.status, anchor="w")
         status.grid(row=6, column=0, columnspan=3, sticky="ew", pady=(10, 0))
@@ -205,6 +234,24 @@ class WorldConfigGui(tk.Tk):
         )
         if folder:
             self.output_dir.set(folder)
+
+    def pick_mission_template_folder(self) -> None:
+        initial = self.mission_template.get().strip()
+        folder = filedialog.askdirectory(
+            title="Choose existing mission template folder",
+            initialdir=initial if Path(initial).is_dir() else None,
+        )
+        if folder:
+            self.mission_template.set(folder)
+            self.mission_name.set(Path(folder).name.rsplit(".", 1)[0])
+
+    def update_output_mode(self) -> None:
+        if self.full_mission.get():
+            self.generate_button.configure(text="Create mission folder")
+            self.output_hint.set("Copies the template, relocates mission.sqm and generates worldConfig.sqs.")
+        else:
+            self.generate_button.configure(text="Generate worldConfig.sqs")
+            self.output_hint.set("Only worldConfig.sqs will be written to the destination folder.")
 
     def find_config_cpp(self, folder: Path) -> Path:
         direct = folder / "config.cpp"
@@ -444,6 +491,32 @@ class WorldConfigGui(tk.Tk):
                     "worldUseEditorLocationMarkers = true",
                     1,
                 )
+
+            if self.full_mission.get():
+                if self.editor_markers.get():
+                    raise ValueError(
+                        "Disable 'Use editor site_* markers' when creating a portable mission."
+                    )
+                template_text = self.mission_template.get().strip()
+                if not template_text:
+                    raise ValueError("Choose an existing mission template folder.")
+                target = pack.create_mission_package(
+                    template_dir=Path(template_text),
+                    output_parent=output_dir,
+                    world_name=world_name,
+                    mission_name=self.mission_name.get(),
+                    world_config=output,
+                    base_x=base_x,
+                    base_y=base_y,
+                )
+                self.status.set(f"Created mission folder: {target}")
+                messagebox.showinfo(
+                    APP_TITLE,
+                    f"Created complete mission folder\\n\\n"
+                    f"Locations: {len(locations)}\\n"
+                    f"Output: {target}",
+                )
+                return
 
             target = output_dir / "worldConfig.sqs"
             if target.exists():
