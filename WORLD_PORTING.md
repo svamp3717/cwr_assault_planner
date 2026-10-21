@@ -25,6 +25,44 @@ The source picker first checks `<selected folder>/config.cpp`. If it is not ther
 
 The generated location arrays remain single-line CWA-safe arrays. The **Use editor site_* markers** checkbox is off by default and should normally stay off.
 
+## Create a complete mission folder from the GUI
+
+To create a playable/editable mission for the new terrain instead of just a
+`worldConfig.sqs` file:
+
+1. Load the target terrain's `config.cpp` as above, and verify its **World name**
+   is the actual **CfgWorlds class name** (the required mission folder extension,
+   which may be different from the terrain's display name). Verify the base point
+   and bounds too.
+2. In **Output**, choose the **Destination folder** (normally your CWA/OFP user
+   `missions` directory or a staging directory, **not** the mission template).
+3. Check **Create a complete new mission folder (copy all mission files)**.
+4. Choose an existing **Mission template** folder. The repository's
+   `cwr_assault_planner_v203.eden` is preselected when available.
+5. Set **New mission name** (without the world extension) and leave
+   **Use editor site_* markers** **unchecked**.
+6. Click **Create mission folder**.
+
+The GUI creates `<mission name>.<world class>/` within the destination folder
+(e.g. `cwr_assault_planner_v203.Abel/` for the original Malden terrain).
+It copies **every file and subdirectory** from the selected template, replaces
+`worldConfig.sqs` with the generated world-specific version, and relocates the
+editor-placed units, markers, and triggers in `mission.sqm` relative to the
+new base point. It preserves their original relative offsets and stored
+elevations. Open the generated mission in the game editor to check unit height
+and terrain suitability before playing, especially on steep terrain.
+
+**Existing mission folders are never overwritten**; choose a different mission
+name if the destination name already exists. A partially failed copy is cleaned
+up. Uncheck the full-mission option to keep the original single-file generator
+behavior and overwrite confirmation.
+
+Run the packaging tests with:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
 ## Generate it from config.cpp on the command line
 
 The command-line helper remains useful for scripts and batch conversions:
