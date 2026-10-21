@@ -512,8 +512,8 @@ class WorldConfigGui(tk.Tk):
                 self.status.set(f"Created mission folder: {target}")
                 messagebox.showinfo(
                     APP_TITLE,
-                    f"Created complete mission folder\\n\\n"
-                    f"Locations: {len(locations)}\\n"
+                    f"Created complete mission folder\n\n"
+                    f"Locations: {len(locations)}\n"
                     f"Output: {target}",
                 )
                 return
