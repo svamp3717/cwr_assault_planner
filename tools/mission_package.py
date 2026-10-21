@@ -98,7 +98,7 @@ def create_mission_package(
     if not sqm_path.is_file() or not config_path.is_file():
         raise ValueError("Mission template must contain mission.sqm and worldConfig.sqs.")
     target = output_parent / name
-    if target.exists():
+    if target.exists() or target.is_symlink():
         raise FileExistsError(f"Mission folder already exists; nothing was overwritten: {target}")
 
     old_x, old_y = _old_base(config_path.read_text(encoding="utf-8-sig"))
@@ -111,7 +111,7 @@ def create_mission_package(
         shutil.copytree(template_dir, staged_mission)
         (staged_mission / "worldConfig.sqs").write_text(world_config, encoding="utf-8", newline="\n")
         (staged_mission / "mission.sqm").write_text(new_sqm, encoding="utf-8", newline="\n")
-        if target.exists():
+        if target.exists() or target.is_symlink():
             raise FileExistsError(f"Mission folder appeared during generation: {target}")
         staged_mission.rename(target)
     finally:
