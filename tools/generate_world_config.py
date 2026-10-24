@@ -233,7 +233,49 @@ def determine_bounds(locations, center, parsed_map_size, args):
     if args.margin < 0 or args.margin * 2 >= size: raise ValueError("--margin must be >= 0 and less than half the world size.")
     return args.margin, args.margin, size - args.margin, size - args.margin, source
 
-def build_world_config(world_name, locations, base_x, base_y, min_x, min_y, max_x, max_y, input_name, base_source, bounds_source):
+
+def resolve_placement_settings(min_x, min_y, max_x, max_y, *,
+                               stage_min=None, stage_max=None, objective_edge=None,
+                               air_offset=None):
+    """Scale placement to the usable map's shorter side, with optional overrides.
+
+    Distances are metres. A nonzero stage_max limits the *preferred* insertion
+    distance; when a map has no suitable non-objective town, the mission uses
+    the closest fallback rather than failing to start.
+    """
+    side = min(max_x - min_x, max_y - min_y)
+    if not math.isfinite(side) or side <= 0:
+        raise ValueError("World bounds must have a positive finite width and height.")
+
+    def nearest_50(value):
+        return round(value / 50) * 50
+
+    defaults = {
+        "stage_min": min(1500, max(200, nearest_50(side * 0.20))),
+        "stage_max": min(6000, max(1000, nearest_50(side * 0.65))),
+        "objective_edge": min(500, max(100, nearest_50(side * 0.10))),
+        "air_offset": min(1600, max(250, nearest_50(side * 0.20))),
+    }
+    overrides = {"stage_min": stage_min, "stage_max": stage_max,
+                 "objective_edge": objective_edge, "air_offset": air_offset}
+    settings = {key: defaults[key] if override is None else override
+                for key, override in overrides.items()}
+    for key, value in settings.items():
+        if not math.isfinite(value) or value < 0:
+            raise ValueError(f"{key} must be a finite, non-negative distance in metres.")
+    if settings["stage_max"] <= 400:
+        raise ValueError("Maximum insertion distance must be greater than 400 m.")
+    if settings["stage_min"] + 400 > settings["stage_max"]:
+        raise ValueError(
+            "Maximum insertion distance must exceed minimum staging clearance by at least 400 m."
+        )
+    if settings["objective_edge"] * 2 >= side:
+        raise ValueError("Objective edge margin must be less than half the shorter usable map side.")
+    return settings
+
+def build_world_config(world_name, locations, base_x, base_y, min_x, min_y, max_x, max_y, input_name, base_source, bounds_source, placement=None):
+    if placement is None:
+        placement = resolve_placement_settings(min_x, min_y, max_x, max_y)
     labels = ",".join(sqs_quote(loc.name) for loc in locations)
     xs = ",".join(format_number(loc.x) for loc in locations)
     ys = ",".join(format_number(loc.y) for loc in locations)
@@ -252,6 +294,12 @@ worldMinX = {format_number(min_x)}
 worldMinY = {format_number(min_y)}
 worldMaxX = {format_number(max_x)}
 worldMaxY = {format_number(max_y)}
+
+; Mission placement controls (metres). Configure these in the generator GUI.
+worldStageMinClearance = {format_number(placement["stage_min"])}
+worldStageMaxDistance = {format_number(placement["stage_max"])}
+worldObjectiveEdgeMargin = {format_number(placement["objective_edge"])}
+worldAirStageOffset = {format_number(placement["air_offset"])}
 
 missionLocationLabels = [{labels}]
 missionLocationXs = [{xs}]
@@ -298,6 +346,10 @@ def parse_args(argv=None):
     parser.add_argument("--margin", type=float, default=250.0)
     parser.add_argument("--min-x", type=float); parser.add_argument("--min-y", type=float)
     parser.add_argument("--max-x", type=float); parser.add_argument("--max-y", type=float)
+    parser.add_argument("--stage-min-clearance", type=float, help="Preferred minimum staging distance to every objective, metres")
+    parser.add_argument("--stage-max-distance", type=float, help="Preferred maximum insertion distance to objectives, metres")
+    parser.add_argument("--objective-edge-margin", type=float, help="Keep objectives away from usable bounds, metres")
+    parser.add_argument("--air-stage-offset", type=float, help="Aircraft staging distance beyond LZ, metres")
     parser.add_argument("--sort", choices=("config", "name"), default="config")
     return parser.parse_args(argv)
 
@@ -316,7 +368,15 @@ def main(argv=None) -> int:
         world_name = args.world_name or (world_block.name if world_block else args.config.parent.name) or "Unknown"
         base_x, base_y, base_source = infer_base(locations, center, args.base_location, args.base_x, args.base_y)
         min_x, min_y, max_x, max_y, bounds_source = determine_bounds(locations, center, parsed_map_size, args)
-        output = build_world_config(world_name, locations, base_x, base_y, min_x, min_y, max_x, max_y, args.config.name, base_source, bounds_source)
+        placement = resolve_placement_settings(
+            min_x, min_y, max_x, max_y,
+            stage_min=args.stage_min_clearance, stage_max=args.stage_max_distance,
+            objective_edge=args.objective_edge_margin, air_offset=args.air_stage_offset,
+        )
+        output = build_world_config(
+            world_name, locations, base_x, base_y, min_x, min_y, max_x, max_y,
+            args.config.name, base_source, bounds_source, placement=placement,
+        )
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(output, encoding="utf-8", newline="\n")
     except (ValueError, OSError) as exc:
