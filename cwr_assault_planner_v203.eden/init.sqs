@@ -14,6 +14,11 @@ missionUnnamedTrafficLabels = []
 missionUnnamedTrafficTotal = 0
 missionBaseX = 10875.000000
 missionBaseY = 11700.000000
+; Load the terrain-specific arrays, bounds and placement settings on every machine.
+; Must complete before startup placement or server-side objective generation.
+worldConfigReady = false
+[] exec "worldConfig.sqs"
+@ worldConfigReady
 setViewDistance 1600
 "1" objStatus "HIDDEN"
 "2" objStatus "HIDDEN"
