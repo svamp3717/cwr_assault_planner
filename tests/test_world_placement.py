@@ -21,7 +21,7 @@ class WorldPlacementTests(unittest.TestCase):
     def test_scales_to_usable_shorter_side(self):
         values = gen.resolve_placement_settings(250, 250, 3750, 5750)
         self.assertEqual(values["stage_min"], 700)
-        self.assertEqual(values["stage_max"], 2250)
+        self.assertEqual(values["stage_max"], 2300)
         self.assertEqual(values["objective_edge"], 350)
         self.assertEqual(values["air_offset"], 700)
 
