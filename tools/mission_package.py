@@ -97,6 +97,26 @@ def create_mission_package(
     config_path = template_dir / "worldConfig.sqs"
     if not sqm_path.is_file() or not config_path.is_file():
         raise ValueError("Mission template must contain mission.sqm and worldConfig.sqs.")
+
+    # Older templates silently ignore new generator settings, which would
+    # reintroduce map-edge problems even though worldConfig.sqs looks correct.
+    randomize_path = template_dir / "randomize.sqs"
+    init_path = template_dir / "init.sqs"
+    required_settings = (
+        "worldStageMinClearance", "worldStageMaxDistance",
+        "worldObjectiveEdgeMargin", "worldAirStageOffset",
+    )
+    if (not randomize_path.is_file()
+            or not init_path.is_file()
+            or any(value not in randomize_path.read_text(encoding="utf-8-sig")
+                   for value in required_settings)
+            or '[] exec "worldConfig.sqs"' not in init_path.read_text(encoding="utf-8-sig")):
+        raise ValueError(
+            "The selected mission template is outdated. Choose the updated "
+            "cwr_assault_planner_v203.eden folder from this branch so the new "
+            "placement controls are actually used."
+        )
+
     target = output_parent / name
     if target.exists() or target.is_symlink():
         raise FileExistsError(f"Mission folder already exists; nothing was overwritten: {target}")
