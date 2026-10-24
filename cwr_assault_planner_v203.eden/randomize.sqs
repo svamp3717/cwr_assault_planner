@@ -370,19 +370,25 @@ landStageY = landStageY + approachOffsetY
 airStageX = airStageX + approachOffsetX
 airStageY = airStageY + approachOffsetY
 
-; Keep generated positions inside the configured world bounds.
-? primaryLzX < worldMinX : primaryLzX = worldMinX
-? primaryLzX > worldMaxX : primaryLzX = worldMaxX
-? primaryLzY < worldMinY : primaryLzY = worldMinY
-? primaryLzY > worldMaxY : primaryLzY = worldMaxY
-? landStageX < worldMinX : landStageX = worldMinX
-? landStageX > worldMaxX : landStageX = worldMaxX
-? landStageY < worldMinY : landStageY = worldMinY
-? landStageY > worldMaxY : landStageY = worldMaxY
-? airStageX < worldMinX : airStageX = worldMinX
-? airStageX > worldMaxX : airStageX = worldMaxX
-? airStageY < worldMinY : airStageY = worldMinY
-? airStageY > worldMaxY : airStageY = worldMaxY
+; Keep generated positions off the extreme map edge wherever possible.
+; Half the objective margin provides extra breathing room for insertions.
+_insertionEdge = worldObjectiveEdgeMargin * 0.5
+_safeMinX = _safeMinX + _insertionEdge
+_safeMaxX = _safeMaxX - _insertionEdge
+_safeMinY = _safeMinY + _insertionEdge
+_safeMaxY = _safeMaxY - _insertionEdge
+? primaryLzX < _safeMinX : primaryLzX = _safeMinX
+? primaryLzX > _safeMaxX : primaryLzX = _safeMaxX
+? primaryLzY < _safeMinY : primaryLzY = _safeMinY
+? primaryLzY > _safeMaxY : primaryLzY = _safeMaxY
+? landStageX < _safeMinX : landStageX = _safeMinX
+? landStageX > _safeMaxX : landStageX = _safeMaxX
+? landStageY < _safeMinY : landStageY = _safeMinY
+? landStageY > _safeMaxY : landStageY = _safeMaxY
+? airStageX < _safeMinX : airStageX = _safeMinX
+? airStageX > _safeMaxX : airStageX = _safeMaxX
+? airStageY < _safeMinY : airStageY = _safeMinY
+? airStageY > _safeMaxY : airStageY = _safeMaxY
 
 heliLz1X = primaryLzX
 heliLz1Y = primaryLzY
@@ -390,14 +396,14 @@ heliLz2X = primaryLzX + (_rightX * 130) + (_forwardX * 45)
 heliLz2Y = primaryLzY + (_rightY * 130) + (_forwardY * 45)
 heliLz3X = primaryLzX - (_rightX * 130) + (_forwardX * 65)
 heliLz3Y = primaryLzY - (_rightY * 130) + (_forwardY * 65)
-? heliLz2X < worldMinX : heliLz2X = worldMinX
-? heliLz2X > worldMaxX : heliLz2X = worldMaxX
-? heliLz2Y < worldMinY : heliLz2Y = worldMinY
-? heliLz2Y > worldMaxY : heliLz2Y = worldMaxY
-? heliLz3X < worldMinX : heliLz3X = worldMinX
-? heliLz3X > worldMaxX : heliLz3X = worldMaxX
-? heliLz3Y < worldMinY : heliLz3Y = worldMinY
-? heliLz3Y > worldMaxY : heliLz3Y = worldMaxY
+? heliLz2X < _safeMinX : heliLz2X = _safeMinX
+? heliLz2X > _safeMaxX : heliLz2X = _safeMaxX
+? heliLz2Y < _safeMinY : heliLz2Y = _safeMinY
+? heliLz2Y > _safeMaxY : heliLz2Y = _safeMaxY
+? heliLz3X < _safeMinX : heliLz3X = _safeMinX
+? heliLz3X > _safeMaxX : heliLz3X = _safeMaxX
+? heliLz3Y < _safeMinY : heliLz3Y = _safeMinY
+? heliLz3Y > _safeMaxY : heliLz3Y = _safeMaxY
 lzX = primaryLzX
 lzY = primaryLzY
 "primary_marker" setMarkerPos [primaryX, primaryY, 0]
