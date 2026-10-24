@@ -100,10 +100,47 @@ missionObjectivesComplete = false
 ? townCount < 4 : objective4Done = true
 ? townCount < 5 : objective5Done = true
 #rollPrimary
-; Choose one configured location, then use its four nearest configured locations as the objective cluster.
+; Use only configured locations inside the usable world bounds and the requested
+; edge clearance. Relax the margin only if fewer than townCount points remain.
+; Never attempt to create new site markers (OFP/CWA does not support this).
 _townTotal = missionLocationTotal
-_roll = random _townTotal
-_primaryIndex = _roll - (_roll % 1)
+_objEdge = worldObjectiveEdgeMargin
+#objectiveMarginScan
+_eligibleIndices = []
+_i = 0
+#objectiveEligibleScan
+? _i >= _townTotal : goto "objectiveEligibleDone"
+_cx = missionLocationXs select _i
+_cy = missionLocationYs select _i
+? worldUseEditorLocationMarkers : _candidatePos = getMarkerPos (missionLocationMarkers select _i)
+? worldUseEditorLocationMarkers : _cx = _candidatePos select 0
+? worldUseEditorLocationMarkers : _cy = _candidatePos select 1
+? _cx < (worldMinX + _objEdge) : goto "objectiveEligibleNext"
+? _cx > (worldMaxX - _objEdge) : goto "objectiveEligibleNext"
+? _cy < (worldMinY + _objEdge) : goto "objectiveEligibleNext"
+? _cy > (worldMaxY - _objEdge) : goto "objectiveEligibleNext"
+_eligibleIndices = _eligibleIndices + [_i]
+#objectiveEligibleNext
+_i = _i + 1
+goto "objectiveEligibleScan"
+#objectiveEligibleDone
+? count _eligibleIndices >= townCount : goto "objectiveCandidatesReady"
+? _objEdge <= 0 : goto "objectiveUseAny"
+_objEdge = _objEdge * 0.5
+? _objEdge < 10 : _objEdge = 0
+goto "objectiveMarginScan"
+#objectiveUseAny
+; Invalid or sparse terrain locations: preserve playability rather than looping forever.
+_eligibleIndices = []
+_i = 0
+#objectiveUseAnyScan
+? _i >= _townTotal : goto "objectiveCandidatesReady"
+_eligibleIndices = _eligibleIndices + [_i]
+_i = _i + 1
+goto "objectiveUseAnyScan"
+#objectiveCandidatesReady
+_roll = random (count _eligibleIndices)
+_primaryIndex = _eligibleIndices select (_roll - (_roll % 1))
 primaryTownIndex = _primaryIndex
 _primaryMarker = missionLocationMarkers select _primaryIndex
 townLabel = missionLocationLabels select _primaryIndex
@@ -121,9 +158,10 @@ _nearDist1 = 999999999
 _nearDist2 = 999999999
 _nearDist3 = 999999999
 _nearDist4 = 999999999
-_i = 0
+_candidateAt = 0
 #clusterScan
-? _i >= _townTotal : goto "clusterScanDone"
+? _candidateAt >= count _eligibleIndices : goto "clusterScanDone"
+_i = _eligibleIndices select _candidateAt
 ? _i == _primaryIndex : goto "clusterNext"
 _candidateX = missionLocationXs select _i
 _candidateY = missionLocationYs select _i
@@ -166,7 +204,7 @@ goto "clusterNext"
 _nearDist4 = _distance
 _nearIndex4 = _i
 #clusterNext
-_i = _i + 1
+_candidateAt = _candidateAt + 1
 goto "clusterScan"
 #clusterScanDone
 ? _nearIndex1 < 0 : _nearIndex1 = (_primaryIndex + 1) % _townTotal
@@ -203,12 +241,19 @@ fifthY = missionLocationYs select _nearIndex4
 ? worldUseEditorLocationMarkers : fifthX = _townPos select 0
 ? worldUseEditorLocationMarkers : fifthY = _townPos select 1
 
-; Pick a non-objective supplied location for the insertion column. Prefer the closest candidate
-; whose center is at least 1.5 km from every active objective; otherwise use the safest candidate.
+; Pick a non-objective town for insertion. Distances are squared metres here.
+; Respect both requested staging clearance and preferred maximum distance to
+; all active objectives where possible; choose safe fallbacks on tiny worlds.
+_stageMinSq = worldStageMinClearance * worldStageMinClearance
+_stageMaxCenter = worldStageMaxDistance - 400
+? _stageMaxCenter < 0 : _stageMaxCenter = 0
+_stageMaxSq = _stageMaxCenter * _stageMaxCenter
 _stageBestIndex = -1
 _stageBestPrimaryDistance = 999999999
 _stageFallbackIndex = -1
 _stageFallbackClearance = -1
+_stageAnyIndex = -1
+_stageAnyMaxSq = 999999999
 _i = 0
 #stageScan
 ? _i >= _townTotal : goto "stageScanDone"
@@ -228,24 +273,31 @@ _dx = _cx - primaryX
 _dy = _cy - primaryY
 _primaryDistance = (_dx * _dx) + (_dy * _dy)
 _minClearance = _primaryDistance
+_maxObjectiveDistance = _primaryDistance
 ? townCount >= 2 : _dx2 = _cx - secondaryX
 ? townCount >= 2 : _dy2 = _cy - secondaryY
 ? townCount >= 2 : _d2 = (_dx2 * _dx2) + (_dy2 * _dy2)
 ? townCount >= 2 && _d2 < _minClearance : _minClearance = _d2
+? townCount >= 2 && _d2 > _maxObjectiveDistance : _maxObjectiveDistance = _d2
 ? townCount >= 3 : _dx3 = _cx - thirdX
 ? townCount >= 3 : _dy3 = _cy - thirdY
 ? townCount >= 3 : _d3 = (_dx3 * _dx3) + (_dy3 * _dy3)
 ? townCount >= 3 && _d3 < _minClearance : _minClearance = _d3
+? townCount >= 3 && _d3 > _maxObjectiveDistance : _maxObjectiveDistance = _d3
 ? townCount >= 4 : _dx4 = _cx - fourthX
 ? townCount >= 4 : _dy4 = _cy - fourthY
 ? townCount >= 4 : _d4 = (_dx4 * _dx4) + (_dy4 * _dy4)
 ? townCount >= 4 && _d4 < _minClearance : _minClearance = _d4
+? townCount >= 4 && _d4 > _maxObjectiveDistance : _maxObjectiveDistance = _d4
 ? townCount >= 5 : _dx5 = _cx - fifthX
 ? townCount >= 5 : _dy5 = _cy - fifthY
 ? townCount >= 5 : _d5 = (_dx5 * _dx5) + (_dy5 * _dy5)
 ? townCount >= 5 && _d5 < _minClearance : _minClearance = _d5
+? townCount >= 5 && _d5 > _maxObjectiveDistance : _maxObjectiveDistance = _d5
+? _maxObjectiveDistance < _stageAnyMaxSq : _stageAnyMaxSq = _maxObjectiveDistance; _stageAnyIndex = _i
+? _maxObjectiveDistance > _stageMaxSq : goto "stageNext"
 ? _minClearance > _stageFallbackClearance : _stageFallbackClearance = _minClearance; _stageFallbackIndex = _i
-? _minClearance < 2250000 : goto "stageNext"
+? _minClearance < _stageMinSq : goto "stageNext"
 ? _primaryDistance >= _stageBestPrimaryDistance : goto "stageNext"
 _stageBestPrimaryDistance = _primaryDistance
 _stageBestIndex = _i
@@ -254,6 +306,7 @@ _i = _i + 1
 goto "stageScan"
 #stageScanDone
 ? _stageBestIndex < 0 : _stageBestIndex = _stageFallbackIndex
+? _stageBestIndex < 0 : _stageBestIndex = _stageAnyIndex
 ? _stageBestIndex < 0 : _stageBestIndex = (_primaryIndex + 5) % _townTotal
 _stageMarker = missionLocationMarkers select _stageBestIndex
 truckStageTownLabel = missionLocationLabels select _stageBestIndex
@@ -278,8 +331,8 @@ primaryLzX = truckStageX + (_forwardX * 280)
 primaryLzY = truckStageY + (_forwardY * 280)
 landStageX = primaryLzX + (_forwardX * 220)
 landStageY = primaryLzY + (_forwardY * 220)
-airStageX = primaryLzX + (_forwardX * 1600)
-airStageY = primaryLzY + (_forwardY * 1600)
+airStageX = primaryLzX + (_forwardX * worldAirStageOffset)
+airStageY = primaryLzY + (_forwardY * worldAirStageOffset)
 
 approachLabel = "base outskirts LZ"
 approachOffsetX = 0
