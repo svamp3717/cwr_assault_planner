@@ -23,6 +23,13 @@ class MissionPackageTests(unittest.TestCase):
             'position[]={10865.000000,25.000000,11696.000000};\n'
             'position[]={10875.000000,0.000000,11700.000000};\n', encoding="utf-8"
         )
+        (self.template / "randomize.sqs").write_text(
+            "\n".join((
+                "worldStageMinClearance", "worldStageMaxDistance",
+                "worldObjectiveEdgeMargin", "worldAirStageOffset",
+            )), encoding="utf-8"
+        )
+        (self.template / "init.sqs").write_text('[] exec "worldConfig.sqs"\n', encoding="utf-8")
         (self.template / "FRevive").mkdir()
         (self.template / "FRevive" / "Start.sqs").write_text("#hello\n", encoding="utf-8")
         self.destination = self.root / "Missions"
@@ -54,6 +61,12 @@ class MissionPackageTests(unittest.TestCase):
                 mission_folder_name(self.template, world)
         with self.assertRaises(ValueError):
             mission_folder_name(self.template, "Malden", "../escape")
+
+    def test_reject_outdated_mission_template(self):
+        (self.template / "randomize.sqs").write_text("old hardcoded behaviour\n")
+        with self.assertRaisesRegex(ValueError, "outdated"):
+            create_mission_package(self.template, self.destination, "Malden", "", "test", 5000, 6000)
+        self.assertEqual(list(self.destination.iterdir()), [])
 
     def test_reject_copy_inside_source(self):
         nested = self.template / "output"
