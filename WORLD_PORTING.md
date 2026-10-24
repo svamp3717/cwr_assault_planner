@@ -25,6 +25,48 @@ The source picker first checks `<selected folder>/config.cpp`. If it is not ther
 
 The generated location arrays remain single-line CWA-safe arrays. The **Use editor site_* markers** checkbox is off by default and should normally stay off.
 
+## Objective placement on small maps
+
+The **Objective / insertion placement (metres)** panel in the GUI controls
+four values stored in generated `worldConfig.sqs`. No manual editing of
+`randomize.sqs` is needed for missions generated with this branch:
+
+| GUI control | World config variable | Effect |
+| --- | --- | --- |
+| Min objective-to-staging | `worldStageMinClearance` | Preferred minimum distance from a non-objective staging town to **each active objective** |
+| Max objective-to-insertion | `worldStageMaxDistance` | Preferred maximum insertion distance to the **furthest active objective** |
+| Objective edge margin | `worldObjectiveEdgeMargin` | Objective locations must be inside the playable map bounds by this margin where enough points exist |
+| Aircraft extra offset | `worldAirStageOffset` | Extra aircraft staging distance beyond the selected landing zone |
+
+**Auto-scale distances to usable map size** is enabled by default. It
+uses the shorter side of the **usable bounds** (Max X minus Min X and
+Max Y minus Min Y), so adjusting the bounds updates the suggestions.
+For a 4,000 m × 4,000 m usable area, defaults are **800 m / 2,600 m /
+400 m / 800 m** in the order shown above. A larger world caps these
+values at **1,500 m / 6,000 m / 500 m / 1,600 m**. Uncheck auto-scale
+to enter custom distances before generating.
+
+Objective candidates are drawn from the terrain's `class Names`
+locations, not arbitrary coordinates. If an edge margin excludes too
+many locations for the requested objective count, the mission halves
+the margin until enough locations remain. If no locations are within
+the configured usable bounds, it falls back to all locations so the
+mission can still start. Staging distance constraints are also
+**preferences**, not guarantees: if no non-objective location meets
+both distance limits, the mission chooses the closest available fallback.
+Landing zones and aircraft positions receive additional padding from
+the map edges, but terrain quality and water still need editor testing.
+
+When generating **only** `worldConfig.sqs`, install it into a mission
+folder that already has the updated `randomize.sqs` and `init.sqs`
+from this branch. They are automatically included when generating a
+**complete mission folder** from the updated repository template.
+
+For scripting, the command-line generator also accepts
+`--stage-min-clearance`, `--stage-max-distance`,
+`--objective-edge-margin`, and `--air-stage-offset`, all in metres.
+Omitted values are auto-scaled.
+
 ## Create a complete mission folder from the GUI
 
 To create a playable/editable mission for the new terrain instead of just a
