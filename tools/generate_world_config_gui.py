@@ -55,11 +55,21 @@ class WorldConfigGui(tk.Tk):
         self.max_y = tk.StringVar()
         self.margin = tk.StringVar(value="250")
 
+        self.auto_placement = tk.BooleanVar(value=True)
+        self.stage_min = tk.StringVar(value="1500")
+        self.stage_max = tk.StringVar(value="6000")
+        self.objective_edge = tk.StringVar(value="500")
+        self.air_offset = tk.StringVar(value="1600")
+        self.placement_entries = []
+
         self.sort_mode = tk.StringVar(value="config")
         self.editor_markers = tk.BooleanVar(value=False)
         self.status = tk.StringVar(value="Choose a world folder containing config.cpp.")
 
         self._build_ui()
+        for var in (self.min_x, self.min_y, self.max_x, self.max_y):
+            var.trace_add("write", lambda *_: self.refresh_auto_placement())
+        self.update_placement_mode()
 
     def _build_ui(self) -> None:
         root = ttk.Frame(self, padding=12)
@@ -147,6 +157,31 @@ class WorldConfigGui(tk.Tk):
             text="Use editor site_* markers",
             variable=self.editor_markers,
         ).pack(side="left")
+
+        placement = ttk.LabelFrame(root, text="Objective / insertion placement (metres)", padding=10)
+        placement.grid(row=3, column=0, columnspan=3, sticky="ew", pady=(10, 0))
+        for col in (1, 3):
+            placement.columnconfigure(col, weight=1)
+        ttk.Checkbutton(
+            placement, text="Auto-scale distances to usable map size (recommended)",
+            variable=self.auto_placement, command=self.update_placement_mode,
+        ).grid(row=0, column=0, columnspan=4, sticky="w")
+        settings_fields = (
+            ("Min objective-to-staging:", self.stage_min, 1, 0),
+            ("Max objective-to-insertion:", self.stage_max, 1, 2),
+            ("Objective edge margin:", self.objective_edge, 2, 0),
+            ("Aircraft extra offset:", self.air_offset, 2, 2),
+        )
+        for label, variable, row, col in settings_fields:
+            ttk.Label(placement, text=label).grid(
+                row=row, column=col, sticky="w", pady=(8, 0), padx=(0, 6) if col == 0 else (10, 6)
+            )
+            entry = ttk.Entry(placement, textvariable=variable, width=12)
+            entry.grid(row=row, column=col + 1, sticky="ew", pady=(8, 0))
+            self.placement_entries.append(entry)
+        ttk.Label(
+            placement, text="Maximum distance is preferred. If no valid town exists, the mission uses the best available fallback.",
+        ).grid(row=3, column=0, columnspan=4, sticky="w", pady=(8, 0))
 
         preview = ttk.LabelFrame(root, text="Parsed class Names locations", padding=8)
         preview.grid(row=4, column=0, columnspan=3, sticky="nsew", pady=(10, 0))
@@ -252,6 +287,24 @@ class WorldConfigGui(tk.Tk):
         else:
             self.generate_button.configure(text="Generate worldConfig.sqs")
             self.output_hint.set("Only worldConfig.sqs will be written to the destination folder.")
+
+    def refresh_auto_placement(self) -> None:
+        if not self.auto_placement.get():
+            return
+        try:
+            bounds = [float(var.get()) for var in (self.min_x, self.min_y, self.max_x, self.max_y)]
+            values = gen.resolve_placement_settings(*bounds)
+        except (ValueError, OverflowError):
+            return
+        self.stage_min.set(gen.format_number(values["stage_min"]))
+        self.stage_max.set(gen.format_number(values["stage_max"]))
+        self.objective_edge.set(gen.format_number(values["objective_edge"]))
+        self.air_offset.set(gen.format_number(values["air_offset"]))
+
+    def update_placement_mode(self) -> None:
+        for entry in self.placement_entries:
+            entry.configure(state="disabled" if self.auto_placement.get() else "normal")
+        self.refresh_auto_placement()
 
     def find_config_cpp(self, folder: Path) -> Path:
         direct = folder / "config.cpp"
@@ -452,6 +505,14 @@ class WorldConfigGui(tk.Tk):
         else:
             output_dir.mkdir(parents=True, exist_ok=True)
 
+        placement = gen.resolve_placement_settings(
+            min_x, min_y, max_x, max_y,
+            stage_min=None if self.auto_placement.get() else self._float_from_var(self.stage_min, "Minimum staging distance"),
+            stage_max=None if self.auto_placement.get() else self._float_from_var(self.stage_max, "Maximum insertion distance"),
+            objective_edge=None if self.auto_placement.get() else self._float_from_var(self.objective_edge, "Objective edge margin"),
+            air_offset=None if self.auto_placement.get() else self._float_from_var(self.air_offset, "Aircraft extra offset"),
+        )
+
         locations = self.ordered_locations()
         if len(locations) < 6:
             raise ValueError(
@@ -459,7 +520,7 @@ class WorldConfigGui(tk.Tk):
                 "The mission needs at least 6 for objective clustering and staging."
             )
 
-        return world_name, locations, base_x, base_y, min_x, min_y, max_x, max_y, output_dir
+        return world_name, locations, base_x, base_y, min_x, min_y, max_x, max_y, output_dir, placement
 
     def generate(self) -> None:
         try:
@@ -473,6 +534,7 @@ class WorldConfigGui(tk.Tk):
                 max_x,
                 max_y,
                 output_dir,
+                placement,
             ) = self.validate_generation()
 
             output = gen.build_world_config(
@@ -487,6 +549,7 @@ class WorldConfigGui(tk.Tk):
                 input_name=self.config_path.name,
                 base_source="GUI selection",
                 bounds_source="GUI values",
+                placement=placement,
             )
 
             if self.editor_markers.get():
