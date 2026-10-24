@@ -14,6 +14,13 @@ worldMinY = 250
 worldMaxX = 12550
 worldMaxY = 12550
 
+; Placement defaults for the original Everon mission (metres).
+; New terrain ports derive these values from usable bounds in the generator GUI.
+worldStageMinClearance = 1500
+worldStageMaxDistance = 6000
+worldObjectiveEdgeMargin = 500
+worldAirStageOffset = 1600
+
 ; Copy names/x/y values from the target world's config.cpp class Names entries.
 ; IMPORTANT: each array must contain the same number of entries in the same order.
 missionLocationLabels = ["Saint Phillipe","Meaux","Tyrone","Gravette","Entre Deux","Montignac","Lamentin","Le Moule","Provins","Figari","Chotain","Laruns","Morton","Levie","Levie Base","Durras","Vernon","Saint Pierre","Regina","Area 01","Area 02","Area 03","Area 04","Area 05","Area 06","Orion Base","Area 07","Area 08","Area 09","Buffalo Base","Area 10","Saint Phillipe Camp","Castle Ruins"]
