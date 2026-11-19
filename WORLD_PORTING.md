@@ -90,9 +90,7 @@ The GUI creates `<mission name>.<world class>/` within the destination folder
 It copies **every file and subdirectory** from the selected template, replaces
 `worldConfig.sqs` with the generated world-specific version, and relocates the
 editor-placed units, markers, and triggers in `mission.sqm` relative to the
-new base point. It preserves their original relative offsets and stored
-elevations. Open the generated mission in the game editor to check unit height
-and terrain suitability before playing, especially on steep terrain.
+new base point. XY offsets are preserved. **Editor unit elevation (m)** is an optional full-mission setting; enter the target setup elevation only if known (blank keeps the template elevation). The override applies only to playable units; marker and trigger heights are preserved. The config parser cannot determine the terrain height from `class Names`. Open and save the generated mission in CWA's editor to verify ground placement, especially on steep terrain.
 
 **Existing mission folders are never overwritten**; choose a different mission
 name if the destination name already exists. A partially failed copy is cleaned
@@ -159,3 +157,10 @@ If you deliberately want the old editor-marker workflow, set `worldUseEditorLoca
 ## One world data file
 
 The values normally changed while porting are kept in `worldConfig.sqs`: location names and coordinates, the setup/base point, and the usable world bounds. The rest of the mission keeps its functional editor markers and gameplay scripts unchanged wherever possible.
+
+
+## Runtime staging and validation
+
+The mission loads `worldPlacementFunctions.sqf` after `worldConfig.sqs`. Runtime friendly vehicles, allied infantry, and enemy reserves use relative setup offsets that are fitted within the usable world rectangle. Extraction, logistics and air/ground reinforcement approaches use bounded target-relative positions; aircraft headings follow the selected approach rather than assuming Everon's direction. Existing off-map departure paths are redirected inward when needed.
+
+Choose a flat inland setup point with clear space for the staging layout (roughly 640 × 850 m on ordinary maps). Rectangular bounds do not establish whether a location is on land, flat, or free of obstacles. In the editor and in hosted/dedicated multiplayer, check truck/APC/heli/foot insertions, Radio Alpha/Bravo/Charlie, enemy attack air and both reinforcement types on the target terrain. FRevive is unchanged by this pass; its water recovery and spectator behavior still require separate validation.

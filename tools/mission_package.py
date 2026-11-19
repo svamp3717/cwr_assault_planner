@@ -5,6 +5,7 @@ The world suffix on a mission directory must be the game's world class name.
 
 from __future__ import annotations
 
+import math
 import re
 import shutil
 import tempfile
@@ -47,11 +48,14 @@ def _old_base(config: str) -> tuple[float, float]:
 
 
 def relocate_mission_sqm(
-    sqm: str, old_x: float, old_y: float, base_x: float, base_y: float
+    sqm: str, old_x: float, old_y: float, base_x: float, base_y: float,
+    *, base_elevation: float | None = None,
 ) -> str:
     """Shift placed editor entities and markers together to the new base point.
 
-    CWA's position[] layout is {east, elevation, north}. Elevation is preserved.
+    CWA's position[] layout is {east, elevation, north}. By default elevation
+    is preserved. An explicit target elevation sets the playable setup slots
+    only; it never alters marker/trigger or unrelated object heights.
     """
     dx, dy = base_x - old_x, base_y - old_y
 
@@ -66,6 +70,22 @@ def relocate_mission_sqm(
     updated, count = _POSITION.subn(shift, sqm)
     if count == 0:
         raise ValueError("Mission template mission.sqm has no editor positions to relocate.")
+    if base_elevation is not None:
+        if not math.isfinite(base_elevation):
+            raise ValueError("Editor unit elevation must be finite.")
+        parts = re.split(r"(?=\bclass\s+Item\d+\b)", updated)
+        changed = 0
+        for i, part in enumerate(parts):
+            if not re.search(r'\bplayer\s*=\s*"[^"]+"', part):
+                continue
+            def set_elevation(match: re.Match[str]) -> str:
+                return (f"{match.group(1)}{match.group(2)}{match.group(3)}"
+                        f"{base_elevation:.6f}{match.group(5)}{match.group(6)}{match.group(7)}")
+            parts[i], n = _POSITION.subn(set_elevation, part, count=1)
+            changed += n
+        if not changed:
+            raise ValueError("No playable editor units found for the elevation override.")
+        updated = "".join(parts)
     return updated
 
 
@@ -77,6 +97,7 @@ def create_mission_package(
     world_config: str,
     base_x: float,
     base_y: float,
+    *, base_elevation: float | None = None,
 ) -> Path:
     """Copy all files and create <name>.<world> with a generated worldConfig.sqs.
 
@@ -123,7 +144,8 @@ def create_mission_package(
 
     old_x, old_y = _old_base(config_path.read_text(encoding="utf-8-sig"))
     sqm = sqm_path.read_text(encoding="utf-8-sig")
-    new_sqm = relocate_mission_sqm(sqm, old_x, old_y, base_x, base_y)
+    new_sqm = relocate_mission_sqm(sqm, old_x, old_y, base_x, base_y,
+                                    base_elevation=base_elevation)
 
     staging_root = Path(tempfile.mkdtemp(prefix=".mission-build-", dir=output_parent))
     try:

@@ -49,6 +49,7 @@ class WorldConfigGui(tk.Tk):
 
         self.base_x = tk.StringVar()
         self.base_y = tk.StringVar()
+        self.base_elevation = tk.StringVar()
         self.min_x = tk.StringVar()
         self.min_y = tk.StringVar()
         self.max_x = tk.StringVar()
@@ -237,17 +238,20 @@ class WorldConfigGui(tk.Tk):
         ttk.Entry(output, textvariable=self.mission_name).grid(
             row=3, column=1, sticky="ew", pady=(8, 0)
         )
+        ttk.Label(output, text="Editor unit elevation (m):").grid(row=4, column=0, sticky="w", pady=(8, 0))
+        ttk.Entry(output, textvariable=self.base_elevation, width=14).grid(row=4, column=1, sticky="w", pady=(8, 0))
+        ttk.Label(output, text="Optional; blank preserves template height.").grid(row=4, column=2, sticky="w", pady=(8, 0))
         ttk.Label(
             output,
             text="Full mission mode creates <mission name>.<world class> inside the destination folder.",
-        ).grid(row=4, column=0, columnspan=3, sticky="w", pady=(8, 0))
+        ).grid(row=5, column=0, columnspan=3, sticky="w", pady=(8, 0))
         ttk.Label(output, textvariable=self.output_hint).grid(
-            row=5, column=0, columnspan=2, sticky="w", pady=(8, 0)
+            row=6, column=0, columnspan=2, sticky="w", pady=(8, 0)
         )
         self.generate_button = ttk.Button(
             output, text="Generate worldConfig.sqs", command=self.generate
         )
-        self.generate_button.grid(row=5, column=2, padx=(8, 0), pady=(8, 0))
+        self.generate_button.grid(row=6, column=2, padx=(8, 0), pady=(8, 0))
 
         status = ttk.Label(root, textvariable=self.status, anchor="w")
         status.grid(row=6, column=0, columnspan=3, sticky="ew", pady=(10, 0))
@@ -567,6 +571,9 @@ class WorldConfigGui(tk.Tk):
                 template_text = self.mission_template.get().strip()
                 if not template_text:
                     raise ValueError("Choose an existing mission template folder.")
+                base_elevation = None
+                if self.base_elevation.get().strip():
+                    base_elevation = self._float_from_var(self.base_elevation, "Editor unit elevation")
                 target = pack.create_mission_package(
                     template_dir=Path(template_text),
                     output_parent=output_dir,
@@ -575,6 +582,7 @@ class WorldConfigGui(tk.Tk):
                     world_config=output,
                     base_x=base_x,
                     base_y=base_y,
+                    base_elevation=base_elevation,
                 )
                 self.status.set(f"Created mission folder: {target}")
                 messagebox.showinfo(

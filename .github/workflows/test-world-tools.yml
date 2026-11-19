@@ -7,9 +7,7 @@ on:
     paths:
       - "tools/**"
       - "tests/**"
-      - "cwr_assault_planner_v203.eden/randomize.sqs"
-      - "cwr_assault_planner_v203.eden/worldConfig.sqs"
-      - "cwr_assault_planner_v203.eden/init.sqs"
+      - "cwr_assault_planner_v203.eden/**"
 
 jobs:
   unittest:

@@ -87,5 +87,58 @@ class WorldPlacementTests(unittest.TestCase):
         self.assertIn("worldStageMaxDistance - 400", script)
 
 
+    def test_runtime_bounds_initialized_from_world(self):
+        mission = ROOT / "cwr_assault_planner_v203.eden"
+        randomize = (mission / "randomize.sqs").read_text()
+        for axis in ("X", "Y"):
+            self.assertIn(f"_safeMin{axis} = worldMin{axis} + _insertionEdge", randomize)
+            self.assertIn(f"_safeMax{axis} = worldMax{axis} - _insertionEdge", randomize)
+        init = (mission / "init.sqs").read_text()
+        self.assertLess(init.index("@ worldConfigReady"), init.index('call preProcessFile "worldPlacementFunctions.sqf"'))
+        helpers = (mission / "worldPlacementFunctions.sqf").read_text()
+        for symbol in ("worldClampPosition", "worldOffsetPosition", "worldSetupPosition"):
+            self.assertIn(symbol + " = {", helpers)
+
+    def test_runtime_spawn_sites_use_world_config(self):
+        mission = ROOT / "cwr_assault_planner_v203.eden"
+        for name in (
+            "friendlyRuntimeAlliedInfantry.sqs", "friendlyRuntimeInsertionVehicles.sqs",
+            "friendlyRuntimeSupport.sqs", "enemyRuntimeReserves.sqs",
+        ):
+            with self.subTest(name=name):
+                script = (mission / name).read_text()
+                self.assertIn("call worldSetupPosition", script)
+                self.assertNotRegex(script, r"\b1[012]\d{3}\s*,\s*1[012]\d{3}\b")
+        for name in (
+            "mpServerExtraction.sqs", "mpServerLogisticsDrop.sqs",
+            "enemyAirReinforcement.sqs", "enemyReinforcements.sqs",
+            "enemyAirSupport.sqs", "callAirSupport.sqs",
+        ):
+            with self.subTest(name=name):
+                script = (mission / name).read_text()
+                self.assertIn("call worldOffsetPosition", script)
+                self.assertNotRegex(script, r"\b(?:10880|11520|12200|12700)\b")
+        for name in ("init.sqs", "cobraMarker.sqs", "radioAirControl.sqs"):
+            script = (mission / name).read_text()
+            self.assertNotRegex(script, r"\b(?:10875|11700)\b")
+
+    def test_setup_footprint_and_offset_bounds(self):
+        # Reference arithmetic for rectangular/small/nonzero-origin terrains.
+        # The actual SQF still requires an engine playtest.
+        for min_x, min_y, max_x, max_y in ((0, 0, 4000, 4000),
+                                          (250, 500, 2000, 3000),
+                                          (-500, 100, -200, 500),
+                                          (250, 250, 12550, 12550)):
+            scale = min(1, (max_x - min_x) / 640, (max_y - min_y) / 850)
+            for bx, by in ((min_x, min_y), (max_x, max_y)):
+                ax = min(max(bx, min_x + 150 * scale), max_x - 490 * scale)
+                ay = min(max(by, min_y + 810 * scale), max_y - 40 * scale)
+                for dx, dy in ((-125, -420), (450, -420), (245, -780), (333, -690)):
+                    self.assertGreaterEqual(ax + dx * scale, min_x - 1e-8)
+                    self.assertLessEqual(ax + dx * scale, max_x + 1e-8)
+                    self.assertGreaterEqual(ay + dy * scale, min_y - 1e-8)
+                    self.assertLessEqual(ay + dy * scale, max_y + 1e-8)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -20,8 +20,8 @@ class MissionPackageTests(unittest.TestCase):
             'worldName = "Everon"\nmissionBaseX = 10875\nmissionBaseY = 11700\n', encoding="utf-8"
         )
         (self.template / "mission.sqm").write_text(
-            'position[]={10865.000000,25.000000,11696.000000};\n'
-            'position[]={10875.000000,0.000000,11700.000000};\n', encoding="utf-8"
+            'class Item0 {position[]={10865.000000,25.000000,11696.000000}; player="PLAYER COMMANDER";};\n'
+            'class Item1 {position[]={10875.000000,0.000000,11700.000000}; name="marker";};\n', encoding="utf-8"
         )
         (self.template / "randomize.sqs").write_text(
             "\n".join((
@@ -45,6 +45,22 @@ class MissionPackageTests(unittest.TestCase):
         sqm = (result / "mission.sqm").read_text()
         self.assertIn("position[]={4990.000000,25.000000,5996.000000}", sqm)
         self.assertIn("position[]={5000.000000,0.000000,6000.000000}", sqm)
+
+    def test_explicit_editor_elevation_only_changes_playable_units(self):
+        result = create_mission_package(
+            self.template, self.destination, "Malden", "", "test", 5000, 6000,
+            base_elevation=180.5,
+        )
+        sqm = (result / "mission.sqm").read_text()
+        self.assertIn("position[]={4990.000000,180.500000,5996.000000}", sqm)
+        self.assertIn("position[]={5000.000000,0.000000,6000.000000}", sqm)
+
+    def test_zero_elevation_and_invalid_elevation(self):
+        sqm = (self.template / "mission.sqm").read_text()
+        updated = relocate_mission_sqm(sqm, 10875, 11700, 5000, 6000, base_elevation=0)
+        self.assertIn("position[]={4990.000000,0.000000,5996.000000}", updated)
+        with self.assertRaises(ValueError):
+            relocate_mission_sqm(sqm, 10875, 11700, 5000, 6000, base_elevation=float("nan"))
 
     def test_existing_target_is_untouched(self):
         existing = self.destination / "assault_planner.Malden"
