@@ -11,7 +11,7 @@ MISSION = Path(__file__).resolve().parents[1] / "cwr_assault_planner_v203.eden"
 
 
 def source(path):
-    return (MISSION / path).read_text(encoding="utf-8-sig")
+    return (MISSION / path).read_text(encoding="latin-1")
 
 
 class FRevivePortabilityTests(unittest.TestCase):
