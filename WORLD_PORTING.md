@@ -163,4 +163,15 @@ The values normally changed while porting are kept in `worldConfig.sqs`: locatio
 
 The mission loads `worldPlacementFunctions.sqf` after `worldConfig.sqs`. Runtime friendly vehicles, allied infantry, and enemy reserves use relative setup offsets that are fitted within the usable world rectangle. Extraction, logistics and air/ground reinforcement approaches use bounded target-relative positions; aircraft headings follow the selected approach rather than assuming Everon's direction. Existing off-map departure paths are redirected inward when needed.
 
-Choose a flat inland setup point with clear space for the staging layout (roughly 640 × 850 m on ordinary maps). Rectangular bounds do not establish whether a location is on land, flat, or free of obstacles. In the editor and in hosted/dedicated multiplayer, check truck/APC/heli/foot insertions, Radio Alpha/Bravo/Charlie, enemy attack air and both reinforcement types on the target terrain. FRevive is unchanged by this pass; its water recovery and spectator behavior still require separate validation.
+Choose a flat inland setup point with clear space for the staging layout (roughly 640 × 850 m on ordinary maps). Rectangular bounds do not establish whether a location is on land, flat, or free of obstacles. In the editor and in hosted/dedicated multiplayer, check truck/APC/heli/foot insertions, Radio Alpha/Bravo/Charlie, enemy attack air and both reinforcement types on the target terrain. FRevive now defaults to stationary corpses (no automatic shore relocation); see below.
+
+
+## FRevive body-position regression
+
+Automatic water recovery is disabled by default via `FREVIVE_ANTI_WATER = false` in `mpFReviveBootstrap.sqs`. This does not disable revival, spectator mode, the 300-second timeout or the airborne replacement-unit protocol. A corpse can still settle or fall naturally; FRevive tracks that real position.
+
+For a terrain that has been playtested, change the setting to `true` to enable optional shore recovery. The worker checks the corpse's actual ASL height, checks a private local sea-plane probe, searches at most 600 m within the configured bounds, never falls back to another soldier, and aborts if the body moves, locality changes or revival begins. If no shore is found, the body stays where it is. The probe-based test is conservative and still requires testing in CWA, especially on custom terrain.
+
+Test on a hosted and a dedicated server: die on land, wait without reviving, observe from another player, revive at the corpse, die on a slope, die in a vehicle, and incapacitate two players at once. Verify the owner and remote clients agree on revival and that the spectator follows the actual body. With the optional setting enabled, additionally test drowned units near shore and far offshore. A player whose corpse is out of reach can still time out normally when recovery is disabled.
+
+The hidden replacement continues to be held above 7000 m until revival; do not change that altitude encoding without also updating the mission's multiplayer and extraction checks.
