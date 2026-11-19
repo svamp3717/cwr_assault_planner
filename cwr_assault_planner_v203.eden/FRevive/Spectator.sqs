@@ -275,7 +275,7 @@ DeathCam cameraEffect ["terminate","front"]
 camDestroy DeathCam
 (DeathCamArray select _player_id_spect) switchCamera "INTERNAL"
 
-_cam = "camera" camCreate [0,0,0]
+_cam = "camera" camCreate (getPos _bodyPLR)
 _cam camCommand "manual on"
 _cam camCommand "inertia off"
 

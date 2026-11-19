@@ -63,7 +63,7 @@ _suspended_seen = []
 ? Format ["%1",FREVIVE_KILL_CAM] == "scalar bool array string 0xfcffffef"         : FREVIVE_KILL_CAM=true
 
 ; Build table with info for each unit
-{_unit=call _x; if (_unit==player) then {_player_id=_i}; if (FREVIVE_USE_FLAGS) then {call Format ["FREVIVE_FLAG%1 setFlagOwner %2",_i,_x]}; if (FREVIVE_SOUND) then {_sound_plr set [count _sound_plr, "logic" camCreate [0,0,0]]}; _sound set [count _sound, 0]; _timeout set [count _timeout, -1]; _limit set [count _limit, FREVIVE_LIMIT]; _remind set [count _remind, 0]; _last_dir set [count _last_dir, 0]; _magazines set [count _magazines, []]; _weapons set [count _weapons, []]; _name_list set [count _name_list, name _unit]; _lastMSG set [count _lastMSG, objNull]; _location set [count _location,[0,0,0]]; _sides set [count _sides, side _unit]; _reviving set [count _reviving, -1]; _timing set [count _timing,0]; _status set [count _status,-1]; _bodies set [count _bodies, _unit]; _i=_i+1} forEach _var_name_list
+{_unit=call _x; if (_unit==player) then {_player_id=_i}; if (FREVIVE_USE_FLAGS) then {call Format ["FREVIVE_FLAG%1 setFlagOwner %2",_i,_x]}; if (FREVIVE_SOUND) then {_sound_plr set [count _sound_plr, "logic" camCreate [0,0,0]]}; _sound set [count _sound, 0]; _timeout set [count _timeout, -1]; _limit set [count _limit, FREVIVE_LIMIT]; _remind set [count _remind, 0]; _last_dir set [count _last_dir, 0]; _magazines set [count _magazines, []]; _weapons set [count _weapons, []]; _name_list set [count _name_list, name _unit]; _lastMSG set [count _lastMSG, objNull]; _location set [count _location,[0,0,0]]; _sides set [count _sides, side _unit]; _reviving set [count _reviving, -1]; _timing set [count _timing,0]; _status set [count _status,-1]; _suspended_seen set [count _suspended_seen,false]; _bodies set [count _bodies, _unit]; _i=_i+1} forEach _var_name_list
 
 ; Dedicated servers have no local player. Use the first tracked unit for side/friendly calculations.
 ? _player_id < 0 : _player_id = 0
@@ -103,8 +103,10 @@ goto "Start"
 _status  set [_i, -3]
 _timeout set [_i, time]
 _suspended_seen set [_i, false]
+; Refresh from the actual corpse before publishing its marker, on every client.
+? !isNull _body : _location set [_i, getPosASL _body]; _last_dir set [_i, getDir _body]
 
-? [_sides select _player_id,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY : if (FREVIVE_DROP_PARTICLE) then {[_bodies, _i, _limit] exec "FRevive\Particle.sqs"}; ("FREVIVE_"+_name) setMarkerPos (getPos _body); if (_new_body != player) then {[0, _i] call FREVIVE_FNC_CHAT}
+? [_sides select _player_id,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY : if (FREVIVE_DROP_PARTICLE) then {[_bodies, _i, _limit] exec "FRevive\Particle.sqs"}; ("FREVIVE_"+_name) setMarkerPos (_location select _i); if (_new_body != player) then {[0, _i] call FREVIVE_FNC_CHAT}
 
 ? !local _new_body    : goto "NextUnit"
 ? _new_body != player : doStop _new_body; _new_body stop true
@@ -112,8 +114,6 @@ _suspended_seen set [_i, false]
 removeAllWeapons _new_body
 _new_body setCaptive true
 _new_body playMove "Lying"
-; Capture any settling/ejection before the replacement is first suspended.
-? !isNull _body : _location set [_i, getPosASL _body]; _last_dir set [_i, getDir _body]
 _new_body call FREVIVE_SUSPEND
 _suspended_seen set [_i, true]
 ? FREVIVE_TAKE_GUNS_BEFORE : [_body, _new_body, _weapons select _i, _magazines select _i] exec "FRevive\TakeWeapons.sqs"
@@ -140,11 +140,11 @@ goto "NextUnit"
 if (local _new_body) then {_new_body call FREVIVE_SUSPEND} else {_reviving set [_i, _new_body call FREVIVE_HEIGHT_TO_ID]}
 
 ; If original body was removed then create new object
-? isNull _body : _body="body" camCreate [0,0,0]; _bodies set [_i, _body]; _body setDir ((_last_dir select _i)+93.6); _body setPosASL (_location select _i); _fixX=(getpos _body select 0) - ((_location select _i) select 0); _fixY=(getpos _body select 1) - ((_location select _i) select 1); _body setPosASL [(((_location select _i) select 0) - _fixX), (((_location select _i) select 1) - _fixY), 0.15+((_location select _i) select 2)+0.15]; if ((getPos _body select 2) < -0.1) then {_body setPos [(((_location select _i) select 0) - _fixX), (((_location select _i) select 1) - _fixY), 0]}
+? isNull _body : _savedPos = _location select _i; _body="body" camCreate [(_savedPos select 0), (_savedPos select 1), 0]; _bodies set [_i, _body]; _body setDir ((_last_dir select _i)+93.6); _body setPosASL _savedPos
 
 ; If original body was moved (e.g. settled after death), follow its actual position.
 ; Never launch a second water-recovery job from the movement watcher.
-? !isNull _body && [getPosASL _body,_location select _i] call MATH_DIST3D > 1 : _k=-1; while {_k=_k+1; _k<count _status} do {if ((_status select _k) == _i) then {_status set [_k,-1]}}; _timing set [_i, 0]; _reviving set [_i, -1]; _new_body call FREVIVE_SUSPEND; if (local _new_body) then {_new_body setDammage 0}; if ([_sides select _player_id,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY) then {("FREVIVE_"+_name) setMarkerPos (getPos _body)}; _last_dir set [_i, getDir _body]; _location set [_i, getPosASL _body]; if (FREVIVE_SOUND) then {(_sound_plr select _i) setPosASL (getPosASL _body)}; goto "NextUnit"
+? !isNull _body && typeOf _body != "body" && [getPosASL _body,_location select _i] call MATH_DIST3D > 1 : _k=-1; while {_k=_k+1; _k<count _status} do {if ((_status select _k) == _i) then {_status set [_k,-1]}}; _timing set [_i, 0]; _reviving set [_i, -1]; _new_body call FREVIVE_SUSPEND; if (local _new_body) then {_new_body setDammage 0}; if ([_sides select _player_id,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY) then {("FREVIVE_"+_name) setMarkerPos (getPos _body)}; _last_dir set [_i, getDir _body]; _location set [_i, getPosASL _body]; if (FREVIVE_SOUND) then {(_sound_plr select _i) setPosASL (getPosASL _body)}; goto "NextUnit"
 
 ; If wasn't revived in time
 ? FREVIVE_TIMEOUT >= 0 : if (time>(_timeout select _i)+FREVIVE_TIMEOUT && (_new_body call FREVIVE_HEIGHT_TO_ID)==-1) then {_limit set [_i, 0]; ("FREVIVE_"+_name) setMarkerPos [0,0]; goto "NextUnit"}
