@@ -7,18 +7,23 @@ _delay = 45 + random 75
 ? missionEnded : exit
 ? debugMode : debugLog "ERA DEBUG ENEMY AIR: transport reinforcement helicopter inbound"
 ? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: transport reinforcement helicopter inbound"
-reinfAirX = reinfTargetX + 340
-reinfAirY = reinfTargetY + 260
-reinfDropX = reinfTargetX + 220
-reinfDropY = reinfTargetY + 180
-reinfSpawnX = reinfTargetX + 1350
-reinfSpawnY = reinfTargetY + 1050
+_airPos = [reinfTargetX, reinfTargetY, 340, 260, 0, 30] call worldOffsetPosition
+reinfAirX = _airPos select 0
+reinfAirY = _airPos select 1
+_dropPos = [reinfTargetX, reinfTargetY, 220, 180, 0, 30] call worldOffsetPosition
+reinfDropX = _dropPos select 0
+reinfDropY = _dropPos select 1
+_spawnPos = [reinfTargetX, reinfTargetY, 1350, 1050, 0, 30] call worldOffsetPosition
+reinfSpawnX = _spawnPos select 0
+reinfSpawnY = _spawnPos select 1
+_heading = (reinfDropX - reinfSpawnX) atan2 (reinfDropY - reinfSpawnY)
+_exitPos = [reinfDropX, reinfDropY, 1980, 2020, 0, 20] call worldOffsetPosition
 ? alive enemyTransportHeli : deleteVehicle enemyTransportHeli
 ~0.1
 enemyTransportHeli = "Mi17" createVehicle [reinfSpawnX, reinfSpawnY, 0]
 enemyAirReinfMarkerActive = true
 ? debugMode : [] exec "debugAirReinforcementMarker.sqs"
-enemyTransportHeli setDir 225
+enemyTransportHeli setDir _heading
 enemyTransportHeli setDammage 0
 enemyTransportHeli setFuel 1
 enemyTransportHeli setVelocity [0,0,0]
@@ -66,7 +71,7 @@ driver enemyTransportHeli action ["ENGINE ON", enemyTransportHeli]
 ~8
 enemyTransportHeli flyInHeight 150
 enemyTransportHeli setPos [reinfSpawnX, reinfSpawnY, 170]
-enemyTransportHeli setVelocity [-35,-28,6]
+enemyTransportHeli setVelocity [45 * sin _heading,45 * cos _heading,6]
 driver enemyTransportHeli doMove [reinfAirX, reinfAirY, 0]
 (group (driver enemyTransportHeli)) move [reinfAirX, reinfAirY, 0]
 ~22
@@ -75,7 +80,7 @@ driver enemyTransportHeli doMove [reinfAirX, reinfAirY, 0]
 ? alive enemyTransportHeli : enemyTransportHeli setPos [reinfDropX, reinfDropY, 145]
 ? alive enemyTransportHeli : enemyTransportHeli flyInHeight 135
 ? alive enemyTransportHeli : enemyTransportHeli setFuel 1
-? alive enemyTransportHeli : enemyTransportHeli setVelocity [-35,-28,0]
+? alive enemyTransportHeli : enemyTransportHeli setVelocity [45 * sin _heading,45 * cos _heading,0]
 ? debugMode : debugLog "ERA DEBUG ENEMY AIR: reinforcement helicopter at drop point"
 ? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: reinforcement helicopter at drop point"
 ~3
@@ -98,7 +103,7 @@ enemyReinforcementPending = false
 publicVariable "enemyReinforcementPending"
 ? debugMode : debugLog "ERA DEBUG ENEMY AIR: paradrop reinforcements jumped"
 ? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: paradrop reinforcements jumped"
-[enemyTransportHeli, reinfDropX, reinfDropY, reinfTargetX + 2200, reinfTargetY + 2200] exec "enemyAirReinforcementExit.sqs"
+[enemyTransportHeli, reinfDropX, reinfDropY, _exitPos select 0, _exitPos select 1] exec "enemyAirReinforcementExit.sqs"
 ~35
 ? alive w4rAirR1 : unassignVehicle w4rAirR1
 ? alive w4rAirR2 : unassignVehicle w4rAirR2
@@ -143,7 +148,7 @@ enemyReinforcementPending = false
 publicVariable "enemyReinforcementPending"
 ? debugMode : debugLog "ERA DEBUG ENEMY AIR: paradrop reinforcements jumped"
 ? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG ENEMY AIR: paradrop reinforcements jumped"
-[enemyTransportHeli, reinfDropX, reinfDropY, reinfTargetX + 2200, reinfTargetY + 2200] exec "enemyAirReinforcementExit.sqs"
+[enemyTransportHeli, reinfDropX, reinfDropY, _exitPos select 0, _exitPos select 1] exec "enemyAirReinforcementExit.sqs"
 ~35
 ? alive w4eAirR1 : unassignVehicle w4eAirR1
 ? alive w4eAirR2 : unassignVehicle w4eAirR2

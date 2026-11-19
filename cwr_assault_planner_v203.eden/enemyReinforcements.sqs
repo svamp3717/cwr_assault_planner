@@ -6,10 +6,13 @@ _delay = 55 + random 70
 ? missionEnded : exit
 ? debugMode : debugLog "ERA DEBUG REINFORCEMENT: enemy ground reinforcement convoy inbound"
 ? debugMode && debugConsole && !(isNull player) : player globalChat "ERA DEBUG REINFORCEMENT: enemy ground reinforcement convoy inbound"
-reinfGroundX = reinfTargetX + 900
-reinfGroundY = reinfTargetY - 850
-reinfGroundDstX = reinfTargetX + 170
-reinfGroundDstY = reinfTargetY - 140
+_spawnPos = [reinfTargetX, reinfTargetY, 900, -850, 0, 30] call worldOffsetPosition
+reinfGroundX = _spawnPos select 0
+reinfGroundY = _spawnPos select 1
+_dstPos = [reinfTargetX, reinfTargetY, 170, -140, 0, 30] call worldOffsetPosition
+reinfGroundDstX = _dstPos select 0
+reinfGroundDstY = _dstPos select 1
+_heading = (reinfGroundDstX - reinfGroundX) atan2 (reinfGroundDstY - reinfGroundY)
 _groundTransportClass = "WW4EXT_BTR80"
 _groundTransportPool = enemyEastReinforcementTransportPool
 ? enemyResistance : _groundTransportPool = enemyResistanceReinforcementTransportPool
@@ -23,7 +26,7 @@ goto "resGround"
 #eastGround
 enemyGroundReinfVeh = _groundTransportClass createVehicle [reinfGroundX, reinfGroundY, 0]
 ? debugMode : [] exec "debugGroundReinforcementMarker.sqs"
-enemyGroundReinfVeh setDir 315
+enemyGroundReinfVeh setDir _heading
 enemyGroundReinfVeh setFuel 1
 ? alive w4eAirR1 : w4eAirR1 moveInDriver enemyGroundReinfVeh
 ? alive w4eAirR2 : w4eAirR2 moveInGunner enemyGroundReinfVeh
@@ -111,7 +114,7 @@ exit
 #resGround
 enemyGroundReinfVeh = _groundTransportClass createVehicle [reinfGroundX, reinfGroundY, 0]
 ? debugMode : [] exec "debugGroundReinforcementMarker.sqs"
-enemyGroundReinfVeh setDir 315
+enemyGroundReinfVeh setDir _heading
 enemyGroundReinfVeh setFuel 1
 ? alive w4rAirR1 : w4rAirR1 moveInDriver enemyGroundReinfVeh
 ? alive w4rAirR2 : w4rAirR2 moveInGunner enemyGroundReinfVeh

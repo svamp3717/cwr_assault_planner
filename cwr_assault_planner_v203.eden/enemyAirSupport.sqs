@@ -25,11 +25,13 @@ goto "afterCrew"
 enemyAttackVehicle action ["ENGINEON", enemyAttackVehicle]
 ? alive (driver enemyAttackVehicle) : driver enemyAttackVehicle action ["ENGINE ON", enemyAttackVehicle]
 ~8
-enemyAttackVehicle setDir 315
+_attackPos = [primaryX, primaryY, 1250, -1250, 150, 20] call worldOffsetPosition
+_heading = (primaryX - (_attackPos select 0)) atan2 (primaryY - (_attackPos select 1))
+enemyAttackVehicle setDir _heading
 enemyAttackVehicle flyInHeight 120
-enemyAttackVehicle setPos [primaryX + 1250, primaryY - 1250, 150]
-? enemyAttackClass == "WW4EXT_Su25_CW" : enemyAttackVehicle setVelocity [-45,45,0]
-? enemyAttackClass != "WW4EXT_Su25_CW" : enemyAttackVehicle setVelocity [-30,30,6]
+enemyAttackVehicle setPos _attackPos
+? enemyAttackClass == "WW4EXT_Su25_CW" : enemyAttackVehicle setVelocity [64 * sin _heading,64 * cos _heading,0]
+? enemyAttackClass != "WW4EXT_Su25_CW" : enemyAttackVehicle setVelocity [42 * sin _heading,42 * cos _heading,6]
 driver enemyAttackVehicle doMove [primaryX, primaryY, 0]
 ~20
 #attackLoop
@@ -84,10 +86,10 @@ mpEnemyAirTarget = plr
 ? alive mpEnemyAirTarget && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doTarget mpEnemyAirTarget
 ? alive mpEnemyAirTarget && alive (gunner enemyAttackVehicle) : gunner enemyAttackVehicle doFire mpEnemyAirTarget
 ? alive mpEnemyAirTarget && alive (driver enemyAttackVehicle) : driver enemyAttackVehicle doFire mpEnemyAirTarget
-driver enemyAttackVehicle doMove [primaryX + 350, primaryY + 50, 0]
+driver enemyAttackVehicle doMove ([primaryX + 350, primaryY + 50, 0, 20] call worldClampPosition)
 ~25
 ? missionEnded : exit
-driver enemyAttackVehicle doMove [primaryX - 350, primaryY - 50, 0]
+driver enemyAttackVehicle doMove ([primaryX - 350, primaryY - 50, 0, 20] call worldClampPosition)
 ~25
 ? missionEnded : exit
 driver enemyAttackVehicle doMove [lzX, lzY, 0]

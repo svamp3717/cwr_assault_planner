@@ -34,11 +34,13 @@ goto "heliLzChosen"
 lzX = heliLz3X
 lzY = heliLz3Y
 #heliLzChosen
-_startX = landStageX + 350
-_startY = landStageY + 220
+_startPos = [landStageX, landStageY, 350, 220, 0, 150] call worldOffsetPosition
+_startX = _startPos select 0
+_startY = _startPos select 1
 ; v126: lengthen the helicopter approach so transports begin farther from the objective area.
-_airX = lzX - 1250
-_airY = lzY - 950
+_airPos = [lzX, lzY, -1250, -950, 0, 200] call worldOffsetPosition
+_airX = _airPos select 0
+_airY = _airPos select 1
 "lz_marker" setMarkerPos [lzX, lzY, 0]
 "lz_marker" setMarkerText format ["LZ: helicopter open field / %1", supportAirLabel]
 #afterHeliOpenLZ
