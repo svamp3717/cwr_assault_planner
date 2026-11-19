@@ -5,6 +5,12 @@ _lzX = logisticsDropRequestX + 35
 _lzY = logisticsDropRequestY + 25
 _dropX = logisticsDropRequestX + 12
 _dropY = logisticsDropRequestY - 10
+_lzPos = [_lzX, _lzY, 0, 20] call worldClampPosition
+_lzX = _lzPos select 0
+_lzY = _lzPos select 1
+_dropPos = [_dropX, _dropY, 0, 10] call worldClampPosition
+_dropX = _dropPos select 0
+_dropY = _dropPos select 1
 logisticsDropMarkerStatus = 1
 logisticsDropMarkerX = _lzX
 logisticsDropMarkerY = _lzY
@@ -17,14 +23,12 @@ logisticsDropPad = "HeliHEmpty" createVehicle [_lzX, _lzY, 0]
 
 ; Everon's old offshore ground staging point could resolve on water or shoreline terrain.
 ; Build a clamped airborne approach point instead, so the Chinook never touches the spawn terrain.
-_stageX = _lzX + 1600
-? _stageX > 12200 : _stageX = _lzX - 1600
-? _stageX < 600 : _stageX = 600
-_stageY = _lzY - 1600
-? _stageY < 600 : _stageY = _lzY + 1600
-? _stageY > 12200 : _stageY = 12200
+_stagePos = [_lzX, _lzY, worldAirStageOffset, 0 - worldAirStageOffset, 320, 20] call worldOffsetPosition
+_stageX = _stagePos select 0
+_stageY = _stagePos select 1
+_heading = (_lzX - _stageX) atan2 (_lzY - _stageY)
 friendlyRuntimeVehicleSpawnComplete = false
-["Ch47D", _stageX, _stageY, 320, 315, true] exec "friendlyRuntimeVehicleOne.sqs"
+["Ch47D", _stageX, _stageY, 320, _heading, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 logisticsDropHeli = friendlyRuntimeVehicleSpawned
 publicVariable "logisticsDropHeli"
@@ -33,7 +37,7 @@ publicVariable "logisticsDropHeli"
 logisticsDropHeli setDammage 0
 logisticsDropHeli setFuel 1
 logisticsDropHeli setPos [_stageX, _stageY, 320]
-logisticsDropHeli setDir 315
+logisticsDropHeli setDir _heading
 logisticsDropHeli setVelocity [0,0,25]
 logisticsDropHeli flyInHeight 150
 logisticsDropHeli engineOn true
@@ -112,10 +116,9 @@ mpHQMessageId = mpHQMessageId + 1
 publicVariable "mpHQMessage"
 publicVariable "mpHQMessageId"
 ? debugMode : debugLog format ["ERA DEBUG LOGISTICS: delivered %1 at %2,%3; remaining=%4", logisticsDropRequestLabel, _dropX, _dropY, logisticsDropsRemaining]
-_departX = _lzX + 1800
-? _departX > 12700 : _departX = _lzX - 1800
-_departY = _lzY + 1800
-? _departY > 12700 : _departY = _lzY - 1800
+_departPos = [_lzX, _lzY, 1800, 1800, 0, 20] call worldOffsetPosition
+_departX = _departPos select 0
+_departY = _departPos select 1
 [logisticsDropHeli, _lzX, _lzY, _departX, _departY] exec "friendlyHelicopterDeparture.sqs"
 ~20
 ? !(isNull logisticsDropPad) : deleteVehicle logisticsDropPad
@@ -135,10 +138,9 @@ mpHQMessage = "HQ: Logistics aircraft reached the drop zone, but the requested a
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "mpHQMessage"
 publicVariable "mpHQMessageId"
-_departX = _lzX + 1800
-? _departX > 12700 : _departX = _lzX - 1800
-_departY = _lzY + 1800
-? _departY > 12700 : _departY = _lzY - 1800
+_departPos = [_lzX, _lzY, 1800, 1800, 0, 20] call worldOffsetPosition
+_departX = _departPos select 0
+_departY = _departPos select 1
 [logisticsDropHeli, _lzX, _lzY, _departX, _departY] exec "friendlyHelicopterDeparture.sqs"
 ~20
 ? !(isNull logisticsDropPad) : deleteVehicle logisticsDropPad

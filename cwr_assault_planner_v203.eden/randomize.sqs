@@ -269,6 +269,7 @@ _cy = missionLocationYs select _i
 ? worldUseEditorLocationMarkers : _candidatePos = getMarkerPos (missionLocationMarkers select _i)
 ? worldUseEditorLocationMarkers : _cx = _candidatePos select 0
 ? worldUseEditorLocationMarkers : _cy = _candidatePos select 1
+? _cx < worldMinX || _cx > worldMaxX || _cy < worldMinY || _cy > worldMaxY : goto "stageNext"
 _dx = _cx - primaryX
 _dy = _cy - primaryY
 _primaryDistance = (_dx * _dx) + (_dy * _dy)
@@ -315,6 +316,9 @@ truckStageY = missionLocationYs select _stageBestIndex
 ? worldUseEditorLocationMarkers : _stagePos = getMarkerPos _stageMarker
 ? worldUseEditorLocationMarkers : truckStageX = _stagePos select 0
 ? worldUseEditorLocationMarkers : truckStageY = _stagePos select 1
+_stagePos = [truckStageX, truckStageY, 0, worldObjectiveEdgeMargin * 0.5] call worldClampPosition
+truckStageX = _stagePos select 0
+truckStageY = _stagePos select 1
 _toObjectiveX = primaryX - truckStageX
 _toObjectiveY = primaryY - truckStageY
 truckStageDir = _toObjectiveX atan2 _toObjectiveY
@@ -373,10 +377,10 @@ airStageY = airStageY + approachOffsetY
 ; Keep generated positions off the extreme map edge wherever possible.
 ; Half the objective margin provides extra breathing room for insertions.
 _insertionEdge = worldObjectiveEdgeMargin * 0.5
-_safeMinX = _safeMinX + _insertionEdge
-_safeMaxX = _safeMaxX - _insertionEdge
-_safeMinY = _safeMinY + _insertionEdge
-_safeMaxY = _safeMaxY - _insertionEdge
+_safeMinX = worldMinX + _insertionEdge
+_safeMaxX = worldMaxX - _insertionEdge
+_safeMinY = worldMinY + _insertionEdge
+_safeMaxY = worldMaxY - _insertionEdge
 ? primaryLzX < _safeMinX : primaryLzX = _safeMinX
 ? primaryLzX > _safeMaxX : primaryLzX = _safeMaxX
 ? primaryLzY < _safeMinY : primaryLzY = _safeMinY

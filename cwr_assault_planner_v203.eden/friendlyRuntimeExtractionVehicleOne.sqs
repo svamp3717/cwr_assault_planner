@@ -14,7 +14,7 @@ _veh setDammage 0
 _veh setVelocity [0,0,0]
 ~0.2
 _grp = createGroup west
-_crewPos = [_x + 6, _y + 6, 0]
+_crewPos = [_x + 6, _y + 6, 0, 5] call worldClampPosition
 "WW4_WARPilot" createUnit [_crewPos, _grp, ""]
 ~0.1
 _units = units _grp
