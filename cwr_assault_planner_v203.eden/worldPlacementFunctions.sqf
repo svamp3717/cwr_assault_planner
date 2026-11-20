@@ -54,3 +54,82 @@ worldSetupPosition = {
     if (_ay > worldMaxY - 40 * _scale) then {_ay = worldMaxY - 40 * _scale};
     [_ax + _dx * _scale,_ay + _dy * _scale,_z]
 };
+
+// [x,y,z] -> position lies inside the configured playable rectangle.
+worldPositionInBounds = {
+    ((_this select 0) >= worldMinX) && ((_this select 0) <= worldMaxX) && ((_this select 1) >= worldMinY) && ((_this select 1) <= worldMaxY)
+};
+
+// Town index -> numeric world position; legacy markers only when requested.
+// Missing legacy markers often return [0,0,0]; retain the numeric position.
+worldTownPosition = {
+    private ["_i","_pos","_legacy"];
+    _i = _this;
+    _pos = [missionTownXs select _i, missionTownYs select _i, 0];
+    if (worldUseEditorLocationMarkers) then {
+        _legacy = getMarkerPos (missionTownMarkers select _i);
+        if (((_legacy select 0) != 0 || (_legacy select 1) != 0) && (_legacy call worldPositionInBounds)) then {_pos = _legacy};
+    };
+    _pos
+};
+
+// Use actual coordinates rather than labels: names need not be unique.
+worldPositionIsObjective = {
+    private ["_pos","_xs","_ys","_i","_dx","_dy","_blocked"];
+    _pos = _this;
+    _xs = [primaryX,secondaryX,thirdX,fourthX,fifthX];
+    _ys = [primaryY,secondaryY,thirdY,fourthY,fifthY];
+    _i = 0;
+    _blocked = false;
+    {
+        if (_i < townCount) then {
+            _dx = (_pos select 0) - _x;
+            _dy = (_pos select 1) - (_ys select _i);
+            if ((_dx * _dx + _dy * _dy) <= 1) then {_blocked = true};
+        };
+        _i = _i + 1;
+    } forEach _xs;
+    _blocked
+};
+
+// [sourceX,sourceY,minDistance,maxDistance,excludedIndices] -> nearest
+// non-objective town index, or -1. Negative maxDistance means unlimited.
+worldNearestTown = {
+    private ["_sx","_sy","_min","_max","_excluded","_i","_pos","_dx","_dy","_dist","_best","_bestDist"];
+    _sx = _this select 0;
+    _sy = _this select 1;
+    _min = _this select 2;
+    _max = _this select 3;
+    _excluded = _this select 4;
+    _i = 0;
+    _best = -1;
+    _bestDist = 0;
+    {
+        if (!(_i in _excluded)) then {
+            _pos = _i call worldTownPosition;
+            if ((_pos call worldPositionInBounds) && !(_pos call worldPositionIsObjective)) then {
+                _dx = (_pos select 0) - _sx;
+                _dy = (_pos select 1) - _sy;
+                _dist = _dx * _dx + _dy * _dy;
+                if (_dist >= _min * _min && (_max < 0 || _dist <= _max * _max) && (_best < 0 || _dist < _bestDist)) then {
+                    _best = _i;
+                    _bestDist = _dist;
+                };
+            };
+        };
+        _i = _i + 1;
+    } forEach missionTownLabels;
+    _best
+};
+
+// [sourceX,sourceY] -> safe settlement index. Prefer 500 m, but allow
+// 250 m on small terrains. Never select an objective or the map origin
+// simply because no valid settlement exists.
+worldFindEscortTown = {
+    private ["_sx","_sy","_index"];
+    _sx = _this select 0;
+    _sy = _this select 1;
+    _index = [_sx,_sy,500,-1,[]] call worldNearestTown;
+    if (_index < 0) then {_index = [_sx,_sy,250,-1,[]] call worldNearestTown};
+    _index
+};

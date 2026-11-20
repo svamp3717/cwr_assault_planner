@@ -5,49 +5,11 @@ _slot = _this select 0
 _sourceX = _this select 1
 _sourceY = _this select 2
 _sourceLabel = _this select 3
-_markers = missionTownMarkers
-_labels = missionTownLabels
-_count = count _markers
-_index = 0
-_requireDistance = true
-_bestDistance = 999999999
-_bestLabel = ""
-_bestPos = [_sourceX,_sourceY,0]
-#scan
-? _index >= _count : goto "scanDone"
-_marker = _markers select _index
-_label = _labels select _index
-_blocked = false
-? _label == townLabel : _blocked = true
-? townCount >= 2 && _label == secondaryLabel : _blocked = true
-? townCount >= 3 && _label == thirdLabel : _blocked = true
-? townCount >= 4 && _label == fourthLabel : _blocked = true
-? townCount >= 5 && _label == fifthLabel : _blocked = true
-_pos = getMarkerPos _marker
-_dx = (_pos select 0) - _sourceX
-_dy = (_pos select 1) - _sourceY
-_distance = (_dx * _dx) + (_dy * _dy)
-_farEnough = _distance >= 250000
-? _blocked : goto "nextTown"
-? _requireDistance && !(_farEnough) : goto "nextTown"
-? _distance >= _bestDistance : goto "nextTown"
-_bestDistance = _distance
-_bestLabel = _label
-_bestPos = _pos
-#nextTown
-_index = _index + 1
-goto "scan"
-#scanDone
-? _bestLabel != "" : goto "destinationFound"
-? !(_requireDistance) : goto "fallback"
-_requireDistance = false
-_index = 0
-_bestDistance = 999999999
-goto "scan"
-#fallback
-_bestLabel = missionTownLabels select 0
-_bestPos = getMarkerPos (missionTownMarkers select 0)
-#destinationFound
+_townIndex = [_sourceX,_sourceY] call worldFindEscortTown
+? _townIndex < 0 : goto "noSafeTown"
+_bestLabel = missionTownLabels select _townIndex
+_bestPos = _townIndex call worldTownPosition
+
 _destX = _bestPos select 0
 _destY = _bestPos select 1
 ? _slot == 1 : objectivePilotDestinationX1 = _destX; objectivePilotDestinationY1 = _destY; objectivePilotDestinationLabel1 = _bestLabel
@@ -66,9 +28,11 @@ _markerName setMarkerColor "ColorGreen"
 _markerName setMarkerText format ["PILOT SAFE SETTLEMENT: %1",_bestLabel]
 ; The pilot is captive until a player accepts responsibility for moving him. This prevents the search party from executing him before players arrive.
 _pilotGroup = createGroup west
-_pilotPos = [_sourceX + 45,_sourceY + 30,0]
+_pilotPos = [_sourceX,_sourceY,45,30,0,5] call worldOffsetPosition
 assetClassWestPilot createUnit [_pilotPos,_pilotGroup,""]
+~0.2
 _pilotUnits = units _pilotGroup
+? count _pilotUnits < 1 : goto "pilotSpawnFailed"
 _pilot = _pilotUnits select ((count _pilotUnits) - 1)
 _pilot setSkill 0.45
 _pilot setDammage 0.25
@@ -94,10 +58,13 @@ _radius = 80 + random 35
 _spawnX = _sourceX + ((sin _angle) * _radius)
 _spawnY = _sourceY + ((cos _angle) * _radius)
 _class = _searchClasses select _j
-_class createUnit [[_spawnX,_spawnY,0],_searchGroup,""]
+_searchPos = [_spawnX,_spawnY,0,5] call worldClampPosition
+_class createUnit [_searchPos,_searchGroup,""]
 _searchUnits = units _searchGroup
+? count _searchUnits < 1 : goto "searchNext"
 _searchUnit = _searchUnits select ((count _searchUnits) - 1)
 _searchUnit setSkill enemyAISkill
+#searchNext
 _j = _j + 1
 goto "searchSpawn"
 #searchReady
@@ -106,8 +73,24 @@ _searchGroup setCombatMode "YELLOW"
 _searchGroup setSpeedMode "LIMITED"
 _searchGroup setFormation "WEDGE"
 _searchLeader = leader _searchGroup
-[_searchLeader,_sourceX,_sourceY,120] exec "enemyInfantryPatrol.sqs"
+? !(isNull _searchLeader) : [_searchLeader,_sourceX,_sourceY,120] exec "enemyInfantryPatrol.sqs"
 [_slot] exec "downedPilotMonitor.sqs"
 ? debugMode : debugLog format ["ERA DEBUG PILOT: objective=%1 source=%2 destination=%3",_slot,_sourceLabel,_bestLabel]
+downedPilotObjectiveReady = true
+exit
+
+#pilotSpawnFailed
+_markerName setMarkerType "Empty"
+? debugMode : debugLog "ERA DEBUG PILOT: pilot creation failed; using Clear Area"
+goto "noSafeTown"
+
+#noSafeTown
+; Caller converts this task to Clear Area instead of creating an impossible rescue.
+? _slot == 1 : objectiveType1 = 0
+? _slot == 2 : objectiveType2 = 0
+? _slot == 3 : objectiveType3 = 0
+? _slot == 4 : objectiveType4 = 0
+? _slot == 5 : objectiveType5 = 0
+? debugMode : debugLog format ["ERA DEBUG ESCORT: objective=%1 no usable escort destination or unit; switched to Clear Area",_slot]
 downedPilotObjectiveReady = true
 exit

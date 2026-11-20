@@ -254,6 +254,7 @@ goto "objective1Finished"
 civilianRescueDestinationReady = false
 [1,primaryX,primaryY,townLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType1 == 0 : objectiveTypeLabel1 = "Clear Area"; objectiveTaskText1 = format ["Clear hostile forces from the area around %1.", townLabel]; goto "objective1Finished"
 objectiveTargetLabel1 = "town civilians"
 objectiveTypeLabel1 = "Save Civilians"
 objectiveTaskText1 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", townLabel, objectiveRescueDestinationLabel1]
@@ -262,6 +263,7 @@ goto "objective1Finished"
 stealVehicleSiteReady = false
 [1,primaryX + 110,primaryY + 55,180,primaryX,primaryY,townLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType1 == 0 : objectiveTypeLabel1 = "Clear Area"; objectiveTaskText1 = format ["Clear hostile forces from the area around %1.", townLabel]; goto "objective1Finished"
 objectiveTargetLabel1 = objectiveStealVehicleLabel1
 objectiveTypeLabel1 = "Steal a Vehicle"
 objectiveTaskText1 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel1, townLabel, objectiveStealDestinationLabel1]
@@ -270,6 +272,7 @@ goto "objective1Finished"
 downedPilotObjectiveReady = false
 [1,primaryX,primaryY,townLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType1 == 0 : objectiveTypeLabel1 = "Clear Area"; objectiveTaskText1 = format ["Clear hostile forces from the area around %1.", townLabel]; goto "objective1Finished"
 objectiveTargetLabel1 = "downed friendly pilot"
 objectiveTypeLabel1 = "Recover Downed Pilot"
 objectiveTaskText1 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", townLabel, objectivePilotDestinationLabel1]
@@ -355,6 +358,7 @@ goto "objective2Finished"
 civilianRescueDestinationReady = false
 [2,secondaryX,secondaryY,secondaryLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType2 == 0 : objectiveTypeLabel2 = "Clear Area"; objectiveTaskText2 = format ["Clear hostile forces from the area around %1.", secondaryLabel]; goto "objective2Finished"
 objectiveTargetLabel2 = "town civilians"
 objectiveTypeLabel2 = "Save Civilians"
 objectiveTaskText2 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", secondaryLabel, objectiveRescueDestinationLabel2]
@@ -363,6 +367,7 @@ goto "objective2Finished"
 stealVehicleSiteReady = false
 [2,secondaryX + -110,secondaryY + -55,0,secondaryX,secondaryY,secondaryLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType2 == 0 : objectiveTypeLabel2 = "Clear Area"; objectiveTaskText2 = format ["Clear hostile forces from the area around %1.", secondaryLabel]; goto "objective2Finished"
 objectiveTargetLabel2 = objectiveStealVehicleLabel2
 objectiveTypeLabel2 = "Steal a Vehicle"
 objectiveTaskText2 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel2, secondaryLabel, objectiveStealDestinationLabel2]
@@ -371,6 +376,7 @@ goto "objective2Finished"
 downedPilotObjectiveReady = false
 [2,secondaryX,secondaryY,secondaryLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType2 == 0 : objectiveTypeLabel2 = "Clear Area"; objectiveTaskText2 = format ["Clear hostile forces from the area around %1.", secondaryLabel]; goto "objective2Finished"
 objectiveTargetLabel2 = "downed friendly pilot"
 objectiveTypeLabel2 = "Recover Downed Pilot"
 objectiveTaskText2 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", secondaryLabel, objectivePilotDestinationLabel2]
@@ -456,6 +462,7 @@ goto "objective3Finished"
 civilianRescueDestinationReady = false
 [3,thirdX,thirdY,thirdLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType3 == 0 : objectiveTypeLabel3 = "Clear Area"; objectiveTaskText3 = format ["Clear hostile forces from the area around %1.", thirdLabel]; goto "objective3Finished"
 objectiveTargetLabel3 = "town civilians"
 objectiveTypeLabel3 = "Save Civilians"
 objectiveTaskText3 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", thirdLabel, objectiveRescueDestinationLabel3]
@@ -464,6 +471,7 @@ goto "objective3Finished"
 stealVehicleSiteReady = false
 [3,thirdX + 100,thirdY + -70,90,thirdX,thirdY,thirdLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType3 == 0 : objectiveTypeLabel3 = "Clear Area"; objectiveTaskText3 = format ["Clear hostile forces from the area around %1.", thirdLabel]; goto "objective3Finished"
 objectiveTargetLabel3 = objectiveStealVehicleLabel3
 objectiveTypeLabel3 = "Steal a Vehicle"
 objectiveTaskText3 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel3, thirdLabel, objectiveStealDestinationLabel3]
@@ -472,6 +480,7 @@ goto "objective3Finished"
 downedPilotObjectiveReady = false
 [3,thirdX,thirdY,thirdLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType3 == 0 : objectiveTypeLabel3 = "Clear Area"; objectiveTaskText3 = format ["Clear hostile forces from the area around %1.", thirdLabel]; goto "objective3Finished"
 objectiveTargetLabel3 = "downed friendly pilot"
 objectiveTypeLabel3 = "Recover Downed Pilot"
 objectiveTaskText3 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", thirdLabel, objectivePilotDestinationLabel3]
@@ -557,6 +566,7 @@ goto "objective4Finished"
 civilianRescueDestinationReady = false
 [4,fourthX,fourthY,fourthLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType4 == 0 : objectiveTypeLabel4 = "Clear Area"; objectiveTaskText4 = format ["Clear hostile forces from the area around %1.", fourthLabel]; goto "objective4Finished"
 objectiveTargetLabel4 = "town civilians"
 objectiveTypeLabel4 = "Save Civilians"
 objectiveTaskText4 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", fourthLabel, objectiveRescueDestinationLabel4]
@@ -565,6 +575,7 @@ goto "objective4Finished"
 stealVehicleSiteReady = false
 [4,fourthX + -100,fourthY + 70,270,fourthX,fourthY,fourthLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType4 == 0 : objectiveTypeLabel4 = "Clear Area"; objectiveTaskText4 = format ["Clear hostile forces from the area around %1.", fourthLabel]; goto "objective4Finished"
 objectiveTargetLabel4 = objectiveStealVehicleLabel4
 objectiveTypeLabel4 = "Steal a Vehicle"
 objectiveTaskText4 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel4, fourthLabel, objectiveStealDestinationLabel4]
@@ -573,6 +584,7 @@ goto "objective4Finished"
 downedPilotObjectiveReady = false
 [4,fourthX,fourthY,fourthLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType4 == 0 : objectiveTypeLabel4 = "Clear Area"; objectiveTaskText4 = format ["Clear hostile forces from the area around %1.", fourthLabel]; goto "objective4Finished"
 objectiveTargetLabel4 = "downed friendly pilot"
 objectiveTypeLabel4 = "Recover Downed Pilot"
 objectiveTaskText4 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", fourthLabel, objectivePilotDestinationLabel4]
@@ -658,6 +670,7 @@ goto "objective5Finished"
 civilianRescueDestinationReady = false
 [5,fifthX,fifthY,fifthLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType5 == 0 : objectiveTypeLabel5 = "Clear Area"; objectiveTaskText5 = format ["Clear hostile forces from the area around %1.", fifthLabel]; goto "objective5Finished"
 objectiveTargetLabel5 = "town civilians"
 objectiveTypeLabel5 = "Save Civilians"
 objectiveTaskText5 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", fifthLabel, objectiveRescueDestinationLabel5]
@@ -666,6 +679,7 @@ goto "objective5Finished"
 stealVehicleSiteReady = false
 [5,fifthX + 110,fifthY + -30,180,fifthX,fifthY,fifthLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType5 == 0 : objectiveTypeLabel5 = "Clear Area"; objectiveTaskText5 = format ["Clear hostile forces from the area around %1.", fifthLabel]; goto "objective5Finished"
 objectiveTargetLabel5 = objectiveStealVehicleLabel5
 objectiveTypeLabel5 = "Steal a Vehicle"
 objectiveTaskText5 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel5, fifthLabel, objectiveStealDestinationLabel5]
@@ -674,6 +688,7 @@ goto "objective5Finished"
 downedPilotObjectiveReady = false
 [5,fifthX,fifthY,fifthLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType5 == 0 : objectiveTypeLabel5 = "Clear Area"; objectiveTaskText5 = format ["Clear hostile forces from the area around %1.", fifthLabel]; goto "objective5Finished"
 objectiveTargetLabel5 = "downed friendly pilot"
 objectiveTypeLabel5 = "Recover Downed Pilot"
 objectiveTaskText5 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", fifthLabel, objectivePilotDestinationLabel5]

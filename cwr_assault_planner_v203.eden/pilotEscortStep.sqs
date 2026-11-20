@@ -9,7 +9,8 @@ _leaderVehicle = vehicle _leader
 _pilotVehicle = vehicle _pilot
 ? _leaderVehicle == _leader : goto "leaderOnFoot"
 ? _pilotVehicle == _leaderVehicle : exit
-? _pilotVehicle != _pilot : exit
+? _pilotVehicle != _pilot : goto "leaveOldVehicle"
+? (getPos _leaderVehicle select 2) > 5 : exit
 _pp = getPos _pilot
 _vp = getPos _leaderVehicle
 _dx = (_pp select 0) - (_vp select 0)
@@ -21,6 +22,9 @@ _pilot doMove _vp
 exit
 #leaderOnFoot
 ? _pilotVehicle == _pilot : goto "followFoot"
+#leaveOldVehicle
+? (getPos _pilotVehicle select 2) > 5 : exit
+unassignVehicle _pilot
 _pilot action ["EJECT",_pilotVehicle]
 exit
 #followFoot

@@ -38,6 +38,7 @@ _u = _units select 0
 ? isNull _u : goto "afterUnit1"
 ? !(alive _u) : goto "afterUnit1"
 _aliveCount = _aliveCount + 1
+? (getPos (vehicle _u) select 2) > 5 : goto "afterUnit1"
 _p = getPos _u
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
@@ -54,6 +55,7 @@ _u = _units select 1
 ? isNull _u : goto "afterUnit2"
 ? !(alive _u) : goto "afterUnit2"
 _aliveCount = _aliveCount + 1
+? (getPos (vehicle _u) select 2) > 5 : goto "afterUnit2"
 _p = getPos _u
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
@@ -70,6 +72,7 @@ _u = _units select 2
 ? isNull _u : goto "afterUnit3"
 ? !(alive _u) : goto "afterUnit3"
 _aliveCount = _aliveCount + 1
+? (getPos (vehicle _u) select 2) > 5 : goto "afterUnit3"
 _p = getPos _u
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
@@ -86,6 +89,7 @@ _u = _units select 3
 ? isNull _u : goto "afterUnit4"
 ? !(alive _u) : goto "afterUnit4"
 _aliveCount = _aliveCount + 1
+? (getPos (vehicle _u) select 2) > 5 : goto "afterUnit4"
 _p = getPos _u
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
@@ -103,11 +107,11 @@ deleteVehicle _u
 ? _slot == 5 : objectiveRescueCount5 = _safeCount
 ? _aliveCount < _required : goto "failed"
 ? _safeCount < _required : goto "loop"
-? _slot == 1 : objectiveRescueReady1 = true; s1Civ1Following=false; s1Civ2Following=false; s1Civ3Following=false; s1Civ4Following=false
-? _slot == 2 : objectiveRescueReady2 = true; s2Civ1Following=false; s2Civ2Following=false; s2Civ3Following=false; s2Civ4Following=false
-? _slot == 3 : objectiveRescueReady3 = true; s3Civ1Following=false; s3Civ2Following=false; s3Civ3Following=false; s3Civ4Following=false
-? _slot == 4 : objectiveRescueReady4 = true; s4Civ1Following=false; s4Civ2Following=false; s4Civ3Following=false; s4Civ4Following=false
-? _slot == 5 : objectiveRescueReady5 = true; s5Civ1Following=false; s5Civ2Following=false; s5Civ3Following=false; s5Civ4Following=false
+? _slot == 1 : objectiveRescueReady1 = true; s1Civ1Following=false; s1Civ2Following=false; s1Civ3Following=false; s1Civ4Following=false; publicVariable "objectiveRescueReady1"
+? _slot == 2 : objectiveRescueReady2 = true; s2Civ1Following=false; s2Civ2Following=false; s2Civ3Following=false; s2Civ4Following=false; publicVariable "objectiveRescueReady2"
+? _slot == 3 : objectiveRescueReady3 = true; s3Civ1Following=false; s3Civ2Following=false; s3Civ3Following=false; s3Civ4Following=false; publicVariable "objectiveRescueReady3"
+? _slot == 4 : objectiveRescueReady4 = true; s4Civ1Following=false; s4Civ2Following=false; s4Civ3Following=false; s4Civ4Following=false; publicVariable "objectiveRescueReady4"
+? _slot == 5 : objectiveRescueReady5 = true; s5Civ1Following=false; s5Civ2Following=false; s5Civ3Following=false; s5Civ4Following=false; publicVariable "objectiveRescueReady5"
 _marker = "rescue_marker_1"
 ? _slot == 2 : _marker = "rescue_marker_2"
 ? _slot == 3 : _marker = "rescue_marker_3"
@@ -119,11 +123,11 @@ _marker setMarkerText format ["CIVILIANS SECURED: %1/4", _safeCount]
 exit
 
 #failed
-? _slot == 1 : objectiveRescueFailed1 = true
-? _slot == 2 : objectiveRescueFailed2 = true
-? _slot == 3 : objectiveRescueFailed3 = true
-? _slot == 4 : objectiveRescueFailed4 = true
-? _slot == 5 : objectiveRescueFailed5 = true
+? _slot == 1 : objectiveRescueFailed1 = true; publicVariable "objectiveRescueFailed1"
+? _slot == 2 : objectiveRescueFailed2 = true; publicVariable "objectiveRescueFailed2"
+? _slot == 3 : objectiveRescueFailed3 = true; publicVariable "objectiveRescueFailed3"
+? _slot == 4 : objectiveRescueFailed4 = true; publicVariable "objectiveRescueFailed4"
+? _slot == 5 : objectiveRescueFailed5 = true; publicVariable "objectiveRescueFailed5"
 _marker = "rescue_marker_1"
 ? _slot == 2 : _marker = "rescue_marker_2"
 ? _slot == 3 : _marker = "rescue_marker_3"

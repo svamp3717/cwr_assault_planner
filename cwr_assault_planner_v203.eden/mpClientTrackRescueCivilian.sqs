@@ -8,7 +8,12 @@ _unit = objNull
 _marker setMarkerType "Empty"
 #waitUnit
 ~1
-? missionEnded : exit
+? missionEnded : goto "hide"
+? _slot == 1 && objective1Done : goto "hide"
+? _slot == 2 && objective2Done : goto "hide"
+? _slot == 3 && objective3Done : goto "hide"
+? _slot == 4 && objective4Done : goto "hide"
+? _slot == 5 && objective5Done : goto "hide"
 ? _slot == 1 && _number == 1 : _unit = s1Civ1
 ? _slot == 1 && _number == 2 : _unit = s1Civ2
 ? _slot == 1 && _number == 3 : _unit = s1Civ3
@@ -42,9 +47,7 @@ _failed = false
 ? missionEnded || _done || _failed : goto "hide"
 ? !(alive _unit) : goto "hide"
 _p = getPos _unit
-_dx = (_p select 0) - _destX
-_dy = (_p select 1) - _destY
-? ((_dx * _dx) + (_dy * _dy)) <= 19600 : goto "hide"
+; Wait for authoritative deletion/completion, not merely horizontal proximity.
 _marker setMarkerPos [_p select 0,_p select 1]
 _marker setMarkerType "Flag"
 _marker setMarkerColor "ColorGreen"
