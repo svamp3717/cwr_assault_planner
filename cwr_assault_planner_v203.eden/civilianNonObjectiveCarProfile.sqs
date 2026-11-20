@@ -6,7 +6,7 @@ _townY = _this select 1
 _label = _this select 2
 _townPos = [_townX,_townY,0]
 ? !(_townPos call worldPositionInBounds) : goto "civilianProfileDone"
-? _townPos call worldPositionIsObjective : goto "civilianProfileDone"
+? (_townPos call worldPositionIsObjective) : goto "civilianProfileDone"
 
 ; v203 custom: weighted civilian vehicle variety. Ordinary cars remain the majority.
 ; Vanilla CWA specialty vehicle class names are used alongside WW4 EXT civilian cars.

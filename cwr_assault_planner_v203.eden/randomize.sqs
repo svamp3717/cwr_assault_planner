@@ -110,11 +110,9 @@ _eligibleIndices = []
 _i = 0
 #objectiveEligibleScan
 ? _i >= _townTotal : goto "objectiveEligibleDone"
-_cx = missionLocationXs select _i
-_cy = missionLocationYs select _i
-? worldUseEditorLocationMarkers : _candidatePos = getMarkerPos (missionLocationMarkers select _i)
-? worldUseEditorLocationMarkers : _cx = _candidatePos select 0
-? worldUseEditorLocationMarkers : _cy = _candidatePos select 1
+_candidatePos = _i call worldTownPosition
+_cx = _candidatePos select 0
+_cy = _candidatePos select 1
 ? _cx < (worldMinX + _objEdge) : goto "objectiveEligibleNext"
 ? _cx > (worldMaxX - _objEdge) : goto "objectiveEligibleNext"
 ? _cy < (worldMinY + _objEdge) : goto "objectiveEligibleNext"
@@ -144,11 +142,9 @@ _primaryIndex = _eligibleIndices select (_roll - (_roll % 1))
 primaryTownIndex = _primaryIndex
 _primaryMarker = missionLocationMarkers select _primaryIndex
 townLabel = missionLocationLabels select _primaryIndex
-primaryX = missionLocationXs select _primaryIndex
-primaryY = missionLocationYs select _primaryIndex
-? worldUseEditorLocationMarkers : _townPos = getMarkerPos _primaryMarker
-? worldUseEditorLocationMarkers : primaryX = _townPos select 0
-? worldUseEditorLocationMarkers : primaryY = _townPos select 1
+_townPos = _primaryIndex call worldTownPosition
+primaryX = _townPos select 0
+primaryY = _townPos select 1
 
 _nearIndex1 = -1
 _nearIndex2 = -1
@@ -163,11 +159,9 @@ _candidateAt = 0
 ? _candidateAt >= count _eligibleIndices : goto "clusterScanDone"
 _i = _eligibleIndices select _candidateAt
 ? _i == _primaryIndex : goto "clusterNext"
-_candidateX = missionLocationXs select _i
-_candidateY = missionLocationYs select _i
-? worldUseEditorLocationMarkers : _candidatePos = getMarkerPos (missionLocationMarkers select _i)
-? worldUseEditorLocationMarkers : _candidateX = _candidatePos select 0
-? worldUseEditorLocationMarkers : _candidateY = _candidatePos select 1
+_candidatePos = _i call worldTownPosition
+_candidateX = _candidatePos select 0
+_candidateY = _candidatePos select 1
 _dx = _candidateX - primaryX
 _dy = _candidateY - primaryY
 _distance = (_dx * _dx) + (_dy * _dy)
@@ -214,32 +208,24 @@ goto "clusterScan"
 
 _secondaryMarker = missionLocationMarkers select _nearIndex1
 secondaryLabel = missionLocationLabels select _nearIndex1
-secondaryX = missionLocationXs select _nearIndex1
-secondaryY = missionLocationYs select _nearIndex1
-? worldUseEditorLocationMarkers : _townPos = getMarkerPos _secondaryMarker
-? worldUseEditorLocationMarkers : secondaryX = _townPos select 0
-? worldUseEditorLocationMarkers : secondaryY = _townPos select 1
+_townPos = _nearIndex1 call worldTownPosition
+secondaryX = _townPos select 0
+secondaryY = _townPos select 1
 _thirdMarker = missionLocationMarkers select _nearIndex2
 thirdLabel = missionLocationLabels select _nearIndex2
-thirdX = missionLocationXs select _nearIndex2
-thirdY = missionLocationYs select _nearIndex2
-? worldUseEditorLocationMarkers : _townPos = getMarkerPos _thirdMarker
-? worldUseEditorLocationMarkers : thirdX = _townPos select 0
-? worldUseEditorLocationMarkers : thirdY = _townPos select 1
+_townPos = _nearIndex2 call worldTownPosition
+thirdX = _townPos select 0
+thirdY = _townPos select 1
 _fourthMarker = missionLocationMarkers select _nearIndex3
 fourthLabel = missionLocationLabels select _nearIndex3
-fourthX = missionLocationXs select _nearIndex3
-fourthY = missionLocationYs select _nearIndex3
-? worldUseEditorLocationMarkers : _townPos = getMarkerPos _fourthMarker
-? worldUseEditorLocationMarkers : fourthX = _townPos select 0
-? worldUseEditorLocationMarkers : fourthY = _townPos select 1
+_townPos = _nearIndex3 call worldTownPosition
+fourthX = _townPos select 0
+fourthY = _townPos select 1
 _fifthMarker = missionLocationMarkers select _nearIndex4
 fifthLabel = missionLocationLabels select _nearIndex4
-fifthX = missionLocationXs select _nearIndex4
-fifthY = missionLocationYs select _nearIndex4
-? worldUseEditorLocationMarkers : _townPos = getMarkerPos _fifthMarker
-? worldUseEditorLocationMarkers : fifthX = _townPos select 0
-? worldUseEditorLocationMarkers : fifthY = _townPos select 1
+_townPos = _nearIndex4 call worldTownPosition
+fifthX = _townPos select 0
+fifthY = _townPos select 1
 
 ; Pick a non-objective town for insertion. Distances are squared metres here.
 ; Respect both requested staging clearance and preferred maximum distance to
@@ -264,11 +250,9 @@ _used = false
 ? townCount >= 4 && _i == _nearIndex3 : _used = true
 ? townCount >= 5 && _i == _nearIndex4 : _used = true
 ? _used : goto "stageNext"
-_cx = missionLocationXs select _i
-_cy = missionLocationYs select _i
-? worldUseEditorLocationMarkers : _candidatePos = getMarkerPos (missionLocationMarkers select _i)
-? worldUseEditorLocationMarkers : _cx = _candidatePos select 0
-? worldUseEditorLocationMarkers : _cy = _candidatePos select 1
+_candidatePos = _i call worldTownPosition
+_cx = _candidatePos select 0
+_cy = _candidatePos select 1
 ? _cx < worldMinX || _cx > worldMaxX || _cy < worldMinY || _cy > worldMaxY : goto "stageNext"
 _dx = _cx - primaryX
 _dy = _cy - primaryY
@@ -311,11 +295,9 @@ goto "stageScan"
 ? _stageBestIndex < 0 : _stageBestIndex = (_primaryIndex + 5) % _townTotal
 _stageMarker = missionLocationMarkers select _stageBestIndex
 truckStageTownLabel = missionLocationLabels select _stageBestIndex
-truckStageX = missionLocationXs select _stageBestIndex
-truckStageY = missionLocationYs select _stageBestIndex
-? worldUseEditorLocationMarkers : _stagePos = getMarkerPos _stageMarker
-? worldUseEditorLocationMarkers : truckStageX = _stagePos select 0
-? worldUseEditorLocationMarkers : truckStageY = _stagePos select 1
+_stagePos = _stageBestIndex call worldTownPosition
+truckStageX = _stagePos select 0
+truckStageY = _stagePos select 1
 _stagePos = [truckStageX, truckStageY, 0, worldObjectiveEdgeMargin * 0.5] call worldClampPosition
 truckStageX = _stagePos select 0
 truckStageY = _stagePos select 1

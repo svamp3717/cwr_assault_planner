@@ -8,22 +8,27 @@
 ? objective1Done && !(mpObjective1Announced) : "1" objStatus "DONE"
 ? objective1Done && !(mpObjective1Announced) && objectiveType1 == 9 : "pilot_marker_1" setMarkerText "DOWNED PILOT SECURED"
 ? objective1Done && !(mpObjective1Announced) && objectiveType1 == 7 : "rescue_marker_1" setMarkerText "CIVILIANS SECURED"
+? objective1Done && !(mpObjective1Announced) && objectiveType1 == 8 : "steal_marker_1" setMarkerText "VEHICLE SECURED"
 ? objective1Done && !(mpObjective1Announced) : mpObjective1Announced = true
 ? objective2Done && !(mpObjective2Announced) : "2" objStatus "DONE"
 ? objective2Done && !(mpObjective2Announced) && objectiveType2 == 9 : "pilot_marker_2" setMarkerText "DOWNED PILOT SECURED"
 ? objective2Done && !(mpObjective2Announced) && objectiveType2 == 7 : "rescue_marker_2" setMarkerText "CIVILIANS SECURED"
+? objective2Done && !(mpObjective2Announced) && objectiveType2 == 8 : "steal_marker_2" setMarkerText "VEHICLE SECURED"
 ? objective2Done && !(mpObjective2Announced) : mpObjective2Announced = true
 ? objective3Done && !(mpObjective3Announced) : "3" objStatus "DONE"
 ? objective3Done && !(mpObjective3Announced) && objectiveType3 == 9 : "pilot_marker_3" setMarkerText "DOWNED PILOT SECURED"
 ? objective3Done && !(mpObjective3Announced) && objectiveType3 == 7 : "rescue_marker_3" setMarkerText "CIVILIANS SECURED"
+? objective3Done && !(mpObjective3Announced) && objectiveType3 == 8 : "steal_marker_3" setMarkerText "VEHICLE SECURED"
 ? objective3Done && !(mpObjective3Announced) : mpObjective3Announced = true
 ? objective4Done && !(mpObjective4Announced) : "4" objStatus "DONE"
 ? objective4Done && !(mpObjective4Announced) && objectiveType4 == 9 : "pilot_marker_4" setMarkerText "DOWNED PILOT SECURED"
 ? objective4Done && !(mpObjective4Announced) && objectiveType4 == 7 : "rescue_marker_4" setMarkerText "CIVILIANS SECURED"
+? objective4Done && !(mpObjective4Announced) && objectiveType4 == 8 : "steal_marker_4" setMarkerText "VEHICLE SECURED"
 ? objective4Done && !(mpObjective4Announced) : mpObjective4Announced = true
 ? objective5Done && !(mpObjective5Announced) : "5" objStatus "DONE"
 ? objective5Done && !(mpObjective5Announced) && objectiveType5 == 9 : "pilot_marker_5" setMarkerText "DOWNED PILOT SECURED"
 ? objective5Done && !(mpObjective5Announced) && objectiveType5 == 7 : "rescue_marker_5" setMarkerText "CIVILIANS SECURED"
+? objective5Done && !(mpObjective5Announced) && objectiveType5 == 8 : "steal_marker_5" setMarkerText "VEHICLE SECURED"
 ? objective5Done && !(mpObjective5Announced) : mpObjective5Announced = true
 _radioLeader = leader (group player)
 ? player == _radioLeader && !(airSupportUsed) && !(airSupportUnavailableReported) : 1 setRadioMsg "Request Air Support"
@@ -45,6 +50,21 @@ mpLastReinforcementMessageId = mpReinforcementMessageId
 player sideChat mpReinforcementMessage
 goto "afterReinforcementMessage"
 #missionEnd
+? objectivePilotFailed1 : "pilot_marker_1" setMarkerColor "ColorRed"; "pilot_marker_1" setMarkerText "DOWNED PILOT KILLED"
+? objectiveRescueFailed1 : "rescue_marker_1" setMarkerColor "ColorRed"; "rescue_marker_1" setMarkerText "CIVILIAN RESCUE FAILED"
+? objectiveStealFailed1 : "steal_marker_1" setMarkerColor "ColorRed"; "steal_marker_1" setMarkerText "VEHICLE RECOVERY FAILED"
+? objectivePilotFailed2 : "pilot_marker_2" setMarkerColor "ColorRed"; "pilot_marker_2" setMarkerText "DOWNED PILOT KILLED"
+? objectiveRescueFailed2 : "rescue_marker_2" setMarkerColor "ColorRed"; "rescue_marker_2" setMarkerText "CIVILIAN RESCUE FAILED"
+? objectiveStealFailed2 : "steal_marker_2" setMarkerColor "ColorRed"; "steal_marker_2" setMarkerText "VEHICLE RECOVERY FAILED"
+? objectivePilotFailed3 : "pilot_marker_3" setMarkerColor "ColorRed"; "pilot_marker_3" setMarkerText "DOWNED PILOT KILLED"
+? objectiveRescueFailed3 : "rescue_marker_3" setMarkerColor "ColorRed"; "rescue_marker_3" setMarkerText "CIVILIAN RESCUE FAILED"
+? objectiveStealFailed3 : "steal_marker_3" setMarkerColor "ColorRed"; "steal_marker_3" setMarkerText "VEHICLE RECOVERY FAILED"
+? objectivePilotFailed4 : "pilot_marker_4" setMarkerColor "ColorRed"; "pilot_marker_4" setMarkerText "DOWNED PILOT KILLED"
+? objectiveRescueFailed4 : "rescue_marker_4" setMarkerColor "ColorRed"; "rescue_marker_4" setMarkerText "CIVILIAN RESCUE FAILED"
+? objectiveStealFailed4 : "steal_marker_4" setMarkerColor "ColorRed"; "steal_marker_4" setMarkerText "VEHICLE RECOVERY FAILED"
+? objectivePilotFailed5 : "pilot_marker_5" setMarkerColor "ColorRed"; "pilot_marker_5" setMarkerText "DOWNED PILOT KILLED"
+? objectiveRescueFailed5 : "rescue_marker_5" setMarkerColor "ColorRed"; "rescue_marker_5" setMarkerText "CIVILIAN RESCUE FAILED"
+? objectiveStealFailed5 : "steal_marker_5" setMarkerColor "ColorRed"; "steal_marker_5" setMarkerText "VEHICLE RECOVERY FAILED"
 ? mpMissionEndAnnounced : exit
 mpMissionEndAnnounced = true
 ? missionLose && townCount >= 1 && !(objective1Done) : "1" objStatus "FAILED"

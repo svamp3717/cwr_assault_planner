@@ -43,11 +43,11 @@ _pos = getPos _vehicle
 _dx = (_pos select 0) - _destX
 _dy = (_pos select 1) - _destY
 ? ((_dx * _dx) + (_dy * _dy)) > 25600 : goto "loop"
-? _slot == 1 : objectiveStealReady1 = true
-? _slot == 2 : objectiveStealReady2 = true
-? _slot == 3 : objectiveStealReady3 = true
-? _slot == 4 : objectiveStealReady4 = true
-? _slot == 5 : objectiveStealReady5 = true
+? _slot == 1 : objectiveStealReady1 = true; publicVariable "objectiveStealReady1"
+? _slot == 2 : objectiveStealReady2 = true; publicVariable "objectiveStealReady2"
+? _slot == 3 : objectiveStealReady3 = true; publicVariable "objectiveStealReady3"
+? _slot == 4 : objectiveStealReady4 = true; publicVariable "objectiveStealReady4"
+? _slot == 5 : objectiveStealReady5 = true; publicVariable "objectiveStealReady5"
 _markerName = "steal_marker_1"
 ? _slot == 2 : _markerName = "steal_marker_2"
 ? _slot == 3 : _markerName = "steal_marker_3"
@@ -58,11 +58,11 @@ _markerName setMarkerText format ["VEHICLE FROM %1 SECURED",_sourceLabel]
 ? debugMode : debugLog format ["ERA DEBUG STEAL VEHICLE COMPLETE: objective=%1",_slot]
 exit
 #failed
-? _slot == 1 : objectiveStealFailed1 = true
-? _slot == 2 : objectiveStealFailed2 = true
-? _slot == 3 : objectiveStealFailed3 = true
-? _slot == 4 : objectiveStealFailed4 = true
-? _slot == 5 : objectiveStealFailed5 = true
+? _slot == 1 : objectiveStealFailed1 = true; publicVariable "objectiveStealFailed1"
+? _slot == 2 : objectiveStealFailed2 = true; publicVariable "objectiveStealFailed2"
+? _slot == 3 : objectiveStealFailed3 = true; publicVariable "objectiveStealFailed3"
+? _slot == 4 : objectiveStealFailed4 = true; publicVariable "objectiveStealFailed4"
+? _slot == 5 : objectiveStealFailed5 = true; publicVariable "objectiveStealFailed5"
 _markerName = "steal_marker_1"
 ? _slot == 2 : _markerName = "steal_marker_2"
 ? _slot == 3 : _markerName = "steal_marker_3"

@@ -7,7 +7,12 @@ _pilot = objNull
 _marker setMarkerType "Empty"
 #waitPilot
 ~1
-? missionEnded : exit
+? missionEnded : goto "hide"
+? _slot == 1 && objective1Done : goto "hide"
+? _slot == 2 && objective2Done : goto "hide"
+? _slot == 3 && objective3Done : goto "hide"
+? _slot == 4 && objective4Done : goto "hide"
+? _slot == 5 && objective5Done : goto "hide"
 ? _slot == 1 : _pilot = objectivePilotUnit1
 ? _slot == 2 : _pilot = objectivePilotUnit2
 ? _slot == 3 : _pilot = objectivePilotUnit3

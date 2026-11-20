@@ -263,6 +263,7 @@ goto "objective1Finished"
 stealVehicleSiteReady = false
 [1,primaryX + 110,primaryY + 55,180,primaryX,primaryY,townLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType1 == 0 : objectiveTypeLabel1 = "Clear Area"; objectiveTaskText1 = format ["Clear hostile forces from the area around %1.", townLabel]; goto "objective1Finished"
 objectiveTargetLabel1 = objectiveStealVehicleLabel1
 objectiveTypeLabel1 = "Steal a Vehicle"
 objectiveTaskText1 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel1, townLabel, objectiveStealDestinationLabel1]
@@ -366,6 +367,7 @@ goto "objective2Finished"
 stealVehicleSiteReady = false
 [2,secondaryX + -110,secondaryY + -55,0,secondaryX,secondaryY,secondaryLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType2 == 0 : objectiveTypeLabel2 = "Clear Area"; objectiveTaskText2 = format ["Clear hostile forces from the area around %1.", secondaryLabel]; goto "objective2Finished"
 objectiveTargetLabel2 = objectiveStealVehicleLabel2
 objectiveTypeLabel2 = "Steal a Vehicle"
 objectiveTaskText2 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel2, secondaryLabel, objectiveStealDestinationLabel2]
@@ -469,6 +471,7 @@ goto "objective3Finished"
 stealVehicleSiteReady = false
 [3,thirdX + 100,thirdY + -70,90,thirdX,thirdY,thirdLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType3 == 0 : objectiveTypeLabel3 = "Clear Area"; objectiveTaskText3 = format ["Clear hostile forces from the area around %1.", thirdLabel]; goto "objective3Finished"
 objectiveTargetLabel3 = objectiveStealVehicleLabel3
 objectiveTypeLabel3 = "Steal a Vehicle"
 objectiveTaskText3 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel3, thirdLabel, objectiveStealDestinationLabel3]
@@ -572,6 +575,7 @@ goto "objective4Finished"
 stealVehicleSiteReady = false
 [4,fourthX + -100,fourthY + 70,270,fourthX,fourthY,fourthLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType4 == 0 : objectiveTypeLabel4 = "Clear Area"; objectiveTaskText4 = format ["Clear hostile forces from the area around %1.", fourthLabel]; goto "objective4Finished"
 objectiveTargetLabel4 = objectiveStealVehicleLabel4
 objectiveTypeLabel4 = "Steal a Vehicle"
 objectiveTaskText4 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel4, fourthLabel, objectiveStealDestinationLabel4]
@@ -675,6 +679,7 @@ goto "objective5Finished"
 stealVehicleSiteReady = false
 [5,fifthX + 110,fifthY + -30,180,fifthX,fifthY,fifthLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType5 == 0 : objectiveTypeLabel5 = "Clear Area"; objectiveTaskText5 = format ["Clear hostile forces from the area around %1.", fifthLabel]; goto "objective5Finished"
 objectiveTargetLabel5 = objectiveStealVehicleLabel5
 objectiveTypeLabel5 = "Steal a Vehicle"
 objectiveTaskText5 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel5, fifthLabel, objectiveStealDestinationLabel5]
