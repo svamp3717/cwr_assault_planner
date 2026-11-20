@@ -19,11 +19,13 @@ from tkinter import filedialog, messagebox, ttk
 try:
     import generate_world_config as gen
     import mission_package as pack
+    from world_map import MapEditor
 except ImportError:
     # Helpful when launched in unusual ways from another working directory.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import generate_world_config as gen
     import mission_package as pack
+    from world_map import MapEditor
 
 
 APP_TITLE = "CWA World Config Generator"
@@ -37,6 +39,8 @@ class WorldConfigGui(tk.Tk):
 
         self.locations = []
         self.config_path: Path | None = None
+        self.map_dirty = False
+        self.map_world_size = None
 
         self.source_dir = tk.StringVar()
         self.output_dir = tk.StringVar()
@@ -71,6 +75,8 @@ class WorldConfigGui(tk.Tk):
         for var in (self.min_x, self.min_y, self.max_x, self.max_y):
             var.trace_add("write", lambda *_: self.refresh_auto_placement())
         self.update_placement_mode()
+        for var in (self.min_x, self.min_y, self.max_x, self.max_y, self.base_x, self.base_y, self.objective_edge):
+            var.trace_add("write", lambda *_: self.map_editor.schedule())
 
     def _build_ui(self) -> None:
         root = ttk.Frame(self, padding=12)
@@ -184,8 +190,10 @@ class WorldConfigGui(tk.Tk):
             placement, text="Maximum distance is preferred. If no valid town exists, the mission uses the best available fallback.",
         ).grid(row=3, column=0, columnspan=4, sticky="w", pady=(8, 0))
 
-        preview = ttk.LabelFrame(root, text="Parsed class Names locations", padding=8)
-        preview.grid(row=4, column=0, columnspan=3, sticky="nsew", pady=(10, 0))
+        tabs = ttk.Notebook(root)
+        tabs.grid(row=4, column=0, columnspan=3, sticky="nsew", pady=(10, 0))
+        preview = ttk.Frame(tabs, padding=8)
+        tabs.add(preview, text="Locations")
         preview.columnconfigure(0, weight=1)
         preview.rowconfigure(0, weight=1)
 
@@ -210,6 +218,10 @@ class WorldConfigGui(tk.Tk):
         self.tree.configure(yscrollcommand=yscroll.set)
         self.tree.grid(row=0, column=0, sticky="nsew")
         yscroll.grid(row=0, column=1, sticky="ns")
+        self.map_editor = MapEditor(tabs, self)
+        tabs.add(self.map_editor, text="Map editor")
+        self.tree.bind("<<TreeviewSelect>>", lambda _: self.map_editor.schedule())
+        tabs.bind("<<NotebookTabChanged>>", lambda _: self.map_editor.schedule())
 
         output = ttk.LabelFrame(root, text="Output", padding=10)
         output.grid(row=5, column=0, columnspan=3, sticky="ew", pady=(10, 0))
@@ -373,10 +385,14 @@ class WorldConfigGui(tk.Tk):
         return config, locations, center, map_size, inferred_name
 
     def load_source(self) -> None:
+        if self.map_dirty and not messagebox.askyesno(APP_TITLE, "Reloading discards the current map edits. Continue?"):
+            return
         try:
             config, locations, center, map_size, inferred_name = self.parse_source()
             self.config_path = config
             self.locations = locations
+            self.map_dirty = False
+            self.map_editor.drag = None
             self.world_name.set(inferred_name or "Unknown")
 
             self._set_inferred_defaults(center, map_size)
@@ -385,6 +401,7 @@ class WorldConfigGui(tk.Tk):
                 self.output_dir.set(str(config.parent))
 
             self.refresh_location_table()
+            self.map_editor.fit()
             self.status.set(
                 f"Loaded {len(locations)} locations from {config}"
             )
@@ -406,6 +423,7 @@ class WorldConfigGui(tk.Tk):
         size, _ = gen.infer_world_size(
             self.locations, center, map_size, None
         )
+        self.map_world_size = size
         if margin < 0 or margin * 2 >= size:
             margin = 250.0
             self.margin.set("250")
@@ -421,50 +439,60 @@ class WorldConfigGui(tk.Tk):
             return
         try:
             config, locations, center, map_size, inferred_name = self.parse_source()
+            if self.map_dirty and self.config_path != config:
+                raise ValueError("Load the new world before re-inferring its settings.")
             self.config_path = config
-            self.locations = locations
+            if not self.map_dirty:
+                self.locations = locations
             if not self.world_name.get().strip():
                 self.world_name.set(inferred_name or "Unknown")
             self._set_inferred_defaults(center, map_size)
             self.refresh_location_table()
+            self.map_editor.fit()
             self.status.set("Re-inferred base point and world bounds.")
         except Exception as exc:
             messagebox.showerror(APP_TITLE, str(exc))
 
-    def ordered_locations(self):
-        locations = list(self.locations)
+    def ordered_location_indices(self):
+        indices = list(range(len(self.locations)))
         if self.sort_mode.get() == "name":
-            locations.sort(key=lambda loc: loc.name.casefold())
-        return locations
+            indices.sort(key=lambda i: self.locations[i].name.casefold())
+        return indices
 
-    def refresh_location_table(self) -> None:
+    def ordered_locations(self):
+        return [self.locations[i] for i in self.ordered_location_indices()]
+
+    def selected_location_index(self):
+        selection = self.tree.selection()
+        if selection and 0 <= int(selection[0]) < len(self.locations):
+            return int(selection[0])
+        return None
+
+    def select_location(self, index):
+        if index is None:
+            self.tree.selection_remove(*self.tree.selection())
+        elif self.tree.exists(str(index)):
+            self.tree.selection_set(str(index))
+            self.tree.see(str(index))
+        self.map_editor.schedule()
+
+    def refresh_location_table(self, selected=None) -> None:
+        if selected is None:
+            selected = self.selected_location_index()
         for item in self.tree.get_children():
             self.tree.delete(item)
-
-        for index, loc in enumerate(self.ordered_locations()):
-            self.tree.insert(
-                "",
-                "end",
-                iid=str(index),
-                values=(
-                    index,
-                    loc.class_name,
-                    loc.name,
-                    gen.format_number(loc.x),
-                    gen.format_number(loc.y),
-                ),
-            )
+        for order, i in enumerate(self.ordered_location_indices()):
+            loc = self.locations[i]
+            self.tree.insert("", "end", iid=str(i), values=(
+                order, loc.class_name, loc.name, gen.format_number(loc.x), gen.format_number(loc.y)))
+        self.select_location(selected)
 
     def use_selected_as_base(self) -> None:
-        selection = self.tree.selection()
-        if not selection:
-            messagebox.showinfo(APP_TITLE, "Select a location in the table first.")
+        index = self.selected_location_index()
+        if index is None:
+            messagebox.showinfo(APP_TITLE, "Select a location in the table or map first.")
             return
-        index = int(selection[0])
-        locations = self.ordered_locations()
-        if index < 0 or index >= len(locations):
-            return
-        loc = locations[index]
+        loc = self.locations[index]
         self.base_x.set(gen.format_number(loc.x))
         self.base_y.set(gen.format_number(loc.y))
         self.status.set(f'Base point set to "{loc.name}".')
@@ -518,6 +546,8 @@ class WorldConfigGui(tk.Tk):
         )
 
         locations = self.ordered_locations()
+        if self.map_dirty and self.editor_markers.get():
+            raise ValueError("Disable editor site_* markers when exporting map edits. Map edits use numeric coordinates.")
         if len(locations) < 6:
             raise ValueError(
                 f"Only {len(locations)} locations were parsed. "

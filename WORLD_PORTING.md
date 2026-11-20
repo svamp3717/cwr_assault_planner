@@ -175,3 +175,16 @@ For a terrain that has been playtested, change the setting to `true` to enable o
 Test on a hosted and a dedicated server: die on land, wait without reviving, observe from another player, revive at the corpse, die on a slope, die in a vehicle, and incapacitate two players at once. Verify the owner and remote clients agree on revival and that the spectator follows the actual body. With the optional setting enabled, additionally test drowned units near shore and far offshore. A player whose corpse is out of reach can still time out normally when recovery is disabled.
 
 The hidden replacement continues to be held above 7000 m until revival; do not change that altitude encoding without also updating the mission's multiplayer and extraction checks.
+
+
+## Basic map editor
+
+Open the **Map editor** tab after loading config.cpp. The north-up coordinate grid shows imported locations, the base, usable bounds (green), and the objective edge margin (dashed). It does not show terrain imagery or distinguish land from water.
+
+- **Select / move**: click a marker to select it in the Locations tab, or drag it to reposition it inside the usable bounds.
+- **Add marker**: click inside the bounds and name a new location.
+- **Set base**: click inside the bounds to update Base X/Y.
+- **Rename / Delete**: edit the selected location. Keep at least six locations.
+- Scroll to zoom around the pointer, middle/right drag to pan, **Fit map** to reset, and toggle **Labels** to reduce clutter.
+
+Map edits are kept in memory and exported by the normal Generate/Create mission action. They modify the numeric location arrays, not config.cpp or CWA editor markers. Reloading discards changes after confirmation. Re-infer base/bounds preserves edited locations. Keep **Use editor site_* markers** off when exporting edits. Verify placement against the actual CWA terrain.
