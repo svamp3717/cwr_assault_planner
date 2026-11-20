@@ -59,7 +59,7 @@ goto "WaitForPreviewUnit"
 
 #CreationFailed
 WW4_ModelPreviewActive = false
-hint format ["Could not create model preview: %1. Check that this class exists in the loaded WW4 addons.",_modelClass]
+hint format ["Could not create model preview: %1. Check that this class exists in the selected asset pack.",_modelClass]
 ~0.25
 [] exec "ww4_arsenal\open_models.sqs"
 exit

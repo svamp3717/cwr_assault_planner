@@ -111,7 +111,7 @@ publicVariable "logisticsDropMarkerStatus"
 publicVariable "logisticsDropMarkerX"
 publicVariable "logisticsDropMarkerY"
 publicVariable "logisticsDropMarkerLabel"
-mpHQMessage = format ["HQ: %1 delivered at the marked position. Chinook departing. %2 logistics request(s) remain.", logisticsDropRequestLabel, logisticsDropsRemaining]
+mpHQMessage = format ["HQ: %1 delivered at the marked position. %2 departing. %3 logistics request(s) remain.",logisticsDropRequestLabel,assetNameWestHeavyTransportHeli,logisticsDropsRemaining]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "mpHQMessage"
 publicVariable "mpHQMessageId"
@@ -156,7 +156,7 @@ logisticsDropMarkerStatus = 3
 logisticsDropMarkerLabel = "LOGISTICS AIRCRAFT LOST"
 publicVariable "logisticsDropMarkerStatus"
 publicVariable "logisticsDropMarkerLabel"
-mpHQMessage = "HQ: Logistics Chinook was lost before delivery. The request is expended."
+mpHQMessage = format ["HQ: Logistics %1 was lost before delivery. The request is expended.",assetNameWestHeavyTransportHeli]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "mpHQMessage"
 publicVariable "mpHQMessageId"

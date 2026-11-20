@@ -13,13 +13,11 @@ _townIndex = [_sourceX,_sourceY] call worldFindEscortTown
 _label = missionTownLabels select _townIndex
 _pos = _townIndex call worldTownPosition
 _spawnPos = [_spawnX,_spawnY,0,5] call worldClampPosition
-_classes = []
-_vehicleLabels = []
-? enemyEast : _classes = [assetClassEastArmedLightVehicle,assetClassBRDM_MG,assetClassBMP,assetClassBTR80,assetClassUralE]
-? enemyEast : _vehicleLabels = ["armed Jeep","BRDM scout car","BMP-1","BTR-80","Ural truck"]
-? enemyResistance : _classes = [assetClassResistanceArmedLightVehicle,assetClassBRDM2ExportR,assetClassBMPRes,assetClassBTR80ExportR,assetClassZil157]
-? enemyResistance : _vehicleLabels = ["armed Jeep","BRDM-2 scout car",assetClassStockBMP,"BTR-80","Zil-157 truck"]
-_count = count _classes
+_choices = []
+? enemyEast : _choices = [[assetClassEastArmedLightVehicle,assetNameEastArmedLightVehicle],[assetClassBRDM_MG,assetNameBRDM_MG],[assetClassBMP,assetNameBMP],[assetClassBTR80,assetNameBTR80],[assetClassUralE,assetNameUralE]]
+? enemyResistance : _choices = [[assetClassResistanceArmedLightVehicle,assetNameResistanceArmedLightVehicle],[assetClassBRDM2ExportR,assetNameBRDM2ExportR],[assetClassBMPRes,assetNameBMPRes],[assetClassBTR80ExportR,assetNameBTR80ExportR],[assetClassZil157,assetNameZil157]]
+_count = count _choices
+? _count < 1 : goto "creationFailed"
 _roll = random _count
 _index = _roll - (_roll % 1)
 _tries = 0
@@ -28,8 +26,9 @@ _class = ""
 _vehicleLabel = "enemy vehicle"
 #tryClass
 ? _tries >= _count : goto "fallback"
-_class = _classes select _index
-_vehicleLabel = _vehicleLabels select _index
+_choice = _choices select _index
+_class = _choice select 0
+_vehicleLabel = _choice select 1
 _vehicle = _class createVehicle _spawnPos
 ? !(isNull _vehicle) : goto "vehicleCreated"
 _index = _index + 1
@@ -38,9 +37,9 @@ _tries = _tries + 1
 goto "tryClass"
 #fallback
 ? enemyEast : _class = assetClassUAZ
-? enemyEast : _vehicleLabel = assetClassUAZ
+? enemyEast : _vehicleLabel = assetNameUAZ
 ? enemyResistance : _class = assetClassJeepMG
-? enemyResistance : _vehicleLabel = "armed Jeep"
+? enemyResistance : _vehicleLabel = assetNameJeepMG
 _vehicle = _class createVehicle _spawnPos
 #vehicleCreated
 ? isNull _vehicle : goto "creationFailed"

@@ -195,17 +195,19 @@ _targetRoll = random 3
 goto "objective1Shilka"
 #objective1Scud
 _targetClass = assetClassScud
-objectiveTargetLabel1 = "SCUD launcher"
+objectiveTargetLabel1 = assetNameScud
 goto "objective1CreateDestroy"
 #objective1Ammo
 ? enemyEast : _targetClass = assetClassEastAmmoTruck
 ? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
-objectiveTargetLabel1 = "ammunition truck"
+? enemyEast : objectiveTargetLabel1 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel1 = assetNameResistanceAmmoTruck
 goto "objective1CreateDestroy"
 #objective1Shilka
 ? enemyEast : _targetClass = assetClassEastAirDefense
 ? enemyResistance : _targetClass = assetClassResistanceAirDefense
-objectiveTargetLabel1 = "Shilka AA vehicle"
+? enemyEast : objectiveTargetLabel1 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel1 = assetNameResistanceAirDefense
 #objective1CreateDestroy
 objectiveTarget1 = _targetClass createVehicle [primaryX + 85, primaryY + -45, 0]
 objectiveTarget1 setDir 235
@@ -299,17 +301,19 @@ _targetRoll = random 3
 goto "objective2Shilka"
 #objective2Scud
 _targetClass = assetClassScud
-objectiveTargetLabel2 = "SCUD launcher"
+objectiveTargetLabel2 = assetNameScud
 goto "objective2CreateDestroy"
 #objective2Ammo
 ? enemyEast : _targetClass = assetClassEastAmmoTruck
 ? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
-objectiveTargetLabel2 = "ammunition truck"
+? enemyEast : objectiveTargetLabel2 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel2 = assetNameResistanceAmmoTruck
 goto "objective2CreateDestroy"
 #objective2Shilka
 ? enemyEast : _targetClass = assetClassEastAirDefense
 ? enemyResistance : _targetClass = assetClassResistanceAirDefense
-objectiveTargetLabel2 = "Shilka AA vehicle"
+? enemyEast : objectiveTargetLabel2 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel2 = assetNameResistanceAirDefense
 #objective2CreateDestroy
 objectiveTarget2 = _targetClass createVehicle [secondaryX + -90, secondaryY + 50, 0]
 objectiveTarget2 setDir 125
@@ -403,17 +407,19 @@ _targetRoll = random 3
 goto "objective3Shilka"
 #objective3Scud
 _targetClass = assetClassScud
-objectiveTargetLabel3 = "SCUD launcher"
+objectiveTargetLabel3 = assetNameScud
 goto "objective3CreateDestroy"
 #objective3Ammo
 ? enemyEast : _targetClass = assetClassEastAmmoTruck
 ? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
-objectiveTargetLabel3 = "ammunition truck"
+? enemyEast : objectiveTargetLabel3 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel3 = assetNameResistanceAmmoTruck
 goto "objective3CreateDestroy"
 #objective3Shilka
 ? enemyEast : _targetClass = assetClassEastAirDefense
 ? enemyResistance : _targetClass = assetClassResistanceAirDefense
-objectiveTargetLabel3 = "Shilka AA vehicle"
+? enemyEast : objectiveTargetLabel3 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel3 = assetNameResistanceAirDefense
 #objective3CreateDestroy
 objectiveTarget3 = _targetClass createVehicle [thirdX + 75, thirdY + 70, 0]
 objectiveTarget3 setDir 310
@@ -507,17 +513,19 @@ _targetRoll = random 3
 goto "objective4Shilka"
 #objective4Scud
 _targetClass = assetClassScud
-objectiveTargetLabel4 = "SCUD launcher"
+objectiveTargetLabel4 = assetNameScud
 goto "objective4CreateDestroy"
 #objective4Ammo
 ? enemyEast : _targetClass = assetClassEastAmmoTruck
 ? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
-objectiveTargetLabel4 = "ammunition truck"
+? enemyEast : objectiveTargetLabel4 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel4 = assetNameResistanceAmmoTruck
 goto "objective4CreateDestroy"
 #objective4Shilka
 ? enemyEast : _targetClass = assetClassEastAirDefense
 ? enemyResistance : _targetClass = assetClassResistanceAirDefense
-objectiveTargetLabel4 = "Shilka AA vehicle"
+? enemyEast : objectiveTargetLabel4 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel4 = assetNameResistanceAirDefense
 #objective4CreateDestroy
 objectiveTarget4 = _targetClass createVehicle [fourthX + -80, fourthY + -65, 0]
 objectiveTarget4 setDir 45
@@ -611,17 +619,19 @@ _targetRoll = random 3
 goto "objective5Shilka"
 #objective5Scud
 _targetClass = assetClassScud
-objectiveTargetLabel5 = "SCUD launcher"
+objectiveTargetLabel5 = assetNameScud
 goto "objective5CreateDestroy"
 #objective5Ammo
 ? enemyEast : _targetClass = assetClassEastAmmoTruck
 ? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
-objectiveTargetLabel5 = "ammunition truck"
+? enemyEast : objectiveTargetLabel5 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel5 = assetNameResistanceAmmoTruck
 goto "objective5CreateDestroy"
 #objective5Shilka
 ? enemyEast : _targetClass = assetClassEastAirDefense
 ? enemyResistance : _targetClass = assetClassResistanceAirDefense
-objectiveTargetLabel5 = "Shilka AA vehicle"
+? enemyEast : objectiveTargetLabel5 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel5 = assetNameResistanceAirDefense
 #objective5CreateDestroy
 objectiveTarget5 = _targetClass createVehicle [fifthX + 95, fifthY + 20, 0]
 objectiveTarget5 setDir 180

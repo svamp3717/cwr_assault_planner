@@ -7,7 +7,7 @@
 #include "FRevive\classes\RscTitles.txt"
 
 onLoadMission="assault_planner_v203";
-onLoadIntro="12-player cooperative assault. Complete the selected objectives and extract the active squad by Chinook. Radio Bravo may call extraction early; Radio Charlie requests the configured number of logistics deliveries.";
+onLoadIntro="12-player cooperative assault. Complete the selected objectives and extract the active squad by helicopter. Radio Bravo may call extraction early; Radio Charlie requests the configured number of logistics deliveries.";
 
 // FRevive uses instant respawn, then suspends the replacement unit until a teammate revives it.
 respawn = 2;

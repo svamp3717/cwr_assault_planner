@@ -60,7 +60,7 @@ extractPad = assetClassHeliHEmpty createVehicle [extractionX, extractionY, 0]
 "extraction_marker" setMarkerText "FINAL EXTRACTION"
 
 extractionLZReady = true
-mpHQMessage = "HQ: Final extraction inbound at the Radio Bravo request position. Clear the marked LZ and board the Chinook."
+mpHQMessage = format ["HQ: Final extraction inbound at the Radio Bravo request position. Clear the marked LZ and board the %1.",assetNameWestHeavyTransportHeli]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "extractionX"
 publicVariable "extractionY"
@@ -157,7 +157,7 @@ goto "landed"
 
 #landed
 extractionLanded = true
-mpHQMessage = "HQ: Chinook is on the extraction LZ. All active squad members must board."
+mpHQMessage = format ["HQ: %1 is on the extraction LZ. All active squad members must board.",assetNameWestHeavyTransportHeli]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "extractionLanded"
 publicVariable "mpHQMessage"
@@ -228,7 +228,7 @@ extractHeli lock true
 extractHeli setDammage 0
 extractHeli setFuel 1
 extractHeli engineOn true
-mpHQMessage = "HQ: Squad aboard. Chinook departing the combat zone."
+mpHQMessage = format ["HQ: Squad aboard. %1 departing the combat zone.",assetNameWestHeavyTransportHeli]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "extractionBoarded"
 publicVariable "mpHQMessage"
@@ -327,7 +327,7 @@ extractHeli setVelocity [22,22,0]
 goto "normalSuccess"
 
 #normalSuccess
-_successMessage = "HQ: Chinook clear of the combat zone. Mission accomplished."
+_successMessage = format ["HQ: %1 clear of the combat zone. Mission accomplished.",assetNameWestHeavyTransportHeli]
 goto "finishSuccess"
 
 #crash
