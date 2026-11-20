@@ -10,10 +10,10 @@ _sourceY = _this select 5
 _sourceLabel = _this select 6
 _classes = []
 _vehicleLabels = []
-? enemyEast : _classes = ["WW4EXT_JeepMGE","WW4EXT_BRDM_MG","WW4EXT_BMP","WW4EXT_BTR80","WW4EXT_UralE"]
+? enemyEast : _classes = [assetClassEastArmedLightVehicle,assetClassBRDM_MG,assetClassBMP,assetClassBTR80,assetClassUralE]
 ? enemyEast : _vehicleLabels = ["armed Jeep","BRDM scout car","BMP-1","BTR-80","Ural truck"]
-? enemyResistance : _classes = ["WW4EXT_JeepMGR","WW4EXT_BRDM2ExportR","WW4EXT_BMPRes","WW4EXT_BTR80ExportR","WW4EXT_Zil157"]
-? enemyResistance : _vehicleLabels = ["armed Jeep","BRDM-2 scout car","BMP","BTR-80","Zil-157 truck"]
+? enemyResistance : _classes = [assetClassResistanceArmedLightVehicle,assetClassBRDM2ExportR,assetClassBMPRes,assetClassBTR80ExportR,assetClassZil157]
+? enemyResistance : _vehicleLabels = ["armed Jeep","BRDM-2 scout car",assetClassStockBMP,"BTR-80","Zil-157 truck"]
 _count = count _classes
 _roll = random _count
 _index = _roll - (_roll % 1)
@@ -32,9 +32,9 @@ _index = _index + 1
 _tries = _tries + 1
 goto "tryClass"
 #fallback
-? enemyEast : _class = "UAZ"
-? enemyEast : _vehicleLabel = "UAZ"
-? enemyResistance : _class = "JeepMG"
+? enemyEast : _class = assetClassUAZ
+? enemyEast : _vehicleLabel = assetClassUAZ
+? enemyResistance : _class = assetClassJeepMG
 ? enemyResistance : _vehicleLabel = "armed Jeep"
 _vehicle = _class createVehicle [_spawnX,_spawnY,0]
 #vehicleCreated

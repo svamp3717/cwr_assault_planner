@@ -194,17 +194,17 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective1Ammo"
 goto "objective1Shilka"
 #objective1Scud
-_targetClass = "Scud"
+_targetClass = assetClassScud
 objectiveTargetLabel1 = "SCUD launcher"
 goto "objective1CreateDestroy"
 #objective1Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
 objectiveTargetLabel1 = "ammunition truck"
 goto "objective1CreateDestroy"
 #objective1Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
 objectiveTargetLabel1 = "Shilka AA vehicle"
 #objective1CreateDestroy
 objectiveTarget1 = _targetClass createVehicle [primaryX + 85, primaryY + -45, 0]
@@ -216,7 +216,7 @@ objectiveTypeLabel1 = format ["Destroy %1", objectiveTargetLabel1]
 objectiveTaskText1 = format ["Destroy the %1 near %2.", objectiveTargetLabel1, townLabel]
 goto "objective1Finished"
 #objective1Intel
-objectiveTarget1 = "TableMap" createVehicle [primaryX + 42, primaryY + -23, 0]
+objectiveTarget1 = assetClassTableMap createVehicle [primaryX + 42, primaryY + -23, 0]
 objectiveTarget1 setDir 235
 objectiveTarget1 allowDammage false
 objectiveTargetLabel1 = "intelligence file"
@@ -295,17 +295,17 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective2Ammo"
 goto "objective2Shilka"
 #objective2Scud
-_targetClass = "Scud"
+_targetClass = assetClassScud
 objectiveTargetLabel2 = "SCUD launcher"
 goto "objective2CreateDestroy"
 #objective2Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
 objectiveTargetLabel2 = "ammunition truck"
 goto "objective2CreateDestroy"
 #objective2Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
 objectiveTargetLabel2 = "Shilka AA vehicle"
 #objective2CreateDestroy
 objectiveTarget2 = _targetClass createVehicle [secondaryX + -90, secondaryY + 50, 0]
@@ -317,7 +317,7 @@ objectiveTypeLabel2 = format ["Destroy %1", objectiveTargetLabel2]
 objectiveTaskText2 = format ["Destroy the %1 near %2.", objectiveTargetLabel2, secondaryLabel]
 goto "objective2Finished"
 #objective2Intel
-objectiveTarget2 = "TableMap" createVehicle [secondaryX + -45, secondaryY + 25, 0]
+objectiveTarget2 = assetClassTableMap createVehicle [secondaryX + -45, secondaryY + 25, 0]
 objectiveTarget2 setDir 125
 objectiveTarget2 allowDammage false
 objectiveTargetLabel2 = "intelligence file"
@@ -396,17 +396,17 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective3Ammo"
 goto "objective3Shilka"
 #objective3Scud
-_targetClass = "Scud"
+_targetClass = assetClassScud
 objectiveTargetLabel3 = "SCUD launcher"
 goto "objective3CreateDestroy"
 #objective3Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
 objectiveTargetLabel3 = "ammunition truck"
 goto "objective3CreateDestroy"
 #objective3Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
 objectiveTargetLabel3 = "Shilka AA vehicle"
 #objective3CreateDestroy
 objectiveTarget3 = _targetClass createVehicle [thirdX + 75, thirdY + 70, 0]
@@ -418,7 +418,7 @@ objectiveTypeLabel3 = format ["Destroy %1", objectiveTargetLabel3]
 objectiveTaskText3 = format ["Destroy the %1 near %2.", objectiveTargetLabel3, thirdLabel]
 goto "objective3Finished"
 #objective3Intel
-objectiveTarget3 = "TableMap" createVehicle [thirdX + 37, thirdY + 35, 0]
+objectiveTarget3 = assetClassTableMap createVehicle [thirdX + 37, thirdY + 35, 0]
 objectiveTarget3 setDir 310
 objectiveTarget3 allowDammage false
 objectiveTargetLabel3 = "intelligence file"
@@ -497,17 +497,17 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective4Ammo"
 goto "objective4Shilka"
 #objective4Scud
-_targetClass = "Scud"
+_targetClass = assetClassScud
 objectiveTargetLabel4 = "SCUD launcher"
 goto "objective4CreateDestroy"
 #objective4Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
 objectiveTargetLabel4 = "ammunition truck"
 goto "objective4CreateDestroy"
 #objective4Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
 objectiveTargetLabel4 = "Shilka AA vehicle"
 #objective4CreateDestroy
 objectiveTarget4 = _targetClass createVehicle [fourthX + -80, fourthY + -65, 0]
@@ -519,7 +519,7 @@ objectiveTypeLabel4 = format ["Destroy %1", objectiveTargetLabel4]
 objectiveTaskText4 = format ["Destroy the %1 near %2.", objectiveTargetLabel4, fourthLabel]
 goto "objective4Finished"
 #objective4Intel
-objectiveTarget4 = "TableMap" createVehicle [fourthX + -40, fourthY + -33, 0]
+objectiveTarget4 = assetClassTableMap createVehicle [fourthX + -40, fourthY + -33, 0]
 objectiveTarget4 setDir 45
 objectiveTarget4 allowDammage false
 objectiveTargetLabel4 = "intelligence file"
@@ -598,17 +598,17 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective5Ammo"
 goto "objective5Shilka"
 #objective5Scud
-_targetClass = "Scud"
+_targetClass = assetClassScud
 objectiveTargetLabel5 = "SCUD launcher"
 goto "objective5CreateDestroy"
 #objective5Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
 objectiveTargetLabel5 = "ammunition truck"
 goto "objective5CreateDestroy"
 #objective5Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
 objectiveTargetLabel5 = "Shilka AA vehicle"
 #objective5CreateDestroy
 objectiveTarget5 = _targetClass createVehicle [fifthX + 95, fifthY + 20, 0]
@@ -620,7 +620,7 @@ objectiveTypeLabel5 = format ["Destroy %1", objectiveTargetLabel5]
 objectiveTaskText5 = format ["Destroy the %1 near %2.", objectiveTargetLabel5, fifthLabel]
 goto "objective5Finished"
 #objective5Intel
-objectiveTarget5 = "TableMap" createVehicle [fifthX + 47, fifthY + 10, 0]
+objectiveTarget5 = assetClassTableMap createVehicle [fifthX + 47, fifthY + 10, 0]
 objectiveTarget5 setDir 180
 objectiveTarget5 allowDammage false
 objectiveTargetLabel5 = "intelligence file"

@@ -5,7 +5,7 @@ friendlyRuntimeSupportReady = false
 ? friendlyArmorLevel < 1 && !(insertionAPC) : goto "supportAfterM113"
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [275, -390, 0] call worldSetupPosition
-["WW4EXT_M2A2BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestIFV, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportM113 = friendlyRuntimeVehicleSpawned
 publicVariable "supportM113"
@@ -14,7 +14,7 @@ publicVariable "supportM113"
 ? friendlyArmorLevel < 2 : goto "supportAfterTank"
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [310, -390, 0] call worldSetupPosition
-["WW4EXT_M60A3BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestTank, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportTank = friendlyRuntimeVehicleSpawned
 publicVariable "supportTank"
@@ -23,19 +23,19 @@ publicVariable "supportTank"
 ? friendlyArmorLevel < 3 : goto "supportAfterLarge"
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [385, -390, 0] call worldSetupPosition
-["WW4EXT_VulcanBIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAirDefense, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportAA = friendlyRuntimeVehicleSpawned
 publicVariable "supportAA"
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [420, -420, 0] call worldSetupPosition
-["WW4EXT_JeepBIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestJeep, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportJeep = friendlyRuntimeVehicleSpawned
 publicVariable "supportJeep"
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [450, -420, 0] call worldSetupPosition
-["WW4EXT_HMMWVBIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestHMMWV, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportHMMWV = friendlyRuntimeVehicleSpawned
 publicVariable "supportHMMWV"

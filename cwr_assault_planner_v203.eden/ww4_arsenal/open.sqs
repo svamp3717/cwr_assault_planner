@@ -12,22 +12,22 @@ WW4_ArsenalTarget = _candidate
 
 #UseExistingTarget
 ? isNull WW4_ArsenalTarget : WW4_ArsenalTarget = player
-? !(alive WW4_ArsenalTarget) : hint "WW4 Arsenal: the selected unit is not alive."; exit
+? !(alive WW4_ArsenalTarget) : hint "Mission Arsenal: the selected unit is not alive."; exit
 ? WW4_ArsenalTarget == player : goto "TargetAccepted"
 ? group WW4_ArsenalTarget == group player : goto "TargetAccepted"
-hint "WW4 Arsenal: only you or a member of your current squad can be equipped."
+hint "Mission Arsenal: only you or a member of your current squad can be equipped."
 WW4_ArsenalTarget = player
 exit
 
 #TargetAccepted
 _ok = createDialog "WW4_Arsenal_Dialog"
 ? _ok : goto "DialogOpened"
-hint "WW4 Arsenal: dialog could not be opened. Check description.ext."
+hint "Mission Arsenal: dialog could not be opened. Check description.ext."
 exit
 
 #DialogOpened
 @dialog
-ctrlSetText [1000,format ["WW4 ARSENAL - %1",name WW4_ArsenalTarget]]
+ctrlSetText [1000,format ["Mission Arsenal - %1",name WW4_ArsenalTarget]]
 ctrlSetText [1002,format ["Target: %1. Select a family and variant.",name WW4_ArsenalTarget]]
 lbClear 1500
 lbClear 1501
@@ -42,7 +42,7 @@ _i = _i + 1
 goto "FamilyLoop"
 
 #FamilyDone
-? count WW4_ArsenalFamilies == 0 : hint "WW4 Arsenal: no equipment families loaded."; exit
+? count WW4_ArsenalFamilies == 0 : hint "Mission Arsenal: no equipment families loaded."; exit
 WW4_ArsenalLastFamily = -1
 WW4_ArsenalLastVariant = -1
 WW4_ArsenalLastAmmo = -1

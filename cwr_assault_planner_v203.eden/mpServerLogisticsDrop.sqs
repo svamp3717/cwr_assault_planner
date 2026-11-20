@@ -19,7 +19,7 @@ publicVariable "logisticsDropMarkerStatus"
 publicVariable "logisticsDropMarkerX"
 publicVariable "logisticsDropMarkerY"
 publicVariable "logisticsDropMarkerLabel"
-logisticsDropPad = "HeliHEmpty" createVehicle [_lzX, _lzY, 0]
+logisticsDropPad = assetClassHeliHEmpty createVehicle [_lzX, _lzY, 0]
 
 ; Everon's old offshore ground staging point could resolve on water or shoreline terrain.
 ; Build a clamped airborne approach point instead, so the Chinook never touches the spawn terrain.
@@ -28,7 +28,7 @@ _stageX = _stagePos select 0
 _stageY = _stagePos select 1
 _heading = (_lzX - _stageX) atan2 (_lzY - _stageY)
 friendlyRuntimeVehicleSpawnComplete = false
-["Ch47D", _stageX, _stageY, 320, _heading, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestHeavyTransportHeli, _stageX, _stageY, 320, _heading, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 logisticsDropHeli = friendlyRuntimeVehicleSpawned
 publicVariable "logisticsDropHeli"
@@ -87,9 +87,9 @@ logisticsDropHeli flyInHeight 45
 
 #deliver
 logisticsDropAsset = objNull
-? logisticsDropRequestType == 1 : logisticsDropAsset = "WW4EXT_JeepBIS" createVehicle [_dropX, _dropY, 0]
-? logisticsDropRequestType == 2 : logisticsDropAsset = "WW4EXT_HMMWVBIS" createVehicle [_dropX, _dropY, 0]
-? logisticsDropRequestType == 3 : logisticsDropAsset = "ReammoBoxWest" createVehicle [_dropX, _dropY, 0]
+? logisticsDropRequestType == 1 : logisticsDropAsset = assetClassWestJeep createVehicle [_dropX, _dropY, 0]
+? logisticsDropRequestType == 2 : logisticsDropAsset = assetClassWestHMMWV createVehicle [_dropX, _dropY, 0]
+? logisticsDropRequestType == 3 : logisticsDropAsset = assetClassWestAmmoBox createVehicle [_dropX, _dropY, 0]
 ? isNull logisticsDropAsset : goto "assetFailed"
 logisticsDropAsset setPos [_dropX, _dropY, 0]
 logisticsDropAsset setDir 45

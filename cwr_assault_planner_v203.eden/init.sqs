@@ -17,6 +17,9 @@ missionUnnamedTrafficTotal = 0
 worldConfigReady = false
 [] exec "worldConfig.sqs"
 @ worldConfigReady
+assetProfileReady = false
+[] exec "assets\selection.sqs"
+@ assetProfileReady
 call preProcessFile "worldPlacementFunctions.sqf"
 setViewDistance 1600
 "1" objStatus "HIDDEN"
@@ -196,7 +199,7 @@ civilianLabel = "civilian characters present"
 debugLabel = "debug messages disabled"
 supportAirVehicle = objNull
 supportAirName = "AH-1 Cobra"
-enemyAttackClass = "Mi24"
+enemyAttackClass = assetClassEastAttackHeli
 enemyAttackVehicle = objNull
 enemyAttackHeli = objNull
 enemyTransportHeli = objNull
@@ -883,7 +886,7 @@ s5Car3 = objNull
 
 ; v128 runtime friendly support and extraction assets.
 friendlyRuntimeSupportReady = false
-supportAirClass = "AH1"
+supportAirClass = assetClassWestCobra
 supportAirSelection = 0
 supportM113 = objNull
 supportTank = objNull

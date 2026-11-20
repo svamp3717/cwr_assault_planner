@@ -1,4 +1,4 @@
-; WW4 Arsenal initializer
+; Mission Arsenal initializer
 ; Box-only version: data is loaded here, but no action is attached to the player.
 
 WW4_ArsenalDataReady = false

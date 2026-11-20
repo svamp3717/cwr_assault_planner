@@ -22,8 +22,8 @@ ctrlSetText [4210, format ["%1 logistics request(s) remaining. Delivery will lan
 ? logisticsDropMenuCancelled : goto "cancelled"
 ? logisticsDropMenuChoice < 1 : goto "cancelled"
 logisticsDropRequestType = logisticsDropMenuChoice
-logisticsDropRequestLabel = "Jeep"
-? logisticsDropRequestType == 2 : logisticsDropRequestLabel = "HMMWV"
+logisticsDropRequestLabel = assetClassJeep
+? logisticsDropRequestType == 2 : logisticsDropRequestLabel = assetClassHMMWV
 ? logisticsDropRequestType == 3 : logisticsDropRequestLabel = "ammunition box"
 logisticsDropRequester = player
 mpLogisticsDropRequest = true
