@@ -4,13 +4,9 @@ civilianNonObjectiveCarProfileReady = false
 _townX = _this select 0
 _townY = _this select 1
 _label = _this select 2
-_isObjective = false
-? townLabel == _label : _isObjective = true
-? townCount >= 2 && secondaryLabel == _label : _isObjective = true
-? townCount >= 3 && thirdLabel == _label : _isObjective = true
-? townCount >= 4 && fourthLabel == _label : _isObjective = true
-? townCount >= 5 && fifthLabel == _label : _isObjective = true
-? _isObjective : goto "civilianProfileDone"
+_townPos = [_townX,_townY,0]
+? !(_townPos call worldPositionInBounds) : goto "civilianProfileDone"
+? _townPos call worldPositionIsObjective : goto "civilianProfileDone"
 
 ; v203 custom: weighted civilian vehicle variety. Ordinary cars remain the majority.
 ; Vanilla CWA specialty vehicle class names are used alongside WW4 EXT civilian cars.
@@ -26,7 +22,7 @@ _carClass = _classes select _classIndex
 _randomOffset = random (count _offsets)
 _offsetIndex = _randomOffset - (_randomOffset % 1)
 _offset = _offsets select _offsetIndex
-_carPos = [_townX + (_offset select 0), _townY + (_offset select 1), 0]
+_carPos = [_townX,_townY,_offset select 0,_offset select 1,0,5] call worldOffsetPosition
 _carDir = random 360
 [_carClass, _carPos, _carDir, _label] exec "civilianNonObjectiveCarTown.sqs"
 civilianNonObjectiveCarProfileCount = civilianNonObjectiveCarProfileCount + 1

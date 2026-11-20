@@ -1,45 +1,55 @@
 ; v152 apply visible safe-town markers locally after setup.
-? objectiveType1 != 7 : goto "hide1"
+? townCount < 1 || objectiveType1 != 7 : goto "hide1"
 "rescue_marker_1" setMarkerPos [objectiveRescueDestinationX1,objectiveRescueDestinationY1]
 "rescue_marker_1" setMarkerType "Flag"
 "rescue_marker_1" setMarkerColor "ColorGreen"
 "rescue_marker_1" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel1]
+? objective1Done || objectiveRescueReady1 : "rescue_marker_1" setMarkerText "CIVILIANS SECURED"
+? objectiveRescueFailed1 : "rescue_marker_1" setMarkerColor "ColorRed"; "rescue_marker_1" setMarkerText "CIVILIAN RESCUE FAILED"
 goto "after1"
 #hide1
 "rescue_marker_1" setMarkerType "Empty"
 #after1
-? objectiveType2 != 7 : goto "hide2"
+? townCount < 2 || objectiveType2 != 7 : goto "hide2"
 "rescue_marker_2" setMarkerPos [objectiveRescueDestinationX2,objectiveRescueDestinationY2]
 "rescue_marker_2" setMarkerType "Flag"
 "rescue_marker_2" setMarkerColor "ColorGreen"
 "rescue_marker_2" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel2]
+? objective2Done || objectiveRescueReady2 : "rescue_marker_2" setMarkerText "CIVILIANS SECURED"
+? objectiveRescueFailed2 : "rescue_marker_2" setMarkerColor "ColorRed"; "rescue_marker_2" setMarkerText "CIVILIAN RESCUE FAILED"
 goto "after2"
 #hide2
 "rescue_marker_2" setMarkerType "Empty"
 #after2
-? objectiveType3 != 7 : goto "hide3"
+? townCount < 3 || objectiveType3 != 7 : goto "hide3"
 "rescue_marker_3" setMarkerPos [objectiveRescueDestinationX3,objectiveRescueDestinationY3]
 "rescue_marker_3" setMarkerType "Flag"
 "rescue_marker_3" setMarkerColor "ColorGreen"
 "rescue_marker_3" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel3]
+? objective3Done || objectiveRescueReady3 : "rescue_marker_3" setMarkerText "CIVILIANS SECURED"
+? objectiveRescueFailed3 : "rescue_marker_3" setMarkerColor "ColorRed"; "rescue_marker_3" setMarkerText "CIVILIAN RESCUE FAILED"
 goto "after3"
 #hide3
 "rescue_marker_3" setMarkerType "Empty"
 #after3
-? objectiveType4 != 7 : goto "hide4"
+? townCount < 4 || objectiveType4 != 7 : goto "hide4"
 "rescue_marker_4" setMarkerPos [objectiveRescueDestinationX4,objectiveRescueDestinationY4]
 "rescue_marker_4" setMarkerType "Flag"
 "rescue_marker_4" setMarkerColor "ColorGreen"
 "rescue_marker_4" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel4]
+? objective4Done || objectiveRescueReady4 : "rescue_marker_4" setMarkerText "CIVILIANS SECURED"
+? objectiveRescueFailed4 : "rescue_marker_4" setMarkerColor "ColorRed"; "rescue_marker_4" setMarkerText "CIVILIAN RESCUE FAILED"
 goto "after4"
 #hide4
 "rescue_marker_4" setMarkerType "Empty"
 #after4
-? objectiveType5 != 7 : goto "hide5"
+? townCount < 5 || objectiveType5 != 7 : goto "hide5"
 "rescue_marker_5" setMarkerPos [objectiveRescueDestinationX5,objectiveRescueDestinationY5]
 "rescue_marker_5" setMarkerType "Flag"
 "rescue_marker_5" setMarkerColor "ColorGreen"
 "rescue_marker_5" setMarkerText format ["CIVILIAN SAFE TOWN: %1", objectiveRescueDestinationLabel5]
+? objective5Done || objectiveRescueReady5 : "rescue_marker_5" setMarkerText "CIVILIANS SECURED"
+? objectiveRescueFailed5 : "rescue_marker_5" setMarkerColor "ColorRed"; "rescue_marker_5" setMarkerText "CIVILIAN RESCUE FAILED"
 goto "after5"
 #hide5
 "rescue_marker_5" setMarkerType "Empty"

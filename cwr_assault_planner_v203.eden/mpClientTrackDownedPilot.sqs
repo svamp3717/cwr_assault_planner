@@ -26,9 +26,7 @@ _failed = false
 ? missionEnded || _done || _failed : goto "hide"
 ? !(alive _pilot) : goto "hide"
 _p = getPos _pilot
-_dx = (_p select 0) - _destX
-_dy = (_p select 1) - _destY
-? ((_dx * _dx) + (_dy * _dy)) <= 14400 : goto "hide"
+; Wait for authoritative deletion/completion, not merely horizontal proximity.
 _marker setMarkerPos [_p select 0,_p select 1]
 _marker setMarkerType "Flag"
 _marker setMarkerColor "ColorBlue"

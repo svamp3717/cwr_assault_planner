@@ -38,6 +38,7 @@ _u = _units select 0
 ? isNull _u : goto "afterUnit1"
 ? !(alive _u) : goto "afterUnit1"
 _aliveCount = _aliveCount + 1
+? (getPos (vehicle _u) select 2) > 5 : goto "afterUnit1"
 _p = getPos _u
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
@@ -54,6 +55,7 @@ _u = _units select 1
 ? isNull _u : goto "afterUnit2"
 ? !(alive _u) : goto "afterUnit2"
 _aliveCount = _aliveCount + 1
+? (getPos (vehicle _u) select 2) > 5 : goto "afterUnit2"
 _p = getPos _u
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
@@ -70,6 +72,7 @@ _u = _units select 2
 ? isNull _u : goto "afterUnit3"
 ? !(alive _u) : goto "afterUnit3"
 _aliveCount = _aliveCount + 1
+? (getPos (vehicle _u) select 2) > 5 : goto "afterUnit3"
 _p = getPos _u
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
@@ -86,6 +89,7 @@ _u = _units select 3
 ? isNull _u : goto "afterUnit4"
 ? !(alive _u) : goto "afterUnit4"
 _aliveCount = _aliveCount + 1
+? (getPos (vehicle _u) select 2) > 5 : goto "afterUnit4"
 _p = getPos _u
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY

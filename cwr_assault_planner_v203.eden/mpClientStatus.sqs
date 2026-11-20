@@ -6,14 +6,24 @@
 ? mpReinforcementMessageId > mpLastReinforcementMessageId : goto "newReinforcementMessage"
 #afterReinforcementMessage
 ? objective1Done && !(mpObjective1Announced) : "1" objStatus "DONE"
+? objective1Done && !(mpObjective1Announced) && objectiveType1 == 9 : "pilot_marker_1" setMarkerText "DOWNED PILOT SECURED"
+? objective1Done && !(mpObjective1Announced) && objectiveType1 == 7 : "rescue_marker_1" setMarkerText "CIVILIANS SECURED"
 ? objective1Done && !(mpObjective1Announced) : mpObjective1Announced = true
 ? objective2Done && !(mpObjective2Announced) : "2" objStatus "DONE"
+? objective2Done && !(mpObjective2Announced) && objectiveType2 == 9 : "pilot_marker_2" setMarkerText "DOWNED PILOT SECURED"
+? objective2Done && !(mpObjective2Announced) && objectiveType2 == 7 : "rescue_marker_2" setMarkerText "CIVILIANS SECURED"
 ? objective2Done && !(mpObjective2Announced) : mpObjective2Announced = true
 ? objective3Done && !(mpObjective3Announced) : "3" objStatus "DONE"
+? objective3Done && !(mpObjective3Announced) && objectiveType3 == 9 : "pilot_marker_3" setMarkerText "DOWNED PILOT SECURED"
+? objective3Done && !(mpObjective3Announced) && objectiveType3 == 7 : "rescue_marker_3" setMarkerText "CIVILIANS SECURED"
 ? objective3Done && !(mpObjective3Announced) : mpObjective3Announced = true
 ? objective4Done && !(mpObjective4Announced) : "4" objStatus "DONE"
+? objective4Done && !(mpObjective4Announced) && objectiveType4 == 9 : "pilot_marker_4" setMarkerText "DOWNED PILOT SECURED"
+? objective4Done && !(mpObjective4Announced) && objectiveType4 == 7 : "rescue_marker_4" setMarkerText "CIVILIANS SECURED"
 ? objective4Done && !(mpObjective4Announced) : mpObjective4Announced = true
 ? objective5Done && !(mpObjective5Announced) : "5" objStatus "DONE"
+? objective5Done && !(mpObjective5Announced) && objectiveType5 == 9 : "pilot_marker_5" setMarkerText "DOWNED PILOT SECURED"
+? objective5Done && !(mpObjective5Announced) && objectiveType5 == 7 : "rescue_marker_5" setMarkerText "CIVILIANS SECURED"
 ? objective5Done && !(mpObjective5Announced) : mpObjective5Announced = true
 _radioLeader = leader (group player)
 ? player == _radioLeader && !(airSupportUsed) && !(airSupportUnavailableReported) : 1 setRadioMsg "Request Air Support"

@@ -20,6 +20,7 @@ _done = false
 ? _done : exit
 ? isNull _pilot : goto "loop"
 ? !(alive _pilot) : goto "failed"
+? (getPos (vehicle _pilot) select 2) > 5 : goto "loop"
 _p = getPos _pilot
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
