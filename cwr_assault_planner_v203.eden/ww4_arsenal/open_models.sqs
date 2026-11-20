@@ -1,13 +1,13 @@
 ; Open the dedicated player-model dialog.
 
 ? WW4_PlayerModelDataReady : goto "DataReady"
-hint "WW4 Arsenal: player-model data is not ready."
+hint "Mission Arsenal: player-model data is not ready."
 exit
 
 #DataReady
 _ok = createDialog "WW4_PlayerModel_Dialog"
 ? _ok : goto "DialogOpened"
-hint "WW4 Arsenal: player-model dialog could not be opened."
+hint "Mission Arsenal: player-model dialog could not be opened."
 exit
 
 #DialogOpened

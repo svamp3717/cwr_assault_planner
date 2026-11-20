@@ -115,8 +115,8 @@ player setPos [_footX - 18, _footY - 10, 0]
 "lz_marker" setMarkerText format ["Foot start: %1 / %2 / %3", approachLabel, timeOfDayLabel, playerAILabel]
 ? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG INSERTION: on-foot insertion complete; first objective %1", townLabel]
 [] exec "westAmmoBox.sqs"
-player addWeapon "Binocular"
-player addWeapon "NVGoggles"
+player addWeapon assetClassBinocular
+player addWeapon assetClassNVGoggles
 insertionComplete = true
 [] exec "updateObjectiveMarkerLabels.sqs"
 [] exec "alliedSearchDestroy.sqs"

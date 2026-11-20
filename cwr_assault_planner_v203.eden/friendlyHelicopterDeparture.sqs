@@ -5,6 +5,9 @@ _lzX = _this select 1
 _lzY = _this select 2
 _departX = _this select 3
 _departY = _this select 4
+_depart = [_lzX, _lzY, _departX - _lzX, _departY - _lzY, 0, 20] call worldOffsetPosition
+_departX = _depart select 0
+_departY = _depart select 1
 ? isNull _heli : exit
 ? !(alive _heli) : exit
 _heli setFuel 1

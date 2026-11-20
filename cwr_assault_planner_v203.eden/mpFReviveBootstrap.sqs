@@ -21,6 +21,9 @@ FREVIVE_INTERVAL = 0.1
 FREVIVE_MSG_STYLE = 0
 FREVIVE_SOUND = false
 FREVIVE_KILL_CAM = true
+; Keep automatic corpse relocation OFF on ports until water recovery is playtested.
+; Set true to enable the bounded, owner-local shore search (max 600 m).
+FREVIVE_ANTI_WATER = false
 
 mpFReviveStarted = true
 mpFReviveNames exec "FRevive\Start.sqs"

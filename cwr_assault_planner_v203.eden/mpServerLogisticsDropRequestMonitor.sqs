@@ -25,6 +25,11 @@ publicVariable "mpLogisticsDropRequest"
 ? isNull logisticsDropRequester : goto "invalidRequest"
 ? !(alive logisticsDropRequester) : goto "invalidRequest"
 ? logisticsDropRequester != leader (group logisticsDropRequester) : goto "invalidRequest"
+; Resolve the label on the server from the same profile role used to create the payload.
+logisticsDropRequestLabel = assetNameWestJeep
+? logisticsDropRequestType == 2 : logisticsDropRequestLabel = assetNameWestHMMWV
+? logisticsDropRequestType == 3 : logisticsDropRequestLabel = assetNameWestAmmoBox
+publicVariable "logisticsDropRequestLabel"
 _requestPos = getPos logisticsDropRequester
 logisticsDropRequestX = _requestPos select 0
 logisticsDropRequestY = _requestPos select 1
@@ -41,7 +46,7 @@ publicVariable "logisticsDropAvailable"
 publicVariable "logisticsDropUsed"
 publicVariable "logisticsDropInProgress"
 publicVariable "logisticsDropDelivered"
-mpHQMessage = format ["HQ: %1 logistics helidrop approved. Chinook inbound to the marked position. %2 request(s) remain after this delivery.", logisticsDropRequestLabel, logisticsDropsRemaining]
+mpHQMessage = format ["HQ: %1 logistics helidrop approved. %2 inbound to the marked position. %3 request(s) remain after this delivery.",logisticsDropRequestLabel,assetNameWestHeavyTransportHeli,logisticsDropsRemaining]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "mpHQMessage"
 publicVariable "mpHQMessageId"

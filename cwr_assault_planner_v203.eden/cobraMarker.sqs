@@ -43,9 +43,9 @@ cobraProxyY = airStageY
 ? alive supportAirVehicle : supportAirVehicle setFuel 1
 ? alive supportAirVehicle : supportAirVehicle flyInHeight 210
 ? alive supportAirVehicle : supportAirVehicle action ["ENGINEON", supportAirVehicle]
-? alive supportAirVehicle : supportAirVehicle doMove [airStageX + 450, airStageY + 450, 0]
-? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airStageX + 450, airStageY + 450, 0]
-? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airStageX + 450, airStageY + 450, 0]
+? alive supportAirVehicle : supportAirVehicle doMove ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
 ? debugMode : debugLog format ["ERA DEBUG AIR: Air support standby marker proxy X=%1 Y=%2", cobraProxyX, cobraProxyY]
 ? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG AIR: Air support standby marker %1/%2", cobraProxyX, cobraProxyY]
 ~30
@@ -115,9 +115,9 @@ cobraCrashReported = true
 goto "hide"
 
 #hide
-cobraProxyX = 10875.000000
-cobraProxyY = 11700.000000
-"cobra_marker" setMarkerPos [10875.000000, 11700.000000, 0]
+cobraProxyX = missionBaseX
+cobraProxyY = missionBaseY
+"cobra_marker" setMarkerPos [missionBaseX, missionBaseY, 0]
 "cobra_marker" setMarkerType "Flag"
 "cobra_marker" setMarkerColor "ColorGreen"
 "cobra_marker" setMarkerText ""

@@ -10,8 +10,8 @@ _y = _this select 2
 _z = _this select 3
 _dir = _this select 4
 _aircraft = _this select 5
-_crewClass = "WW4_WARCrew"
-? _aircraft : _crewClass = "WW4_WARPilot"
+_crewClass = assetClassWestCrew
+? _aircraft : _crewClass = assetClassWestPilot
 _veh = _class createVehicle [_x, _y, 0]
 ? isNull _veh : goto "spawnFailed"
 _veh setDir _dir
@@ -27,7 +27,7 @@ _veh setVelocity [0,0,25]
 #spawnPositioned
 ~0.2
 _grp = createGroup west
-_crewPos = [_x + 6, _y + 6, 0]
+_crewPos = [_x + 6, _y + 6, 0, 5] call worldClampPosition
 _crewClass createUnit [_crewPos, _grp, ""]
 ~0.1
 _units = units _grp

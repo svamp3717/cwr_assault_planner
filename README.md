@@ -46,6 +46,16 @@ WW4_EXT;WW4_EXT_VEH;WW4EXT_CW
 - **Debug option:** optional diagnostics and reinforcement transport markers for testing.
 - **Everon location pool:** imported settlement, military, landmark, harbour, industrial, and unnamed-area markers are used by the objective, patrol, rescue, traffic, and recovery systems as appropriate.
 
+## Porting to another terrain
+
+Run `python tools/generate_world_config_gui.py` to load a terrain's
+`config.cpp`. The **Create a complete new mission folder** option lets you
+choose an existing mission template and a destination folder, then generates
+`<mission name>.<world class>/` with all mission files, a generated
+`worldConfig.sqs`, and re-centered editor positions in `mission.sqm`.
+
+See [WORLD_PORTING.md](WORLD_PORTING.md) for the full workflow and safety notes.
+
 ## Installing the mission
 
 1. Download or clone the repository.

@@ -1,18 +1,22 @@
-; v195 Everon offshore setup island. The island is not part of the objective/location pool.
-player setPos [10865.000000, 11696.000000, 0]
-red2 setPos [10869.000000, 11696.000000, 0]
-red3 setPos [10873.000000, 11696.000000, 0]
-medic1 setPos [10877.000000, 11696.000000, 0]
-medic2 setPos [10881.000000, 11696.000000, 0]
-red6 setPos [10885.000000, 11696.000000, 0]
-red7 setPos [10865.000000, 11702.000000, 0]
-red8 setPos [10869.000000, 11702.000000, 0]
-red9 setPos [10873.000000, 11702.000000, 0]
-red10 setPos [10877.000000, 11702.000000, 0]
-red11 setPos [10881.000000, 11702.000000, 0]
-red12 setPos [10885.000000, 11702.000000, 0]
-"box_marker" setMarkerPos [10875.000000, 11700.000000, 0]
-"cobra_marker" setMarkerPos [10875.000000, 11700.000000, 0]
-"logistics_drop_marker" setMarkerPos [10875.000000, 11700.000000, 0]
+; World-portable setup position. Load the one world-specific config before anything uses coordinates.
+worldConfigReady = false
+[] exec "worldConfig.sqs"
+@ worldConfigReady
+
+player setPos [missionBaseX - 10, missionBaseY - 4, 0]
+red2 setPos [missionBaseX - 6, missionBaseY - 4, 0]
+red3 setPos [missionBaseX - 2, missionBaseY - 4, 0]
+medic1 setPos [missionBaseX + 2, missionBaseY - 4, 0]
+medic2 setPos [missionBaseX + 6, missionBaseY - 4, 0]
+red6 setPos [missionBaseX + 10, missionBaseY - 4, 0]
+red7 setPos [missionBaseX - 10, missionBaseY + 2, 0]
+red8 setPos [missionBaseX - 6, missionBaseY + 2, 0]
+red9 setPos [missionBaseX - 2, missionBaseY + 2, 0]
+red10 setPos [missionBaseX + 2, missionBaseY + 2, 0]
+red11 setPos [missionBaseX + 6, missionBaseY + 2, 0]
+red12 setPos [missionBaseX + 10, missionBaseY + 2, 0]
+"box_marker" setMarkerPos [missionBaseX, missionBaseY, 0]
+"cobra_marker" setMarkerPos [missionBaseX, missionBaseY, 0]
+"logistics_drop_marker" setMarkerPos [missionBaseX, missionBaseY, 0]
 safeInitialComplete = true
 exit

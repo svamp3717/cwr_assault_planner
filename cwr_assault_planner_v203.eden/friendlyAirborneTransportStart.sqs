@@ -6,6 +6,12 @@ _startY = _this select 2
 _destX = _this select 3
 _destY = _this select 4
 _height = _this select 5
+_start = [_startX, _startY, 0, 20] call worldClampPosition
+_startX = _start select 0
+_startY = _start select 1
+_dest = [_destX, _destY, 0, 20] call worldClampPosition
+_destX = _dest select 0
+_destY = _dest select 1
 ? isNull _veh : exit
 ? !(alive _veh) : exit
 _pilot = driver _veh

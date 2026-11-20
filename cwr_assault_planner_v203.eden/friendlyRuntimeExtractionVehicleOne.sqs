@@ -14,15 +14,15 @@ _veh setDammage 0
 _veh setVelocity [0,0,0]
 ~0.2
 _grp = createGroup west
-_crewPos = [_x + 6, _y + 6, 0]
-"WW4_WARPilot" createUnit [_crewPos, _grp, ""]
+_crewPos = [_x + 6, _y + 6, 0, 5] call worldClampPosition
+assetClassWestPilot createUnit [_crewPos, _grp, ""]
 ~0.1
 _units = units _grp
 ? count _units < 1 : goto "spawnFailedDeleteVehicle"
 _driver = _units select 0
 _driver setSkill 0.60
 _driver moveInDriver _veh
-"WW4_WARPilot" createUnit [_crewPos, _grp, ""]
+assetClassWestPilot createUnit [_crewPos, _grp, ""]
 ~0.1
 _units = units _grp
 ? count _units < 2 : goto "skipGunnerCreate"
@@ -30,7 +30,7 @@ _gunner = _units select 1
 _gunner setSkill 0.60
 _gunner moveInGunner _veh
 #skipGunnerCreate
-"WW4_WARPilot" createUnit [_crewPos, _grp, ""]
+assetClassWestPilot createUnit [_crewPos, _grp, ""]
 ~0.1
 _units = units _grp
 ? count _units < 3 : goto "skipCommanderCreate"

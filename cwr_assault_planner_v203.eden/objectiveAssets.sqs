@@ -194,18 +194,20 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective1Ammo"
 goto "objective1Shilka"
 #objective1Scud
-_targetClass = "Scud"
-objectiveTargetLabel1 = "SCUD launcher"
+_targetClass = assetClassScud
+objectiveTargetLabel1 = assetNameScud
 goto "objective1CreateDestroy"
 #objective1Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
-objectiveTargetLabel1 = "ammunition truck"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
+? enemyEast : objectiveTargetLabel1 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel1 = assetNameResistanceAmmoTruck
 goto "objective1CreateDestroy"
 #objective1Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
-objectiveTargetLabel1 = "Shilka AA vehicle"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
+? enemyEast : objectiveTargetLabel1 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel1 = assetNameResistanceAirDefense
 #objective1CreateDestroy
 objectiveTarget1 = _targetClass createVehicle [primaryX + 85, primaryY + -45, 0]
 objectiveTarget1 setDir 235
@@ -216,7 +218,7 @@ objectiveTypeLabel1 = format ["Destroy %1", objectiveTargetLabel1]
 objectiveTaskText1 = format ["Destroy the %1 near %2.", objectiveTargetLabel1, townLabel]
 goto "objective1Finished"
 #objective1Intel
-objectiveTarget1 = "TableMap" createVehicle [primaryX + 42, primaryY + -23, 0]
+objectiveTarget1 = assetClassTableMap createVehicle [primaryX + 42, primaryY + -23, 0]
 objectiveTarget1 setDir 235
 objectiveTarget1 allowDammage false
 objectiveTargetLabel1 = "intelligence file"
@@ -254,6 +256,7 @@ goto "objective1Finished"
 civilianRescueDestinationReady = false
 [1,primaryX,primaryY,townLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType1 == 0 : objectiveTypeLabel1 = "Clear Area"; objectiveTaskText1 = format ["Clear hostile forces from the area around %1.", townLabel]; goto "objective1Finished"
 objectiveTargetLabel1 = "town civilians"
 objectiveTypeLabel1 = "Save Civilians"
 objectiveTaskText1 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", townLabel, objectiveRescueDestinationLabel1]
@@ -262,6 +265,7 @@ goto "objective1Finished"
 stealVehicleSiteReady = false
 [1,primaryX + 110,primaryY + 55,180,primaryX,primaryY,townLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType1 == 0 : objectiveTypeLabel1 = "Clear Area"; objectiveTaskText1 = format ["Clear hostile forces from the area around %1.", townLabel]; goto "objective1Finished"
 objectiveTargetLabel1 = objectiveStealVehicleLabel1
 objectiveTypeLabel1 = "Steal a Vehicle"
 objectiveTaskText1 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel1, townLabel, objectiveStealDestinationLabel1]
@@ -270,6 +274,7 @@ goto "objective1Finished"
 downedPilotObjectiveReady = false
 [1,primaryX,primaryY,townLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType1 == 0 : objectiveTypeLabel1 = "Clear Area"; objectiveTaskText1 = format ["Clear hostile forces from the area around %1.", townLabel]; goto "objective1Finished"
 objectiveTargetLabel1 = "downed friendly pilot"
 objectiveTypeLabel1 = "Recover Downed Pilot"
 objectiveTaskText1 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", townLabel, objectivePilotDestinationLabel1]
@@ -295,18 +300,20 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective2Ammo"
 goto "objective2Shilka"
 #objective2Scud
-_targetClass = "Scud"
-objectiveTargetLabel2 = "SCUD launcher"
+_targetClass = assetClassScud
+objectiveTargetLabel2 = assetNameScud
 goto "objective2CreateDestroy"
 #objective2Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
-objectiveTargetLabel2 = "ammunition truck"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
+? enemyEast : objectiveTargetLabel2 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel2 = assetNameResistanceAmmoTruck
 goto "objective2CreateDestroy"
 #objective2Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
-objectiveTargetLabel2 = "Shilka AA vehicle"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
+? enemyEast : objectiveTargetLabel2 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel2 = assetNameResistanceAirDefense
 #objective2CreateDestroy
 objectiveTarget2 = _targetClass createVehicle [secondaryX + -90, secondaryY + 50, 0]
 objectiveTarget2 setDir 125
@@ -317,7 +324,7 @@ objectiveTypeLabel2 = format ["Destroy %1", objectiveTargetLabel2]
 objectiveTaskText2 = format ["Destroy the %1 near %2.", objectiveTargetLabel2, secondaryLabel]
 goto "objective2Finished"
 #objective2Intel
-objectiveTarget2 = "TableMap" createVehicle [secondaryX + -45, secondaryY + 25, 0]
+objectiveTarget2 = assetClassTableMap createVehicle [secondaryX + -45, secondaryY + 25, 0]
 objectiveTarget2 setDir 125
 objectiveTarget2 allowDammage false
 objectiveTargetLabel2 = "intelligence file"
@@ -355,6 +362,7 @@ goto "objective2Finished"
 civilianRescueDestinationReady = false
 [2,secondaryX,secondaryY,secondaryLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType2 == 0 : objectiveTypeLabel2 = "Clear Area"; objectiveTaskText2 = format ["Clear hostile forces from the area around %1.", secondaryLabel]; goto "objective2Finished"
 objectiveTargetLabel2 = "town civilians"
 objectiveTypeLabel2 = "Save Civilians"
 objectiveTaskText2 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", secondaryLabel, objectiveRescueDestinationLabel2]
@@ -363,6 +371,7 @@ goto "objective2Finished"
 stealVehicleSiteReady = false
 [2,secondaryX + -110,secondaryY + -55,0,secondaryX,secondaryY,secondaryLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType2 == 0 : objectiveTypeLabel2 = "Clear Area"; objectiveTaskText2 = format ["Clear hostile forces from the area around %1.", secondaryLabel]; goto "objective2Finished"
 objectiveTargetLabel2 = objectiveStealVehicleLabel2
 objectiveTypeLabel2 = "Steal a Vehicle"
 objectiveTaskText2 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel2, secondaryLabel, objectiveStealDestinationLabel2]
@@ -371,6 +380,7 @@ goto "objective2Finished"
 downedPilotObjectiveReady = false
 [2,secondaryX,secondaryY,secondaryLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType2 == 0 : objectiveTypeLabel2 = "Clear Area"; objectiveTaskText2 = format ["Clear hostile forces from the area around %1.", secondaryLabel]; goto "objective2Finished"
 objectiveTargetLabel2 = "downed friendly pilot"
 objectiveTypeLabel2 = "Recover Downed Pilot"
 objectiveTaskText2 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", secondaryLabel, objectivePilotDestinationLabel2]
@@ -396,18 +406,20 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective3Ammo"
 goto "objective3Shilka"
 #objective3Scud
-_targetClass = "Scud"
-objectiveTargetLabel3 = "SCUD launcher"
+_targetClass = assetClassScud
+objectiveTargetLabel3 = assetNameScud
 goto "objective3CreateDestroy"
 #objective3Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
-objectiveTargetLabel3 = "ammunition truck"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
+? enemyEast : objectiveTargetLabel3 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel3 = assetNameResistanceAmmoTruck
 goto "objective3CreateDestroy"
 #objective3Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
-objectiveTargetLabel3 = "Shilka AA vehicle"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
+? enemyEast : objectiveTargetLabel3 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel3 = assetNameResistanceAirDefense
 #objective3CreateDestroy
 objectiveTarget3 = _targetClass createVehicle [thirdX + 75, thirdY + 70, 0]
 objectiveTarget3 setDir 310
@@ -418,7 +430,7 @@ objectiveTypeLabel3 = format ["Destroy %1", objectiveTargetLabel3]
 objectiveTaskText3 = format ["Destroy the %1 near %2.", objectiveTargetLabel3, thirdLabel]
 goto "objective3Finished"
 #objective3Intel
-objectiveTarget3 = "TableMap" createVehicle [thirdX + 37, thirdY + 35, 0]
+objectiveTarget3 = assetClassTableMap createVehicle [thirdX + 37, thirdY + 35, 0]
 objectiveTarget3 setDir 310
 objectiveTarget3 allowDammage false
 objectiveTargetLabel3 = "intelligence file"
@@ -456,6 +468,7 @@ goto "objective3Finished"
 civilianRescueDestinationReady = false
 [3,thirdX,thirdY,thirdLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType3 == 0 : objectiveTypeLabel3 = "Clear Area"; objectiveTaskText3 = format ["Clear hostile forces from the area around %1.", thirdLabel]; goto "objective3Finished"
 objectiveTargetLabel3 = "town civilians"
 objectiveTypeLabel3 = "Save Civilians"
 objectiveTaskText3 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", thirdLabel, objectiveRescueDestinationLabel3]
@@ -464,6 +477,7 @@ goto "objective3Finished"
 stealVehicleSiteReady = false
 [3,thirdX + 100,thirdY + -70,90,thirdX,thirdY,thirdLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType3 == 0 : objectiveTypeLabel3 = "Clear Area"; objectiveTaskText3 = format ["Clear hostile forces from the area around %1.", thirdLabel]; goto "objective3Finished"
 objectiveTargetLabel3 = objectiveStealVehicleLabel3
 objectiveTypeLabel3 = "Steal a Vehicle"
 objectiveTaskText3 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel3, thirdLabel, objectiveStealDestinationLabel3]
@@ -472,6 +486,7 @@ goto "objective3Finished"
 downedPilotObjectiveReady = false
 [3,thirdX,thirdY,thirdLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType3 == 0 : objectiveTypeLabel3 = "Clear Area"; objectiveTaskText3 = format ["Clear hostile forces from the area around %1.", thirdLabel]; goto "objective3Finished"
 objectiveTargetLabel3 = "downed friendly pilot"
 objectiveTypeLabel3 = "Recover Downed Pilot"
 objectiveTaskText3 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", thirdLabel, objectivePilotDestinationLabel3]
@@ -497,18 +512,20 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective4Ammo"
 goto "objective4Shilka"
 #objective4Scud
-_targetClass = "Scud"
-objectiveTargetLabel4 = "SCUD launcher"
+_targetClass = assetClassScud
+objectiveTargetLabel4 = assetNameScud
 goto "objective4CreateDestroy"
 #objective4Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
-objectiveTargetLabel4 = "ammunition truck"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
+? enemyEast : objectiveTargetLabel4 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel4 = assetNameResistanceAmmoTruck
 goto "objective4CreateDestroy"
 #objective4Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
-objectiveTargetLabel4 = "Shilka AA vehicle"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
+? enemyEast : objectiveTargetLabel4 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel4 = assetNameResistanceAirDefense
 #objective4CreateDestroy
 objectiveTarget4 = _targetClass createVehicle [fourthX + -80, fourthY + -65, 0]
 objectiveTarget4 setDir 45
@@ -519,7 +536,7 @@ objectiveTypeLabel4 = format ["Destroy %1", objectiveTargetLabel4]
 objectiveTaskText4 = format ["Destroy the %1 near %2.", objectiveTargetLabel4, fourthLabel]
 goto "objective4Finished"
 #objective4Intel
-objectiveTarget4 = "TableMap" createVehicle [fourthX + -40, fourthY + -33, 0]
+objectiveTarget4 = assetClassTableMap createVehicle [fourthX + -40, fourthY + -33, 0]
 objectiveTarget4 setDir 45
 objectiveTarget4 allowDammage false
 objectiveTargetLabel4 = "intelligence file"
@@ -557,6 +574,7 @@ goto "objective4Finished"
 civilianRescueDestinationReady = false
 [4,fourthX,fourthY,fourthLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType4 == 0 : objectiveTypeLabel4 = "Clear Area"; objectiveTaskText4 = format ["Clear hostile forces from the area around %1.", fourthLabel]; goto "objective4Finished"
 objectiveTargetLabel4 = "town civilians"
 objectiveTypeLabel4 = "Save Civilians"
 objectiveTaskText4 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", fourthLabel, objectiveRescueDestinationLabel4]
@@ -565,6 +583,7 @@ goto "objective4Finished"
 stealVehicleSiteReady = false
 [4,fourthX + -100,fourthY + 70,270,fourthX,fourthY,fourthLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType4 == 0 : objectiveTypeLabel4 = "Clear Area"; objectiveTaskText4 = format ["Clear hostile forces from the area around %1.", fourthLabel]; goto "objective4Finished"
 objectiveTargetLabel4 = objectiveStealVehicleLabel4
 objectiveTypeLabel4 = "Steal a Vehicle"
 objectiveTaskText4 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel4, fourthLabel, objectiveStealDestinationLabel4]
@@ -573,6 +592,7 @@ goto "objective4Finished"
 downedPilotObjectiveReady = false
 [4,fourthX,fourthY,fourthLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType4 == 0 : objectiveTypeLabel4 = "Clear Area"; objectiveTaskText4 = format ["Clear hostile forces from the area around %1.", fourthLabel]; goto "objective4Finished"
 objectiveTargetLabel4 = "downed friendly pilot"
 objectiveTypeLabel4 = "Recover Downed Pilot"
 objectiveTaskText4 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", fourthLabel, objectivePilotDestinationLabel4]
@@ -598,18 +618,20 @@ _targetRoll = random 3
 ? _targetRoll < 2 : goto "objective5Ammo"
 goto "objective5Shilka"
 #objective5Scud
-_targetClass = "Scud"
-objectiveTargetLabel5 = "SCUD launcher"
+_targetClass = assetClassScud
+objectiveTargetLabel5 = assetNameScud
 goto "objective5CreateDestroy"
 #objective5Ammo
-? enemyEast : _targetClass = "WW4EXT_UralAmmo"
-? enemyResistance : _targetClass = "WW4EXT_PV3SAR"
-objectiveTargetLabel5 = "ammunition truck"
+? enemyEast : _targetClass = assetClassEastAmmoTruck
+? enemyResistance : _targetClass = assetClassResistanceAmmoTruck
+? enemyEast : objectiveTargetLabel5 = assetNameEastAmmoTruck
+? enemyResistance : objectiveTargetLabel5 = assetNameResistanceAmmoTruck
 goto "objective5CreateDestroy"
 #objective5Shilka
-? enemyEast : _targetClass = "WW4EXT_ZSU"
-? enemyResistance : _targetClass = "WW4EXT_ZSUR"
-objectiveTargetLabel5 = "Shilka AA vehicle"
+? enemyEast : _targetClass = assetClassEastAirDefense
+? enemyResistance : _targetClass = assetClassResistanceAirDefense
+? enemyEast : objectiveTargetLabel5 = assetNameEastAirDefense
+? enemyResistance : objectiveTargetLabel5 = assetNameResistanceAirDefense
 #objective5CreateDestroy
 objectiveTarget5 = _targetClass createVehicle [fifthX + 95, fifthY + 20, 0]
 objectiveTarget5 setDir 180
@@ -620,7 +642,7 @@ objectiveTypeLabel5 = format ["Destroy %1", objectiveTargetLabel5]
 objectiveTaskText5 = format ["Destroy the %1 near %2.", objectiveTargetLabel5, fifthLabel]
 goto "objective5Finished"
 #objective5Intel
-objectiveTarget5 = "TableMap" createVehicle [fifthX + 47, fifthY + 10, 0]
+objectiveTarget5 = assetClassTableMap createVehicle [fifthX + 47, fifthY + 10, 0]
 objectiveTarget5 setDir 180
 objectiveTarget5 allowDammage false
 objectiveTargetLabel5 = "intelligence file"
@@ -658,6 +680,7 @@ goto "objective5Finished"
 civilianRescueDestinationReady = false
 [5,fifthX,fifthY,fifthLabel] exec "civilianRescueDestination.sqs"
 @ civilianRescueDestinationReady
+? objectiveType5 == 0 : objectiveTypeLabel5 = "Clear Area"; objectiveTaskText5 = format ["Clear hostile forces from the area around %1.", fifthLabel]; goto "objective5Finished"
 objectiveTargetLabel5 = "town civilians"
 objectiveTypeLabel5 = "Save Civilians"
 objectiveTaskText5 = format ["Escort at least three civilians from %1 to the marked safe town at %2. All rescue civilians are marked on the map. Use Follow Me and Stop actions; civilians can ride in cargo vehicles.", fifthLabel, objectiveRescueDestinationLabel5]
@@ -666,6 +689,7 @@ goto "objective5Finished"
 stealVehicleSiteReady = false
 [5,fifthX + 110,fifthY + -30,180,fifthX,fifthY,fifthLabel] exec "stealVehicleObjective.sqs"
 @ stealVehicleSiteReady
+? objectiveType5 == 0 : objectiveTypeLabel5 = "Clear Area"; objectiveTaskText5 = format ["Clear hostile forces from the area around %1.", fifthLabel]; goto "objective5Finished"
 objectiveTargetLabel5 = objectiveStealVehicleLabel5
 objectiveTypeLabel5 = "Steal a Vehicle"
 objectiveTaskText5 = format ["Capture the %1 near %2 and deliver it to the marked recovery town at %3.", objectiveStealVehicleLabel5, fifthLabel, objectiveStealDestinationLabel5]
@@ -674,6 +698,7 @@ goto "objective5Finished"
 downedPilotObjectiveReady = false
 [5,fifthX,fifthY,fifthLabel] exec "downedPilotObjective.sqs"
 @ downedPilotObjectiveReady
+? objectiveType5 == 0 : objectiveTypeLabel5 = "Clear Area"; objectiveTaskText5 = format ["Clear hostile forces from the area around %1.", fifthLabel]; goto "objective5Finished"
 objectiveTargetLabel5 = "downed friendly pilot"
 objectiveTypeLabel5 = "Recover Downed Pilot"
 objectiveTaskText5 = format ["Locate the map-marked downed pilot near %1, order him to follow, and escort him to the marked safe settlement at %2. The pilot can ride in cargo vehicles.", fifthLabel, objectivePilotDestinationLabel5]

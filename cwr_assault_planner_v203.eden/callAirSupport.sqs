@@ -21,8 +21,12 @@ airTargetLabel = "1"
 ? airSupportTarget == 5 : airTargetLabel = "5"
 airSupportUsed = true
 ? mpMode : publicVariable "airSupportUsed"
-cobraProxyX = airTargetX - 1100
-cobraProxyY = airTargetY - 1100
+_attackPos = [airTargetX, airTargetY, -1100, -1100, 260, 20] call worldOffsetPosition
+cobraProxyX = _attackPos select 0
+cobraProxyY = _attackPos select 1
+_heading = (airTargetX - cobraProxyX) atan2 (airTargetY - cobraProxyY)
+_dx = sin _heading
+_dy = cos _heading
 cobraNoDriverReported = false
 cobraMonitorReady = false
 cobraStuckCount = 0
@@ -34,8 +38,8 @@ cobraCrashReported = false
 ; Re-stage the existing support aircraft high and moving before attack orders.
 supportAirVehicle setDammage 0
 supportAirVehicle setFuel 1
-supportAirVehicle setPos [airTargetX - 1100, airTargetY - 1100, 260]
-supportAirVehicle setDir 45
+supportAirVehicle setPos _attackPos
+supportAirVehicle setDir _heading
 supportAirVehicle flyInHeight 210
 supportAirVehicle action ["ENGINEON", supportAirVehicle]
 "cobra_marker" setMarkerType "Flag"
@@ -43,20 +47,20 @@ supportAirVehicle action ["ENGINEON", supportAirVehicle]
 "cobra_marker" setMarkerText format ["AIR SUPPORT: %1", airTargetLabel]
 "cobra_marker" setMarkerPos [cobraProxyX, cobraProxyY, 0]
 ? !(cobraMarkerRunning) : [] exec "cobraMarker.sqs"
-supportAirVehicle doMove [airTargetX - 550, airTargetY - 550, 0]
-? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airTargetX - 550, airTargetY - 550, 0]
-? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airTargetX - 550, airTargetY - 550, 0]
+supportAirVehicle doMove ([airTargetX - (_dx * 778), airTargetY - (_dy * 778), 0, 20] call worldClampPosition)
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove ([airTargetX - (_dx * 778), airTargetY - (_dy * 778), 0, 20] call worldClampPosition)
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move ([airTargetX - (_dx * 778), airTargetY - (_dy * 778), 0, 20] call worldClampPosition)
 ? debugMode : debugLog format ["ERA DEBUG AIR: aircraft moving to objective %1", airTargetLabel]
 ? debugMode && debugConsole && !(isNull player) : player globalChat format ["ERA DEBUG AIR: aircraft moving to objective %1", airTargetLabel]
 ~2
 _pos = getPos supportAirVehicle
 _z = _pos select 2
-? _z < 90 : supportAirVehicle setPos [airTargetX - 950, airTargetY - 950, 240]
+? _z < 90 : supportAirVehicle setPos ([airTargetX - (_dx * 1344), airTargetY - (_dy * 1344), 240, 20] call worldClampPosition)
 supportAirVehicle flyInHeight 190
 supportAirVehicle action ["ENGINEON", supportAirVehicle]
-supportAirVehicle doMove [airTargetX - 400, airTargetY - 400, 0]
-? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airTargetX - 400, airTargetY - 400, 0]
-? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airTargetX - 400, airTargetY - 400, 0]
+supportAirVehicle doMove ([airTargetX - (_dx * 566), airTargetY - (_dy * 566), 0, 20] call worldClampPosition)
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove ([airTargetX - (_dx * 566), airTargetY - (_dy * 566), 0, 20] call worldClampPosition)
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move ([airTargetX - (_dx * 566), airTargetY - (_dy * 566), 0, 20] call worldClampPosition)
 ~8
 ? missionEnded : exit
 supportAirVehicle flyInHeight 150
@@ -305,17 +309,17 @@ goto "airPatrol"
 #airPatrol
 ~20
 ? missionEnded : exit
-supportAirVehicle doMove [airTargetX + 350, airTargetY, 0]
+supportAirVehicle doMove ([airTargetX + 350, airTargetY, 0, 20] call worldClampPosition)
 supportAirVehicle action ["ENGINEON", supportAirVehicle]
 ~25
 ? missionEnded : exit
-supportAirVehicle doMove [airTargetX - 350, airTargetY, 0]
+supportAirVehicle doMove ([airTargetX - 350, airTargetY, 0, 20] call worldClampPosition)
 supportAirVehicle action ["ENGINEON", supportAirVehicle]
 ~25
 ? missionEnded : exit
-supportAirVehicle doMove [airTargetX, airTargetY + 350, 0]
+supportAirVehicle doMove ([airTargetX, airTargetY + 350, 0, 20] call worldClampPosition)
 supportAirVehicle action ["ENGINEON", supportAirVehicle]
 ~25
 ? missionEnded : exit
-supportAirVehicle doMove [airTargetX, airTargetY - 350, 0]
+supportAirVehicle doMove ([airTargetX, airTargetY - 350, 0, 20] call worldClampPosition)
 exit

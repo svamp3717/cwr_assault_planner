@@ -31,15 +31,15 @@ _bunker setDir _direction
 _wallDir = _direction + 90
 _wall1X = _gunX + (_forwardX * 4) + (_sideX * 3.5)
 _wall1Y = _gunY + (_forwardY * 4) + (_sideY * 3.5)
-_wall1 = "FenceWood" createVehicle [_wall1X, _wall1Y, 0]
+_wall1 = assetClassFenceWood createVehicle [_wall1X, _wall1Y, 0]
 _wall1 setDir _wallDir
 _wall2X = _gunX + (_forwardX * 4) - (_sideX * 3.5)
 _wall2Y = _gunY + (_forwardY * 4) - (_sideY * 3.5)
-_wall2 = "Fence" createVehicle [_wall2X, _wall2Y, 0]
+_wall2 = assetClassFence createVehicle [_wall2X, _wall2Y, 0]
 _wall2 setDir _wallDir
 _wireX = _gunX + (_forwardX * 11)
 _wireY = _gunY + (_forwardY * 11)
-_wire = "Wire" createVehicle [_wireX, _wireY, 0]
+_wire = assetClassWire createVehicle [_wireX, _wireY, 0]
 _wire setDir _wallDir
 
 _gun = _gunClass createVehicle [_gunX, _gunY, 0]

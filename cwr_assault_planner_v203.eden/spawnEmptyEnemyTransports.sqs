@@ -13,7 +13,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new = assetClassEastEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s1Eveh2 = _new
@@ -27,7 +27,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UralBIS" createVehicle _p
+_new = assetClassEastEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s1Eveh4 = _new
@@ -42,7 +42,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new = assetClassEastEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s2Eveh2 = _new
@@ -56,7 +56,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UralBIS" createVehicle _p
+_new = assetClassEastEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s2Eveh4 = _new
@@ -71,7 +71,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new = assetClassEastEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s3Eveh2 = _new
@@ -85,7 +85,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UralBIS" createVehicle _p
+_new = assetClassEastEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s3Eveh4 = _new
@@ -100,7 +100,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new = assetClassEastEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s4Eveh2 = _new
@@ -114,7 +114,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UralBIS" createVehicle _p
+_new = assetClassEastEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s4Eveh4 = _new
@@ -129,7 +129,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UAZ_CW" createVehicle _p
+_new = assetClassEastEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s5Eveh2 = _new
@@ -143,7 +143,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_UralBIS" createVehicle _p
+_new = assetClassEastEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s5Eveh4 = _new
@@ -160,7 +160,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_JeepR" createVehicle _p
+_new = assetClassResistanceEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s1Rveh2 = _new
@@ -174,7 +174,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new = assetClassResistanceEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s1Rveh4 = _new
@@ -189,7 +189,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_JeepR" createVehicle _p
+_new = assetClassResistanceEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s2Rveh2 = _new
@@ -203,7 +203,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new = assetClassResistanceEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s2Rveh4 = _new
@@ -218,7 +218,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_JeepR" createVehicle _p
+_new = assetClassResistanceEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s3Rveh2 = _new
@@ -232,7 +232,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new = assetClassResistanceEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s3Rveh4 = _new
@@ -247,7 +247,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_JeepR" createVehicle _p
+_new = assetClassResistanceEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s4Rveh2 = _new
@@ -261,7 +261,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new = assetClassResistanceEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s4Rveh4 = _new
@@ -276,7 +276,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_JeepR" createVehicle _p
+_new = assetClassResistanceEmptyCar createVehicle _p
 _new setDir _d
 _new setFuel 1
 s5Rveh2 = _new
@@ -290,7 +290,7 @@ deleteVehicle (driver _old)
 deleteVehicle (gunner _old)
 deleteVehicle (commander _old)
 deleteVehicle _old
-_new = "WW4EXT_PV3SBIS" createVehicle _p
+_new = assetClassResistanceEmptyTruck createVehicle _p
 _new setDir _d
 _new setFuel 1
 s5Rveh4 = _new

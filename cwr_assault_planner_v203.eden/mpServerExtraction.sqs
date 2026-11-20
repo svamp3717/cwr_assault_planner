@@ -34,6 +34,9 @@ extractionX = _finalX + _extractOffX
 extractionY = _finalY + _extractOffY
 extractionLabel = format ["Extraction near %1", _finalLabel]
 #extractionPositionReady
+_lzPos = [extractionX, extractionY, 0, 20] call worldClampPosition
+extractionX = _lzPos select 0
+extractionY = _lzPos select 1
 
 ; Reset arrival acknowledgements before publishing the LZ.
 mpExtractArrivedPlr = false
@@ -50,14 +53,14 @@ mpExtractArrivedRed11 = false
 mpExtractArrivedRed12 = false
 
 ? !(isNull extractPad) : deleteVehicle extractPad
-extractPad = "HeliHEmpty" createVehicle [extractionX, extractionY, 0]
+extractPad = assetClassHeliHEmpty createVehicle [extractionX, extractionY, 0]
 "extraction_marker" setMarkerPos [extractionX, extractionY, 0]
 "extraction_marker" setMarkerType "Flag"
 "extraction_marker" setMarkerColor "ColorGreen"
 "extraction_marker" setMarkerText "FINAL EXTRACTION"
 
 extractionLZReady = true
-mpHQMessage = "HQ: Final extraction inbound at the Radio Bravo request position. Clear the marked LZ and board the Chinook."
+mpHQMessage = format ["HQ: Final extraction inbound at the Radio Bravo request position. Clear the marked LZ and board the %1.",assetNameWestHeavyTransportHeli]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "extractionX"
 publicVariable "extractionY"
@@ -69,7 +72,8 @@ publicVariable "mpHQMessageId"
 ; Create the final extraction Chinook only after Radio Bravo is accepted.
 extractHeli = objNull
 extractionVehicleSpawnComplete = false
-["Ch47D", 10880, 11520, 70] exec "friendlyRuntimeExtractionVehicleOne.sqs"
+_spawnPos = [missionBaseX, missionBaseY, 5, -180, 0, 20] call worldOffsetPosition
+[assetClassWestHeavyTransportHeli, _spawnPos select 0, _spawnPos select 1, 70] exec "friendlyRuntimeExtractionVehicleOne.sqs"
 @ extractionVehicleSpawnComplete
 extractHeli = extractionVehicleSpawned
 publicVariable "extractHeli"
@@ -80,7 +84,7 @@ publicVariable "extractHeli"
 extractHeli lock false
 extractHeli setDammage 0
 extractHeli setFuel 1
-extractHeli setPos [10880, 11520, 0.6]
+extractHeli setPos [_spawnPos select 0, _spawnPos select 1, 0.6]
 extractHeli setDir 315
 extractHeli setVelocity [0,0,0]
 extractHeli engineOn true
@@ -92,11 +96,13 @@ extractHeli engineOn true
 ? isNull (driver extractHeli) : goto "crash"
 ? !(alive (driver extractHeli)) : goto "crash"
 
-_stageX = extractionX + 1500
-_stageY = extractionY - 1500
-extractHeli setDir 315
-extractHeli setPos [_stageX, _stageY, 140]
-extractHeli setVelocity [-28,28,6]
+_stagePos = [extractionX, extractionY, 1500, -1500, 140, 20] call worldOffsetPosition
+_stageX = _stagePos select 0
+_stageY = _stagePos select 1
+_heading = (extractionX - _stageX) atan2 (extractionY - _stageY)
+extractHeli setDir _heading
+extractHeli setPos _stagePos
+extractHeli setVelocity [40 * sin _heading,40 * cos _heading,6]
 extractHeli flyInHeight 100
 (driver extractHeli) doMove [extractionX, extractionY, 0]
 
@@ -151,7 +157,7 @@ goto "landed"
 
 #landed
 extractionLanded = true
-mpHQMessage = "HQ: Chinook is on the extraction LZ. All active squad members must board."
+mpHQMessage = format ["HQ: %1 is on the extraction LZ. All active squad members must board.",assetNameWestHeavyTransportHeli]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "extractionLanded"
 publicVariable "mpHQMessage"
@@ -222,7 +228,7 @@ extractHeli lock true
 extractHeli setDammage 0
 extractHeli setFuel 1
 extractHeli engineOn true
-mpHQMessage = "HQ: Squad aboard. Chinook departing the combat zone."
+mpHQMessage = format ["HQ: Squad aboard. %1 departing the combat zone.",assetNameWestHeavyTransportHeli]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "extractionBoarded"
 publicVariable "mpHQMessage"
@@ -239,10 +245,12 @@ extractPad = objNull
 (group (driver extractHeli)) setSpeedMode "FULL"
 
 ; First climb out of the pickup clearing, then fly to a distant exit point.
-_climbX = extractionX + 450
-_climbY = extractionY + 450
-_departX = extractionX + 2400
-_departY = extractionY + 2400
+_climbPos = [extractionX, extractionY, 450, 450, 0, 20] call worldOffsetPosition
+_climbX = _climbPos select 0
+_climbY = _climbPos select 1
+_departPos = [extractionX, extractionY, 2400, 2400, 0, 20] call worldOffsetPosition
+_departX = _departPos select 0
+_departY = _departPos select 1
 extractHeli flyInHeight 120
 extractHeli setVelocity [0,0,12]
 (driver extractHeli) doMove [_climbX, _climbY, 0]
@@ -319,7 +327,7 @@ extractHeli setVelocity [22,22,0]
 goto "normalSuccess"
 
 #normalSuccess
-_successMessage = "HQ: Chinook clear of the combat zone. Mission accomplished."
+_successMessage = format ["HQ: %1 clear of the combat zone. Mission accomplished.",assetNameWestHeavyTransportHeli]
 goto "finishSuccess"
 
 #crash

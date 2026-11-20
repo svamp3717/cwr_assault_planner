@@ -44,15 +44,15 @@ goto "spawnResistanceRuntimeReserves"
 
 #spawnEastRuntimeReserves
 ? !(enemyAirSupport) : goto "eastAfterAttack"
-enemyAttackVehicle = enemyAttackClass createVehicle [11120, 10920, 0]
+enemyAttackVehicle = enemyAttackClass createVehicle ([245, -780, 0] call worldSetupPosition)
 enemyAttackHeli = enemyAttackVehicle
 enemyAttackVehicle setDir 180
 enemyAttackVehicle setDammage 0
 enemyAttackVehicle setFuel 0
 _grpAttack = createGroup east
 enemyDetectionGroups = enemyDetectionGroups + [_grpAttack]
-ww4EastPilot createUnit [[11120, 10950, 0], _grpAttack, "w4eAirAtkPilot=this"]
-ww4EastCrew createUnit [[11128, 10950, 0], _grpAttack, "w4eAirAtkGunner=this"]
+ww4EastPilot createUnit [([245, -750, 0] call worldSetupPosition), _grpAttack, "w4eAirAtkPilot=this"]
+ww4EastCrew createUnit [([253, -750, 0] call worldSetupPosition), _grpAttack, "w4eAirAtkGunner=this"]
 w4eAirAtkPilot setSkill enemyAISkill
 w4eAirAtkGunner setSkill enemyAISkill
 w4eAirAtkPilot moveInDriver enemyAttackVehicle
@@ -67,8 +67,8 @@ _gunnerVehicle = vehicle w4eAirAtkGunner
 ? !(enemyAirReinforcement) : goto "eastAfterTransportCrew"
 _grpTrans = createGroup east
 enemyDetectionGroups = enemyDetectionGroups + [_grpTrans]
-ww4EastPilot createUnit [[11136, 10950, 0], _grpTrans, "w4eAirTransPilot=this"]
-ww4EastCrew createUnit [[11144, 10950, 0], _grpTrans, "w4eAirTransGunner=this"]
+ww4EastPilot createUnit [([261, -750, 0] call worldSetupPosition), _grpTrans, "w4eAirTransPilot=this"]
+ww4EastCrew createUnit [([269, -750, 0] call worldSetupPosition), _grpTrans, "w4eAirTransGunner=this"]
 w4eAirTransPilot setSkill enemyAISkill
 w4eAirTransGunner setSkill enemyAISkill
 _grpTrans setBehaviour "AWARE"
@@ -78,18 +78,18 @@ _grpTrans setSpeedMode "FULL"
 ? !((enemyAirReinforcement) || (enemyReinforcements)) : goto "runtimeReservesFinish"
 _grpReinf = createGroup east
 enemyDetectionGroups = enemyDetectionGroups + [_grpReinf]
-ww4EastRifleman createUnit [[11120, 10970, 0], _grpReinf, "w4eAirR1=this"]
-ww4EastGrenadier createUnit [[11128, 10970, 0], _grpReinf, "w4eAirR2=this"]
-ww4EastMachinegun createUnit [[11136, 10970, 0], _grpReinf, "w4eAirR3=this"]
-ww4EastAT createUnit [[11144, 10970, 0], _grpReinf, "w4eAirR4=this"]
-ww4EastAA createUnit [[11152, 10970, 0], _grpReinf, "w4eAirR5=this"]
-ww4EastRifleman createUnit [[11160, 10970, 0], _grpReinf, "w4eAirR6=this"]
-ww4EastRocket createUnit [[11168, 10970, 0], _grpReinf, "w4eAirR7=this"]
-ww4EastSniper createUnit [[11176, 10970, 0], _grpReinf, "w4eAirR8=this"]
-ww4EastRifleman createUnit [[11184, 10970, 0], _grpReinf, "w4eAirR9=this"]
-ww4EastGrenadier createUnit [[11192, 10970, 0], _grpReinf, "w4eAirR10=this"]
-ww4EastMachinegun createUnit [[11200, 10970, 0], _grpReinf, "w4eAirR11=this"]
-ww4EastMedic createUnit [[11208, 10970, 0], _grpReinf, "w4eAirR12=this"]
+ww4EastRifleman createUnit [([245, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR1=this"]
+ww4EastGrenadier createUnit [([253, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR2=this"]
+ww4EastMachinegun createUnit [([261, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR3=this"]
+ww4EastAT createUnit [([269, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR4=this"]
+ww4EastAA createUnit [([277, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR5=this"]
+ww4EastRifleman createUnit [([285, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR6=this"]
+ww4EastRocket createUnit [([293, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR7=this"]
+ww4EastSniper createUnit [([301, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR8=this"]
+ww4EastRifleman createUnit [([309, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR9=this"]
+ww4EastGrenadier createUnit [([317, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR10=this"]
+ww4EastMachinegun createUnit [([325, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR11=this"]
+ww4EastMedic createUnit [([333, -730, 0] call worldSetupPosition), _grpReinf, "w4eAirR12=this"]
 w4eAirR1 setSkill enemyAISkill
 w4eAirR2 setSkill enemyAISkill
 w4eAirR3 setSkill enemyAISkill
@@ -109,15 +109,15 @@ goto "runtimeReservesFinish"
 
 #spawnResistanceRuntimeReserves
 ? !(enemyAirSupport) : goto "resAfterAttack"
-enemyAttackVehicle = enemyAttackClass createVehicle [11120, 10920, 0]
+enemyAttackVehicle = enemyAttackClass createVehicle ([245, -780, 0] call worldSetupPosition)
 enemyAttackHeli = enemyAttackVehicle
 enemyAttackVehicle setDir 180
 enemyAttackVehicle setDammage 0
 enemyAttackVehicle setFuel 0
 _grpAttack = createGroup resistance
 enemyDetectionGroups = enemyDetectionGroups + [_grpAttack]
-ww4ResPilot createUnit [[11120, 10990, 0], _grpAttack, "w4rAirAtkPilot=this"]
-ww4ResCrew createUnit [[11128, 10990, 0], _grpAttack, "w4rAirAtkGunner=this"]
+ww4ResPilot createUnit [([245, -710, 0] call worldSetupPosition), _grpAttack, "w4rAirAtkPilot=this"]
+ww4ResCrew createUnit [([253, -710, 0] call worldSetupPosition), _grpAttack, "w4rAirAtkGunner=this"]
 w4rAirAtkPilot setSkill enemyAISkill
 w4rAirAtkGunner setSkill enemyAISkill
 w4rAirAtkPilot moveInDriver enemyAttackVehicle
@@ -132,8 +132,8 @@ _gunnerVehicle = vehicle w4rAirAtkGunner
 ? !(enemyAirReinforcement) : goto "resAfterTransportCrew"
 _grpTrans = createGroup resistance
 enemyDetectionGroups = enemyDetectionGroups + [_grpTrans]
-ww4ResPilot createUnit [[11136, 10990, 0], _grpTrans, "w4rAirTransPilot=this"]
-ww4ResCrew createUnit [[11144, 10990, 0], _grpTrans, "w4rAirTransGunner=this"]
+ww4ResPilot createUnit [([261, -710, 0] call worldSetupPosition), _grpTrans, "w4rAirTransPilot=this"]
+ww4ResCrew createUnit [([269, -710, 0] call worldSetupPosition), _grpTrans, "w4rAirTransGunner=this"]
 w4rAirTransPilot setSkill enemyAISkill
 w4rAirTransGunner setSkill enemyAISkill
 _grpTrans setBehaviour "AWARE"
@@ -143,18 +143,18 @@ _grpTrans setSpeedMode "FULL"
 ? !((enemyAirReinforcement) || (enemyReinforcements)) : goto "runtimeReservesFinish"
 _grpReinf = createGroup resistance
 enemyDetectionGroups = enemyDetectionGroups + [_grpReinf]
-ww4ResRifleman createUnit [[11120, 11010, 0], _grpReinf, "w4rAirR1=this"]
-ww4ResGrenadier createUnit [[11128, 11010, 0], _grpReinf, "w4rAirR2=this"]
-ww4ResMachinegun createUnit [[11136, 11010, 0], _grpReinf, "w4rAirR3=this"]
-ww4ResAT createUnit [[11144, 11010, 0], _grpReinf, "w4rAirR4=this"]
-ww4ResAA createUnit [[11152, 11010, 0], _grpReinf, "w4rAirR5=this"]
-ww4ResRifleman createUnit [[11160, 11010, 0], _grpReinf, "w4rAirR6=this"]
-ww4ResRocket createUnit [[11168, 11010, 0], _grpReinf, "w4rAirR7=this"]
-ww4ResSniper createUnit [[11176, 11010, 0], _grpReinf, "w4rAirR8=this"]
-ww4ResRifleman createUnit [[11184, 11010, 0], _grpReinf, "w4rAirR9=this"]
-ww4ResGrenadier createUnit [[11192, 11010, 0], _grpReinf, "w4rAirR10=this"]
-ww4ResMachinegun createUnit [[11200, 11010, 0], _grpReinf, "w4rAirR11=this"]
-ww4ResMedic createUnit [[11208, 11010, 0], _grpReinf, "w4rAirR12=this"]
+ww4ResRifleman createUnit [([245, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR1=this"]
+ww4ResGrenadier createUnit [([253, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR2=this"]
+ww4ResMachinegun createUnit [([261, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR3=this"]
+ww4ResAT createUnit [([269, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR4=this"]
+ww4ResAA createUnit [([277, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR5=this"]
+ww4ResRifleman createUnit [([285, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR6=this"]
+ww4ResRocket createUnit [([293, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR7=this"]
+ww4ResSniper createUnit [([301, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR8=this"]
+ww4ResRifleman createUnit [([309, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR9=this"]
+ww4ResGrenadier createUnit [([317, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR10=this"]
+ww4ResMachinegun createUnit [([325, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR11=this"]
+ww4ResMedic createUnit [([333, -690, 0] call worldSetupPosition), _grpReinf, "w4rAirR12=this"]
 w4rAirR1 setSkill enemyAISkill
 w4rAirR2 setSkill enemyAISkill
 w4rAirR3 setSkill enemyAISkill

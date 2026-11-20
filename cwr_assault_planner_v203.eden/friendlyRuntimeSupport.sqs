@@ -4,7 +4,8 @@ friendlyRuntimeSupportReady = false
 ; Bradley is available for selected armor, and remains the APC-column escort when armor is disabled.
 ? friendlyArmorLevel < 1 && !(insertionAPC) : goto "supportAfterM113"
 friendlyRuntimeVehicleSpawnComplete = false
-["WW4EXT_M2A2BIS", 11150, 11310, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+_setupPos = [275, -390, 0] call worldSetupPosition
+[assetClassWestIFV, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportM113 = friendlyRuntimeVehicleSpawned
 publicVariable "supportM113"
@@ -12,7 +13,8 @@ publicVariable "supportM113"
 
 ? friendlyArmorLevel < 2 : goto "supportAfterTank"
 friendlyRuntimeVehicleSpawnComplete = false
-["WW4EXT_M60A3BIS", 11185, 11310, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+_setupPos = [310, -390, 0] call worldSetupPosition
+[assetClassWestTank, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportTank = friendlyRuntimeVehicleSpawned
 publicVariable "supportTank"
@@ -20,17 +22,20 @@ publicVariable "supportTank"
 
 ? friendlyArmorLevel < 3 : goto "supportAfterLarge"
 friendlyRuntimeVehicleSpawnComplete = false
-["WW4EXT_VulcanBIS", 11260, 11310, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+_setupPos = [385, -390, 0] call worldSetupPosition
+[assetClassWestAirDefense, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportAA = friendlyRuntimeVehicleSpawned
 publicVariable "supportAA"
 friendlyRuntimeVehicleSpawnComplete = false
-["WW4EXT_JeepBIS", 11295, 11280, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+_setupPos = [420, -420, 0] call worldSetupPosition
+[assetClassWestJeep, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportJeep = friendlyRuntimeVehicleSpawned
 publicVariable "supportJeep"
 friendlyRuntimeVehicleSpawnComplete = false
-["WW4EXT_HMMWVBIS", 11325, 11280, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+_setupPos = [450, -420, 0] call worldSetupPosition
+[assetClassWestHMMWV, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportHMMWV = friendlyRuntimeVehicleSpawned
 publicVariable "supportHMMWV"
@@ -38,7 +43,8 @@ publicVariable "supportHMMWV"
 
 ? !(supportAir) : goto "supportAfterAir"
 friendlyRuntimeVehicleSpawnComplete = false
-[supportAirClass, 11220, 11310, 0, 45, true] exec "friendlyRuntimeVehicleOne.sqs"
+_setupPos = [345, -390, 0] call worldSetupPosition
+[supportAirClass, _setupPos select 0, _setupPos select 1, 0, 45, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 supportAirVehicle = friendlyRuntimeVehicleSpawned
 ? supportAirSelection == 0 : supportCobra = supportAirVehicle

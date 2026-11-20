@@ -1,62 +1,81 @@
-; FRevive
-; This script will move body from the water to the shore
+; FRevive - optional, bounded shore recovery for CWA 1.99.
+; Args: [corpse, suspended replacement]. Called once per death by Start.sqs.
+; Disabled by default for world ports. Never move a dry corpse or another soldier.
+_body = _this select 0
+_replacement = _this select 1
+? !FREVIVE_ANTI_WATER : exit
+? isNull _body || isNull _replacement : exit
+? !local _body || !local _replacement : exit
+? alive _body || !alive _replacement : exit
+? vehicle _body != _body : exit
+? (getPosASL _body select 2) >= -0.5 : exit
 
+; Give a falling/ejected corpse up to 3 seconds to settle, never wait forever.
+_deadline = time + 3
+#settling
 ~0.1
-_body      = _this select 0
-_sea_level = _this select 1
-_TempPos   = _this select 2
-_i         = _this select 3
-_bodies    = _this select 4
-_sides     = _this select 5
+? isNull _body || isNull _replacement : exit
+? !local _body || !local _replacement || alive _body || !alive _replacement : exit
+? !FREVIVE_ANTI_WATER || (getPos _replacement select 2) < 7000 || getDammage _replacement > 0 : exit
+? (getPosASL _body select 2) >= -0.5 : exit
+_vel = velocity _body
+? abs (_vel select 0) < 0.1 && abs (_vel select 1) < 0.1 && abs (_vel select 2) < 0.1 : goto "settled"
+? time >= _deadline : exit
+goto "settling"
 
-@"_x==0" count velocity _body == 3
+#settled
+_origin = getPosASL _body
+_ox = _origin select 0
+_oy = _origin select 1
+; No shared measurement object: every job owns its own local probe.
+_probe = "PipeBomb" camCreate _origin
+? isNull _probe : exit
+; Probe the corpse's XY at true sea level. A negative relative Z indicates
+; the sea plane is beneath the local ground. Treat that as land, not water.
+_probe setPosASL [_ox, _oy, 0]
+? (getPos _probe select 2) < -0.25 : goto "cleanup"
 
-_pos          = getPos _body
-_in_the_water = false
+; Search concentric rings, at most 600 m, only inside the configured world.
+; Yield each ring and cancel if the body moves, revival starts, or ownership changes.
+_radius = 20
+#ring
+~0.01
+? !FREVIVE_ANTI_WATER : goto "cleanup"
+? isNull _body || isNull _replacement : goto "cleanup"
+? !local _body || !local _replacement || alive _body || !alive _replacement : goto "cleanup"
+? (getPos _replacement select 2) < 7000 || getDammage _replacement > 0 : goto "cleanup"
+? (getPosASL _body select 2) >= -0.5 : goto "cleanup"
+? abs ((getPosASL _body select 0) - _ox) > 2 || abs ((getPosASL _body select 1) - _oy) > 2 : goto "cleanup"
+_dir = 0
 
-	_pos = [_pos select 0, _pos select 1, 0]
-	~.05
-	;****************** Gnats Anti-Water code ***************
-	;-----------------------------------------------
-	_HLimit = 2.4
-	;-----------------------------------------------
+#candidate
+_x = _ox + (sin _dir * _radius)
+_y = _oy + (cos _dir * _radius)
+? _x < worldMinX + 5 || _x > worldMaxX - 5 || _y < worldMinY + 5 || _y > worldMaxY - 5 : goto "next"
+_probe setPosASL [_x, _y, 0]
+; A sea-level probe more than 2.4 m below local ground indicates dry land.
+? (getPos _probe select 2) >= -2.4 : goto "next"
+? abs ((getPosASL _probe select 0) - _x) > 2 || abs ((getPosASL _probe select 1) - _y) > 2 : goto "next"
+goto "move"
 
-	_TempPos setPos [_pos select 0,_pos select 1,_pos select 2] 
-	? (getPosASL _body select 2) < (getPosASL _sea_level select 2) : _in_the_water=true; goto "findland"
-	goto "NoWater"
+#next
+_dir = _dir + 30
+? _dir < 360 : goto "candidate"
+_radius = _radius + 20
+? _radius <= 600 : goto "ring"
+; No suitable shore: leave the corpse alone. Never teleport to another unit.
+goto "cleanup"
 
-	#findland
-	_idir = 0
-	_idis = 10
+#move
+; Check again immediately before the only physical relocation.
+? !FREVIVE_ANTI_WATER || isNull _body || isNull _replacement : goto "cleanup"
+? !local _body || !local _replacement || alive _body || !alive _replacement : goto "cleanup"
+? (getPos _replacement select 2) < 7000 || getDammage _replacement > 0 : goto "cleanup"
+? (getPosASL _body select 2) >= -0.5 : goto "cleanup"
+? abs ((getPosASL _body select 0) - _ox) > 2 || abs ((getPosASL _body select 1) - _oy) > 2 : goto "cleanup"
+_body setPos [_x, _y, 0]
+_body setVelocity [0,0,0]
 
-	#FLoop
-	_NextBodyX = (_pos Select 0) + ((Sin _idir) * _idis)
-	_NextBodyY = (_pos Select 1) + ((Cos _idir) * _idis)
-
-	_TempPos SetPos [_NextBodyX, _NextBodyY, 0]; _unit_height_asl=-((getpos _TempPos) select 2) - ((getpos _sea_level) select 2)
-	? _unit_height_asl > _HLimit : _body setPos [(getPos _TempPos)select 0, (getPos _TempPos)select 1, 0]; exit
-	_idir = _idir + 20
-	?_idir > 350: _idis = _idis + 10
-	?_idir > 350: _idir = 0
-	?_idis > 6000: goto "Dend1"
-	goto "FLoop"
-
-	#Dend1
-	~0.1
-
-		_pass      = 0
-		_j         = 0
-		_indexes   = []
-		_distances = []
-		{if (_i!=_j && [_sides select _j,_sides select _i] call FREVIVE_FNC_IS_FRIENDLY) then {_indexes set [count _indexes, _j]; _distances set [count _distances,(_bodies select _j) distance _body]}; _j=_j+1} forEach _sides
-		? count _indexes == 0 : _j=0; {if (_i!=_j) then {_indexes set [count _indexes, _j]; _distances set [count _distances,(_bodies select _j) distance _body]}; _j=_j+1} forEach _sides
-		? count _indexes > 1  : [_distances, _indexes] call quicksortM
-		
-			_j = 0
-			#FindNearestSuitable
-			_unit = _bodies select (_indexes select _j)
-			? vehicle _unit==_unit : _TempPos SetPos getPos _unit; _unit_height_asl=-((getpos _TempPos select 2) - (getpos _sea_level select 2)); if (_unit_height_asl>_HLimit) then {_body setPosASL getPosASL _unit; exit}
-			? _j<count _indexes-1 : _j=_j+1; goto "FindNearestSuitable"
-		
-	goto "Dend1"
-	;********************************************************
+#cleanup
+deleteVehicle _probe
+exit

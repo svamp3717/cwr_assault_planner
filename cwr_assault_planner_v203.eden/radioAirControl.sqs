@@ -15,9 +15,9 @@ supportAirVehicle setDir 45
 supportAirVehicle flyInHeight 200
 supportAirVehicle action ["ENGINEON", supportAirVehicle]
 ? !(isNull (driver supportAirVehicle)) : (driver supportAirVehicle) stop false
-supportAirVehicle doMove [airStageX + 450, airStageY + 450, 0]
-? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airStageX + 450, airStageY + 450, 0]
-? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airStageX + 450, airStageY + 450, 0]
+supportAirVehicle doMove ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
 ~3
 _pos = getPos supportAirVehicle
 _z = _pos select 2
@@ -26,9 +26,9 @@ supportAirVehicle flyInHeight 200
 supportAirVehicle setFuel 1
 supportAirVehicle action ["ENGINEON", supportAirVehicle]
 ? !(isNull (driver supportAirVehicle)) : (driver supportAirVehicle) stop false
-supportAirVehicle doMove [airStageX + 450, airStageY + 450, 0]
-? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove [airStageX + 450, airStageY + 450, 0]
-? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move [airStageX + 450, airStageY + 450, 0]
+supportAirVehicle doMove ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
+? alive (driver supportAirVehicle) : (driver supportAirVehicle) doMove ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
+? alive (driver supportAirVehicle) : (group (driver supportAirVehicle)) move ([airStageX, airStageY, 450, 450, 0, 20] call worldOffsetPosition)
 supportAirVehicleReady = true
 "cobra_marker" setMarkerPos (getPos supportAirVehicle)
 "cobra_marker" setMarkerType "Flag"
@@ -52,7 +52,7 @@ exit
 
 #noSupport
 1 setRadioMsg "Request Air Support"
-"cobra_marker" setMarkerPos [10875.000000, 11700.000000, 0]
+"cobra_marker" setMarkerPos [missionBaseX, missionBaseY, 0]
 "cobra_marker" setMarkerType "Flag"
 "cobra_marker" setMarkerColor "ColorGreen"
 "cobra_marker" setMarkerText ""

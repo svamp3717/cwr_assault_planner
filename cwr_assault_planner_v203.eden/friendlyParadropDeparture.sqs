@@ -4,6 +4,9 @@ _originX = _this select 1
 _originY = _this select 2
 _exitX = _this select 3
 _exitY = _this select 4
+_depart = [_originX, _originY, _exitX - _originX, _exitY - _originY, 0, 20] call worldOffsetPosition
+_exitX = _depart select 0
+_exitY = _depart select 1
 ? !(alive _vehicle) : exit
 _dx = _exitX - _originX
 _dy = _exitY - _originY
