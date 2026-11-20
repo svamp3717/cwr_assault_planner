@@ -94,7 +94,7 @@ for prefix in ("WW4_FOREC", "WW4_WAR"):
         CLASS_MAP[(prefix + role).casefold()] = classes[0]
 CLASS_MAP.update({
     k.casefold(): v for k, v in {
-        "WW4_AK74M": "AK74", "WW4_AK74MGP25": "AK74GrenadeLauncher",
+        "WW4_M16": "M16", "WW4_AK74M": "AK74", "WW4_AK74MGP25": "AK74GrenadeLauncher",
         "WW4_PKM": "PK", "WW4_RPK74": "PK", "WW4_SVD": "SVDDragunov",
         "WW4_RPGLauncher": "RPGLauncher", "WW4_E545_30mag": "AK74",
         "WW4_VOG25grenade": "GrenadeLauncher", "WW4_E762M_200mag": "PK",

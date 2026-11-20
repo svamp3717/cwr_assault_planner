@@ -254,22 +254,18 @@ class WorldConfigGui(tk.Tk):
         ttk.Label(output, text="Editor unit elevation (m):").grid(row=4, column=0, sticky="w", pady=(8, 0))
         ttk.Entry(output, textvariable=self.base_elevation, width=14).grid(row=4, column=1, sticky="w", pady=(8, 0))
         ttk.Label(output, text="Optional; blank preserves template height.").grid(row=4, column=2, sticky="w", pady=(8, 0))
-        ttk.Label(
-            output,
-            text="Full mission mode creates <mission name>.<world class> inside the destination folder.",
-        ).grid(row=5, column=0, columnspan=3, sticky="w", pady=(8, 0))
-        ttk.Label(output, text="Asset pack:").grid(row=6, column=0, sticky="w", pady=(8, 0))
+        ttk.Label(output, text="Asset pack:").grid(row=5, column=0, sticky="w", pady=(8, 0))
         self.asset_selector = ttk.Combobox(output, textvariable=self.asset_pack, state="disabled",
                                            values=("Vanilla CWA", "WW4 + WW4 Extended"))
-        self.asset_selector.grid(row=6, column=1, sticky="ew", pady=(8, 0))
-        ttk.Label(output, text="Full mission export only").grid(row=6, column=2, sticky="w", pady=(8, 0))
+        self.asset_selector.grid(row=5, column=1, sticky="ew", pady=(8, 0))
+        ttk.Label(output, text="Full mission export only").grid(row=5, column=2, sticky="w", pady=(8, 0))
         ttk.Label(output, textvariable=self.output_hint).grid(
-            row=7, column=0, columnspan=2, sticky="w", pady=(8, 0)
+            row=6, column=0, columnspan=2, sticky="w", pady=(8, 0)
         )
         self.generate_button = ttk.Button(
             output, text="Generate worldConfig.sqs", command=self.generate
         )
-        self.generate_button.grid(row=7, column=2, padx=(8, 0), pady=(8, 0))
+        self.generate_button.grid(row=6, column=2, padx=(8, 0), pady=(8, 0))
 
         status = ttk.Label(root, textvariable=self.status, anchor="w")
         status.grid(row=6, column=0, columnspan=3, sticky="ew", pady=(10, 0))

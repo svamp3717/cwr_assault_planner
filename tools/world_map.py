@@ -39,6 +39,9 @@ class View:
 
     @classmethod
     def fit(cls, b, width, height, padding=32):
+        # A compact map pane must still have usable scale. Reduce padding
+        # instead of collapsing the map to a single pixel.
+        padding = min(padding, width / 8, height / 8)
         scale = min(max(1, width - 2 * padding) / (b.max_x - b.min_x),
                     max(1, height - 2 * padding) / (b.max_y - b.min_y))
         return cls((b.min_x + b.max_x) / 2, (b.min_y + b.max_y) / 2, scale, width, height)
