@@ -1,0 +1,32 @@
+name: Stage asset profile refactor
+on:
+  push:
+    branches: [asset-profile-refactor-stage]
+permissions:
+  contents: write
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate profiles and shared scripts
+        run: |
+          python tools/_stage_asset_migration.py
+          cp tools/_stage_asset_packs.py tools/asset_packs.py
+          cp tests/_stage_test_asset_packs.py tests/test_asset_packs.py
+          python -m compileall -q tools tests
+      - name: Test both exports
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth
+          xvfb-run -a python -m unittest discover -s tests -v
+      - name: Commit tested refactor on staging branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cwr_assault_planner_v203.eden tools/asset_packs.py tests/test_asset_packs.py
+          git commit -m "Centralize runtime classes in vanilla and WW4 asset profiles"
+          git push origin HEAD:asset-profile-refactor-stage
