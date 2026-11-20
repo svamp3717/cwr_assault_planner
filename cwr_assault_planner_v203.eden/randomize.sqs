@@ -575,10 +575,10 @@ heliSplit = false
 _rh = random 2
 ? _rh < 1 : goto "useHeliCh47"
 heliSplit = true
-insertionLabel = "UH-60 split lift"
+insertionLabel = format ["%1 split lift",assetNameWestTransportHeli]
 goto "afterInsertionRoll"
 #useHeliCh47
-insertionLabel = "CH-47 single lift"
+insertionLabel = format ["%1 single lift",assetNameWestHeavyTransportHeli]
 #afterInsertionRoll
 ; Friendly armored support follows the planner selection. Friendly air support retains its own selection.
 friendlyArmorLevel = guiFriendlyArmorChoice
@@ -586,9 +586,9 @@ friendlyArmorLevel = guiFriendlyArmorChoice
 ? friendlyArmorLevel > 3 : friendlyArmorLevel = 1
 supportGround = false
 ? friendlyArmorLevel > 0 : supportGround = true
-supportGroundLabel = "small armored support - 1 Bradley"
+supportGroundLabel = format ["small armored support - 1 %1",assetNameWestIFV]
 ? friendlyArmorLevel == 0 : supportGroundLabel = "no armored support"
-? friendlyArmorLevel == 2 : supportGroundLabel = "medium armored support - Bradley and M60"
+? friendlyArmorLevel == 2 : supportGroundLabel = format ["medium armored support - %1 and %2",assetNameWestIFV,assetNameWestTank]
 ? friendlyArmorLevel == 3 : supportGroundLabel = "large armored support - 5 vehicle group"
 supportAir = false
 ? guiAirSupportChoice == 0 : goto "airSupportDisabled"

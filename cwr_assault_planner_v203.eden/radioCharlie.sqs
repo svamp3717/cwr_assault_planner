@@ -17,14 +17,17 @@ player sideChat "Actual: Logistics request menu could not be opened."
 exit
 
 #menuOpened
+ctrlSetText [4201,assetNameWestJeep]
+ctrlSetText [4202,assetNameWestHMMWV]
+ctrlSetText [4203,assetNameWestAmmoBox]
 ctrlSetText [4210, format ["%1 logistics request(s) remaining. Delivery will land near your current position.", logisticsDropsRemaining]]
 @ logisticsDropMenuDone || logisticsDropMenuCancelled || !(dialog)
 ? logisticsDropMenuCancelled : goto "cancelled"
 ? logisticsDropMenuChoice < 1 : goto "cancelled"
 logisticsDropRequestType = logisticsDropMenuChoice
-logisticsDropRequestLabel = assetClassJeep
-? logisticsDropRequestType == 2 : logisticsDropRequestLabel = assetClassHMMWV
-? logisticsDropRequestType == 3 : logisticsDropRequestLabel = "ammunition box"
+logisticsDropRequestLabel = assetNameWestJeep
+? logisticsDropRequestType == 2 : logisticsDropRequestLabel = assetNameWestHMMWV
+? logisticsDropRequestType == 3 : logisticsDropRequestLabel = assetNameWestAmmoBox
 logisticsDropRequester = player
 mpLogisticsDropRequest = true
 publicVariable "logisticsDropRequestType"

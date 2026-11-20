@@ -15,7 +15,7 @@ _coordWaitTicks = _coordWaitTicks + 1
 mpExtractionRequest = false
 extractionCallAvailable = false
 extractionActive = true
-mpHQMessage = "HQ: Extraction request confirmed. Final LZ marked; Chinook inbound."
+mpHQMessage = format ["HQ: Extraction request confirmed. Final LZ marked; %1 inbound.",assetNameWestHeavyTransportHeli]
 mpHQMessageId = mpHQMessageId + 1
 publicVariable "mpExtractionRequest"
 publicVariable "extractionCallAvailable"
