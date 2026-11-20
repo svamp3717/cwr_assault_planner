@@ -11,6 +11,8 @@ import shutil
 import tempfile
 from pathlib import Path
 
+from asset_packs import apply_asset_pack, PROFILES
+
 _WORLD_ID = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 _MISSION_ID = re.compile(r"[A-Za-z0-9_-]+\Z")
 _POSITION = re.compile(
@@ -97,13 +99,15 @@ def create_mission_package(
     world_config: str,
     base_x: float,
     base_y: float,
-    *, base_elevation: float | None = None,
+    *, base_elevation: float | None = None, asset_pack: str = "ww4",
 ) -> Path:
     """Copy all files and create <name>.<world> with a generated worldConfig.sqs.
 
     Existing missions are never overwritten. A staging directory keeps incomplete
     copies out of the user's missions folder if copying or writing fails.
     """
+    if asset_pack not in PROFILES:
+        raise ValueError(f"Unknown asset pack: {asset_pack}")
     template_dir = Path(template_dir).expanduser().resolve()
     output_parent = Path(output_parent).expanduser().resolve()
     name = mission_folder_name(template_dir, world_name, mission_name)
@@ -153,6 +157,7 @@ def create_mission_package(
         shutil.copytree(template_dir, staged_mission)
         (staged_mission / "worldConfig.sqs").write_text(world_config, encoding="utf-8", newline="\n")
         (staged_mission / "mission.sqm").write_text(new_sqm, encoding="utf-8", newline="\n")
+        apply_asset_pack(staged_mission, asset_pack)
         if target.exists() or target.is_symlink():
             raise FileExistsError(f"Mission folder appeared during generation: {target}")
         staged_mission.rename(target)

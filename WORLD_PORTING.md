@@ -188,3 +188,12 @@ Open the **Map editor** tab after loading config.cpp. The north-up coordinate gr
 - Scroll to zoom around the pointer, middle/right drag to pan, **Fit map** to reset, and toggle **Labels** to reduce clutter.
 
 Map edits are kept in memory and exported by the normal Generate/Create mission action. They modify the numeric location arrays, not config.cpp or CWA editor markers. Reloading discards changes after confirmation. Re-infer base/bounds preserves edited locations. Keep **Use editor site_* markers** off when exporting edits. Verify placement against the actual CWA terrain.
+
+
+## Asset pack selection (full mission exports)
+
+Enable **Create a complete new mission folder**, then choose **Vanilla CWA** (default) or **WW4 + WW4 Extended** from Asset pack. Generate as usual. The setting applies to the staged mission copy only: the source remains the original WW4 template. Config-only exports do not change assets. The selected pack is recorded in assetPack.txt.
+
+The vanilla profile replaces editor infantry and removes WW4 addOns/addOnsAuto entries; selects stock East/Resistance soldiers and vehicle pools; replaces friendly and objective assets, civilian traffic, static guns, ammo and weapon classes; and builds a stock CWA arsenal and model catalog. Legacy WW4-prefixed script names and globals remain internal names, not addon dependencies. The exporter rejects unmapped WW4 class literals instead of silently publishing an incomplete mission. Use the original template to create WW4 missions again.
+
+Vanilla vehicle selection has less variety; stock trucks carry 12-man reinforcement waves and stock APCs replace armed jeep patrols. Resistance uses stock Shilka/static machine guns with its own crew where no direct faction-specific equivalent exists. The editorupdate102 dependency is retained; custom terrain dependencies and any non-WW4 third-party requirements are a separate concern. Test the resulting mission in an installation without WW4, especially insertion cargo capacities, static gun crews and both enemy sides. Reference tables: https://www.ofpec.com/COMREF/index.php?action=read&id=69 and https://www.ofpec.com/COMREF/index.php?action=read&id=67.

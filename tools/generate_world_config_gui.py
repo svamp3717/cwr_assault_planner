@@ -48,6 +48,7 @@ class WorldConfigGui(tk.Tk):
         self.mission_template = tk.StringVar(value=str(default_template) if default_template.is_dir() else "")
         self.mission_name = tk.StringVar(value="cwr_assault_planner_v203")
         self.full_mission = tk.BooleanVar(value=False)
+        self.asset_pack = tk.StringVar(value="Vanilla CWA")
         self.output_hint = tk.StringVar(value="Only worldConfig.sqs will be written to the output folder.")
         self.world_name = tk.StringVar()
 
@@ -257,13 +258,18 @@ class WorldConfigGui(tk.Tk):
             output,
             text="Full mission mode creates <mission name>.<world class> inside the destination folder.",
         ).grid(row=5, column=0, columnspan=3, sticky="w", pady=(8, 0))
+        ttk.Label(output, text="Asset pack:").grid(row=6, column=0, sticky="w", pady=(8, 0))
+        self.asset_selector = ttk.Combobox(output, textvariable=self.asset_pack, state="disabled",
+                                           values=("Vanilla CWA", "WW4 + WW4 Extended"))
+        self.asset_selector.grid(row=6, column=1, sticky="ew", pady=(8, 0))
+        ttk.Label(output, text="Full mission export only").grid(row=6, column=2, sticky="w", pady=(8, 0))
         ttk.Label(output, textvariable=self.output_hint).grid(
-            row=6, column=0, columnspan=2, sticky="w", pady=(8, 0)
+            row=7, column=0, columnspan=2, sticky="w", pady=(8, 0)
         )
         self.generate_button = ttk.Button(
             output, text="Generate worldConfig.sqs", command=self.generate
         )
-        self.generate_button.grid(row=6, column=2, padx=(8, 0), pady=(8, 0))
+        self.generate_button.grid(row=7, column=2, padx=(8, 0), pady=(8, 0))
 
         status = ttk.Label(root, textvariable=self.status, anchor="w")
         status.grid(row=6, column=0, columnspan=3, sticky="ew", pady=(10, 0))
@@ -298,9 +304,11 @@ class WorldConfigGui(tk.Tk):
 
     def update_output_mode(self) -> None:
         if self.full_mission.get():
+            self.asset_selector.configure(state="readonly")
             self.generate_button.configure(text="Create mission folder")
             self.output_hint.set("Copies the template, relocates mission.sqm and generates worldConfig.sqs.")
         else:
+            self.asset_selector.configure(state="disabled")
             self.generate_button.configure(text="Generate worldConfig.sqs")
             self.output_hint.set("Only worldConfig.sqs will be written to the destination folder.")
 
@@ -613,12 +621,14 @@ class WorldConfigGui(tk.Tk):
                     base_x=base_x,
                     base_y=base_y,
                     base_elevation=base_elevation,
+                    asset_pack="vanilla" if self.asset_pack.get() == "Vanilla CWA" else "ww4",
                 )
                 self.status.set(f"Created mission folder: {target}")
                 messagebox.showinfo(
                     APP_TITLE,
                     f"Created complete mission folder\n\n"
                     f"Locations: {len(locations)}\n"
+                    f"Asset pack: {self.asset_pack.get()}\n"
                     f"Output: {target}",
                 )
                 return
