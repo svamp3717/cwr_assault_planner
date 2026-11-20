@@ -28,7 +28,7 @@ _entryIndex = WW4_ArsenalCurrentEntryIndexes select _variantSelection
 _entry = WW4_ArsenalEntries select _entryIndex
 _weapon = _entry select 0
 _mags = _entry select 2
-? _weapon == "Put" : goto "NoSatchelPreview"
+? _weapon == assetClassPut : goto "NoSatchelPreview"
 
 _previewMag = ""
 ? count _mags > 0 : _previewMag = _mags select 0

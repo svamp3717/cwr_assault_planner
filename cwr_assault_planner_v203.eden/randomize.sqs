@@ -57,8 +57,8 @@ skipTime _tod
 weatherApplyComplete = false
 [] exec "applyWeather.sqs"
 @ weatherApplyComplete
-? !(isNull player) : player addWeapon "Binocular"
-? !(isNull player) : player addWeapon "NVGoggles"
+? !(isNull player) : player addWeapon assetClassBinocular
+? !(isNull player) : player addWeapon assetClassNVGoggles
 ; Civilian character selection. Parked civilian vehicles are handled separately and remain.
 civilianCharacters = true
 civilianLabel = "civilian characters present"
@@ -518,11 +518,11 @@ mgLabel = "MG active"
 goto "afterMg"
 #mgNo
 removeAllWeapons red7
-red7 addMagazine "WW4_W556_30mag"
-red7 addMagazine "WW4_W556_30mag"
-red7 addMagazine "WW4_W556_30mag"
-red7 addMagazine "WW4_W556_30mag"
-red7 addWeapon "WW4_M16"
+red7 addMagazine assetClassWestRifleMagazine
+red7 addMagazine assetClassWestRifleMagazine
+red7 addMagazine assetClassWestRifleMagazine
+red7 addMagazine assetClassWestRifleMagazine
+red7 addWeapon assetClassWestRifle
 mgLabel = "MG replaced by rifleman"
 #afterMg
 sniperLabel = "sniper not in squad"
@@ -534,11 +534,11 @@ sniperLabel = "sniper active"
 goto "afterSniper"
 #sniperNo
 removeAllWeapons red8
-red8 addMagazine "WW4_W556_30mag"
-red8 addMagazine "WW4_W556_30mag"
-red8 addMagazine "WW4_W556_30mag"
-red8 addMagazine "WW4_W556_30mag"
-red8 addWeapon "WW4_M16"
+red8 addMagazine assetClassWestRifleMagazine
+red8 addMagazine assetClassWestRifleMagazine
+red8 addMagazine assetClassWestRifleMagazine
+red8 addMagazine assetClassWestRifleMagazine
+red8 addWeapon assetClassWestRifle
 sniperLabel = "sniper replaced by rifleman"
 #afterSniper
 ; Allied squad count selected in the startup planner: exact value 0 to 4.

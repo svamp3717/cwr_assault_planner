@@ -10,8 +10,8 @@ _y = _this select 2
 _z = _this select 3
 _dir = _this select 4
 _aircraft = _this select 5
-_crewClass = "WW4_WARCrew"
-? _aircraft : _crewClass = "WW4_WARPilot"
+_crewClass = assetClassWestCrew
+? _aircraft : _crewClass = assetClassWestPilot
 _veh = _class createVehicle [_x, _y, 0]
 ? isNull _veh : goto "spawnFailed"
 _veh setDir _dir

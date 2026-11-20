@@ -580,19 +580,19 @@ goto "heliLanding"
 ? debugMode : debugLog "ERA DEBUG INSERTION: helicopter landing branch selected"
 "lz_marker" setMarkerText "Helicopters landing at open LZ"
 ; Landing branch used about half the time. Helipads give OFP a concrete landing target, which is apparently necessary for aircraft with pilots.
-hpadP1 = "HeliHEmpty" createVehicle [lzX, lzY, 0]
-hpadP2 = "HeliHEmpty" createVehicle [lzX + 70, lzY + 20, 0]
+hpadP1 = assetClassHeliHEmpty createVehicle [lzX, lzY, 0]
+hpadP2 = assetClassHeliHEmpty createVehicle [lzX + 70, lzY + 20, 0]
 ? alliedCount < 1 : goto "heliPadAfterA1"
-hpadA1 = "HeliHEmpty" createVehicle [lzX - 70, lzY + 40, 0]
+hpadA1 = assetClassHeliHEmpty createVehicle [lzX - 70, lzY + 40, 0]
 #heliPadAfterA1
 ? alliedCount < 2 : goto "heliPadAfterA2"
-hpadA2 = "HeliHEmpty" createVehicle [lzX - 110, lzY + 65, 0]
+hpadA2 = assetClassHeliHEmpty createVehicle [lzX - 110, lzY + 65, 0]
 #heliPadAfterA2
 ? alliedCount < 3 : goto "heliPadAfterA3"
-hpadA3 = "HeliHEmpty" createVehicle [lzX + 110, lzY + 65, 0]
+hpadA3 = assetClassHeliHEmpty createVehicle [lzX + 110, lzY + 65, 0]
 #heliPadAfterA3
 ? alliedCount < 4 : goto "heliPadAfterA4"
-hpadA4 = "HeliHEmpty" createVehicle [lzX + 170, lzY + 95, 0]
+hpadA4 = assetClassHeliHEmpty createVehicle [lzX + 170, lzY + 95, 0]
 #heliPadAfterA4
 playerHeli1 flyInHeight 0
 ? heliTransportTwoActive : playerHeli2 flyInHeight 0

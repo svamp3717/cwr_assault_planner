@@ -73,10 +73,10 @@ _i = 0
 ? _i >= count _mags : goto "AmmoDone"
 _mag = _mags select _i
 _magLabel = _mag
-? _mag == "PipeBomb" : _magLabel = "Satchel Charge (PipeBomb)"
-? _mag == "TimeBomb" : _magLabel = "Timed Charge (TimeBomb)"
-? _mag == "Mine" : _magLabel = "Anti-Tank Mine (Mine)"
-? _mag == "MineE" : _magLabel = "Eastern Anti-Tank Mine (MineE)"
+? _mag == assetClassPipeBomb : _magLabel = "Satchel Charge (PipeBomb)"
+? _mag == assetClassTimeBomb : _magLabel = "Timed Charge (TimeBomb)"
+? _mag == assetClassMine : _magLabel = "Anti-Tank Mine (Mine)"
+? _mag == assetClassMineE : _magLabel = "Eastern Anti-Tank Mine (MineE)"
 _row = lbAdd [1502,_magLabel]
 lbSetData [1502,_row,_mag]
 _i = _i + 1

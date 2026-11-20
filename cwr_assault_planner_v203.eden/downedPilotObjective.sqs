@@ -67,7 +67,7 @@ _markerName setMarkerText format ["PILOT SAFE SETTLEMENT: %1",_bestLabel]
 ; The pilot is captive until a player accepts responsibility for moving him. This prevents the search party from executing him before players arrive.
 _pilotGroup = createGroup west
 _pilotPos = [_sourceX + 45,_sourceY + 30,0]
-"WW4_WARPilot" createUnit [_pilotPos,_pilotGroup,""]
+assetClassWestPilot createUnit [_pilotPos,_pilotGroup,""]
 _pilotUnits = units _pilotGroup
 _pilot = _pilotUnits select ((count _pilotUnits) - 1)
 _pilot setSkill 0.45

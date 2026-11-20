@@ -274,6 +274,6 @@ goto "mpDone"
 ? alive red11 && local red11 && vehicle red11 != red11 : red11 setPos [lzX + 6, lzY + -3, 0]
 ? alive red12 && local red12 && vehicle red12 != red12 : red12 setPos [lzX + 12, lzY + -3, 0]
 #mpDone
-player addWeapon "Binocular"
-player addWeapon "NVGoggles"
+player addWeapon assetClassBinocular
+player addWeapon assetClassNVGoggles
 exit

@@ -21,34 +21,34 @@ _crew2 = objNull
 goto "assignSite"
 
 #communicationsSite
-_target = "Dum08" createVehicle [_x, _y, 0]
+_target = assetClassDum08 createVehicle [_x, _y, 0]
 _target setPos [_x, _y, 0]
 _target setDir _dir
 _target setDammage 0
-_backup = "ReammoBoxEast" createVehicle [_x + 13, _y + -7, 0]
+_backup = assetClassEastAmmoBox createVehicle [_x + 13, _y + -7, 0]
 _backup setDir (_dir + 20)
 _backup setDammage 0
 clearWeaponCargo _backup
 clearMagazineCargo _backup
-_radio = "Radio" createVehicle [_x + 11, _y + -5, 0]
+_radio = assetClassRadio createVehicle [_x + 11, _y + -5, 0]
 _radio setDir (_dir + 20)
 _radio allowDammage false
-_table = "TableMap" createVehicle [_x + 10, _y + -8, 0]
+_table = assetClassTableMap createVehicle [_x + 10, _y + -8, 0]
 _table setDir (_dir + 20)
 _table allowDammage false
-_tent = "CampEast" createVehicle [_x + 18, _y + -12, 0]
+_tent = assetClassCampEast createVehicle [_x + 18, _y + -12, 0]
 _tent setDir (_dir + 25)
-_wall1 = "FenceWood" createVehicle [_x + 7, _y + 8, 0]
+_wall1 = assetClassFenceWood createVehicle [_x + 7, _y + 8, 0]
 _wall1 setDir _dir
-_wall2 = "Fence" createVehicle [_x + 19, _y + 5, 0]
+_wall2 = assetClassFence createVehicle [_x + 19, _y + 5, 0]
 _wall2 setDir (_dir + 90)
 goto "assignSite"
 
 #mortarSite
 ; v150: AAA80Z static artillery model taken from the supplied editorupdate102 SQM.
-? enemyEast : _boxClass = "HeavyReammoBoxEast"
-? enemyResistance : _boxClass = "HeavyReammoBoxRes"
-_target = "AAA80Z" createVehicle [_x, _y, 0]
+? enemyEast : _boxClass = assetClassHeavyReammoBoxEast
+? enemyResistance : _boxClass = assetClassHeavyReammoBoxRes
+_target = assetClassAAA80Z createVehicle [_x, _y, 0]
 _target setPos [_x, _y, 0]
 _target setDir _dir
 _target setFuel 0
@@ -59,15 +59,15 @@ _backup setDir (_dir + 20)
 _backup setDammage 0
 clearWeaponCargo _backup
 clearMagazineCargo _backup
-_backup addMagazineCargo ["Mortar",18]
-_backup addMagazineCargo ["SmokeShell",6]
-_tent = "CampEast" createVehicle [_x + 17, _y + -14, 0]
+_backup addMagazineCargo [assetClassMortar,18]
+_backup addMagazineCargo [assetClassSmokeShell,6]
+_tent = assetClassCampEast createVehicle [_x + 17, _y + -14, 0]
 _tent setDir (_dir + 15)
-_wall1 = "FenceWood" createVehicle [_x + -9, _y + 5, 0]
+_wall1 = assetClassFenceWood createVehicle [_x + -9, _y + 5, 0]
 _wall1 setDir (_dir + 20)
-_wall2 = "FenceWood" createVehicle [_x + 9, _y + 5, 0]
+_wall2 = assetClassFenceWood createVehicle [_x + 9, _y + 5, 0]
 _wall2 setDir (_dir - 20)
-_wall3 = "Fence" createVehicle [_x, _y + -11, 0]
+_wall3 = assetClassFence createVehicle [_x, _y + -11, 0]
 _wall3 setDir (_dir + 90)
 ? enemyEast : _grp = createGroup east
 ? enemyResistance : _grp = createGroup resistance
@@ -126,27 +126,27 @@ _grp setSpeedMode "LIMITED"
 goto "assignSite"
 
 #fuelSite
-_target = "FuelStationNew2" createVehicle [_x, _y, 0]
+_target = assetClassFuelStationNew2 createVehicle [_x, _y, 0]
 _target setPos [_x, _y, 0]
 _target setDir _dir
 _target setDammage 0
-? enemyEast : _fuelClass = "UralRefuel"
-? enemyResistance : _fuelClass = "TruckV3SGRefuel"
+? enemyEast : _fuelClass = assetClassUralRefuel
+? enemyResistance : _fuelClass = assetClassTruckV3SGRefuel
 _backup = _fuelClass createVehicle [_x + 18, _y + -10, 0]
 _backup setDir (_dir + 35)
 _backup setFuel 0
 _backup lock true
 _backup setDammage 0
-_b1 = "Barrel1" createVehicle [_x + -10, _y + 8, 0]
-_b2 = "Barrel2" createVehicle [_x + -6, _y + 10, 0]
-_b3 = "Barrel3" createVehicle [_x + -2, _y + 9, 0]
-_b4 = "Barrel4" createVehicle [_x + 2, _y + 11, 0]
-_b5 = "Barrels" createVehicle [_x + 7, _y + 9, 0]
-_shed = "ShedSmall" createVehicle [_x + -18, _y + -9, 0]
+_b1 = assetClassBarrel1 createVehicle [_x + -10, _y + 8, 0]
+_b2 = assetClassBarrel2 createVehicle [_x + -6, _y + 10, 0]
+_b3 = assetClassBarrel3 createVehicle [_x + -2, _y + 9, 0]
+_b4 = assetClassBarrel4 createVehicle [_x + 2, _y + 11, 0]
+_b5 = assetClassBarrels createVehicle [_x + 7, _y + 9, 0]
+_shed = assetClassShedSmall createVehicle [_x + -18, _y + -9, 0]
 _shed setDir (_dir + 90)
-_wall1 = "FenceWood" createVehicle [_x + -14, _y + 15, 0]
+_wall1 = assetClassFenceWood createVehicle [_x + -14, _y + 15, 0]
 _wall1 setDir _dir
-_wall2 = "Fence" createVehicle [_x + 16, _y + 13, 0]
+_wall2 = assetClassFence createVehicle [_x + 16, _y + 13, 0]
 _wall2 setDir (_dir + 90)
 
 #assignSite

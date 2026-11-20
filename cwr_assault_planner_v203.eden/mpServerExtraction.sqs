@@ -53,7 +53,7 @@ mpExtractArrivedRed11 = false
 mpExtractArrivedRed12 = false
 
 ? !(isNull extractPad) : deleteVehicle extractPad
-extractPad = "HeliHEmpty" createVehicle [extractionX, extractionY, 0]
+extractPad = assetClassHeliHEmpty createVehicle [extractionX, extractionY, 0]
 "extraction_marker" setMarkerPos [extractionX, extractionY, 0]
 "extraction_marker" setMarkerType "Flag"
 "extraction_marker" setMarkerColor "ColorGreen"
@@ -73,7 +73,7 @@ publicVariable "mpHQMessageId"
 extractHeli = objNull
 extractionVehicleSpawnComplete = false
 _spawnPos = [missionBaseX, missionBaseY, 5, -180, 0, 20] call worldOffsetPosition
-["Ch47D", _spawnPos select 0, _spawnPos select 1, 70] exec "friendlyRuntimeExtractionVehicleOne.sqs"
+[assetClassWestHeavyTransportHeli, _spawnPos select 0, _spawnPos select 1, 70] exec "friendlyRuntimeExtractionVehicleOne.sqs"
 @ extractionVehicleSpawnComplete
 extractHeli = extractionVehicleSpawned
 publicVariable "extractHeli"

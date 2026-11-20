@@ -17,7 +17,7 @@ goto "friendlyRuntimeFinish"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [55, -420, 0] call worldSetupPosition
-["WW4EXT_5TBIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestTruck, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 truckP1 = friendlyRuntimeVehicleSpawned
 ? alive truckP1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -27,7 +27,7 @@ publicVariable "truckP1"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [85, -420, 0] call worldSetupPosition
-["WW4EXT_5T2BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestOpenTruck, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 truckP2 = friendlyRuntimeVehicleSpawned
 ? alive truckP2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -38,7 +38,7 @@ publicVariable "truckP2"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [155, -415, 0] call worldSetupPosition
-["WW4EXT_5TBIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestTruck, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a1truck = friendlyRuntimeVehicleSpawned
 ? alive a1truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -50,7 +50,7 @@ publicVariable "a1truck"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [155, -375, 0] call worldSetupPosition
-["WW4EXT_5T2BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestOpenTruck, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a2truck = friendlyRuntimeVehicleSpawned
 ? alive a2truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -62,7 +62,7 @@ publicVariable "a2truck"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [155, -335, 0] call worldSetupPosition
-["WW4EXT_5TBIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestTruck, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a3truck = friendlyRuntimeVehicleSpawned
 ? alive a3truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -74,7 +74,7 @@ publicVariable "a3truck"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [155, -295, 0] call worldSetupPosition
-["WW4EXT_5T2BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestOpenTruck, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a4truck = friendlyRuntimeVehicleSpawned
 ? alive a4truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -88,7 +88,7 @@ goto "friendlyRuntimeFinish"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [55, -380, 0] call worldSetupPosition
-["WW4EXT_M113", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAPC, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 apcP1 = friendlyRuntimeVehicleSpawned
 ? alive apcP1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -98,7 +98,7 @@ publicVariable "apcP1"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [90, -380, 0] call worldSetupPosition
-["WW4EXT_M113", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAPC, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 apcP2 = friendlyRuntimeVehicleSpawned
 ? alive apcP2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -109,7 +109,7 @@ publicVariable "apcP2"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [190, -415, 0] call worldSetupPosition
-["WW4EXT_M113", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAPC, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a1apc = friendlyRuntimeVehicleSpawned
 ? alive a1apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -121,7 +121,7 @@ publicVariable "a1apc"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [190, -375, 0] call worldSetupPosition
-["WW4EXT_M2A2BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestIFV, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a2apc = friendlyRuntimeVehicleSpawned
 ? alive a2apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -133,7 +133,7 @@ publicVariable "a2apc"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [190, -335, 0] call worldSetupPosition
-["WW4EXT_M113", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAPC, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a3apc = friendlyRuntimeVehicleSpawned
 ? alive a3apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -145,7 +145,7 @@ publicVariable "a3apc"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [190, -295, 0] call worldSetupPosition
-["WW4EXT_M2A2BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestIFV, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a4apc = friendlyRuntimeVehicleSpawned
 ? alive a4apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -159,7 +159,7 @@ goto "friendlyRuntimeFinish"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [55, -380, 0] call worldSetupPosition
-["WW4EXT_M113", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAPC, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 apcP1 = friendlyRuntimeVehicleSpawned
 ? alive apcP1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -169,7 +169,7 @@ publicVariable "apcP1"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [90, -380, 0] call worldSetupPosition
-["WW4EXT_M113", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAPC, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 apcP2 = friendlyRuntimeVehicleSpawned
 ? alive apcP2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -180,7 +180,7 @@ publicVariable "apcP2"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [190, -415, 0] call worldSetupPosition
-["WW4EXT_M113", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAPC, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a1apc = friendlyRuntimeVehicleSpawned
 ? alive a1apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -192,7 +192,7 @@ publicVariable "a1apc"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [155, -375, 0] call worldSetupPosition
-["WW4EXT_5T2BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestOpenTruck, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a2truck = friendlyRuntimeVehicleSpawned
 ? alive a2truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -204,7 +204,7 @@ publicVariable "a2truck"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [190, -335, 0] call worldSetupPosition
-["WW4EXT_M113", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestAPC, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a3apc = friendlyRuntimeVehicleSpawned
 ? alive a3apc : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -216,7 +216,7 @@ publicVariable "a3apc"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [155, -295, 0] call worldSetupPosition
-["WW4EXT_5T2BIS", _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestOpenTruck, _setupPos select 0, _setupPos select 1, 0, 70, false] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a4truck = friendlyRuntimeVehicleSpawned
 ? alive a4truck : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -231,7 +231,7 @@ goto "friendlyRuntimeFinish"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [25, -300, 60] call worldSetupPosition
-["Ch47D", _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestHeavyTransportHeli, _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 heliP1 = friendlyRuntimeVehicleSpawned
 ? alive heliP1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -241,7 +241,7 @@ publicVariable "heliP1"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [90, -300, 60] call worldSetupPosition
-["UH60", _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestTransportHeli, _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 heliP2 = friendlyRuntimeVehicleSpawned
 ? alive heliP2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -253,7 +253,7 @@ goto "spawnAlliedHelis"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [125, -300, 60] call worldSetupPosition
-["UH60", _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestTransportHeli, _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 heliU1 = friendlyRuntimeVehicleSpawned
 ? alive heliU1 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -263,7 +263,7 @@ publicVariable "heliU1"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [160, -300, 60] call worldSetupPosition
-["UH60", _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestTransportHeli, _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 heliU2 = friendlyRuntimeVehicleSpawned
 ? alive heliU2 : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -275,7 +275,7 @@ publicVariable "heliU2"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [225, -415, 60] call worldSetupPosition
-["UH60MG", _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestArmedTransportHeli, _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a1heli = friendlyRuntimeVehicleSpawned
 ? alive a1heli : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -287,7 +287,7 @@ publicVariable "a1heli"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [225, -375, 60] call worldSetupPosition
-["UH60", _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestTransportHeli, _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a2heli = friendlyRuntimeVehicleSpawned
 ? alive a2heli : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -299,7 +299,7 @@ publicVariable "a2heli"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [225, -335, 60] call worldSetupPosition
-["Ch47D", _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestHeavyTransportHeli, _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a3heli = friendlyRuntimeVehicleSpawned
 ? alive a3heli : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1
@@ -311,7 +311,7 @@ publicVariable "a3heli"
 friendlyRuntimeInsertionVehicleRequestedTotal = friendlyRuntimeInsertionVehicleRequestedTotal + 1
 friendlyRuntimeVehicleSpawnComplete = false
 _setupPos = [225, -295, 60] call worldSetupPosition
-["UH60MG", _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
+[assetClassWestArmedTransportHeli, _setupPos select 0, _setupPos select 1, 60, 70, true] exec "friendlyRuntimeVehicleOne.sqs"
 @ friendlyRuntimeVehicleSpawnComplete
 a4heli = friendlyRuntimeVehicleSpawned
 ? alive a4heli : friendlyRuntimeInsertionVehicleCreatedTotal = friendlyRuntimeInsertionVehicleCreatedTotal + 1

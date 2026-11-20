@@ -30,8 +30,8 @@ _heading = (primaryX - (_attackPos select 0)) atan2 (primaryY - (_attackPos sele
 enemyAttackVehicle setDir _heading
 enemyAttackVehicle flyInHeight 120
 enemyAttackVehicle setPos _attackPos
-? enemyAttackClass == "WW4EXT_Su25_CW" : enemyAttackVehicle setVelocity [64 * sin _heading,64 * cos _heading,0]
-? enemyAttackClass != "WW4EXT_Su25_CW" : enemyAttackVehicle setVelocity [42 * sin _heading,42 * cos _heading,6]
+? enemyAttackClass == assetClassEastAttackJet : enemyAttackVehicle setVelocity [64 * sin _heading,64 * cos _heading,0]
+? enemyAttackClass != assetClassEastAttackJet : enemyAttackVehicle setVelocity [42 * sin _heading,42 * cos _heading,6]
 driver enemyAttackVehicle doMove [primaryX, primaryY, 0]
 ~20
 #attackLoop

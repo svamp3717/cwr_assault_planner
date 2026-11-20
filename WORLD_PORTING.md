@@ -192,8 +192,32 @@ Map edits are kept in memory and exported by the normal Generate/Create mission 
 
 ## Asset pack selection (full mission exports)
 
-Enable **Create a complete new mission folder**, then choose **Vanilla CWA** (default) or **WW4 + WW4 Extended** from Asset pack. Generate as usual. The setting applies to the staged mission copy only: the source remains the original WW4 template. Config-only exports do not change assets. The selected pack is recorded in assetPack.txt.
+Enable **Create a complete new mission folder**, then select **Vanilla CWA** (default) or **WW4 + WW4 Extended** in Asset pack. Config-only exports do not change assets. Both packs share exactly the same gameplay scripts.
 
-The vanilla profile replaces editor infantry and removes WW4 addOns/addOnsAuto entries; selects stock East/Resistance soldiers and vehicle pools; replaces friendly and objective assets, civilian traffic, static guns, ammo and weapon classes; and builds a stock CWA arsenal and model catalog. Legacy WW4-prefixed script names and globals remain internal names, not addon dependencies. The exporter rejects unmapped WW4 class literals instead of silently publishing an incomplete mission. Use the original template to create WW4 missions again.
+### Centralized asset profiles
 
-Vanilla vehicle selection has less variety; stock trucks carry 12-man reinforcement waves and stock APCs replace armed jeep patrols. Resistance uses stock Shilka/static machine guns with its own crew where no direct faction-specific equivalent exists. The editorupdate102 dependency is retained; custom terrain dependencies and any non-WW4 third-party requirements are a separate concern. Test the resulting mission in an installation without WW4, especially insertion cargo capacities, static gun crews and both enemy sides. Reference tables: https://www.ofpec.com/COMREF/index.php?action=read&id=69 and https://www.ofpec.com/COMREF/index.php?action=read&id=67.
+| File | Purpose |
+| --- | --- |
+| `assets/ww4.sqs` | All WW4 runtime class definitions, faction tables, vehicle pools, arsenal, model catalog and playable-slot metadata. |
+| `assets/vanilla.sqs` | Corresponding stock CWA classes and catalogs. |
+| `assets/selection.sqs` | Loads the selected profile before mission startup on each machine. |
+| `tools/asset_packs.py` | Selects the pack and updates only editor class/addon metadata in the exported mission copy. |
+
+The source template defaults to WW4 so it can still be opened directly. In a generated mission, only the selected profile is included. The pack is recorded in `assetPack.txt`. The exporter rejects unresolved WW4 class literals in vanilla missions; it no longer searches and replaces gameplay script class names.
+
+### Edit or extend the profile
+
+Edit the role value inside the relevant profile, not the gameplay script. For example:
+
+```sqs
+assetClassWestHeavyTransportHeli = "Ch47D"
+assetClassWestAPC = "M113"
+```
+
+The insertion scripts use these variables and therefore do not need changing for compatible replacements. Choose aircraft and transport classes with appropriate side, seating, and weapons. Update the faction tables, vehicle pools, arsenal magazine compatibility and model catalog as needed. Keep the 17-role faction order aligned with `ww4FactionSelect.sqs`; keep editor slot and addon arrays on one line. Both profiles must define each referenced `assetClass...` role. To add a third pack, create a profile and extend the generator's supported pack list and UI.
+
+CWA reads `mission.sqm` before script execution, so the generator must still apply the selected profile's editor manifest (`assetEditorSlots`, `assetRequiredAddons`) at export time. The source editor file retains WW4 playable slots for direct WW4 editing. Legacy WW4-prefixed scripts, dialogs and variables are shared identifiers, not addon dependencies. FRevive's internal engine helper classes are unchanged.
+
+Vanilla vehicle variety is smaller. Stock trucks carry reinforcement waves; stock APCs substitute for armed jeep patrols. Resistance uses stock Shilka/static machine guns with its own crew where direct faction-specific equivalents do not exist. `editorupdate102` and terrain-specific dependencies remain; this is a non-WW4 profile, not a guaranteed addon-free mission. Use the original template containing both packs to switch profiles. Test both sides, static weapons, arsenal, cargo capacities, extraction and revival in hosted/dedicated CWA. The automated tests check static references and actual folder exports, not game-engine execution.
+
+Reference tables: https://www.ofpec.com/COMREF/index.php?action=read&id=69 and https://www.ofpec.com/COMREF/index.php?action=read&id=67.

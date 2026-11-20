@@ -20,7 +20,7 @@ _dir = 70
 ? _label == "Saint-Louis" : _ox = 46; _oy = 34; _dir = 245
 ? _label == "Sainte-Marie" : _ox = -34; _oy = -44; _dir = 325
 ? _label == "Vigny" : _ox = 44; _oy = -26; _dir = 80
-enemyTownAmmoBoxCreated = "ReammoBoxEast" createVehicle [_x + _ox, _y + _oy, 0]
+enemyTownAmmoBoxCreated = assetClassEastAmmoBox createVehicle [_x + _ox, _y + _oy, 0]
 enemyTownAmmoBoxCreated setDir _dir
 enemyTownAmmoBoxCreated setDammage 0
 [enemyTownAmmoBoxCreated] exec "enemyTownAmmoBoxLoad.sqs"

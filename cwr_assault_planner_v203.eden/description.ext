@@ -190,7 +190,7 @@ class ERA_MissionSettingsDialog
         class Title : ERA_RscText { idc=-1; style=2; x=0.22; y=0.235; w=0.56; h=0.050; sizeEx=0.030; text="MISSION SETTINGS"; colorText[]={0.85,0.92,0.78,1}; };
         class Note : ERA_RscText { idc=-1; style=2; x=0.20; y=0.290; w=0.60; h=0.040; sizeEx=0.015; text="These settings apply to every player for this operation."; colorText[]={0.72,0.75,0.77,1}; };
 
-        class ArsenalLabel : ERA_RscText { idc=-1; x=0.22; y=0.355; w=0.27; h=0.030; sizeEx=0.019; text="WW4 ARSENAL"; colorText[]={0.85,0.92,0.78,1}; };
+        class ArsenalLabel : ERA_RscText { idc=-1; x=0.22; y=0.355; w=0.27; h=0.030; sizeEx=0.019; text="Mission Arsenal"; colorText[]={0.85,0.92,0.78,1}; };
         class ArsenalState : ERA_RscText { idc=4320; style=2; x=0.49; y=0.355; w=0.16; h=0.030; sizeEx=0.018; text="Enabled"; colorText[]={1,0.86,0.35,1}; };
         class ArsenalOn : ERA_RscButton { idc=4321; x=0.66; y=0.350; w=0.075; h=0.040; sizeEx=0.016; text="ON"; action="guiArsenalEnabled=true; ctrlSetText [4320, ""Enabled""]"; };
         class ArsenalOff : ERA_RscButton { idc=4322; x=0.745; y=0.350; w=0.075; h=0.040; sizeEx=0.016; text="OFF"; action="guiArsenalEnabled=false; ctrlSetText [4320, ""Disabled""]"; };

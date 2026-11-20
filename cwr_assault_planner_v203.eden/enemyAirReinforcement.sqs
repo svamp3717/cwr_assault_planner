@@ -20,7 +20,7 @@ _heading = (reinfDropX - reinfSpawnX) atan2 (reinfDropY - reinfSpawnY)
 _exitPos = [reinfDropX, reinfDropY, 1980, 2020, 0, 20] call worldOffsetPosition
 ? alive enemyTransportHeli : deleteVehicle enemyTransportHeli
 ~0.1
-enemyTransportHeli = "Mi17" createVehicle [reinfSpawnX, reinfSpawnY, 0]
+enemyTransportHeli = assetClassEastTransportHeli createVehicle [reinfSpawnX, reinfSpawnY, 0]
 enemyAirReinfMarkerActive = true
 ? debugMode : [] exec "debugAirReinforcementMarker.sqs"
 enemyTransportHeli setDir _heading
