@@ -151,10 +151,16 @@ class WGL512PackTests(unittest.TestCase):
             if not file.is_file():
                 continue
             rel = file.relative_to(MISSION)
-            if rel.parts[0] == "assets" or file.name in ("mission.sqm", "worldConfig.sqs"):
+            if rel.parts[0] == "assets" or file.name in ("mission.sqm", "worldConfig.sqs", "description.ext"):
                 continue
             self.assertEqual((wgl / rel).read_bytes(), (vanilla / rel).read_bytes(), str(rel))
             self.assertEqual((wgl / rel).read_bytes(), file.read_bytes(), str(rel))
+
+    def test_wgl_uses_group_respawn_without_affecting_vanilla(self):
+        wgl = self.export("wgl512")
+        vanilla = self.export("vanilla")
+        self.assertRegex(read(wgl / "description.ext"), r"(?m)^respawn = 4;$")
+        self.assertRegex(read(vanilla / "description.ext"), r"(?m)^respawn = 2;$")
 
     def test_gui_wgl_choice_exists_without_changing_vanilla_default(self):
         text = read(ROOT / "tools/generate_world_config_gui.py")

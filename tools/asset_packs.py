@@ -1,4 +1,4 @@
-"""Select one pre-defined mission asset profile; only editor metadata is rewritten."""
+"""Select a mission asset profile; update editor metadata and WGL respawn mode."""
 from __future__ import annotations
 
 import json
@@ -60,8 +60,29 @@ def select_editor_classes(sqm, slot_classes, addons):
         raise ValueError("Missing editor addon metadata")
     return text
 
+def _set_wgl_group_respawn(mission: Path) -> None:
+    """WGL has no FRevive replacement-body suspension: never use INSTANT.
+
+    OFP group respawn transfers a human player to a surviving group member
+    instead of manufacturing a replacement soldier on the corpse.
+    """
+    path = mission / "description.ext"
+    original = path.read_text(encoding="latin-1")
+    match = re.search(r"(?mi)^[ \t]*respawn[ \t]*=[ \t]*(\d+)[ \t]*;", original)
+    if not match:
+        raise ValueError("WGL export requires a respawn setting in description.ext")
+    if match.group(1) not in ("2", "4"):
+        raise ValueError("WGL export expected mission respawn=2 (INSTANT) or 4 (GROUP)")
+    updated = original[:match.start(1)] + "4" + original[match.end(1):]
+    updated = updated.replace(
+        "// FRevive uses instant respawn, then suspends the replacement unit until a teammate revives it.",
+        "// WGL: GROUP respawn transfers players into a surviving squadmate; dead AI stay dead.",
+    )
+    path.write_text(updated, encoding="latin-1", newline="")
+
+
 def apply_asset_pack(mission: Path, profile: str) -> None:
-    """Select packaged profile without modifying gameplay scripts or catalogs."""
+    """Select the pack, update editor metadata and enforce WGL respawn."""
     if profile not in PROFILES:
         raise ValueError(f"Unknown asset pack: {profile}")
     marker = mission / PROFILE_FILE
@@ -96,6 +117,8 @@ def apply_asset_pack(mission: Path, profile: str) -> None:
             raise ValueError("Unmapped WW4 references; vanilla export aborted: "+details)
         updated = updated.replace("randomized WW4 assault", f"randomized {profile.upper()} assault")
     sqm_path.write_text(updated, encoding="utf-8", newline="\n")
+    if profile == "wgl512":
+        _set_wgl_group_respawn(mission)
     # Remove inactive profiles so the exported mission contains exactly one pack.
     for pack in PROFILES:
         if pack != profile:

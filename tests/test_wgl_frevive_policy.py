@@ -64,13 +64,18 @@ class WGLFRevivePolicyTests(unittest.TestCase):
                 self.assertIn(f'assetProfileName = "{pack}"', selector)
                 self.assertIn(f'[] exec "assets\\{pack}.sqs"', selector)
                 outs.append(target)
-            for script_name in ("init.sqs","mpFReviveBootstrap.sqs","description.ext",
+            for script_name in ("init.sqs","mpFReviveBootstrap.sqs",
                                 "missionSettingsMenu.sqs","mpSubmitSetup.sqs",
                                 "FRevive/Start.sqs","FRevive/Functions.sqf"):
                 original=script(script_name)
                 for folder in outs:
                     self.assertEqual((folder/script_name).read_text(encoding="latin-1"), original,
                                      (folder.name,script_name))
+            self.assertRegex((outs[0]/"description.ext").read_text(encoding="latin-1"),
+                             r"(?m)^respawn = 4;$")
+            for folder in outs[1:]:
+                self.assertEqual((folder/"description.ext").read_text(encoding="latin-1"),
+                                 script("description.ext"))
 
 if __name__ == "__main__":
     unittest.main()
