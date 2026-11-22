@@ -7,6 +7,8 @@ ctrlSetText [4320, "Enabled"]
 ? !(guiArsenalEnabled) : ctrlSetText [4320, "Disabled"]
 ctrlSetText [4330, "Enabled"]
 ? !(guiFReviveEnabled) : ctrlSetText [4330, "Disabled"]
+; WGL preset is hard-disabled, including when the dialog is reopened.
+? assetProfileName == "wgl512" : guiFReviveEnabled = false; ctrlSetText [4330, "WGL: OFF"]
 ctrlSetText [4350, "Enabled"]
 ? !(guiMusicEnabled) : ctrlSetText [4350, "Disabled"]
 
