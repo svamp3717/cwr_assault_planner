@@ -244,3 +244,9 @@ Source catalogs supplied for this preset: `unitlist.xls` (WGL CfgVehicles and ve
 WGL is a gameplay conversion, not merely an asset replacement. Test playable slot placement, WGL unit loadouts, armor/cargo capacity, air support, FRevive/damage and revivals, logistics deliveries, WGL ammunition compatibility and mission extraction in hosted and dedicated play. The automated tests only verify profile structure, known historical classnames and output packaging. Never treat them as engine compatibility certification.
 
 WGL references: https://community.bistudio.com/wiki/Wargames:Help_Site:Installation and https://www.moddb.com/mods/wargames/downloads/wgl-512-patch .
+
+## FRevive CWA / WGL compatibility
+
+The FRevive 0.51 controller used the newer array `find` operator twice in `FRevive/Start.sqs`; CWA 1.99 reports `Unknown operator find` repeatedly while checking nearby rescuers. These calls now use a CWA-safe first-match index helper in `FRevive/Functions.sqf`. The revive loop also sets `_time = time` once per pass before using it to calculate revive duration, AI assistance and sound intervals. The array helper returns `-1` when no matching entry exists, preserves first-match behavior and does not modify input arrays. FRevive's suspended replacement protocol, corpse positioning, optional water recovery, medical checks and the player death/respawn state machine are otherwise unchanged.
+
+For WGL 5.12 multiplayer, verify that players can die, remain suspended, be revived by another player and AI, and time out without an engine script error; test on both hosted and dedicated servers. Static tests cannot establish compatibility between WGL's damage/medical system and FRevive's engine-side revive behavior.
