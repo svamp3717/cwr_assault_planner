@@ -74,8 +74,6 @@ _suspended_seen = []
 ; Check the status of each unit
 #Start
 ~FREVIVE_INTERVAL
-; CWA SQF does not define an implicit _time variable. Snapshot mission time each pass.
-_time = time
 _i = 0
 
 #ForEachUnit
@@ -166,7 +164,7 @@ _logic setPosASL (_location select _i)
 
 ; Reset variables if player that was reviving moved away
 _which = 0
-? (_reviving select _i) != -1 : _which=[_indexes,(_reviving select _i)] call FREVIVE_ARRAY_INDEX_OF; if (_which==-1) then {_which=0; _timing set [_i, 0]; _reviving set [_i, -1]; _new_body call FREVIVE_SUSPEND; if (local _new_body) then {_new_body setDammage 0}}
+? (_reviving select _i) != -1 : _which=_indexes find (_reviving select _i); if (_which==-1) then {_which=0; _timing set [_i, 0]; _reviving set [_i, -1]; _new_body call FREVIVE_SUSPEND; if (local _new_body) then {_new_body setDammage 0}}
 
 ; If nearest unit is within range then start revive
 _nearest_unit = _bodies select (_indexes select _which)
@@ -179,7 +177,7 @@ _distance     = _distances select _which
 
 ; Order nearest AI to move to the body
 ? _distance > FREVIVE_AI_MOVE_RANGE : goto "NextUnit"
-? "_x==_i" count _status > 0        : if (_time>(_remind select _i)) then {_which=[_status,_i] call FREVIVE_ARRAY_INDEX_OF; if (_which>=0) then {[_bodies select _which,_body] exec "FRevive\MoveAI.sqs"}; _remind set [_i, _time+10]}; goto "NextUnit"
+? "_x==_i" count _status > 0        : if (_time>(_remind select _i)) then {_which=_status find _i; [_bodies select _which,_body] exec "FRevive\MoveAI.sqs"; _remind set [_i, _time+10]}; goto "NextUnit"
 
 	_k = 0
 	#FindNearestAI

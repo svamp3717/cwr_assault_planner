@@ -38,7 +38,8 @@ missionEnded = false
 
 ; v188 mission settings. Defaults preserve the v184 behavior and enable mission music.
 guiArsenalEnabled = true
-guiFReviveEnabled = true
+; WGL 5.12 provides native medical gameplay. Do not run FRevive for this pack.
+guiFReviveEnabled = assetProfileName != "wgl512"
 guiMusicEnabled = true
 missionSettingsMenuRequested = false
 missionSettingsMenuComplete = false

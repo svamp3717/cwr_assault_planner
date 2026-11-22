@@ -2,6 +2,8 @@
 ; Wait until setup removes unused playable AI and the server publishes the surviving roster.
 @ mpFReviveNamesReady
 @ mpAISlotsCulled
+; Enforce on each machine, independently of the setup UI or networked toggle.
+? assetProfileName == "wgl512" : goto "disabled"
 ? !(guiFReviveEnabled) : goto "disabled"
 @ count mpFReviveNames > 0
 ~0.5

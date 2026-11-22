@@ -81,9 +81,9 @@ FREVIVE_FNC_CHAT = {
 		_source   = _logic;
 		_command  = "globalChat";
 		_messages = [
-			"ยง %1 is waiting to be revived",
-			"ยง %2 is moving to revive %1",
-			"ยง %1 was revived by %2"
+			"ง %1 is waiting to be revived",
+			"ง %2 is moving to revive %1",
+			"ง %1 was revived by %2"
 		];
 		
 		if (FREVIVE_MSG_STYLE == 2) then {
@@ -264,22 +264,6 @@ FREVIVE_ID_TO_HEIGHT = {
 	} else {
 		(_this+10)*1000+999
 	}
-};
-
-// CWA / OFP 1.99 has no array 'find' operator. Match its first-index
-// semantics (or return -1) without touching the caller's array.
-// _this = [array, sought value].
-FREVIVE_ARRAY_INDEX_OF = {
-    private ["_items", "_wanted", "_index", "_found"];
-    _items = _this select 0;
-    _wanted = _this select 1;
-    _index = 0;
-    _found = -1;
-    {
-        if (_found < 0 && _x == _wanted) then {_found = _index};
-        _index = _index + 1;
-    } forEach _items;
-    _found
 };
 
 FREVIVE_SUSPEND = {

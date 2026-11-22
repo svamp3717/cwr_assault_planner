@@ -31,6 +31,8 @@ publicVariable "guiCivilianChoice"
 publicVariable "guiLogisticsDropCount"
 publicVariable "guiDebugChoice"
 publicVariable "guiArsenalEnabled"
+; Never publish an enabled FRevive option for a WGL profile.
+? assetProfileName == "wgl512" : guiFReviveEnabled = false
 publicVariable "guiFReviveEnabled"
 publicVariable "guiMusicEnabled"
 mpSetupReady = true

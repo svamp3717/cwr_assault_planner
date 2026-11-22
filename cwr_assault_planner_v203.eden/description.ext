@@ -197,7 +197,7 @@ class ERA_MissionSettingsDialog
 
         class FReviveLabel : ERA_RscText { idc=-1; x=0.22; y=0.435; w=0.27; h=0.030; sizeEx=0.019; text="FREVIVE"; colorText[]={0.85,0.92,0.78,1}; };
         class FReviveState : ERA_RscText { idc=4330; style=2; x=0.49; y=0.435; w=0.16; h=0.030; sizeEx=0.018; text="Enabled"; colorText[]={1,0.86,0.35,1}; };
-        class FReviveOn : ERA_RscButton { idc=4331; x=0.66; y=0.430; w=0.075; h=0.040; sizeEx=0.016; text="ON"; action="guiFReviveEnabled=true; ctrlSetText [4330, ""Enabled""]"; };
+        class FReviveOn : ERA_RscButton { idc=4331; x=0.66; y=0.430; w=0.075; h=0.040; sizeEx=0.016; text="ON"; action="if (assetProfileName != ""wgl512"") then {guiFReviveEnabled=true; ctrlSetText [4330, ""Enabled""]}"; };
         class FReviveOff : ERA_RscButton { idc=4332; x=0.745; y=0.430; w=0.075; h=0.040; sizeEx=0.016; text="OFF"; action="guiFReviveEnabled=false; ctrlSetText [4330, ""Disabled""]"; };
 
         class MusicLabel : ERA_RscText { idc=-1; x=0.22; y=0.515; w=0.27; h=0.030; sizeEx=0.019; text="MISSION MUSIC"; colorText[]={0.85,0.92,0.78,1}; };
