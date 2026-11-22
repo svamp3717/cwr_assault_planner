@@ -205,19 +205,35 @@ extractHeli land "GET IN"
 ? "red12" in mpFReviveNames && alive red12 && local red12 && (getPos red12 select 2) < 7000 && vehicle red12 != extractHeli : red12 assignAsCargo extractHeli
 ? "red12" in mpFReviveNames && alive red12 && local red12 && (getPos red12 select 2) < 7000 && vehicle red12 != extractHeli : [red12] orderGetIn true
 
+; WGL GROUP respawn leaves dead squad slots permanently dead.
+; Require only living roster members, but never extract an empty helicopter.
 _allAboard = true
-? "plr" in mpFReviveNames && (!(alive plr) || (getPos plr select 2) >= 7000 || vehicle plr != extractHeli) : _allAboard = false
-? "red2" in mpFReviveNames && (!(alive red2) || (getPos red2 select 2) >= 7000 || vehicle red2 != extractHeli) : _allAboard = false
-? "red3" in mpFReviveNames && (!(alive red3) || (getPos red3 select 2) >= 7000 || vehicle red3 != extractHeli) : _allAboard = false
-? "medic1" in mpFReviveNames && (!(alive medic1) || (getPos medic1 select 2) >= 7000 || vehicle medic1 != extractHeli) : _allAboard = false
-? "medic2" in mpFReviveNames && (!(alive medic2) || (getPos medic2 select 2) >= 7000 || vehicle medic2 != extractHeli) : _allAboard = false
-? "red6" in mpFReviveNames && (!(alive red6) || (getPos red6 select 2) >= 7000 || vehicle red6 != extractHeli) : _allAboard = false
-? "red7" in mpFReviveNames && (!(alive red7) || (getPos red7 select 2) >= 7000 || vehicle red7 != extractHeli) : _allAboard = false
-? "red8" in mpFReviveNames && (!(alive red8) || (getPos red8 select 2) >= 7000 || vehicle red8 != extractHeli) : _allAboard = false
-? "red9" in mpFReviveNames && (!(alive red9) || (getPos red9 select 2) >= 7000 || vehicle red9 != extractHeli) : _allAboard = false
-? "red10" in mpFReviveNames && (!(alive red10) || (getPos red10 select 2) >= 7000 || vehicle red10 != extractHeli) : _allAboard = false
-? "red11" in mpFReviveNames && (!(alive red11) || (getPos red11 select 2) >= 7000 || vehicle red11 != extractHeli) : _allAboard = false
-? "red12" in mpFReviveNames && (!(alive red12) || (getPos red12 select 2) >= 7000 || vehicle red12 != extractHeli) : _allAboard = false
+_wglLiving = 0
+? assetProfileName == "wgl512" && "plr" in mpFReviveNames && alive plr : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red2" in mpFReviveNames && alive red2 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red3" in mpFReviveNames && alive red3 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "medic1" in mpFReviveNames && alive medic1 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "medic2" in mpFReviveNames && alive medic2 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red6" in mpFReviveNames && alive red6 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red7" in mpFReviveNames && alive red7 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red8" in mpFReviveNames && alive red8 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red9" in mpFReviveNames && alive red9 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red10" in mpFReviveNames && alive red10 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red11" in mpFReviveNames && alive red11 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && "red12" in mpFReviveNames && alive red12 : _wglLiving = _wglLiving + 1
+? assetProfileName == "wgl512" && _wglLiving == 0 : _allAboard = false
+? "plr" in mpFReviveNames && (assetProfileName != "wgl512" || alive plr) && (!(alive plr) || (getPos plr select 2) >= 7000 || vehicle plr != extractHeli) : _allAboard = false
+? "red2" in mpFReviveNames && (assetProfileName != "wgl512" || alive red2) && (!(alive red2) || (getPos red2 select 2) >= 7000 || vehicle red2 != extractHeli) : _allAboard = false
+? "red3" in mpFReviveNames && (assetProfileName != "wgl512" || alive red3) && (!(alive red3) || (getPos red3 select 2) >= 7000 || vehicle red3 != extractHeli) : _allAboard = false
+? "medic1" in mpFReviveNames && (assetProfileName != "wgl512" || alive medic1) && (!(alive medic1) || (getPos medic1 select 2) >= 7000 || vehicle medic1 != extractHeli) : _allAboard = false
+? "medic2" in mpFReviveNames && (assetProfileName != "wgl512" || alive medic2) && (!(alive medic2) || (getPos medic2 select 2) >= 7000 || vehicle medic2 != extractHeli) : _allAboard = false
+? "red6" in mpFReviveNames && (assetProfileName != "wgl512" || alive red6) && (!(alive red6) || (getPos red6 select 2) >= 7000 || vehicle red6 != extractHeli) : _allAboard = false
+? "red7" in mpFReviveNames && (assetProfileName != "wgl512" || alive red7) && (!(alive red7) || (getPos red7 select 2) >= 7000 || vehicle red7 != extractHeli) : _allAboard = false
+? "red8" in mpFReviveNames && (assetProfileName != "wgl512" || alive red8) && (!(alive red8) || (getPos red8 select 2) >= 7000 || vehicle red8 != extractHeli) : _allAboard = false
+? "red9" in mpFReviveNames && (assetProfileName != "wgl512" || alive red9) && (!(alive red9) || (getPos red9 select 2) >= 7000 || vehicle red9 != extractHeli) : _allAboard = false
+? "red10" in mpFReviveNames && (assetProfileName != "wgl512" || alive red10) && (!(alive red10) || (getPos red10 select 2) >= 7000 || vehicle red10 != extractHeli) : _allAboard = false
+? "red11" in mpFReviveNames && (assetProfileName != "wgl512" || alive red11) && (!(alive red11) || (getPos red11 select 2) >= 7000 || vehicle red11 != extractHeli) : _allAboard = false
+? "red12" in mpFReviveNames && (assetProfileName != "wgl512" || alive red12) && (!(alive red12) || (getPos red12 select 2) >= 7000 || vehicle red12 != extractHeli) : _allAboard = false
 _objectivesComplete = missionObjectivesComplete && !(enemyReinforcementPending) && airReinfClear
 ? _allAboard && _objectivesComplete : goto "depart"
 goto "boarding"
