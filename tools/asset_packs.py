@@ -5,7 +5,7 @@ import json
 import re
 from pathlib import Path
 
-PROFILES = ("vanilla", "ww4")
+PROFILES = ("vanilla", "ww4", "wgl512")
 PROFILE_FILE = "assetPack.txt"
 TEXT_SUFFIXES = {".sqs", ".sqf", ".sqm", ".ext", ".hpp", ".cpp", ".cfg", ".txt", ".html"}
 QUOTED = re.compile(r'"([A-Za-z_][A-Za-z_0-9]*)"')
@@ -80,7 +80,7 @@ def apply_asset_pack(mission: Path, profile: str) -> None:
     sqm_path = mission / "mission.sqm"
     sqm = sqm_path.read_text(encoding="utf-8-sig")
     updated = select_editor_classes(sqm, slot_classes, addons)
-    if profile == "vanilla":
+    if profile != "ww4":
         unresolved = {}
         for path in mission.rglob("*"):
             if path.suffix.lower() not in TEXT_SUFFIXES or not path.is_file() or path.name == "worldConfig.sqs":
@@ -94,9 +94,9 @@ def apply_asset_pack(mission: Path, profile: str) -> None:
         if unresolved:
             details = "; ".join(f"{path}: {', '.join(classes)}" for path, classes in unresolved.items())
             raise ValueError("Unmapped WW4 references; vanilla export aborted: "+details)
-        updated = updated.replace("randomized WW4 assault", "randomized CWA assault")
+        updated = updated.replace("randomized WW4 assault", f"randomized {profile.upper()} assault")
     sqm_path.write_text(updated, encoding="utf-8", newline="\n")
-    # Do not leave inactive mod class catalogs in a vanilla mission package.
+    # Remove inactive profiles so the exported mission contains exactly one pack.
     for pack in PROFILES:
         if pack != profile:
             (source.parent / (pack+".sqs")).unlink(missing_ok=True)
