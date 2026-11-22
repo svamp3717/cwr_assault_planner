@@ -233,3 +233,14 @@ Civilian vehicles now have guaranteed streamed profiles at the two nearest eligi
 ### Profile display names
 
 Player-facing vehicle names use the corresponding assetName variables next to the assetClass variables in each profile. Change both together when replacing an asset. The theft objective draws a class/name pair, including its fallback; air support, destruction objectives, insertion, armored support, extraction and logistics messages use those names too. Legacy script variables, dialog control identifiers and internal comments may still use historical names. The vanilla preset labels its BTR-80 replacement as BMP-2 (East) or BMP-1 (Resistance).
+
+
+## WarGames League 5.12 asset preset
+
+For a complete mission export, select **WGL 5.12**. The template contains `assets/wgl512.sqs`, which is loaded on each client/server instead of the inactive WW4 or vanilla profile. Its editor slots, infantry factions, vehicle pools, models, weapon/magazine catalog and display names use WGL-specific class names where the uploaded source lists explicitly identify them. Ordinary CWA civilians, structures and other common engine helpers remain stock where there is no verified WGL alternative. The 12 playable editor units become WGL BLUFOR.
+
+Source catalogs supplied for this preset: `unitlist.xls` (WGL CfgVehicles and vehicles), `inflist.xls` (infantry, role names, loadouts), `weplist.xls` (weapons/magazine compatibility), and `grouplist.xls` (squad compositions). The files are historical reference lists from 2006; they are not a copy of the installed WGL 5.12 `config.cpp`. WGL's specific `CfgPatches` dependency identifiers are **not listed** in these spreadsheets, so the exporter deliberately does not invent them. It removes WW4 declarations and preserves the existing `editorupdate102` requirement. **Start CWA with the complete WGL 5.1 installation and WGL 5.12 update on each multiplayer client and the server.** The preset does not install or activate WGL.
+
+WGL is a gameplay conversion, not merely an asset replacement. Test playable slot placement, WGL unit loadouts, armor/cargo capacity, air support, FRevive/damage and revivals, logistics deliveries, WGL ammunition compatibility and mission extraction in hosted and dedicated play. The automated tests only verify profile structure, known historical classnames and output packaging. Never treat them as engine compatibility certification.
+
+WGL references: https://community.bistudio.com/wiki/Wargames:Help_Site:Installation and https://www.moddb.com/mods/wargames/downloads/wgl-512-patch .

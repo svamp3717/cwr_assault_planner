@@ -73,7 +73,7 @@ hint format ["Added explosive or mine to %1 without clearing gear: %2",name _tar
 exit
 
 #ApplyUtility
-? _weapon == assetClassLaserDesignator : _target addMagazine assetClassLaserDesignator
+? _weapon == assetClassLaserDesignator : _target addMagazine assetClassLaserDesignatorMagazine
 ? assetClassOptionalRadio != "" && _weapon == assetClassOptionalRadio : _target addMagazine assetClassOptionalRadioBattery
 _target addWeapon _weapon
 ? _weapon in weapons _target : goto "UtilitySuccess"
