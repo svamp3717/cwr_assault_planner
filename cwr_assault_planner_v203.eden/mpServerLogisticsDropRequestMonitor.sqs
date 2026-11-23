@@ -21,7 +21,7 @@ publicVariable "logisticsDropUsed"
 ? !(mpLogisticsDropRequest) : goto "waitRequest"
 mpLogisticsDropRequest = false
 publicVariable "mpLogisticsDropRequest"
-? logisticsDropRequestType < 1 || logisticsDropRequestType > 3 : goto "invalidRequest"
+? logisticsDropRequestType < 1 || logisticsDropRequestType > 4 : goto "invalidRequest"
 ? isNull logisticsDropRequester : goto "invalidRequest"
 ? !(alive logisticsDropRequester) : goto "invalidRequest"
 ? logisticsDropRequester != leader (group logisticsDropRequester) : goto "invalidRequest"
@@ -29,6 +29,7 @@ publicVariable "mpLogisticsDropRequest"
 logisticsDropRequestLabel = assetNameWestJeep
 ? logisticsDropRequestType == 2 : logisticsDropRequestLabel = assetNameWestHMMWV
 ? logisticsDropRequestType == 3 : logisticsDropRequestLabel = assetNameWestAmmoBox
+? logisticsDropRequestType == 4 : logisticsDropRequestLabel = assetNameWestTruck
 publicVariable "logisticsDropRequestLabel"
 _requestPos = getPos logisticsDropRequester
 logisticsDropRequestX = _requestPos select 0

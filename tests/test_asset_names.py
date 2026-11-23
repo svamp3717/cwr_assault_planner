@@ -68,8 +68,8 @@ class AssetNameTests(unittest.TestCase):
             "mpServerExtraction.sqs": ("WestHeavyTransportHeli",),
             "mpServerExtractionRequestMonitor.sqs": ("WestHeavyTransportHeli",),
             "mpServerLogisticsDrop.sqs": ("WestHeavyTransportHeli",),
-            "mpServerLogisticsDropRequestMonitor.sqs": ("WestJeep", "WestHMMWV", "WestAmmoBox", "WestHeavyTransportHeli"),
-            "radioCharlie.sqs": ("WestJeep", "WestHMMWV", "WestAmmoBox"),
+            "mpServerLogisticsDropRequestMonitor.sqs": ("WestJeep", "WestHMMWV", "WestAmmoBox", "WestTruck", "WestHeavyTransportHeli"),
+            "radioCharlie.sqs": ("WestJeep", "WestHMMWV", "WestAmmoBox", "WestTruck"),
             "objectiveAssets.sqs": ("Scud", "EastAirDefense", "ResistanceAirDefense", "EastAmmoTruck", "ResistanceAmmoTruck"),
         }.items():
             for role in refs:
