@@ -245,9 +245,10 @@ class ERA_LogisticsDropDialog
         class Background : ERA_RscText { idc=-1; x=0.08; y=0.25; w=0.84; h=0.50; text=""; colorBackground[]={0.02,0.03,0.04,0.97}; };
         class Title : ERA_RscText { idc=-1; style=2; x=0.14; y=0.285; w=0.72; h=0.050; sizeEx=0.030; text="REQUEST LOGISTICS HELIDROP"; colorText[]={0.85,0.92,0.78,1}; };
         class Note : ERA_RscText { idc=4210; style=2; x=0.14; y=0.345; w=0.72; h=0.050; sizeEx=0.017; text="Delivery will land near the squad leader's current position."; colorText[]={0.72,0.75,0.77,1}; };
-        class Jeep : ERA_RscButton { idc=4201; x=0.13; y=0.445; w=0.22; h=0.070; sizeEx=0.022; text="JEEP"; action="logisticsDropMenuChoice=1; logisticsDropMenuDone=true; closeDialog 1"; };
-        class HMMWV : ERA_RscButton { idc=4202; x=0.39; y=0.445; w=0.22; h=0.070; sizeEx=0.022; text="HMMWV"; action="logisticsDropMenuChoice=2; logisticsDropMenuDone=true; closeDialog 1"; };
-        class AmmoBox : ERA_RscButton { idc=4203; x=0.65; y=0.445; w=0.22; h=0.070; sizeEx=0.022; text="AMMO BOX"; action="logisticsDropMenuChoice=3; logisticsDropMenuDone=true; closeDialog 1"; };
+        class Jeep : ERA_RscButton { idc=4201; x=0.12; y=0.445; w=0.17; h=0.070; sizeEx=0.018; text="JEEP"; action="logisticsDropMenuChoice=1; logisticsDropMenuDone=true; closeDialog 1"; };
+        class HMMWV : ERA_RscButton { idc=4202; x=0.315; y=0.445; w=0.17; h=0.070; sizeEx=0.018; text="HMMWV"; action="logisticsDropMenuChoice=2; logisticsDropMenuDone=true; closeDialog 1"; };
+        class AmmoBox : ERA_RscButton { idc=4203; x=0.51; y=0.445; w=0.17; h=0.070; sizeEx=0.018; text="AMMO BOX"; action="logisticsDropMenuChoice=3; logisticsDropMenuDone=true; closeDialog 1"; };
+        class FiveTonTruck : ERA_RscButton { idc=4204; x=0.705; y=0.445; w=0.17; h=0.070; sizeEx=0.018; text="5T TRUCK"; action="logisticsDropMenuChoice=4; logisticsDropMenuDone=true; closeDialog 1"; };
         class Cancel : ERA_RscButton { idc=4209; x=0.36; y=0.610; w=0.28; h=0.052; sizeEx=0.020; text="CANCEL"; action="logisticsDropMenuCancelled=true; closeDialog 1"; };
     };
 };

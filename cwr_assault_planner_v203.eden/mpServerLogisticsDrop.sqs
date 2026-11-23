@@ -90,11 +90,13 @@ logisticsDropAsset = objNull
 ? logisticsDropRequestType == 1 : logisticsDropAsset = assetClassWestJeep createVehicle [_dropX, _dropY, 0]
 ? logisticsDropRequestType == 2 : logisticsDropAsset = assetClassWestHMMWV createVehicle [_dropX, _dropY, 0]
 ? logisticsDropRequestType == 3 : logisticsDropAsset = assetClassWestAmmoBox createVehicle [_dropX, _dropY, 0]
+? logisticsDropRequestType == 4 : logisticsDropAsset = assetClassWestTruck createVehicle [_dropX, _dropY, 0]
 ? isNull logisticsDropAsset : goto "assetFailed"
 logisticsDropAsset setPos [_dropX, _dropY, 0]
 logisticsDropAsset setDir 45
 logisticsDropAsset setDammage 0
-? logisticsDropRequestType < 3 : logisticsDropAsset setFuel 1
+; Jeep, HMMWV and the 5-ton transport truck arrive fueled; the ammo box is not a vehicle.
+? logisticsDropRequestType != 3 : logisticsDropAsset setFuel 1
 ? logisticsDropRequestType == 3 : [logisticsDropAsset] exec "logisticsAmmoBoxLoad.sqs"
 ~0.5
 logisticsDropDelivered = true
