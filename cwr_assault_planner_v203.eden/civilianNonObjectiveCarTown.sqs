@@ -6,6 +6,8 @@ _carPos = _this select 1
 _carDir = _this select 2
 _townLabel = _this select 3
 _car = objNull
+_carDamage = 0
+_carFuel = 0.6
 _spawnRadiusSq = 1000000
 _keepRadiusSq = 1690000
 
@@ -169,8 +171,15 @@ _d2 = (_dx * _dx) + (_dy * _dy)
 ? !(_nearSpawn) : goto "streamDespawnCheck"
 ? !(isNull _car) : goto "streamDespawnCheck"
 _car = _carClass createVehicle _carPos
+? !(isNull _car) : goto "streamCarCreated"
+? debugMode : debugLog format ["ERA DEBUG CIVSTREAM FAILED CLASS: town=%1 class=%2",_townLabel,_carClass]
+_carClass = assetClassSkodaCiv
+_car = _carClass createVehicle _carPos
+? isNull _car : goto "civilianCarMonitor"
+#streamCarCreated
 _car setDir _carDir
-_car setFuel 0.6
+_car setFuel _carFuel
+_car setDammage _carDamage
 ? debugMode : debugLog format ["ERA DEBUG CIVSTREAM SPAWN: town=%1 class=%2 pos=%3", _townLabel, _carClass, _carPos]
 
 #streamDespawnCheck
@@ -181,6 +190,9 @@ _car setFuel 0.6
 ? (count (crew _car)) > 0 : goto "civilianCarMonitor"
 _carPos = getPos _car
 _carDir = getDir _car
+_carDamage = getDammage _car
+_carFuel = fuel _car
+? _carDamage >= 1 : goto "civilianCarCleanup"
 deleteVehicle _car
 _car = objNull
 ? debugMode : debugLog format ["ERA DEBUG CIVSTREAM DESPAWN: town=%1 class=%2 savedPos=%3 savedDir=%4", _townLabel, _carClass, _carPos, _carDir]

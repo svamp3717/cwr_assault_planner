@@ -20,15 +20,16 @@ _done = false
 ? _done : exit
 ? isNull _pilot : goto "loop"
 ? !(alive _pilot) : goto "failed"
+? (getPos (vehicle _pilot) select 2) > 5 : goto "loop"
 _p = getPos _pilot
 _dx = (_p select 0) - _destX
 _dy = (_p select 1) - _destY
 ? ((_dx * _dx) + (_dy * _dy)) > 14400 : goto "loop"
-? _slot == 1 : objectivePilotReady1 = true; objectivePilotFollowing1 = false; objectivePilotFollowTarget1 = objNull
-? _slot == 2 : objectivePilotReady2 = true; objectivePilotFollowing2 = false; objectivePilotFollowTarget2 = objNull
-? _slot == 3 : objectivePilotReady3 = true; objectivePilotFollowing3 = false; objectivePilotFollowTarget3 = objNull
-? _slot == 4 : objectivePilotReady4 = true; objectivePilotFollowing4 = false; objectivePilotFollowTarget4 = objNull
-? _slot == 5 : objectivePilotReady5 = true; objectivePilotFollowing5 = false; objectivePilotFollowTarget5 = objNull
+? _slot == 1 : objectivePilotReady1 = true; objectivePilotFollowing1 = false; objectivePilotFollowTarget1 = objNull; publicVariable "objectivePilotReady1"
+? _slot == 2 : objectivePilotReady2 = true; objectivePilotFollowing2 = false; objectivePilotFollowTarget2 = objNull; publicVariable "objectivePilotReady2"
+? _slot == 3 : objectivePilotReady3 = true; objectivePilotFollowing3 = false; objectivePilotFollowTarget3 = objNull; publicVariable "objectivePilotReady3"
+? _slot == 4 : objectivePilotReady4 = true; objectivePilotFollowing4 = false; objectivePilotFollowTarget4 = objNull; publicVariable "objectivePilotReady4"
+? _slot == 5 : objectivePilotReady5 = true; objectivePilotFollowing5 = false; objectivePilotFollowTarget5 = objNull; publicVariable "objectivePilotReady5"
 _pilot setCaptive true
 doStop _pilot
 unassignVehicle _pilot
@@ -43,11 +44,11 @@ _marker setMarkerText "DOWNED PILOT SECURED"
 ? debugMode : debugLog format ["ERA DEBUG PILOT SECURED: objective=%1",_slot]
 exit
 #failed
-? _slot == 1 : objectivePilotFailed1 = true
-? _slot == 2 : objectivePilotFailed2 = true
-? _slot == 3 : objectivePilotFailed3 = true
-? _slot == 4 : objectivePilotFailed4 = true
-? _slot == 5 : objectivePilotFailed5 = true
+? _slot == 1 : objectivePilotFailed1 = true; publicVariable "objectivePilotFailed1"
+? _slot == 2 : objectivePilotFailed2 = true; publicVariable "objectivePilotFailed2"
+? _slot == 3 : objectivePilotFailed3 = true; publicVariable "objectivePilotFailed3"
+? _slot == 4 : objectivePilotFailed4 = true; publicVariable "objectivePilotFailed4"
+? _slot == 5 : objectivePilotFailed5 = true; publicVariable "objectivePilotFailed5"
 _marker = "pilot_marker_1"
 ? _slot == 2 : _marker = "pilot_marker_2"
 ? _slot == 3 : _marker = "pilot_marker_3"

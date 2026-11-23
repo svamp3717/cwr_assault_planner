@@ -8,13 +8,16 @@ _direction = _this select 3
 _sourceX = _this select 4
 _sourceY = _this select 5
 _sourceLabel = _this select 6
-_classes = []
-_vehicleLabels = []
-? enemyEast : _classes = ["WW4EXT_JeepMGE","WW4EXT_BRDM_MG","WW4EXT_BMP","WW4EXT_BTR80","WW4EXT_UralE"]
-? enemyEast : _vehicleLabels = ["armed Jeep","BRDM scout car","BMP-1","BTR-80","Ural truck"]
-? enemyResistance : _classes = ["WW4EXT_JeepMGR","WW4EXT_BRDM2ExportR","WW4EXT_BMPRes","WW4EXT_BTR80ExportR","WW4EXT_Zil157"]
-? enemyResistance : _vehicleLabels = ["armed Jeep","BRDM-2 scout car","BMP","BTR-80","Zil-157 truck"]
-_count = count _classes
+_townIndex = [_sourceX,_sourceY] call worldFindEscortTown
+? _townIndex < 0 : goto "creationFailed"
+_label = missionTownLabels select _townIndex
+_pos = _townIndex call worldTownPosition
+_spawnPos = [_spawnX,_spawnY,0,5] call worldClampPosition
+_choices = []
+? enemyEast : _choices = [[assetClassEastArmedLightVehicle,assetNameEastArmedLightVehicle],[assetClassBRDM_MG,assetNameBRDM_MG],[assetClassBMP,assetNameBMP],[assetClassBTR80,assetNameBTR80],[assetClassUralE,assetNameUralE]]
+? enemyResistance : _choices = [[assetClassResistanceArmedLightVehicle,assetNameResistanceArmedLightVehicle],[assetClassBRDM2ExportR,assetNameBRDM2ExportR],[assetClassBMPRes,assetNameBMPRes],[assetClassBTR80ExportR,assetNameBTR80ExportR],[assetClassZil157,assetNameZil157]]
+_count = count _choices
+? _count < 1 : goto "creationFailed"
 _roll = random _count
 _index = _roll - (_roll % 1)
 _tries = 0
@@ -23,20 +26,21 @@ _class = ""
 _vehicleLabel = "enemy vehicle"
 #tryClass
 ? _tries >= _count : goto "fallback"
-_class = _classes select _index
-_vehicleLabel = _vehicleLabels select _index
-_vehicle = _class createVehicle [_spawnX,_spawnY,0]
+_choice = _choices select _index
+_class = _choice select 0
+_vehicleLabel = _choice select 1
+_vehicle = _class createVehicle _spawnPos
 ? !(isNull _vehicle) : goto "vehicleCreated"
 _index = _index + 1
 ? _index >= _count : _index = 0
 _tries = _tries + 1
 goto "tryClass"
 #fallback
-? enemyEast : _class = "UAZ"
-? enemyEast : _vehicleLabel = "UAZ"
-? enemyResistance : _class = "JeepMG"
-? enemyResistance : _vehicleLabel = "armed Jeep"
-_vehicle = _class createVehicle [_spawnX,_spawnY,0]
+? enemyEast : _class = assetClassUAZ
+? enemyEast : _vehicleLabel = assetNameUAZ
+? enemyResistance : _class = assetClassJeepMG
+? enemyResistance : _vehicleLabel = assetNameJeepMG
+_vehicle = _class createVehicle _spawnPos
 #vehicleCreated
 ? isNull _vehicle : goto "creationFailed"
 _vehicle setDir _direction
@@ -54,55 +58,6 @@ _sourceMarker = "primary_marker"
 ? _slot == 4 : _sourceMarker = "fourth_marker"
 ? _slot == 5 : _sourceMarker = "fifth_marker"
 _sourceMarker setMarkerText format ["%1 - Steal %2 at %3",_slot,_vehicleLabel,_sourceLabel]
-_markers = missionTownMarkers
-_labels = missionTownLabels
-_townTotal = count _markers
-_index = 0
-_requireDistance = true
-_bestDistance = 999999999
-_bestMarker = ""
-_bestLabel = ""
-_bestPos = [_sourceX,_sourceY,0]
-#scanTown
-? _index >= _townTotal : goto "scanTownDone"
-_marker = _markers select _index
-_label = _labels select _index
-_blocked = false
-? _label == townLabel : _blocked = true
-? townCount >= 2 && _label == secondaryLabel : _blocked = true
-? townCount >= 3 && _label == thirdLabel : _blocked = true
-? townCount >= 4 && _label == fourthLabel : _blocked = true
-? townCount >= 5 && _label == fifthLabel : _blocked = true
-_pos = getMarkerPos _marker
-_dx = (_pos select 0) - _sourceX
-_dy = (_pos select 1) - _sourceY
-_distance = (_dx * _dx) + (_dy * _dy)
-_farEnough = _distance >= 250000
-? _blocked : goto "nextTown"
-? _requireDistance && !(_farEnough) : goto "nextTown"
-? _distance >= _bestDistance : goto "nextTown"
-_bestDistance = _distance
-_bestMarker = _marker
-_bestLabel = _label
-_bestPos = _pos
-#nextTown
-_index = _index + 1
-goto "scanTown"
-#scanTownDone
-? _bestMarker != "" : goto "townFound"
-? !(_requireDistance) : goto "townFallback"
-_requireDistance = false
-_index = 0
-_bestDistance = 999999999
-goto "scanTown"
-#townFallback
-_bestMarker = missionTownMarkers select 0
-_bestLabel = missionTownLabels select 0
-_bestPos = getMarkerPos _bestMarker
-#townFound
-_marker = _bestMarker
-_label = _bestLabel
-_pos = _bestPos
 _destX = _pos select 0
 _destY = _pos select 1
 ? _slot == 1 : objectiveStealDestinationX1 = _destX; objectiveStealDestinationY1 = _destY; objectiveStealDestinationLabel1 = _label
@@ -118,27 +73,18 @@ _markerName = "steal_marker_1"
 _markerName setMarkerPos [_destX,_destY]
 _markerName setMarkerType "Flag"
 _markerName setMarkerColor "ColorGreen"
-_markerName setMarkerText format ["RECOVER VEHICLE FROM %1",_sourceLabel]
+_markerName setMarkerText format ["VEHICLE RECOVERY: %1",_label]
 [_slot] exec "stealVehicleMonitor.sqs"
 ? debugMode : debugLog format ["ERA DEBUG STEAL VEHICLE: objective=%1 class=%2 source=%3 recovery=%4",_slot,_class,_sourceLabel,_label]
 stealVehicleSiteReady = true
 exit
 #creationFailed
-? _slot == 1 : objectiveStealFailed1 = true
-? _slot == 2 : objectiveStealFailed2 = true
-? _slot == 3 : objectiveStealFailed3 = true
-? _slot == 4 : objectiveStealFailed4 = true
-? _slot == 5 : objectiveStealFailed5 = true
-missionWin = false
-missionLose = true
-missionEnded = true
-mpHQMessage = format ["HQ: Objective %1 failed. The designated vehicle could not be created.",_slot]
-mpHQMessageId = mpHQMessageId + 1
-publicVariable "missionWin"
-publicVariable "missionLose"
-publicVariable "missionEnded"
-publicVariable "mpHQMessage"
-publicVariable "mpHQMessageId"
-? debugMode : debugLog format ["ERA DEBUG STEAL VEHICLE FAILED TO CREATE: objective=%1",_slot]
+; Invalid recovery destination or missing vehicle class must not end a new mission.
+? _slot == 1 : objectiveType1 = 0
+? _slot == 2 : objectiveType2 = 0
+? _slot == 3 : objectiveType3 = 0
+? _slot == 4 : objectiveType4 = 0
+? _slot == 5 : objectiveType5 = 0
+? debugMode : debugLog format ["ERA DEBUG STEAL VEHICLE: objective=%1 destination or vehicle unavailable; switched to Clear Area",_slot]
 stealVehicleSiteReady = true
 exit

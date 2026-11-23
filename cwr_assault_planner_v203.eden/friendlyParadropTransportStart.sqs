@@ -5,6 +5,12 @@ _startY = _this select 2
 _dropX = _this select 3
 _dropY = _this select 4
 _height = _this select 5
+_start = [_startX, _startY, 0, 20] call worldClampPosition
+_startX = _start select 0
+_startY = _start select 1
+_drop = [_dropX, _dropY, 0, 20] call worldClampPosition
+_dropX = _drop select 0
+_dropY = _drop select 1
 ? !(alive _vehicle) : exit
 _dx = _dropX - _startX
 _dy = _dropY - _startY

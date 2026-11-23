@@ -57,7 +57,7 @@ mortarGlobalReady = false
 _targetPos = getPos _target
 _impactX = (_targetPos select 0) + (random 90) - 45
 _impactY = (_targetPos select 1) + (random 90) - 45
-_shell = "MortarShell" createVehicle [_impactX, _impactY, 0]
+_shell = assetClassMortarShell createVehicle [_impactX, _impactY, 0]
 _shell setPos [_impactX, _impactY, 145]
 _shell setVelocity [0,0,-38]
 ? debugMode : debugLog format ["ERA DEBUG MORTAR: battery=%1 spotting target=%2 knowledge=%3 impact=[%4,%5]", _slot, _target, _knowledge, _impactX, _impactY]
@@ -73,7 +73,7 @@ _aliveCrew = 0
 _targetPos = getPos _target
 _impactX = (_targetPos select 0) + (random 60) - 30
 _impactY = (_targetPos select 1) + (random 60) - 30
-_shell = "MortarShell" createVehicle [_impactX, _impactY, 0]
+_shell = assetClassMortarShell createVehicle [_impactX, _impactY, 0]
 _shell setPos [_impactX, _impactY, 145]
 _shell setVelocity [0,0,-38]
 ? debugMode : debugLog format ["ERA DEBUG MORTAR: battery=%1 second impact=[%2,%3]", _slot, _impactX, _impactY]

@@ -1,18 +1,39 @@
 ; Custom patch: remembered proximity-streamed civilian-car profiles.
-; Every imported marker independently rolls a 25 percent chance.
+; Guarantee profiles at the two nearest eligible towns per active objective.
+; Other imported locations independently roll a 25 percent chance.
 ; Active objective locations are still skipped by civilianNonObjectiveCarProfile.sqs.
 civilianNonObjectiveCarsReady = false
 civilianNonObjectiveCarProfileCount = 0
 civilianNamedCarProfileCount = 0
 civilianUnnamedCarProfileCount = 0
+_guaranteed = []
+_objXs = [primaryX,secondaryX,thirdX,fourthX,fifthX]
+_objYs = [primaryY,secondaryY,thirdY,fourthY,fifthY]
+_slot = 0
+#nearbyTownLoop
+? _slot >= townCount : goto "nearbyTownDone"
+_sx = _objXs select _slot
+_sy = _objYs select _slot
+_first = [_sx,_sy,0,-1,[]] call worldNearestTown
+? _first < 0 : goto "nearbyTownNext"
+? !(_first in _guaranteed) : _guaranteed = _guaranteed + [_first]
+_second = [_sx,_sy,0,-1,[_first]] call worldNearestTown
+? _second >= 0 && !(_second in _guaranteed) : _guaranteed = _guaranteed + [_second]
+#nearbyTownNext
+_slot = _slot + 1
+goto "nearbyTownLoop"
+#nearbyTownDone
 _i = 0
 #namedProfileLoop
 ? _i >= missionTrafficTotal : goto "unnamedProfiles"
 _roll = random 4
-? _roll >= 1 : goto "namedNext"
+? _roll >= 1 && !(_i in _guaranteed) : goto "namedNext"
 _beforeCount = civilianNonObjectiveCarProfileCount
+_pos = _i call worldTownPosition
+_x = _pos select 0
+_y = _pos select 1
 civilianNonObjectiveCarProfileReady = false
-[missionTrafficMarkers select _i, missionTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
+[_x, _y, missionTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
 @ civilianNonObjectiveCarProfileReady
 ? civilianNonObjectiveCarProfileCount > _beforeCount : civilianNamedCarProfileCount = civilianNamedCarProfileCount + 1
 #namedNext
@@ -20,15 +41,21 @@ _i = _i + 1
 goto "namedProfileLoop"
 
 #unnamedProfiles
-; v197 leaves the legacy unnamed list empty because all imported markers are in missionTrafficMarkers.
+; Legacy unnamed traffic locations remain supported if a world config supplies them.
 _i = 0
 #unnamedProfileLoop
 ? _i >= missionUnnamedTrafficTotal : goto "profilesDone"
 _roll = random 4
 ? _roll >= 1 : goto "unnamedNext"
 _beforeCount = civilianNonObjectiveCarProfileCount
+_x = missionUnnamedTrafficXs select _i
+_y = missionUnnamedTrafficYs select _i
+? worldUseEditorLocationMarkers : _marker = missionUnnamedTrafficMarkers select _i
+? worldUseEditorLocationMarkers : _pos = getMarkerPos _marker
+? worldUseEditorLocationMarkers : _x = _pos select 0
+? worldUseEditorLocationMarkers : _y = _pos select 1
 civilianNonObjectiveCarProfileReady = false
-[missionUnnamedTrafficMarkers select _i, missionUnnamedTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
+[_x, _y, missionUnnamedTrafficLabels select _i] exec "civilianNonObjectiveCarProfile.sqs"
 @ civilianNonObjectiveCarProfileReady
 ? civilianNonObjectiveCarProfileCount > _beforeCount : civilianUnnamedCarProfileCount = civilianUnnamedCarProfileCount + 1
 #unnamedNext
@@ -36,6 +63,6 @@ _i = _i + 1
 goto "unnamedProfileLoop"
 
 #profilesDone
-? debugMode : debugLog format ["ERA DEBUG CIVSTREAM PROFILES: imported25pct=%1 legacyUnnamed25pct=%2 total=%3", civilianNamedCarProfileCount, civilianUnnamedCarProfileCount, civilianNonObjectiveCarProfileCount]
+? debugMode : debugLog format ["ERA DEBUG CIVSTREAM PROFILES: imported=%1 legacyUnnamed25pct=%2 total=%3 guaranteed=%4", civilianNamedCarProfileCount, civilianUnnamedCarProfileCount, civilianNonObjectiveCarProfileCount, count _guaranteed]
 civilianNonObjectiveCarsReady = true
 exit

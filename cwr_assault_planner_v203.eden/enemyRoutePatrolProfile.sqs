@@ -74,8 +74,8 @@ _veh = objNull
 ? _vehiclePatrol : goto "spawnVehicle"
 goto "spawnInfantry"
 #spawnVehicle
-? enemyEast : _vehClass = "WW4EXT_JeepMGE"
-? enemyResistance : _vehClass = "WW4EXT_JeepMGR"
+? enemyEast : _vehClass = assetClassEastPatrolVehicle
+? enemyResistance : _vehClass = assetClassResistancePatrolVehicle
 _veh = _vehClass createVehicle [_spawnX,_spawnY,0]
 _veh setFuel 1
 _veh lock false

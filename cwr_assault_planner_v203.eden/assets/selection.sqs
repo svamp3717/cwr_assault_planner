@@ -1,0 +1,4 @@
+; The generator selects a profile for the exported mission.
+assetProfileName = "ww4"
+[] exec "assets\ww4.sqs"
+exit

@@ -16,14 +16,14 @@ exit
 
 #HaveMagazine
 _mag = lbData [1502,_mi]
-? _mag == "HandGrenade" : _target addWeapon "Throw"
-? _mag == "SmokeShell" : _target addWeapon "Throw"
-? _mag == "SmokeShellGreen" : _target addWeapon "Throw"
-? _mag == "SmokeShellRed" : _target addWeapon "Throw"
-? _mag == "PipeBomb" : _target addWeapon "Put"
-? _mag == "TimeBomb" : _target addWeapon "Put"
-? _mag == "Mine" : _target addWeapon "Put"
-? _mag == "MineE" : _target addWeapon "Put"
+? _mag == assetClassHandGrenade : _target addWeapon assetClassThrow
+? _mag == assetClassSmokeShell : _target addWeapon assetClassThrow
+? _mag == assetClassSmokeShellGreen : _target addWeapon assetClassThrow
+? _mag == assetClassSmokeShellRed : _target addWeapon assetClassThrow
+? _mag == assetClassPipeBomb : _target addWeapon assetClassPut
+? _mag == assetClassTimeBomb : _target addWeapon assetClassPut
+? _mag == assetClassMine : _target addWeapon assetClassPut
+? _mag == assetClassMineE : _target addWeapon assetClassPut
 _target addMagazine _mag
 hint format ["Added to %1: %2",name _target,_mag]
 exit

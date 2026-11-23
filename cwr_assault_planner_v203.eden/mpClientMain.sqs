@@ -7,8 +7,8 @@ grpPlr = group player
 arsenalPlayer = player
 WW4_ArsenalBoxAction = -1
 WW4_LogisticsBoxAction = -1
-player addWeapon "Binocular"
-player addWeapon "NVGoggles"
+player addWeapon assetClassBinocular
+player addWeapon assetClassNVGoggles
 1 setRadioMsg "NULL"
 2 setRadioMsg "NULL"
 3 setRadioMsg "NULL"

@@ -1,4 +1,4 @@
-; custom v203: make the enemy reinforcement Mi-17 leave immediately after its paradrop and despawn off-map.
+; custom v203: make the enemy reinforcement Mi-17 leave immediately after its paradrop and despawn away from the drop.
 ; Arguments: [helicopter, dropX, dropY, exitX, exitY]
 _heli = _this select 0
 _dropX = _this select 1
@@ -13,7 +13,9 @@ _pilot = driver _heli
 ? !(isNull _pilot) : (group _pilot) setSpeedMode "FULL"
 _heli setFuel 1
 _heli flyInHeight 180
-_heli setVelocity [38,30,8]
+_heading = (_exitX - (getPos _heli select 0)) atan2 (_exitY - (getPos _heli select 1))
+_heli setDir _heading
+_heli setVelocity [48 * sin _heading,48 * cos _heading,8]
 ? !(isNull _pilot) : _pilot doMove [_exitX, _exitY, 0]
 ? !(isNull _pilot) : (group _pilot) move [_exitX, _exitY, 0]
 _heli doMove [_exitX, _exitY, 0]

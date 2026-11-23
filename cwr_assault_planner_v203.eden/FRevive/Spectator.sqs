@@ -26,7 +26,7 @@ Spectator_HeightDummy setPos getPos _bodyPLR
 
 ;init
 showCinemaBorder true
-DeathCam = "camera" camCreate [9578.59,3540.29,1.66]
+DeathCam = "camera" camCreate (getPos _bodyPLR)
 DeathCam cameraEffect ["internal","back"]
 
 ;=== 14:30:26
@@ -275,7 +275,7 @@ DeathCam cameraEffect ["terminate","front"]
 camDestroy DeathCam
 (DeathCamArray select _player_id_spect) switchCamera "INTERNAL"
 
-_cam = "camera" camCreate [0,0,0]
+_cam = "camera" camCreate (getPos _bodyPLR)
 _cam camCommand "manual on"
 _cam camCommand "inertia off"
 

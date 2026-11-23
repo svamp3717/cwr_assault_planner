@@ -8,7 +8,7 @@ _dir = _this select 4
 ? !(alive _unit) : exit
 ? !(local _unit) : exit
 unassignVehicle _unit
-_chute = "ParachuteWest" createVehicle [_x, _y, 0]
+_chute = assetClassParachuteWest createVehicle [_x, _y, 0]
 _chute setDir _dir
 _chute setPos [_x, _y, _z]
 _chute setVelocity [5,4,-2]

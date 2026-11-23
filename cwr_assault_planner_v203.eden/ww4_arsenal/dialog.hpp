@@ -1,4 +1,4 @@
-// WW4 Arsenal: family, variant, compatible item
+// Mission Arsenal: family, variant, compatible item
 
 class WW4_Arsenal_RscText
 {
@@ -87,7 +87,7 @@ class WW4_Arsenal_Dialog
         moving = 1;
         sizeEx = 0.034;
         colorBackground[] = {0.18,0.22,0.18,1};
-        text = "WW4 ARSENAL";
+        text = "Mission Arsenal";
     };
     class WW4_FamilyLabel: WW4_Arsenal_RscText
     {
@@ -286,7 +286,7 @@ class WW4_PlayerModel_Dialog
         moving = 1;
         sizeEx = 0.034;
         colorBackground[] = {0.08,0.32,0.34,1};
-        text = "WW4 PLAYER MODEL";
+        text = "PLAYER MODEL";
     };
 
     class WW4_ModelCategoryLabel: WW4_Arsenal_RscText

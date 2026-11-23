@@ -12,8 +12,15 @@ missionTrafficTotal = count missionTrafficMarkers
 missionUnnamedTrafficMarkers = []
 missionUnnamedTrafficLabels = []
 missionUnnamedTrafficTotal = 0
-missionBaseX = 10875.000000
-missionBaseY = 11700.000000
+; Load the terrain-specific arrays, bounds and placement settings on every machine.
+; Must complete before startup placement or server-side objective generation.
+worldConfigReady = false
+[] exec "worldConfig.sqs"
+@ worldConfigReady
+assetProfileReady = false
+[] exec "assets\selection.sqs"
+@ assetProfileReady
+call preProcessFile "worldPlacementFunctions.sqf"
 setViewDistance 1600
 "1" objStatus "HIDDEN"
 "2" objStatus "HIDDEN"
@@ -31,7 +38,8 @@ missionEnded = false
 
 ; v188 mission settings. Defaults preserve the v184 behavior and enable mission music.
 guiArsenalEnabled = true
-guiFReviveEnabled = true
+; WGL 5.12 provides native medical gameplay. Do not run FRevive for this pack.
+guiFReviveEnabled = assetProfileName != "wgl512"
 guiMusicEnabled = true
 missionSettingsMenuRequested = false
 missionSettingsMenuComplete = false
@@ -98,8 +106,8 @@ airSupportUnavailableReported = false
 airSupportMenuOpen = false
 airSupportTargetChosen = false
 airSupportTarget = 1
-airTargetX = 10875.000000
-airTargetY = 11700.000000
+airTargetX = missionBaseX
+airTargetY = missionBaseY
 airTargetLabel = "1"
 supportCobraReady = false
 supportAirVehicleReady = false
@@ -111,26 +119,26 @@ cobraLastX = 0
 cobraLastY = 0
 cobraLastZ = 0
 
-cobraProxyX = 10875.000000
-cobraProxyY = 11700.000000
+cobraProxyX = missionBaseX
+cobraProxyY = missionBaseY
 cobraProxyStep = 0
 cobraNoDriverReported = false
 cobraActualLastX = 0
 cobraActualLastY = 0
-primaryX = 10875.000000
-primaryY = 11700.000000
-secondaryX = 10875.000000
-secondaryY = 11700.000000
-thirdX = 10875.000000
-thirdY = 11700.000000
-fourthX = 10875.000000
-fourthY = 11700.000000
-fifthX = 10875.000000
-fifthY = 11700.000000
-airStageX = 10875.000000
-airStageY = 11700.000000
-truckStageX = 10875.000000
-truckStageY = 11700.000000
+primaryX = missionBaseX
+primaryY = missionBaseY
+secondaryX = missionBaseX
+secondaryY = missionBaseY
+thirdX = missionBaseX
+thirdY = missionBaseY
+fourthX = missionBaseX
+fourthY = missionBaseY
+fifthX = missionBaseX
+fifthY = missionBaseY
+airStageX = missionBaseX
+airStageY = missionBaseY
+truckStageX = missionBaseX
+truckStageY = missionBaseY
 truckStageDir = 180
 truckStageTownLabel = "non-objective town"
 
@@ -191,8 +199,8 @@ civilianCharacters = true
 civilianLabel = "civilian characters present"
 debugLabel = "debug messages disabled"
 supportAirVehicle = objNull
-supportAirName = "AH-1 Cobra"
-enemyAttackClass = "Mi24"
+supportAirName = assetNameWestCobra
+enemyAttackClass = assetClassEastAttackHeli
 enemyAttackVehicle = objNull
 enemyAttackHeli = objNull
 enemyTransportHeli = objNull
@@ -200,7 +208,7 @@ enemySu25 = objNull
 enemyV80 = objNull
 enemyGroundReinfVeh = objNull
 enemyAirReinfMarkerActive = false
-enemyAttackName = "Mi-24"
+enemyAttackName = assetNameEastAttackHeli
 enemyRuntimeReservesReady = false
 w4eAirAtkPilot = objNull
 w4eAirAtkGunner = objNull
@@ -879,7 +887,7 @@ s5Car3 = objNull
 
 ; v128 runtime friendly support and extraction assets.
 friendlyRuntimeSupportReady = false
-supportAirClass = "AH1"
+supportAirClass = assetClassWestCobra
 supportAirSelection = 0
 supportM113 = objNull
 supportTank = objNull
@@ -1055,8 +1063,8 @@ logisticsDropAsset = objNull
 logisticsDropHeli = objNull
 logisticsDropPad = objNull
 logisticsDropMarkerStatus = 0
-logisticsDropMarkerX = 10875.000000
-logisticsDropMarkerY = 11700.000000
+logisticsDropMarkerX = missionBaseX
+logisticsDropMarkerY = missionBaseY
 logisticsDropMarkerLabel = ""
 mpLogisticsDropRequest = false
 logisticsDropMenuChoice = 0
@@ -1081,8 +1089,8 @@ extractionLanded = false
 extractionBoarded = false
 extractionComplete = false
 extractionFailed = false
-extractionX = 10875.000000
-extractionY = 11700.000000
+extractionX = missionBaseX
+extractionY = missionBaseY
 extractionLabel = "Final extraction"
 extractPad = objNull
 

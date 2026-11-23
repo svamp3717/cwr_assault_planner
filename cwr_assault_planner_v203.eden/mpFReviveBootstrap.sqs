@@ -2,6 +2,8 @@
 ; Wait until setup removes unused playable AI and the server publishes the surviving roster.
 @ mpFReviveNamesReady
 @ mpAISlotsCulled
+; Enforce on each machine, independently of the setup UI or networked toggle.
+? assetProfileName == "wgl512" : goto "disabled"
 ? !(guiFReviveEnabled) : goto "disabled"
 @ count mpFReviveNames > 0
 ~0.5
@@ -21,6 +23,9 @@ FREVIVE_INTERVAL = 0.1
 FREVIVE_MSG_STYLE = 0
 FREVIVE_SOUND = false
 FREVIVE_KILL_CAM = true
+; Keep automatic corpse relocation OFF on ports until water recovery is playtested.
+; Set true to enable the bounded, owner-local shore search (max 600 m).
+FREVIVE_ANTI_WATER = false
 
 mpFReviveStarted = true
 mpFReviveNames exec "FRevive\Start.sqs"
